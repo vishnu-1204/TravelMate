@@ -130,8 +130,8 @@
   }
 
   .nav-container {
-    @apply fixed top-4 left-1/2 -translate-x-1/2 z-50 rounded-full px-6;
-    background: hsl(var(--nav-bg) / 0.95);
+    @apply fixed top-0 left-0 right-0 z-50 px-6 lg:px-12;
+    background: hsl(var(--nav-bg) / 0.9);
     backdrop-filter: blur(12px);
     box-shadow: var(--nav-shadow);
   }
