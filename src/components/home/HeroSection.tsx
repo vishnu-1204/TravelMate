@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const heroSlides = [
   {
@@ -42,6 +43,18 @@ const HeroSection = () => {
 
   const slide = heroSlides[currentSlide];
 
+  const textVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 }
+  };
+
+  const accentVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 1.1 }
+  };
+
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background Images */}
@@ -63,25 +76,47 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
-        {/* Accent Text */}
-        <p 
-          className="text-[hsl(var(--cyan-accent))] text-xl md:text-2xl mb-2 transition-opacity duration-500"
-          style={{ fontFamily: "'Pacifico', cursive" }}
-        >
-          {slide.accent}
-        </p>
-        
-        {/* Main Title */}
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white mb-6 tracking-wide">
-          <span className="border-b-2 border-[hsl(var(--cyan-accent))]">{slide.title.split(',')[0]}</span>
-          <span className="text-[hsl(var(--cyan-accent))]">,</span>
-          <span> {slide.title.split(',')[1]?.trim()}</span>
-        </h1>
-        
-        {/* Quote */}
-        <p className="text-white/80 text-sm md:text-base max-w-xl leading-relaxed">
-          {slide.quote}
-        </p>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="flex flex-col items-center"
+          >
+            {/* Accent Text */}
+            <motion.p 
+              variants={accentVariants}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="text-[hsl(var(--cyan-accent))] text-xl md:text-2xl mb-2"
+              style={{ fontFamily: "'Pacifico', cursive" }}
+            >
+              {slide.accent}
+            </motion.p>
+            
+            {/* Main Title */}
+            <motion.h1 
+              variants={textVariants}
+              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+              className="text-4xl md:text-6xl lg:text-7xl font-light text-white mb-6 tracking-wide"
+            >
+              <span className="border-b-2 border-[hsl(var(--cyan-accent))]">
+                {slide.title.split(',')[0]}
+              </span>
+              <span className="text-[hsl(var(--cyan-accent))]">,</span>
+              <span> {slide.title.split(',')[1]?.trim()}</span>
+            </motion.h1>
+            
+            {/* Quote */}
+            <motion.p 
+              variants={textVariants}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              className="text-white/80 text-sm md:text-base max-w-xl leading-relaxed"
+            >
+              {slide.quote}
+            </motion.p>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Navigation Arrows */}
