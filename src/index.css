@@ -36,8 +36,9 @@
 
     --hero-bg: 217 91% 25%;
     --hero-text: 0 0% 100%;
-    --nav-bg: 0 0% 100%;
-    --nav-shadow: 0 4px 20px -4px hsl(215 25% 15% / 0.1);
+    --nav-bg: 220 25% 12%;
+    --nav-shadow: 0 4px 30px -4px hsl(0 0% 0% / 0.3);
+    --cyan-accent: 187 100% 50%;
     --card-shadow: 0 10px 40px -10px hsl(215 25% 15% / 0.12);
     --button-shadow: 0 4px 14px 0 hsl(217 91% 40% / 0.3);
 
@@ -129,8 +130,9 @@
   }
 
   .nav-container {
-    @apply bg-nav fixed top-0 left-0 right-0 z-50;
-    background: hsl(var(--nav-bg));
+    @apply fixed top-4 left-1/2 -translate-x-1/2 z-50 rounded-full px-6;
+    background: hsl(var(--nav-bg) / 0.95);
+    backdrop-filter: blur(12px);
     box-shadow: var(--nav-shadow);
   }
 
