@@ -1,596 +1,207 @@
 [
   {
-    "id": "1",
-    "title": "Bali Paradise Escape",
-    "location": "Bali, Indonesia",
-    "duration": "7 Days / 6 Nights",
-    "price": 1299,
-    "rating": 4.8,
-    "reviews": 324,
-    "image": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800",
-    "description": "Experience the magic of Bali with pristine beaches, ancient temples, and lush rice terraces. This package includes luxury accommodation, guided tours, and authentic cultural experiences.",
-    "highlights": ["Temple visits", "Rice terrace trek", "Beach activities", "Spa treatments", "Cultural shows"],
-    "itinerary": {
-      "days": [
-        {
-          "day": 1,
-          "title": "Arrival & Welcome",
-          "activities": [
-            "Airport pickup and transfer to resort",
-            "Welcome drink and resort orientation",
-            "Leisure time at the beach",
-            "Welcome dinner at beachfront restaurant"
-          ]
-        },
-        {
-          "day": 2,
-          "title": "Temple & Culture Tour",
-          "activities": [
-            "Visit Tanah Lot Temple at sunrise",
-            "Traditional Balinese cooking class",
-            "Explore Ubud Art Market",
-            "Evening traditional dance performance"
-          ]
-        },
-        {
-          "day": 3,
-          "title": "Rice Terraces Adventure",
-          "activities": [
-            "Trek through Tegallalang Rice Terraces",
-            "Visit local coffee plantation",
-            "Swing experience at jungle viewpoint",
-            "Relaxing spa treatment"
-          ]
-        },
-        {
-          "day": 4,
-          "title": "Beach & Water Activities",
-          "activities": [
-            "Morning yoga session",
-            "Snorkeling at Blue Lagoon",
-            "Beach club experience",
-            "Sunset dinner cruise"
-          ]
-        },
-        {
-          "day": 5,
-          "title": "Sacred Temples Tour",
-          "activities": [
-            "Visit Uluwatu Temple",
-            "Explore Tirta Empul Water Temple",
-            "Purification ceremony experience",
-            "Fire dance show at sunset"
-          ]
-        },
-        {
-          "day": 6,
-          "title": "Free Day & Relaxation",
-          "activities": [
-            "Sleep in and enjoy resort amenities",
-            "Optional: Surfing lessons",
-            "Afternoon shopping in Seminyak",
-            "Farewell dinner at exclusive restaurant"
-          ]
-        },
-        {
-          "day": 7,
-          "title": "Departure",
-          "activities": [
-            "Breakfast at resort",
-            "Check-out and airport transfer",
-            "Departure with beautiful memories"
-          ]
-        }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Beachfront Villa", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Beachfront Villa", "meals": "Breakfast, Lunch, Dinner" },
-        { "night": 3, "accommodation": "Beachfront Villa", "meals": "Breakfast, Lunch, Dinner" },
-        { "night": 4, "accommodation": "Beachfront Villa", "meals": "Breakfast, Dinner" },
-        { "night": 5, "accommodation": "Beachfront Villa", "meals": "Breakfast, Lunch, Dinner" },
-        { "night": 6, "accommodation": "Beachfront Villa", "meals": "Breakfast, Dinner" }
-      ]
-    },
-    "included": ["Luxury accommodation", "Airport transfers", "Daily breakfast", "Guided tours", "Entrance fees", "Travel insurance"],
-    "excluded": ["International flights", "Personal expenses", "Tips", "Optional activities"]
-  },
-  {
-    "id": "2",
-    "title": "Swiss Alps Adventure",
-    "location": "Switzerland",
+    "id": "101",
+    "title": "Kerala Backwaters Bliss",
+    "location": "Kerala, India",
     "duration": "6 Days / 5 Nights",
-    "price": 2499,
-    "rating": 4.9,
-    "reviews": 186,
-    "image": "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800",
-    "description": "Discover the breathtaking beauty of the Swiss Alps with scenic train rides, mountain excursions, and charming Alpine villages. Experience world-class hospitality and stunning landscapes.",
-    "highlights": ["Glacier Express ride", "Jungfrau excursion", "Lake Lucerne cruise", "Chocolate factory tour", "Mountain hiking"],
-    "itinerary": {
-      "days": [
-        {
-          "day": 1,
-          "title": "Arrival in Zurich",
-          "activities": [
-            "Arrival at Zurich Airport",
-            "Transfer to hotel in Lucerne",
-            "Evening walk through Old Town",
-            "Welcome dinner with Swiss cuisine"
-          ]
-        },
-        {
-          "day": 2,
-          "title": "Lucerne Exploration",
-          "activities": [
-            "Visit Chapel Bridge and Water Tower",
-            "Lake Lucerne scenic cruise",
-            "Cable car to Mount Pilatus",
-            "Panoramic dinner at mountain restaurant"
-          ]
-        },
-        {
-          "day": 3,
-          "title": "Jungfrau Region",
-          "activities": [
-            "Train to Grindelwald",
-            "Excursion to Jungfraujoch (Top of Europe)",
-            "Snow activities at glacier",
-            "Return to Interlaken hotel"
-          ]
-        },
-        {
-          "day": 4,
-          "title": "Glacier Express Experience",
-          "activities": [
-            "Board famous Glacier Express",
-            "Scenic journey through Alps",
-            "Lunch served on train",
-            "Arrive in Zermatt, view Matterhorn"
-          ]
-        },
-        {
-          "day": 5,
-          "title": "Zermatt & Matterhorn",
-          "activities": [
-            "Gornergrat Railway excursion",
-            "Hiking in Alpine meadows",
-            "Visit Swiss chocolate factory",
-            "Farewell dinner with fondue"
-          ]
-        },
-        {
-          "day": 6,
-          "title": "Departure",
-          "activities": [
-            "Breakfast with mountain view",
-            "Transfer to Geneva Airport",
-            "Departure"
-          ]
-        }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Lucerne Lakeside Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Lucerne Lakeside Hotel", "meals": "Breakfast, Dinner" },
-        { "night": 3, "accommodation": "Interlaken Resort", "meals": "Breakfast, Lunch, Dinner" },
-        { "night": 4, "accommodation": "Zermatt Alpine Lodge", "meals": "Breakfast, Lunch, Dinner" },
-        { "night": 5, "accommodation": "Zermatt Alpine Lodge", "meals": "Breakfast, Dinner" }
-      ]
-    },
-    "included": ["4-5 star hotels", "Swiss Travel Pass", "Glacier Express tickets", "Mountain excursions", "Daily breakfast", "Select meals"],
-    "excluded": ["International flights", "Travel insurance", "Personal expenses", "Optional activities"]
-  },
-  {
-    "id": "3",
-    "title": "Maldives Luxury Retreat",
-    "location": "Maldives",
-    "duration": "5 Days / 4 Nights",
-    "price": 3299,
-    "rating": 5.0,
-    "reviews": 98,
-    "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800",
-    "description": "Indulge in ultimate luxury at an overwater villa in the Maldives. Crystal clear waters, world-class diving, and unparalleled relaxation await in this tropical paradise.",
-    "highlights": ["Overwater villa", "Private beach", "Scuba diving", "Sunset dolphin cruise", "Couples spa"],
-    "itinerary": {
-      "days": [
-        {
-          "day": 1,
-          "title": "Paradise Arrival",
-          "activities": [
-            "Seaplane transfer to resort",
-            "Welcome with champagne",
-            "Villa orientation and check-in",
-            "Sunset dinner on private deck"
-          ]
-        },
-        {
-          "day": 2,
-          "title": "Ocean Adventures",
-          "activities": [
-            "Sunrise yoga on beach",
-            "Snorkeling at house reef",
-            "Gourmet lunch at underwater restaurant",
-            "Sunset dolphin watching cruise"
-          ]
-        },
-        {
-          "day": 3,
-          "title": "Island Exploration",
-          "activities": [
-            "Scuba diving excursion",
-            "Visit local fishing village",
-            "Beach picnic on private sandbank",
-            "Stargazing dinner experience"
-          ]
-        },
-        {
-          "day": 4,
-          "title": "Wellness & Relaxation",
-          "activities": [
-            "Couples spa treatment",
-            "Private cooking class",
-            "Leisure time at infinity pool",
-            "Farewell dinner with live music"
-          ]
-        },
-        {
-          "day": 5,
-          "title": "Departure",
-          "activities": [
-            "In-villa breakfast",
-            "Last swim in crystal waters",
-            "Seaplane transfer to airport",
-            "Departure"
-          ]
-        }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Overwater Villa", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Overwater Villa", "meals": "All Inclusive" },
-        { "night": 3, "accommodation": "Overwater Villa", "meals": "All Inclusive" },
-        { "night": 4, "accommodation": "Overwater Villa", "meals": "All Inclusive" }
-      ]
-    },
-    "included": ["Overwater villa", "Seaplane transfers", "All meals and drinks", "Snorkeling gear", "Dolphin cruise", "Spa treatment"],
-    "excluded": ["International flights", "Scuba certification", "Premium wines", "Personal expenses"]
-  },
-  {
-    "id": "4",
-    "title": "Japan Cultural Journey",
-    "location": "Japan",
-    "duration": "10 Days / 9 Nights",
-    "price": 3899,
-    "rating": 4.9,
+    "price": 899,
+    "rating": 4.8,
     "reviews": 412,
-    "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800",
-    "description": "Immerse yourself in Japan's rich culture from ancient temples to modern cities. Experience cherry blossoms, traditional tea ceremonies, and the famous bullet train.",
-    "highlights": ["Tokyo exploration", "Kyoto temples", "Mount Fuji", "Bullet train", "Tea ceremony"],
+    "image": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800",
+    "description": "Explore God's Own Country with serene backwaters, lush tea gardens, wildlife sanctuaries, and peaceful beaches. A perfect blend of nature and relaxation.",
+    "highlights": ["Houseboat stay", "Munnar tea gardens", "Kathakali show", "Spice plantation", "Ayurvedic massage"],
     "itinerary": {
       "days": [
         {
           "day": 1,
-          "title": "Tokyo Arrival",
+          "title": "Arrival in Kochi",
           "activities": [
-            "Arrival at Narita/Haneda Airport",
-            "Transfer to hotel in Shinjuku",
-            "Evening walk in Shibuya district",
-            "Welcome dinner at izakaya"
+            "Airport pickup",
+            "Visit Fort Kochi",
+            "Chinese fishing nets",
+            "Evening cultural show"
           ]
         },
         {
           "day": 2,
-          "title": "Modern Tokyo",
+          "title": "Munnar Hill Station",
           "activities": [
-            "Visit Senso-ji Temple in Asakusa",
-            "Explore Harajuku and Takeshita Street",
-            "Tokyo Skytree observation deck",
-            "Dinner in Akihabara electric town"
+            "Drive to Munnar",
+            "Tea garden visit",
+            "Mattupetty Dam",
+            "Scenic viewpoints"
           ]
         },
         {
           "day": 3,
-          "title": "Mount Fuji Excursion",
+          "title": "Munnar Exploration",
           "activities": [
-            "Day trip to Mount Fuji area",
-            "Visit 5th Station",
-            "Cruise on Lake Ashi",
-            "Hot spring bath experience"
+            "Eravikulam National Park",
+            "Tea factory visit",
+            "Local market shopping",
+            "Campfire evening"
           ]
         },
         {
           "day": 4,
-          "title": "Bullet Train to Kyoto",
+          "title": "Backwaters of Alleppey",
           "activities": [
-            "Shinkansen experience to Kyoto",
-            "Check-in at traditional ryokan",
-            "Gion district walking tour",
-            "Kaiseki dinner at ryokan"
+            "Transfer to Alleppey",
+            "Houseboat check-in",
+            "Backwater cruise",
+            "Traditional Kerala meals"
           ]
         },
         {
           "day": 5,
-          "title": "Kyoto Temples",
+          "title": "Kovalam Beach",
           "activities": [
-            "Fushimi Inari Shrine (thousand gates)",
-            "Kinkaku-ji Golden Pavilion",
-            "Traditional tea ceremony",
-            "Evening geisha district walk"
+            "Drive to Kovalam",
+            "Beach leisure",
+            "Ayurvedic spa",
+            "Sunset views"
           ]
         },
         {
           "day": 6,
-          "title": "Arashiyama & Nara",
-          "activities": [
-            "Bamboo Grove walk",
-            "Visit Tenryu-ji Temple",
-            "Afternoon trip to Nara",
-            "Feed the sacred deer"
-          ]
-        },
-        {
-          "day": 7,
-          "title": "Osaka Day",
-          "activities": [
-            "Train to Osaka",
-            "Osaka Castle visit",
-            "Dotonbori food tour",
-            "Street food experience"
-          ]
-        },
-        {
-          "day": 8,
-          "title": "Hiroshima & Miyajima",
-          "activities": [
-            "Day trip to Hiroshima",
-            "Peace Memorial Park",
-            "Ferry to Miyajima Island",
-            "Famous floating torii gate"
-          ]
-        },
-        {
-          "day": 9,
-          "title": "Return to Tokyo",
-          "activities": [
-            "Bullet train back to Tokyo",
-            "Free time for shopping in Ginza",
-            "Optional: teamLab Borderless",
-            "Farewell dinner"
-          ]
-        },
-        {
-          "day": 10,
           "title": "Departure",
           "activities": [
-            "Breakfast at hotel",
+            "Breakfast",
             "Airport transfer",
-            "Departure with lifetime memories"
-          ]
-        }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Tokyo Shinjuku Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Tokyo Shinjuku Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Tokyo Shinjuku Hotel", "meals": "Breakfast, Dinner" },
-        { "night": 4, "accommodation": "Kyoto Traditional Ryokan", "meals": "Breakfast, Dinner" },
-        { "night": 5, "accommodation": "Kyoto Traditional Ryokan", "meals": "Breakfast, Lunch" },
-        { "night": 6, "accommodation": "Kyoto Traditional Ryokan", "meals": "Breakfast" },
-        { "night": 7, "accommodation": "Osaka City Hotel", "meals": "Breakfast, Dinner" },
-        { "night": 8, "accommodation": "Osaka City Hotel", "meals": "Breakfast, Lunch" },
-        { "night": 9, "accommodation": "Tokyo Airport Hotel", "meals": "Breakfast, Dinner" }
-      ]
-    },
-    "included": ["Mix of hotels and ryokan", "JR Rail Pass", "Guided tours", "Tea ceremony", "Select meals", "Airport transfers"],
-    "excluded": ["International flights", "Travel insurance", "Personal expenses", "Optional activities"]
-  },
-  {
-    "id": "5",
-    "title": "Greek Islands Hopping",
-    "location": "Greece",
-    "duration": "8 Days / 7 Nights",
-    "price": 2199,
-    "rating": 4.7,
-    "reviews": 267,
-    "image": "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800",
-    "description": "Hop between the stunning Greek islands of Santorini, Mykonos, and Athens. Enjoy whitewashed villages, azure waters, ancient ruins, and Mediterranean cuisine.",
-    "highlights": ["Santorini sunset", "Mykonos beaches", "Acropolis tour", "Wine tasting", "Ferry cruises"],
-    "itinerary": {
-      "days": [
-        {
-          "day": 1,
-          "title": "Athens Arrival",
-          "activities": [
-            "Arrival at Athens Airport",
-            "Transfer to hotel in Plaka",
-            "Evening walk through ancient Agora",
-            "Welcome dinner with Greek meze"
-          ]
-        },
-        {
-          "day": 2,
-          "title": "Athens Exploration",
-          "activities": [
-            "Guided tour of Acropolis",
-            "Acropolis Museum visit",
-            "Lunch in Monastiraki",
-            "Free time for shopping"
-          ]
-        },
-        {
-          "day": 3,
-          "title": "Ferry to Mykonos",
-          "activities": [
-            "Morning ferry to Mykonos",
-            "Check-in at boutique hotel",
-            "Explore Mykonos Town",
-            "Dinner at Little Venice"
-          ]
-        },
-        {
-          "day": 4,
-          "title": "Mykonos Beach Day",
-          "activities": [
-            "Beach club at Paradise Beach",
-            "Optional: Delos Island excursion",
-            "Sunset at windmills",
-            "Nightlife experience"
-          ]
-        },
-        {
-          "day": 5,
-          "title": "Ferry to Santorini",
-          "activities": [
-            "Ferry to Santorini",
-            "Check-in at caldera view hotel",
-            "Explore Fira town",
-            "Famous Santorini sunset"
-          ]
-        },
-        {
-          "day": 6,
-          "title": "Santorini Discovery",
-          "activities": [
-            "Visit Oia village",
-            "Red Beach excursion",
-            "Wine tasting at local vineyard",
-            "Dinner overlooking caldera"
-          ]
-        },
-        {
-          "day": 7,
-          "title": "Santorini Leisure",
-          "activities": [
-            "Sleep in and relax",
-            "Optional: Volcano boat tour",
-            "Shopping in Fira",
-            "Farewell dinner"
-          ]
-        },
-        {
-          "day": 8,
-          "title": "Departure",
-          "activities": [
-            "Breakfast with caldera view",
-            "Ferry/flight to Athens",
-            "Transfer to airport",
             "Departure"
           ]
         }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Athens Plaka Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Athens Plaka Hotel", "meals": "Breakfast, Lunch" },
-        { "night": 3, "accommodation": "Mykonos Boutique Hotel", "meals": "Breakfast, Dinner" },
-        { "night": 4, "accommodation": "Mykonos Boutique Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Santorini Caldera Hotel", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "Santorini Caldera Hotel", "meals": "Breakfast, Dinner" },
-        { "night": 7, "accommodation": "Santorini Caldera Hotel", "meals": "Breakfast, Dinner" }
+        { "night": 1, "accommodation": "Kochi Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Munnar Resort", "meals": "Breakfast, Dinner" },
+        { "night": 3, "accommodation": "Munnar Resort", "meals": "Breakfast, Dinner" },
+        { "night": 4, "accommodation": "Alleppey Houseboat", "meals": "All Meals" },
+        { "night": 5, "accommodation": "Kovalam Beach Resort", "meals": "Breakfast, Dinner" }
       ]
     },
-    "included": ["Boutique hotels", "Inter-island ferries", "Acropolis tour", "Wine tasting", "Daily breakfast", "Airport transfers"],
-    "excluded": ["International flights", "Travel insurance", "Beach club fees", "Personal expenses"]
+    "included": ["Accommodation", "Houseboat stay", "Daily breakfast", "Sightseeing", "Airport transfers"],
+    "excluded": ["Flights", "Personal expenses", "Tips"]
   },
+
   {
-    "id": "6",
-    "title": "Safari Adventure Kenya",
-    "location": "Kenya, Africa",
-    "duration": "8 Days / 7 Nights",
-    "price": 4299,
+    "id": "102",
+    "title": "Ooty & Coonoor Hill Escape",
+    "location": "Tamil Nadu, India",
+    "duration": "4 Days / 3 Nights",
+    "price": 499,
+    "rating": 4.6,
+    "reviews": 286,
+    "image": "https://images.unsplash.com/photo-1586015555751-63c35d8d3a3c?w=800",
+    "description": "Relax in the cool climate of the Nilgiris with scenic train rides, misty hills, and colonial charm.",
+    "highlights": ["Toy train ride", "Botanical gardens", "Tea estates", "Ooty Lake"],
+    "itinerary": {
+      "days": [
+        {
+          "day": 1,
+          "title": "Arrival in Ooty",
+          "activities": [
+            "Pickup from Coimbatore",
+            "Ooty Lake visit",
+            "Botanical Garden",
+            "Evening leisure"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Coonoor Sightseeing",
+          "activities": [
+            "Toy train ride",
+            "Sim's Park",
+            "Dolphin’s Nose",
+            "Tea factory visit"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Ooty Exploration",
+          "activities": [
+            "Rose Garden",
+            "Pykara Falls",
+            "Shopping at local market"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Departure",
+          "activities": [
+            "Breakfast",
+            "Return transfer"
+          ]
+        }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Ooty Hill Resort", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Ooty Hill Resort", "meals": "Breakfast, Dinner" },
+        { "night": 3, "accommodation": "Ooty Hill Resort", "meals": "Breakfast" }
+      ]
+    },
+    "included": ["Hotel stay", "Sightseeing", "Daily breakfast", "Transfers"],
+    "excluded": ["Train tickets", "Personal expenses"]
+  },
+
+  {
+    "id": "103",
+    "title": "Kashmir Paradise Tour",
+    "location": "Kashmir, India",
+    "duration": "7 Days / 6 Nights",
+    "price": 1199,
     "rating": 4.9,
-    "reviews": 156,
-    "image": "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
-    "description": "Witness the Big Five and Great Migration in Kenya's world-famous reserves. Stay in luxury safari lodges and experience the raw beauty of African wildlife.",
-    "highlights": ["Masai Mara", "Big Five sighting", "Hot air balloon", "Maasai village", "Lake Nakuru"],
-    "itinerary": {
-      "days": [
-        {
-          "day": 1,
-          "title": "Nairobi Arrival",
-          "activities": [
-            "Arrival at Jomo Kenyatta Airport",
-            "Transfer to Nairobi hotel",
-            "Visit Giraffe Centre",
-            "Welcome dinner at Carnivore Restaurant"
-          ]
-        },
-        {
-          "day": 2,
-          "title": "To Masai Mara",
-          "activities": [
-            "Scenic drive to Masai Mara",
-            "Check-in at safari lodge",
-            "Afternoon game drive",
-            "Dinner under the stars"
-          ]
-        },
-        {
-          "day": 3,
-          "title": "Full Day Safari",
-          "activities": [
-            "Early morning game drive",
-            "Picnic breakfast in the bush",
-            "Continue wildlife viewing",
-            "Evening cultural presentation"
-          ]
-        },
-        {
-          "day": 4,
-          "title": "Balloon & Culture",
-          "activities": [
-            "Hot air balloon safari at dawn",
-            "Champagne breakfast in savanna",
-            "Visit Maasai village",
-            "Afternoon game drive"
-          ]
-        },
-        {
-          "day": 5,
-          "title": "To Lake Nakuru",
-          "activities": [
-            "Drive to Lake Nakuru",
-            "Check-in at lakeside lodge",
-            "Afternoon game drive",
-            "Flamingo and rhino spotting"
-          ]
-        },
-        {
-          "day": 6,
-          "title": "Lake Nakuru Safari",
-          "activities": [
-            "Full day at Lake Nakuru",
-            "Search for leopards",
-            "Bird watching session",
-            "Sunset at viewpoint"
-          ]
-        },
-        {
-          "day": 7,
-          "title": "Return to Nairobi",
-          "activities": [
-            "Morning game drive",
-            "Drive back to Nairobi",
-            "Visit elephant orphanage",
-            "Farewell dinner"
-          ]
-        },
-        {
-          "day": 8,
-          "title": "Departure",
-          "activities": [
-            "Breakfast at hotel",
-            "Airport transfer",
-            "Departure"
-          ]
-        }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Nairobi Serena Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Masai Mara Safari Lodge", "meals": "All Inclusive" },
-        { "night": 3, "accommodation": "Masai Mara Safari Lodge", "meals": "All Inclusive" },
-        { "night": 4, "accommodation": "Masai Mara Safari Lodge", "meals": "All Inclusive" },
-        { "night": 5, "accommodation": "Lake Nakuru Lodge", "meals": "All Inclusive" },
-        { "night": 6, "accommodation": "Lake Nakuru Lodge", "meals": "All Inclusive" },
-        { "night": 7, "accommodation": "Nairobi Serena Hotel", "meals": "Breakfast, Dinner" }
-      ]
-    },
-    "included": ["Luxury lodges", "All game drives", "Hot air balloon", "Park fees", "Full board on safari", "Airport transfers"],
-    "excluded": ["International flights", "Visa fees", "Travel insurance", "Tips for guides"]
+    "reviews": 358,
+    "image": "https://images.unsplash.com/photo-1566837945700-30057527ade0?w=800",
+    "description": "Experience heaven on earth with snow-capped mountains, lakes, gardens, and unforgettable houseboat stays.",
+    "highlights": ["Dal Lake", "Gulmarg snow", "Pahalgam valley", "Shikara ride"],
+    "included": ["Houseboat stay", "Hotels", "Daily breakfast", "Sightseeing"],
+    "excluded": ["Flights", "Snow activities charges"]
+  },
+
+  {
+    "id": "104",
+    "title": "Royal Rajasthan Heritage",
+    "location": "Rajasthan, India",
+    "duration": "8 Days / 7 Nights",
+    "price": 1099,
+    "rating": 4.7,
+    "reviews": 441,
+    "image": "https://images.unsplash.com/photo-1599661046827-dacff0c0f09c?w=800",
+    "description": "Witness royal palaces, desert safaris, forts, and vibrant culture across Jaipur, Jodhpur, and Jaisalmer.",
+    "highlights": ["Amber Fort", "Desert safari", "City Palace", "Camel ride"],
+    "included": ["Heritage hotels", "Breakfast", "Sightseeing"],
+    "excluded": ["Flights", "Personal expenses"]
+  },
+
+  {
+    "id": "105",
+    "title": "Himachal Snow Adventure",
+    "location": "Himachal Pradesh, India",
+    "duration": "6 Days / 5 Nights",
+    "price": 799,
+    "rating": 4.8,
+    "reviews": 319,
+    "image": "https://images.unsplash.com/photo-1609861517208-e5b7b4cd4b9d?w=800",
+    "description": "Enjoy snow-capped mountains, adventure sports, and scenic valleys in Manali and Solang.",
+    "highlights": ["Solang Valley", "Snow activities", "Rohtang Pass", "River rafting"],
+    "included": ["Hotel stay", "Breakfast & Dinner", "Sightseeing"],
+    "excluded": ["Adventure activity charges"]
+  },
+
+  {
+    "id": "106",
+    "title": "Goa Beach & Party Tour",
+    "location": "Goa, India",
+    "duration": "5 Days / 4 Nights",
+    "price": 699,
+    "rating": 4.7,
+    "reviews": 522,
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
+    "description": "Sun, sand, nightlife, and beaches. Goa is the perfect mix of relaxation and fun.",
+    "highlights": ["Baga Beach", "Water sports", "Cruise party", "Beach shacks"],
+    "included": ["Beach resort", "Breakfast", "Sightseeing"],
+    "excluded": ["Flights", "Water sports charges"]
   }
 ]

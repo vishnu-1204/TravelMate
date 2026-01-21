@@ -16,6 +16,8 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Packages', path: '/packages' },
+    { name: 'About', path: '/about' },
+    { name: 'contact', path: '/contact' }
   ];
 
   return (
@@ -25,7 +27,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <Plane className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-foreground">TravelWise</span>
+            <span className="text-xl font-bold text-foreground">TravelMate</span>
           </Link>
 
           {/* Desktop Navigation */}
