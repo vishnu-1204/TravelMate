@@ -88,7 +88,7 @@ const HeroSection = () => {
             <motion.p 
               variants={accentVariants}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="text-[hsl(var(--cyan-accent))] text-xl md:text-2xl mb-2"
+              className="text-[hsl(var(--cyan-accent))] text-xl md:text-2xl mb-4"
               style={{ fontFamily: "'Pacifico', cursive" }}
             >
               {slide.accent}
@@ -98,13 +98,12 @@ const HeroSection = () => {
             <motion.h1 
               variants={textVariants}
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="text-4xl md:text-6xl lg:text-7xl font-light text-white mb-6 tracking-wide"
+              className="text-4xl md:text-6xl lg:text-7xl text-white mb-6 tracking-wide"
+              style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400 }}
             >
-              <span className="border-b-2 border-[hsl(var(--cyan-accent))]">
-                {slide.title.split(',')[0]}
-              </span>
-              <span className="text-[hsl(var(--cyan-accent))]">,</span>
-              <span> {slide.title.split(',')[1]?.trim()}</span>
+              {slide.title.split(',')[0]}
+              <span className="text-[hsl(var(--cyan-accent))]">, </span>
+              {slide.title.split(',')[1]?.trim()}
             </motion.h1>
             
             {/* Quote */}
@@ -112,6 +111,7 @@ const HeroSection = () => {
               variants={textVariants}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               className="text-white/80 text-sm md:text-base max-w-xl leading-relaxed"
+              style={{ fontFamily: "'Raleway', sans-serif", fontWeight: 300 }}
             >
               {slide.quote}
             </motion.p>
