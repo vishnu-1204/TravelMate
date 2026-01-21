@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { CreditCard, User, Calendar, Lock, ArrowLeft, Check, Loader2 } from 'lucide-react';
+import { User, Calendar, Lock, ArrowLeft, Check, Loader2, Smartphone } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import packagesData from '@/data/packages.json';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 const Payment = () => {
   const { id } = useParams();
@@ -19,10 +26,7 @@ const Payment = () => {
     lastName: '',
     email: user?.email || '',
     phone: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    cardName: '',
+    upiId: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -54,15 +58,105 @@ const Payment = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const loadRazorpayScript = (): Promise<boolean> => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleUPIPayment = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
+      toast.error('Please fill in all traveler information');
+      return;
+    }
+
     setLoading(true);
 
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const scriptLoaded = await loadRazorpayScript();
+    
+    if (!scriptLoaded) {
+      toast.error('Failed to load payment gateway. Please try again.');
+      setLoading(false);
+      return;
+    }
 
-    setLoading(false);
-    setSuccess(true);
+    // Razorpay options - Replace RAZORPAY_KEY_ID with your actual key
+    const options = {
+      key: 'rzp_test_YOUR_KEY_ID', // Replace with your Razorpay Key ID
+      amount: grandTotal * 100, // Amount in paise
+      currency: 'INR',
+      name: 'TravelWonders',
+      description: `Booking for ${packageData.title}`,
+      image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=100',
+      handler: function (response: any) {
+        console.log('Payment successful:', response);
+        setSuccess(true);
+        setLoading(false);
+      },
+      prefill: {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        contact: formData.phone,
+        vpa: formData.upiId, // UPI ID prefill
+      },
+      notes: {
+        package_id: packageData.id,
+        package_title: packageData.title,
+        travelers: formData.travelers,
+      },
+      theme: {
+        color: '#0066CC',
+      },
+      modal: {
+        ondismiss: function () {
+          setLoading(false);
+          toast.info('Payment cancelled');
+        },
+      },
+      config: {
+        display: {
+          blocks: {
+            upi: {
+              name: 'Pay using UPI',
+              instruments: [
+                {
+                  method: 'upi',
+                  flows: ['qrcode', 'collect', 'intent'],
+                },
+              ],
+            },
+          },
+          sequence: ['block.upi'],
+          preferences: {
+            show_default_blocks: false,
+          },
+        },
+      },
+    };
+
+    try {
+      const razorpay = new window.Razorpay(options);
+      razorpay.on('payment.failed', function (response: any) {
+        console.error('Payment failed:', response.error);
+        toast.error(`Payment failed: ${response.error.description}`);
+        setLoading(false);
+      });
+      razorpay.open();
+    } catch (error) {
+      console.error('Razorpay error:', error);
+      toast.error('Failed to initialize payment. Please try again.');
+      setLoading(false);
+    }
   };
 
   if (success) {
@@ -110,7 +204,7 @@ const Payment = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Form */}
               <div className="lg:col-span-2 space-y-6">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleUPIPayment} className="space-y-6">
                   {/* Traveler Info */}
                   <div className="bg-card rounded-xl p-6 shadow-card">
                     <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
@@ -159,6 +253,7 @@ const Payment = () => {
                           value={formData.phone}
                           onChange={handleChange}
                           className="input-field"
+                          placeholder="+91 9876543210"
                           required
                         />
                       </div>
@@ -180,62 +275,50 @@ const Payment = () => {
                     </div>
                   </div>
 
-                  {/* Payment Info */}
+                  {/* UPI Payment */}
                   <div className="bg-card rounded-xl p-6 shadow-card">
                     <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                      <CreditCard className="h-5 w-5 text-primary" />
-                      Payment Details
+                      <Smartphone className="h-5 w-5 text-primary" />
+                      UPI Payment
                     </h2>
+                    
                     <div className="space-y-4">
                       <div>
-                        <label className="form-label">Card Number</label>
+                        <label className="form-label">UPI ID (Optional)</label>
                         <input
                           type="text"
-                          name="cardNumber"
-                          value={formData.cardNumber}
+                          name="upiId"
+                          value={formData.upiId}
                           onChange={handleChange}
                           className="input-field"
-                          placeholder="1234 5678 9012 3456"
-                          maxLength={19}
-                          required
+                          placeholder="yourname@upi"
                         />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Enter your UPI ID or leave blank to scan QR code
+                        </p>
                       </div>
-                      <div>
-                        <label className="form-label">Name on Card</label>
-                        <input
-                          type="text"
-                          name="cardName"
-                          value={formData.cardName}
-                          onChange={handleChange}
-                          className="input-field"
-                          required
+
+                      <div className="flex items-center gap-4 p-4 bg-secondary/50 rounded-lg">
+                        <img 
+                          src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" 
+                          alt="UPI" 
+                          className="h-8 w-auto"
                         />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="form-label">Expiry Date</label>
-                          <input
-                            type="text"
-                            name="expiryDate"
-                            value={formData.expiryDate}
-                            onChange={handleChange}
-                            className="input-field"
-                            placeholder="MM/YY"
-                            maxLength={5}
-                            required
+                        <div className="flex gap-2">
+                          <img 
+                            src="https://upload.wikimedia.org/wikipedia/commons/7/71/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg" 
+                            alt="Google Pay" 
+                            className="h-6 w-auto"
                           />
-                        </div>
-                        <div>
-                          <label className="form-label">CVV</label>
-                          <input
-                            type="text"
-                            name="cvv"
-                            value={formData.cvv}
-                            onChange={handleChange}
-                            className="input-field"
-                            placeholder="123"
-                            maxLength={4}
-                            required
+                          <img 
+                            src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" 
+                            alt="Paytm" 
+                            className="h-6 w-auto"
+                          />
+                          <img 
+                            src="https://upload.wikimedia.org/wikipedia/commons/f/f2/PhonePe_Logo.svg" 
+                            alt="PhonePe" 
+                            className="h-6 w-auto"
                           />
                         </div>
                       </div>
@@ -243,7 +326,7 @@ const Payment = () => {
 
                     <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
                       <Lock className="h-4 w-4" />
-                      <span>Your payment information is secure and encrypted</span>
+                      <span>Your payment is secured by Razorpay</span>
                     </div>
                   </div>
 
@@ -259,7 +342,7 @@ const Payment = () => {
                       </>
                     ) : (
                       <>
-                        Complete Booking - ${grandTotal.toLocaleString()}
+                        Pay with UPI - ₹{grandTotal.toLocaleString()}
                       </>
                     )}
                   </button>
@@ -289,15 +372,15 @@ const Payment = () => {
                       <span className="text-muted-foreground">
                         Package Price × {formData.travelers}
                       </span>
-                      <span className="text-foreground">${totalPrice.toLocaleString()}</span>
+                      <span className="text-foreground">₹{totalPrice.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Taxes & Fees</span>
-                      <span className="text-foreground">${taxes.toLocaleString()}</span>
+                      <span className="text-foreground">₹{taxes.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between font-bold text-lg pt-3 border-t border-border">
                       <span className="text-foreground">Total</span>
-                      <span className="text-primary">${grandTotal.toLocaleString()}</span>
+                      <span className="text-primary">₹{grandTotal.toLocaleString()}</span>
                     </div>
                   </div>
 
