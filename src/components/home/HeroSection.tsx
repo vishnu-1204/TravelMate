@@ -1,77 +1,115 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, MapPin, Calendar, Users } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const heroSlides = [
+  {
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920',
+    accent: 'extraordinary',
+    title: 'travel, worldclass',
+    quote: 'The real voyage of discovery consists not in seeking new landscapes, but in having new eyes.'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1920',
+    accent: 'unforgettable',
+    title: 'journeys, memories',
+    quote: 'Travel is the only thing you buy that makes you richer.'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920',
+    accent: 'breathtaking',
+    title: 'adventures, await',
+    quote: 'Life is either a daring adventure or nothing at all.'
+  }
+];
 
 const HeroSection = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  };
+
+  const slide = heroSlides[currentSlide];
+
   return (
-    <section className="hero-section relative min-h-[600px] flex items-center">
-      {/* Background Image Overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920)',
-        }}
-      >
-        <div className="absolute inset-0 bg-primary/80" />
+    <section className="relative h-screen w-full overflow-hidden">
+      {/* Background Images */}
+      {heroSlides.map((s, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+            index === currentSlide ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{ backgroundImage: `url(${s.image})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40" />
+        </div>
+      ))}
+
+      {/* Content */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+        {/* Accent Text */}
+        <p 
+          className="text-[hsl(var(--cyan-accent))] text-xl md:text-2xl mb-2 transition-opacity duration-500"
+          style={{ fontFamily: "'Pacifico', cursive" }}
+        >
+          {slide.accent}
+        </p>
+        
+        {/* Main Title */}
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white mb-6 tracking-wide">
+          <span className="border-b-2 border-[hsl(var(--cyan-accent))]">{slide.title.split(',')[0]}</span>
+          <span className="text-[hsl(var(--cyan-accent))]">,</span>
+          <span> {slide.title.split(',')[1]?.trim()}</span>
+        </h1>
+        
+        {/* Quote */}
+        <p className="text-white/80 text-sm md:text-base max-w-xl leading-relaxed">
+          {slide.quote}
+        </p>
       </div>
 
-      <div className="page-container relative z-10 py-20">
-        <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance">
-            Discover Your Next Adventure
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">
-            Explore the world's most breathtaking destinations with our carefully curated travel packages. Your dream vacation starts here.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              to="/packages"
-              className="bg-white text-primary px-8 py-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-white/90 transition-colors"
-            >
-              Explore Packages
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-            <Link
-              to="/register"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-white/10 transition-colors"
-            >
-              Join Now
-            </Link>
-          </div>
-        </div>
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-black/40 hover:bg-black/60 text-white rounded transition-colors"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-black/40 hover:bg-black/60 text-white rounded transition-colors"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
 
-        {/* Search Bar */}
-        <div className="mt-12 bg-white rounded-xl p-6 shadow-lg max-w-4xl">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="flex items-center gap-3 p-3 border border-border rounded-lg">
-              <MapPin className="h-5 w-5 text-primary" />
-              <div>
-                <p className="text-xs text-muted-foreground">Destination</p>
-                <p className="font-medium text-foreground">Where to?</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 border border-border rounded-lg">
-              <Calendar className="h-5 w-5 text-primary" />
-              <div>
-                <p className="text-xs text-muted-foreground">Date</p>
-                <p className="font-medium text-foreground">When?</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 border border-border rounded-lg">
-              <Users className="h-5 w-5 text-primary" />
-              <div>
-                <p className="text-xs text-muted-foreground">Travelers</p>
-                <p className="font-medium text-foreground">2 Adults</p>
-              </div>
-            </div>
-            <Link
-              to="/packages"
-              className="btn-primary flex items-center justify-center gap-2"
-            >
-              Search
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </div>
-        </div>
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {heroSlides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === currentSlide 
+                ? 'bg-[hsl(var(--cyan-accent))] w-6' 
+                : 'bg-white/50 hover:bg-white/70'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
     </section>
   );
