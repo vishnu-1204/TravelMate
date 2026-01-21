@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <nav className="nav-container">
-      <div className="flex items-center justify-between h-14 gap-8">
+      <div className="max-w-7xl mx-auto flex items-center justify-between h-16 gap-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[hsl(var(--cyan-accent))]" />

@@ -48,12 +48,16 @@ const HeroSection = () => {
       {heroSlides.map((s, index) => (
         <div
           key={index}
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+          className={`absolute inset-0 transition-opacity duration-1000 ${
             index === currentSlide ? 'opacity-100' : 'opacity-0'
           }`}
-          style={{ backgroundImage: `url(${s.image})` }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40" />
+          <img 
+            src={s.image} 
+            alt="Travel destination"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
         </div>
       ))}
 
