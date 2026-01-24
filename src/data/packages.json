@@ -1,6 +1,7 @@
 [
   {
     "id": "101",
+    "category": "india",
     "title": "Kerala Backwaters Bliss",
     "location": "Kerala, India",
     "duration": "6 Days / 5 Nights",
@@ -8,145 +9,14 @@
     "rating": 4.8,
     "reviews": 412,
     "image": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800",
-    "description": "Explore God's Own Country with serene backwaters, lush tea gardens, wildlife sanctuaries, and peaceful beaches. A perfect blend of nature and relaxation.",
+    "description": "Explore God's Own Country with serene backwaters, lush tea gardens, wildlife sanctuaries, and peaceful beaches.",
     "highlights": ["Houseboat stay", "Munnar tea gardens", "Kathakali show", "Spice plantation", "Ayurvedic massage"],
-    "itinerary": {
-      "days": [
-        {
-          "day": 1,
-          "title": "Arrival in Kochi",
-          "activities": [
-            "Airport pickup",
-            "Visit Fort Kochi",
-            "Chinese fishing nets",
-            "Evening cultural show"
-          ]
-        },
-        {
-          "day": 2,
-          "title": "Munnar Hill Station",
-          "activities": [
-            "Drive to Munnar",
-            "Tea garden visit",
-            "Mattupetty Dam",
-            "Scenic viewpoints"
-          ]
-        },
-        {
-          "day": 3,
-          "title": "Munnar Exploration",
-          "activities": [
-            "Eravikulam National Park",
-            "Tea factory visit",
-            "Local market shopping",
-            "Campfire evening"
-          ]
-        },
-        {
-          "day": 4,
-          "title": "Backwaters of Alleppey",
-          "activities": [
-            "Transfer to Alleppey",
-            "Houseboat check-in",
-            "Backwater cruise",
-            "Traditional Kerala meals"
-          ]
-        },
-        {
-          "day": 5,
-          "title": "Kovalam Beach",
-          "activities": [
-            "Drive to Kovalam",
-            "Beach leisure",
-            "Ayurvedic spa",
-            "Sunset views"
-          ]
-        },
-        {
-          "day": 6,
-          "title": "Departure",
-          "activities": [
-            "Breakfast",
-            "Airport transfer",
-            "Departure"
-          ]
-        }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Kochi Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Munnar Resort", "meals": "Breakfast, Dinner" },
-        { "night": 3, "accommodation": "Munnar Resort", "meals": "Breakfast, Dinner" },
-        { "night": 4, "accommodation": "Alleppey Houseboat", "meals": "All Meals" },
-        { "night": 5, "accommodation": "Kovalam Beach Resort", "meals": "Breakfast, Dinner" }
-      ]
-    },
     "included": ["Accommodation", "Houseboat stay", "Daily breakfast", "Sightseeing", "Airport transfers"],
     "excluded": ["Flights", "Personal expenses", "Tips"]
   },
-
   {
     "id": "102",
-    "title": "Ooty & Coonoor Hill Escape",
-    "location": "Tamil Nadu, India",
-    "duration": "4 Days / 3 Nights",
-    "price": 499,
-    "rating": 4.6,
-    "reviews": 286,
-    "image": "https://images.unsplash.com/photo-1586015555751-63c35d8d3a3c?w=800",
-    "description": "Relax in the cool climate of the Nilgiris with scenic train rides, misty hills, and colonial charm.",
-    "highlights": ["Toy train ride", "Botanical gardens", "Tea estates", "Ooty Lake"],
-    "itinerary": {
-      "days": [
-        {
-          "day": 1,
-          "title": "Arrival in Ooty",
-          "activities": [
-            "Pickup from Coimbatore",
-            "Ooty Lake visit",
-            "Botanical Garden",
-            "Evening leisure"
-          ]
-        },
-        {
-          "day": 2,
-          "title": "Coonoor Sightseeing",
-          "activities": [
-            "Toy train ride",
-            "Sim's Park",
-            "Dolphin’s Nose",
-            "Tea factory visit"
-          ]
-        },
-        {
-          "day": 3,
-          "title": "Ooty Exploration",
-          "activities": [
-            "Rose Garden",
-            "Pykara Falls",
-            "Shopping at local market"
-          ]
-        },
-        {
-          "day": 4,
-          "title": "Departure",
-          "activities": [
-            "Breakfast",
-            "Return transfer"
-          ]
-        }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Ooty Hill Resort", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Ooty Hill Resort", "meals": "Breakfast, Dinner" },
-        { "night": 3, "accommodation": "Ooty Hill Resort", "meals": "Breakfast" }
-      ]
-    },
-    "included": ["Hotel stay", "Sightseeing", "Daily breakfast", "Transfers"],
-    "excluded": ["Train tickets", "Personal expenses"]
-  },
-
-  {
-    "id": "103",
+    "category": "india",
     "title": "Kashmir Paradise Tour",
     "location": "Kashmir, India",
     "duration": "7 Days / 6 Nights",
@@ -159,9 +29,9 @@
     "included": ["Houseboat stay", "Hotels", "Daily breakfast", "Sightseeing"],
     "excluded": ["Flights", "Snow activities charges"]
   },
-
   {
-    "id": "104",
+    "id": "103",
+    "category": "india",
     "title": "Royal Rajasthan Heritage",
     "location": "Rajasthan, India",
     "duration": "8 Days / 7 Nights",
@@ -174,24 +44,9 @@
     "included": ["Heritage hotels", "Breakfast", "Sightseeing"],
     "excluded": ["Flights", "Personal expenses"]
   },
-
   {
-    "id": "105",
-    "title": "Himachal Snow Adventure",
-    "location": "Himachal Pradesh, India",
-    "duration": "6 Days / 5 Nights",
-    "price": 799,
-    "rating": 4.8,
-    "reviews": 319,
-    "image": "https://images.unsplash.com/photo-1609861517208-e5b7b4cd4b9d?w=800",
-    "description": "Enjoy snow-capped mountains, adventure sports, and scenic valleys in Manali and Solang.",
-    "highlights": ["Solang Valley", "Snow activities", "Rohtang Pass", "River rafting"],
-    "included": ["Hotel stay", "Breakfast & Dinner", "Sightseeing"],
-    "excluded": ["Adventure activity charges"]
-  },
-
-  {
-    "id": "106",
+    "id": "104",
+    "category": "india",
     "title": "Goa Beach & Party Tour",
     "location": "Goa, India",
     "duration": "5 Days / 4 Nights",
@@ -203,5 +58,245 @@
     "highlights": ["Baga Beach", "Water sports", "Cruise party", "Beach shacks"],
     "included": ["Beach resort", "Breakfast", "Sightseeing"],
     "excluded": ["Flights", "Water sports charges"]
+  },
+  {
+    "id": "201",
+    "category": "international",
+    "title": "Dubai Extravaganza",
+    "location": "Dubai, UAE",
+    "duration": "5 Days / 4 Nights",
+    "price": 1299,
+    "rating": 4.8,
+    "reviews": 623,
+    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800",
+    "description": "Experience the magic of Dubai with iconic landmarks, desert safari, and world-class shopping.",
+    "highlights": ["Burj Khalifa", "Desert Safari", "Dubai Mall", "Palm Jumeirah", "Dhow Cruise"],
+    "included": ["4-star hotel", "Breakfast", "Airport transfers", "City tour"],
+    "excluded": ["Flights", "Visa fees", "Personal expenses"]
+  },
+  {
+    "id": "202",
+    "category": "international",
+    "title": "Thailand Adventure",
+    "location": "Bangkok & Pattaya, Thailand",
+    "duration": "6 Days / 5 Nights",
+    "price": 999,
+    "rating": 4.6,
+    "reviews": 489,
+    "image": "https://images.unsplash.com/photo-1528181304800-259b08848526?w=800",
+    "description": "Explore vibrant Bangkok, beautiful Pattaya beaches, temples, and thrilling nightlife.",
+    "highlights": ["Grand Palace", "Coral Island", "Alcazar Show", "Floating Market", "Safari World"],
+    "included": ["Hotels", "Breakfast", "Sightseeing", "Transfers"],
+    "excluded": ["Flights", "Visa on arrival fee"]
+  },
+  {
+    "id": "203",
+    "category": "international",
+    "title": "Singapore Delight",
+    "location": "Singapore",
+    "duration": "5 Days / 4 Nights",
+    "price": 1499,
+    "rating": 4.9,
+    "reviews": 567,
+    "image": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800",
+    "description": "Discover the Lion City with its futuristic skyline, world-class attractions, and diverse cuisine.",
+    "highlights": ["Marina Bay Sands", "Sentosa Island", "Universal Studios", "Gardens by the Bay", "Night Safari"],
+    "included": ["4-star hotel", "Breakfast", "Airport transfers", "City tour"],
+    "excluded": ["Flights", "Theme park tickets"]
+  },
+  {
+    "id": "204",
+    "category": "international",
+    "title": "Bali Paradise Escape",
+    "location": "Bali, Indonesia",
+    "duration": "7 Days / 6 Nights",
+    "price": 1199,
+    "rating": 4.8,
+    "reviews": 412,
+    "image": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800",
+    "description": "Relax in tropical paradise with stunning beaches, ancient temples, and lush rice terraces.",
+    "highlights": ["Ubud Rice Terraces", "Tanah Lot Temple", "Kuta Beach", "Mount Batur", "Spa treatments"],
+    "included": ["Resort stay", "Breakfast", "Airport transfers", "Temple tours"],
+    "excluded": ["Flights", "Water sports"]
+  },
+  {
+    "id": "301",
+    "category": "honeymoon",
+    "title": "Maldives Romantic Getaway",
+    "location": "Maldives",
+    "duration": "5 Days / 4 Nights",
+    "price": 2999,
+    "rating": 4.9,
+    "reviews": 234,
+    "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800",
+    "description": "Ultimate romantic escape with overwater villas, pristine beaches, and crystal-clear waters.",
+    "highlights": ["Overwater villa", "Sunset cruise", "Couples spa", "Snorkeling", "Private dinner"],
+    "included": ["Luxury resort", "All meals", "Speedboat transfers", "Honeymoon amenities"],
+    "excluded": ["Flights", "Water activities"]
+  },
+  {
+    "id": "302",
+    "category": "honeymoon",
+    "title": "Mauritius Love Story",
+    "location": "Mauritius",
+    "duration": "6 Days / 5 Nights",
+    "price": 2499,
+    "rating": 4.8,
+    "reviews": 189,
+    "image": "https://images.unsplash.com/photo-1544550581-5f7ceaf7f992?w=800",
+    "description": "Celebrate love on this tropical island with stunning beaches, waterfalls, and romantic experiences.",
+    "highlights": ["Beach resort", "Catamaran cruise", "Ile aux Cerfs", "Chamarel", "Couples massage"],
+    "included": ["5-star resort", "Breakfast & Dinner", "Airport transfers", "Island tour"],
+    "excluded": ["Flights", "Personal expenses"]
+  },
+  {
+    "id": "303",
+    "category": "honeymoon",
+    "title": "Santorini Greek Romance",
+    "location": "Santorini, Greece",
+    "duration": "6 Days / 5 Nights",
+    "price": 3299,
+    "rating": 4.9,
+    "reviews": 267,
+    "image": "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800",
+    "description": "Experience iconic white-washed buildings, stunning sunsets, and Mediterranean charm.",
+    "highlights": ["Oia sunset", "Caldera view hotel", "Wine tasting", "Catamaran cruise", "Black sand beach"],
+    "included": ["Boutique hotel", "Breakfast", "Airport transfers", "Wine tour"],
+    "excluded": ["Flights", "Meals not mentioned"]
+  },
+  {
+    "id": "304",
+    "category": "honeymoon",
+    "title": "Swiss Alps Romance",
+    "location": "Switzerland",
+    "duration": "7 Days / 6 Nights",
+    "price": 3999,
+    "rating": 4.9,
+    "reviews": 198,
+    "image": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=800",
+    "description": "Romantic mountain escape with scenic train rides, charming villages, and breathtaking Alpine views.",
+    "highlights": ["Jungfrau", "Lake Lucerne", "Interlaken", "Chocolate factory", "Swiss rail pass"],
+    "included": ["4-star hotels", "Breakfast", "Swiss travel pass", "Guided tours"],
+    "excluded": ["Flights", "Lunches and dinners"]
+  },
+  {
+    "id": "401",
+    "category": "europe",
+    "title": "Classic Europe Tour",
+    "location": "France, Switzerland, Italy",
+    "duration": "10 Days / 9 Nights",
+    "price": 2999,
+    "rating": 4.8,
+    "reviews": 534,
+    "image": "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800",
+    "description": "Experience the best of Europe with Paris, Swiss Alps, and Italian charm in one unforgettable journey.",
+    "highlights": ["Eiffel Tower", "Swiss Alps", "Venice canals", "Rome Colosseum", "Vatican City"],
+    "included": ["3-star hotels", "Breakfast", "Coach travel", "Guided tours"],
+    "excluded": ["Flights", "Schengen visa", "Tips"]
+  },
+  {
+    "id": "402",
+    "category": "europe",
+    "title": "Romantic Paris Getaway",
+    "location": "Paris, France",
+    "duration": "5 Days / 4 Nights",
+    "price": 1799,
+    "rating": 4.7,
+    "reviews": 423,
+    "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800",
+    "description": "Fall in love with the City of Lights - iconic landmarks, world-class cuisine, and romantic ambiance.",
+    "highlights": ["Eiffel Tower", "Louvre Museum", "Seine cruise", "Montmartre", "Versailles"],
+    "included": ["Boutique hotel", "Breakfast", "Airport transfers", "City tour"],
+    "excluded": ["Flights", "Museum tickets"]
+  },
+  {
+    "id": "403",
+    "category": "europe",
+    "title": "Italian Dream",
+    "location": "Rome, Florence, Venice",
+    "duration": "8 Days / 7 Nights",
+    "price": 2499,
+    "rating": 4.8,
+    "reviews": 389,
+    "image": "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800",
+    "description": "Discover Italy's rich history, art, and cuisine from Rome to Venice.",
+    "highlights": ["Colosseum", "Vatican", "Uffizi Gallery", "Grand Canal", "Tuscany wine tour"],
+    "included": ["Hotels", "Breakfast", "Train tickets", "Guided tours"],
+    "excluded": ["Flights", "Entrance fees"]
+  },
+  {
+    "id": "404",
+    "category": "europe",
+    "title": "Nordic Wonders",
+    "location": "Norway, Sweden, Finland",
+    "duration": "9 Days / 8 Nights",
+    "price": 3499,
+    "rating": 4.9,
+    "reviews": 267,
+    "image": "https://images.unsplash.com/photo-1520769669658-f07657f5a307?w=800",
+    "description": "Experience the magic of Scandinavia with fjords, Northern Lights, and stunning landscapes.",
+    "highlights": ["Norwegian Fjords", "Northern Lights", "Stockholm Old Town", "Helsinki", "Arctic Circle"],
+    "included": ["Hotels", "Breakfast", "Scenic train", "Fjord cruise"],
+    "excluded": ["Flights", "Winter gear"]
+  },
+  {
+    "id": "501",
+    "category": "educational",
+    "title": "NASA Space Center Tour",
+    "location": "Houston, USA",
+    "duration": "5 Days / 4 Nights",
+    "price": 1999,
+    "rating": 4.9,
+    "reviews": 156,
+    "image": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800",
+    "description": "Inspire young minds with an educational journey to NASA's Johnson Space Center.",
+    "highlights": ["Space Center Houston", "Astronaut training", "Mission Control", "Saturn V rocket", "Space simulations"],
+    "included": ["Hotel", "Breakfast", "All entrance fees", "Expert guides"],
+    "excluded": ["Flights", "Meals not mentioned"]
+  },
+  {
+    "id": "502",
+    "category": "educational",
+    "title": "Historical Britain",
+    "location": "London & Oxford, UK",
+    "duration": "7 Days / 6 Nights",
+    "price": 2299,
+    "rating": 4.7,
+    "reviews": 198,
+    "image": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800",
+    "description": "Walk through centuries of history at world-renowned universities and historic landmarks.",
+    "highlights": ["Oxford University", "British Museum", "Tower of London", "Stonehenge", "Cambridge"],
+    "included": ["Hotels", "Breakfast", "University tours", "Museum passes"],
+    "excluded": ["Flights", "Personal expenses"]
+  },
+  {
+    "id": "503",
+    "category": "educational",
+    "title": "Ancient Egypt Explorer",
+    "location": "Cairo & Luxor, Egypt",
+    "duration": "8 Days / 7 Nights",
+    "price": 1899,
+    "rating": 4.8,
+    "reviews": 234,
+    "image": "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800",
+    "description": "Uncover the mysteries of ancient Egypt with pyramids, temples, and the Nile River.",
+    "highlights": ["Pyramids of Giza", "Sphinx", "Valley of Kings", "Nile cruise", "Egyptian Museum"],
+    "included": ["Hotels & Cruise", "All meals on cruise", "Expert Egyptologist", "All entrance fees"],
+    "excluded": ["Flights", "Visa fees", "Tips"]
+  },
+  {
+    "id": "504",
+    "category": "educational",
+    "title": "Wildlife Safari Academy",
+    "location": "Kenya & Tanzania",
+    "duration": "9 Days / 8 Nights",
+    "price": 2799,
+    "rating": 4.9,
+    "reviews": 145,
+    "image": "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
+    "description": "Educational wildlife adventure with expert naturalists in Africa's most iconic safari destinations.",
+    "highlights": ["Masai Mara", "Serengeti", "Big Five", "Conservation lessons", "Maasai village visit"],
+    "included": ["Safari lodges", "All meals", "Game drives", "Expert guides"],
+    "excluded": ["Flights", "Travel insurance", "Visa fees"]
   }
 ]

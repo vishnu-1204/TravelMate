@@ -6,12 +6,34 @@ import packagesData from '@/data/packages.json';
 import { jsPDF } from 'jspdf';
 import { useState } from 'react';
 
+interface PackageItinerary {
+  days: { day: number; title: string; activities: string[] }[];
+  nights: { night: number; accommodation: string; meals: string }[];
+}
+
+interface Package {
+  id: string;
+  category: string;
+  title: string;
+  location: string;
+  duration: string;
+  price: number;
+  rating: number;
+  reviews: number;
+  image: string;
+  description: string;
+  highlights: string[];
+  included: string[];
+  excluded: string[];
+  itinerary?: PackageItinerary;
+}
+
 const PackageDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'days' | 'nights'>('days');
 
-  const packageData = packagesData.find((pkg) => pkg.id === id);
+  const packageData = (packagesData as Package[]).find((pkg) => pkg.id === id);
 
   if (!packageData) {
     return (
@@ -54,59 +76,62 @@ const PackageDetails = () => {
     doc.text(descLines, 20, yPosition);
     yPosition += descLines.length * 6 + 15;
 
-    // Day Itinerary
-    doc.setFontSize(16);
-    doc.setTextColor(30, 64, 175);
-    doc.text('Day-by-Day Itinerary', 20, yPosition);
-    yPosition += 10;
+    // Day Itinerary (if available)
+    if (packageData.itinerary?.days) {
+      doc.setFontSize(16);
+      doc.setTextColor(30, 64, 175);
+      doc.text('Day-by-Day Itinerary', 20, yPosition);
+      yPosition += 10;
 
-    packageData.itinerary.days.forEach((day) => {
-      // Check if we need a new page
-      if (yPosition > 260) {
+      packageData.itinerary.days.forEach((day) => {
+        if (yPosition > 260) {
+          doc.addPage();
+          yPosition = 20;
+        }
+
+        doc.setFontSize(12);
+        doc.setTextColor(30, 64, 175);
+        doc.text(`Day ${day.day}: ${day.title}`, 20, yPosition);
+        yPosition += 8;
+
+        doc.setFontSize(10);
+        doc.setTextColor(60, 60, 60);
+        day.activities.forEach((activity) => {
+          if (yPosition > 270) {
+            doc.addPage();
+            yPosition = 20;
+          }
+          doc.text(`• ${activity}`, 25, yPosition);
+          yPosition += 6;
+        });
+        yPosition += 5;
+      });
+    }
+
+    // Night Accommodation (if available)
+    if (packageData.itinerary?.nights) {
+      if (yPosition > 200) {
         doc.addPage();
         yPosition = 20;
       }
 
-      doc.setFontSize(12);
+      yPosition += 10;
+      doc.setFontSize(16);
       doc.setTextColor(30, 64, 175);
-      doc.text(`Day ${day.day}: ${day.title}`, 20, yPosition);
-      yPosition += 8;
+      doc.text('Accommodation Details', 20, yPosition);
+      yPosition += 10;
 
-      doc.setFontSize(10);
-      doc.setTextColor(60, 60, 60);
-      day.activities.forEach((activity) => {
+      packageData.itinerary.nights.forEach((night) => {
         if (yPosition > 270) {
           doc.addPage();
           yPosition = 20;
         }
-        doc.text(`• ${activity}`, 25, yPosition);
+        doc.setFontSize(10);
+        doc.setTextColor(60, 60, 60);
+        doc.text(`Night ${night.night}: ${night.accommodation} - ${night.meals}`, 25, yPosition);
         yPosition += 6;
       });
-      yPosition += 5;
-    });
-
-    // Night Accommodation
-    if (yPosition > 200) {
-      doc.addPage();
-      yPosition = 20;
     }
-
-    yPosition += 10;
-    doc.setFontSize(16);
-    doc.setTextColor(30, 64, 175);
-    doc.text('Accommodation Details', 20, yPosition);
-    yPosition += 10;
-
-    packageData.itinerary.nights.forEach((night) => {
-      if (yPosition > 270) {
-        doc.addPage();
-        yPosition = 20;
-      }
-      doc.setFontSize(10);
-      doc.setTextColor(60, 60, 60);
-      doc.text(`Night ${night.night}: ${night.accommodation} - ${night.meals}`, 25, yPosition);
-      yPosition += 6;
-    });
 
     // Price
     yPosition += 15;
@@ -194,81 +219,83 @@ const PackageDetails = () => {
                   </div>
                 </div>
 
-                {/* Itinerary */}
-                <div className="bg-card rounded-xl p-6 shadow-card">
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold text-foreground">Itinerary</h2>
-                    <div className="flex bg-secondary rounded-lg p-1">
-                      <button
-                        onClick={() => setActiveTab('days')}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                          activeTab === 'days'
-                            ? 'bg-primary text-primary-foreground'
-                            : 'text-muted-foreground hover:text-foreground'
-                        }`}
-                      >
-                        <Sun className="h-4 w-4" />
-                        Days
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('nights')}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                          activeTab === 'nights'
-                            ? 'bg-primary text-primary-foreground'
-                            : 'text-muted-foreground hover:text-foreground'
-                        }`}
-                      >
-                        <Moon className="h-4 w-4" />
-                        Nights
-                      </button>
-                    </div>
-                  </div>
-
-                  {activeTab === 'days' ? (
-                    <div className="space-y-6">
-                      {packageData.itinerary.days.map((day) => (
-                        <div key={day.day} className="border-l-2 border-primary pl-4">
-                          <div className="flex items-center gap-3 mb-3">
-                            <span className="bg-primary text-primary-foreground text-sm font-bold px-3 py-1 rounded-full">
-                              Day {day.day}
-                            </span>
-                            <h3 className="font-semibold text-foreground">{day.title}</h3>
-                          </div>
-                          <ul className="space-y-2">
-                            {day.activities.map((activity, index) => (
-                              <li
-                                key={index}
-                                className="flex items-start gap-2 text-muted-foreground text-sm"
-                              >
-                                <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                                {activity}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {packageData.itinerary.nights.map((night) => (
-                        <div
-                          key={night.night}
-                          className="flex items-center justify-between p-4 bg-secondary/50 rounded-lg"
+                {/* Itinerary - Only show if available */}
+                {packageData.itinerary && (
+                  <div className="bg-card rounded-xl p-6 shadow-card">
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-xl font-bold text-foreground">Itinerary</h2>
+                      <div className="flex bg-secondary rounded-lg p-1">
+                        <button
+                          onClick={() => setActiveTab('days')}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                            activeTab === 'days'
+                              ? 'bg-primary text-primary-foreground'
+                              : 'text-muted-foreground hover:text-foreground'
+                          }`}
                         >
-                          <div className="flex items-center gap-4">
-                            <span className="bg-primary text-primary-foreground text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center">
-                              {night.night}
-                            </span>
-                            <div>
-                              <p className="font-medium text-foreground">{night.accommodation}</p>
-                              <p className="text-sm text-muted-foreground">{night.meals}</p>
+                          <Sun className="h-4 w-4" />
+                          Days
+                        </button>
+                        <button
+                          onClick={() => setActiveTab('nights')}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                            activeTab === 'nights'
+                              ? 'bg-primary text-primary-foreground'
+                              : 'text-muted-foreground hover:text-foreground'
+                          }`}
+                        >
+                          <Moon className="h-4 w-4" />
+                          Nights
+                        </button>
+                      </div>
+                    </div>
+
+                    {activeTab === 'days' && packageData.itinerary.days ? (
+                      <div className="space-y-6">
+                        {packageData.itinerary.days.map((day) => (
+                          <div key={day.day} className="border-l-2 border-primary pl-4">
+                            <div className="flex items-center gap-3 mb-3">
+                              <span className="bg-primary text-primary-foreground text-sm font-bold px-3 py-1 rounded-full">
+                                Day {day.day}
+                              </span>
+                              <h3 className="font-semibold text-foreground">{day.title}</h3>
+                            </div>
+                            <ul className="space-y-2">
+                              {day.activities.map((activity, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-start gap-2 text-muted-foreground text-sm"
+                                >
+                                  <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                                  {activity}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    ) : activeTab === 'nights' && packageData.itinerary.nights ? (
+                      <div className="space-y-4">
+                        {packageData.itinerary.nights.map((night) => (
+                          <div
+                            key={night.night}
+                            className="flex items-center justify-between p-4 bg-secondary/50 rounded-lg"
+                          >
+                            <div className="flex items-center gap-4">
+                              <span className="bg-primary text-primary-foreground text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center">
+                                {night.night}
+                              </span>
+                              <div>
+                                <p className="font-medium text-foreground">{night.accommodation}</p>
+                                <p className="text-sm text-muted-foreground">{night.meals}</p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                )}
 
                 {/* Included/Excluded */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
