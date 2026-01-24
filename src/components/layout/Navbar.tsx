@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut } from 'lucide-react';
+import { Menu, X, LogOut, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
-const Navbar = () => {
+function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
@@ -25,13 +25,20 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="nav-container">
+    <nav
+      className={`nav-container transition-all duration-300 ${
+        user
+          ? 'bg-gradient-to-r from-[#0f2027] via-[#203a43] to-[#2c5364] shadow-lg'
+          : ''
+      }`}
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between h-16 gap-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[hsl(var(--cyan-accent))]" />
           <span className="text-lg font-bold text-white">
-            Travel<span className="text-[hsl(var(--cyan-accent))]">Mate</span>
+            Travel
+            <span className="text-[hsl(var(--cyan-accent))]">Mate</span>
           </span>
         </Link>
 
@@ -41,28 +48,38 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className="text-white/80 hover:text-[hsl(var(--cyan-accent))] text-sm font-medium transition-colors"
+              className={`text-sm font-medium transition-colors ${
+                user
+                  ? 'text-white/90 hover:text-[hsl(var(--cyan-accent))]'
+                  : 'text-white/80 hover:text-white'
+              }`}
             >
               {link.name}
             </Link>
           ))}
         </div>
 
-        {/* Auth Buttons */}
-        <div className="hidden lg:flex items-center gap-4">
+        {/* Auth Section */}
+        <div className="hidden lg:flex items-center gap-3">
           {user ? (
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-white/70">
-                {user.email}
-              </span>
+            <>
+              {/* User Icon */}
+              <div
+                title={user.email}
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition"
+              >
+                <User className="h-4 w-4" />
+              </div>
+
+              {/* Logout */}
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-2 text-white/80 hover:text-[hsl(var(--cyan-accent))] transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/90 hover:bg-red-600 text-white text-sm font-medium transition-all"
               >
                 <LogOut className="h-4 w-4" />
                 Logout
               </button>
-            </div>
+            </>
           ) : (
             <Link
               to="/login"
@@ -90,7 +107,7 @@ const Navbar = () => {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="lg:hidden py-4 border-t border-white/10">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 px-4">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -101,17 +118,24 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+
             {user ? (
               <>
-                <span className="text-sm text-white/70">
-                  {user.email}
-                </span>
+                {/* User Icon */}
+                <div
+                  title={user.email}
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-white/20 text-white"
+                >
+                  <User className="h-5 w-5" />
+                </div>
+
+                {/* Logout */}
                 <button
                   onClick={() => {
                     handleSignOut();
                     setIsOpen(false);
                   }}
-                  className="flex items-center gap-2 text-white/80 hover:text-[hsl(var(--cyan-accent))] transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/90 hover:bg-red-600 text-white text-sm font-medium transition-all w-fit"
                 >
                   <LogOut className="h-4 w-4" />
                   Logout
