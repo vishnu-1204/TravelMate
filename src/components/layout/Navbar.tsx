@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, User } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 function Navbar() {
@@ -62,24 +62,13 @@ function Navbar() {
         {/* Auth Section */}
         <div className="hidden lg:flex items-center gap-3">
           {user ? (
-            <>
-              {/* User Icon */}
-              <div
-                title={user.email}
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition"
-              >
-                <User className="h-4 w-4" />
-              </div>
-
-              {/* Logout */}
-              <button
-                onClick={handleSignOut}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/90 hover:bg-red-600 text-white text-sm font-medium transition-all"
-              >
-                <LogOut className="h-4 w-4" />
-                Logout
-              </button>
-            </>
+            <div
+              title={user.email}
+              className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition cursor-pointer"
+              onClick={handleSignOut}
+            >
+              <User className="h-4 w-4" />
+            </div>
           ) : (
             <Link
               to="/login"
@@ -120,27 +109,16 @@ function Navbar() {
             ))}
 
             {user ? (
-              <>
-                {/* User Icon */}
-                <div
-                  title={user.email}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-white/20 text-white"
-                >
-                  <User className="h-5 w-5" />
-                </div>
-
-                {/* Logout */}
-                <button
-                  onClick={() => {
-                    handleSignOut();
-                    setIsOpen(false);
-                  }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/90 hover:bg-red-600 text-white text-sm font-medium transition-all w-fit"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </button>
-              </>
+              <div
+                title={user.email}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-white/20 text-white cursor-pointer"
+                onClick={() => {
+                  handleSignOut();
+                  setIsOpen(false);
+                }}
+              >
+                <User className="h-5 w-5" />
+              </div>
             ) : (
               <Link
                 to="/login"
@@ -155,6 +133,6 @@ function Navbar() {
       )}
     </nav>
   );
-};
+}
 
 export default Navbar;
