@@ -24,7 +24,7 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/packages" element={<Packages />} />
+        <Route path="/packages/:category" element={<Packages />} />
         <Route path="/packages/:id" element={<PackageDetails />} />
         <Route path="/payment/:id" element={<Payment />} />
         <Route path="*" element={<NotFound />} />
