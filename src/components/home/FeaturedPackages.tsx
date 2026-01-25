@@ -1,42 +1,42 @@
 import { useNavigate } from 'react-router-dom';
+import packagesData from '@/data/packages.json';
 
 const packageCategories = [
   {
     id: 'india',
     title: 'India Tour Packages',
-    tours: 4,
     image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800',
     size: 'large'
   },
   {
     id: 'international',
     title: 'International Tour Packages',
-    tours: 4,
     image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800',
     size: 'large'
   },
   {
     id: 'honeymoon',
     title: 'International Honeymoon Packages',
-    tours: 4,
     image: 'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800',
     size: 'small'
   },
   {
     id: 'europe',
     title: 'Europe Tour Packages',
-    tours: 4,
     image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800',
     size: 'small'
   },
   {
     id: 'educational',
     title: 'Educational Tour Packages',
-    tours: 4,
     image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800',
     size: 'small'
   }
 ];
+
+const getTourCount = (categoryId: string) => {
+  return packagesData.filter(pkg => pkg.category === categoryId).length;
+};
 
 const FeaturedPackages = () => {
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ const FeaturedPackages = () => {
                 <h3 className="text-white text-xl md:text-2xl font-medium mb-3">
                   {category.title}
                 </h3>
-                <p className="text-white/80 text-sm mb-3">{category.tours} Tours Available</p>
+                <p className="text-white/80 text-sm mb-3">{getTourCount(category.id)} Tours Available</p>
                 <button
                   onClick={() => handleToursClick(category.id)}
                   className="bg-[hsl(var(--cyan-accent))] text-[hsl(220,25%,12%)] px-6 py-2 rounded text-sm font-semibold hover:opacity-90 transition-opacity"
@@ -101,7 +101,7 @@ const FeaturedPackages = () => {
                 <h3 className="text-white text-lg md:text-xl font-medium mb-2">
                   {category.title}
                 </h3>
-                <p className="text-white/80 text-sm mb-3">{category.tours} Tours Available</p>
+                <p className="text-white/80 text-sm mb-3">{getTourCount(category.id)} Tours Available</p>
                 <button
                   onClick={() => handleToursClick(category.id)}
                   className="bg-[hsl(var(--cyan-accent))] text-[hsl(220,25%,12%)] px-5 py-1.5 rounded text-sm font-semibold hover:opacity-90 transition-opacity"
