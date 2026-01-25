@@ -4,15 +4,31 @@ import PackageCard from '@/components/packages/PackageCard';
 import packagesData from '@/data/packages.json';
 import { Search } from 'lucide-react';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+const categoryTitles: Record<string, string> = {
+  india: 'India Tour Packages',
+  international: 'International Tour Packages',
+  honeymoon: 'International Honeymoon Packages',
+  europe: 'Europe Tour Packages',
+  educational: 'Educational Tour Packages',
+};
 
 const Packages = () => {
+  const { category } = useParams<{ category: string }>();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredPackages = packagesData.filter(
+  const categoryPackages = packagesData.filter(
+    (pkg) => pkg.category === category
+  );
+
+  const filteredPackages = categoryPackages.filter(
     (pkg) =>
       pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       pkg.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const pageTitle = category ? categoryTitles[category] || 'Travel Packages' : 'Travel Packages';
 
   return (
     <Layout>
@@ -22,10 +38,10 @@ const Packages = () => {
           <div className="page-container">
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Travel Packages
+                {pageTitle}
               </h1>
               <p className="text-white/90 text-lg max-w-2xl mx-auto mb-8">
-                Explore our curated collection of travel packages designed to create unforgettable memories
+                Explore our curated collection of {category?.replace('-', ' ')} packages designed to create unforgettable memories
               </p>
 
               {/* Search */}
@@ -49,7 +65,10 @@ const Packages = () => {
             {filteredPackages.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground text-lg">
-                  No packages found matching "{searchTerm}"
+                  {searchTerm 
+                    ? `No packages found matching "${searchTerm}"`
+                    : `No packages available in this category`
+                  }
                 </p>
               </div>
             ) : (
