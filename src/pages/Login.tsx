@@ -36,16 +36,13 @@ const Login = () => {
     try {
       const { error } = await signIn(email, password);
       if (error) {
-        if (error.message.includes('Invalid login credentials')) {
-          setError('Invalid email or password. Please try again.');
-        } else {
-          setError(error.message);
-        }
+        // Use generic error message to prevent account enumeration
+        setError('Unable to sign in. Please check your credentials and try again.');
       } else {
         navigate('/');
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      setError('Unable to sign in. Please try again later.');
     } finally {
       setLoading(false);
     }
