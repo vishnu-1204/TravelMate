@@ -12,7 +12,24 @@
     "description": "Explore God's Own Country with serene backwaters, lush tea gardens, wildlife sanctuaries, and peaceful beaches.",
     "highlights": ["Houseboat stay", "Munnar tea gardens", "Kathakali show", "Spice plantation", "Ayurvedic massage"],
     "included": ["Accommodation", "Houseboat stay", "Daily breakfast", "Sightseeing", "Airport transfers"],
-    "excluded": ["Flights", "Personal expenses", "Tips"]
+    "excluded": ["Flights", "Personal expenses", "Tips"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival in Kochi", "activities": ["Airport pickup and transfer to hotel", "Explore Fort Kochi and Chinese fishing nets", "Evening Kathakali dance performance", "Welcome dinner at local restaurant"] },
+        { "day": 2, "title": "Kochi to Munnar", "activities": ["Scenic drive through spice plantations", "Visit Cheeyappara Waterfalls", "Check-in at Munnar hill resort", "Evening walk through tea estates"] },
+        { "day": 3, "title": "Munnar Exploration", "activities": ["Visit Tea Museum and factory", "Explore Eravikulam National Park", "Photo stop at Top Station", "Spice plantation tour with tasting"] },
+        { "day": 4, "title": "Munnar to Alleppey", "activities": ["Morning drive to Alleppey backwaters", "Board traditional Kerala houseboat", "Cruise through scenic canals", "Overnight stay on houseboat with meals"] },
+        { "day": 5, "title": "Backwaters & Beaches", "activities": ["Morning yoga on houseboat deck", "Disembark and visit Marari Beach", "Traditional Ayurvedic massage session", "Sunset beach walk"] },
+        { "day": 6, "title": "Departure", "activities": ["Breakfast at resort", "Last-minute shopping for spices", "Transfer to Kochi airport", "Departure with fond memories"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Fort Kochi Heritage Hotel", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "Munnar Hill Resort", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Munnar Hill Resort", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Traditional Houseboat", "meals": "All meals included" },
+        { "night": 5, "accommodation": "Marari Beach Resort", "meals": "Breakfast & Dinner" }
+      ]
+    }
   },
   {
     "id": "102",
@@ -27,7 +44,26 @@
     "description": "Experience heaven on earth with snow-capped mountains, lakes, gardens, and unforgettable houseboat stays.",
     "highlights": ["Dal Lake", "Gulmarg snow", "Pahalgam valley", "Shikara ride"],
     "included": ["Houseboat stay", "Hotels", "Daily breakfast", "Sightseeing"],
-    "excluded": ["Flights", "Snow activities charges"]
+    "excluded": ["Flights", "Snow activities charges"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival in Srinagar", "activities": ["Airport pickup", "Transfer to Dal Lake houseboat", "Evening Shikara ride on Dal Lake", "Traditional Kashmiri dinner"] },
+        { "day": 2, "title": "Srinagar Mughal Gardens", "activities": ["Visit Nishat Bagh garden", "Explore Shalimar Bagh", "Hazratbal Shrine visit", "Local handicraft shopping"] },
+        { "day": 3, "title": "Gulmarg Excursion", "activities": ["Drive to Gulmarg meadows", "Gondola cable car ride", "Snow activities (seasonal)", "Pony ride through pine forests"] },
+        { "day": 4, "title": "Pahalgam Valley", "activities": ["Scenic drive to Pahalgam", "Visit Betaab Valley", "Aru Valley exploration", "River-side picnic lunch"] },
+        { "day": 5, "title": "Sonmarg Day Trip", "activities": ["Drive to Sonmarg glacier", "Thajiwas Glacier trek", "Sindh River valley views", "Photography session"] },
+        { "day": 6, "title": "Srinagar Leisure", "activities": ["Morning yoga on houseboat", "Visit local markets", "Kashmiri carpet weaving demo", "Farewell dinner cruise"] },
+        { "day": 7, "title": "Departure", "activities": ["Breakfast on houseboat", "Last Shikara ride", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Deluxe Houseboat, Dal Lake", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "Deluxe Houseboat, Dal Lake", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Gulmarg Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Pahalgam Resort", "meals": "All meals" },
+        { "night": 5, "accommodation": "Deluxe Houseboat, Dal Lake", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Deluxe Houseboat, Dal Lake", "meals": "Breakfast & Dinner" }
+      ]
+    }
   },
   {
     "id": "103",
@@ -42,7 +78,28 @@
     "description": "Witness royal palaces, desert safaris, forts, and vibrant culture across Jaipur, Jodhpur, and Jaisalmer.",
     "highlights": ["Amber Fort", "Desert safari", "City Palace", "Camel ride"],
     "included": ["Heritage hotels", "Breakfast", "Sightseeing"],
-    "excluded": ["Flights", "Personal expenses"]
+    "excluded": ["Flights", "Personal expenses"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival in Jaipur", "activities": ["Airport pickup", "Check-in at heritage hotel", "Evening at Chokhi Dhani village", "Traditional Rajasthani dinner"] },
+        { "day": 2, "title": "Jaipur Exploration", "activities": ["Amber Fort elephant ride", "City Palace tour", "Jantar Mantar observatory", "Hawa Mahal photo stop"] },
+        { "day": 3, "title": "Jaipur to Jodhpur", "activities": ["Drive to Jodhpur", "Visit Mehrangarh Fort", "Explore blue city streets", "Sunset from Umaid Bhawan"] },
+        { "day": 4, "title": "Jodhpur to Jaisalmer", "activities": ["Scenic drive to Jaisalmer", "Check-in at desert camp", "Evening desert safari", "Dinner under the stars"] },
+        { "day": 5, "title": "Jaisalmer Golden City", "activities": ["Jaisalmer Fort exploration", "Patwon Ki Haveli visit", "Gadisar Lake sunset", "Folk music performance"] },
+        { "day": 6, "title": "Desert Experience", "activities": ["Sunrise camel ride", "Village safari", "Traditional lunch", "Drive back to Jodhpur"] },
+        { "day": 7, "title": "Jodhpur to Udaipur", "activities": ["Drive to Udaipur", "Ranakpur Jain Temple visit", "Check-in at lake-view hotel", "Lake Pichola boat ride"] },
+        { "day": 8, "title": "Departure from Udaipur", "activities": ["City Palace morning tour", "Local market visit", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Jaipur Heritage Hotel", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "Jaipur Heritage Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Jodhpur Haveli", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Desert Camp Jaisalmer", "meals": "All meals" },
+        { "night": 5, "accommodation": "Jaisalmer Fort Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Jodhpur Haveli", "meals": "Breakfast & Dinner" },
+        { "night": 7, "accommodation": "Udaipur Lake View Hotel", "meals": "Breakfast" }
+      ]
+    }
   },
   {
     "id": "104",
@@ -57,7 +114,22 @@
     "description": "Sun, sand, nightlife, and beaches. Goa is the perfect mix of relaxation and fun.",
     "highlights": ["Baga Beach", "Water sports", "Cruise party", "Beach shacks"],
     "included": ["Beach resort", "Breakfast", "Sightseeing"],
-    "excluded": ["Flights", "Water sports charges"]
+    "excluded": ["Flights", "Water sports charges"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival in Goa", "activities": ["Airport pickup", "Check-in at beach resort", "Relax at Calangute Beach", "Sunset at beach shack"] },
+        { "day": 2, "title": "North Goa Beaches", "activities": ["Visit Baga Beach", "Water sports adventure", "Anjuna flea market", "Night party at Tito's Lane"] },
+        { "day": 3, "title": "Heritage & Culture", "activities": ["Old Goa churches tour", "Fontainhas Latin Quarter", "Spice plantation visit", "Mandovi river cruise"] },
+        { "day": 4, "title": "South Goa Exploration", "activities": ["Palolem Beach visit", "Butterfly Beach boat trip", "Cabo de Rama Fort", "Farewell beach dinner"] },
+        { "day": 5, "title": "Departure", "activities": ["Leisure morning at resort", "Last-minute shopping", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Calangute Beach Resort", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "Calangute Beach Resort", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Calangute Beach Resort", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Calangute Beach Resort", "meals": "Breakfast & Dinner" }
+      ]
+    }
   },
   {
     "id": "201",
@@ -72,7 +144,22 @@
     "description": "Experience the magic of Dubai with iconic landmarks, desert safari, and world-class shopping.",
     "highlights": ["Burj Khalifa", "Desert Safari", "Dubai Mall", "Palm Jumeirah", "Dhow Cruise"],
     "included": ["4-star hotel", "Breakfast", "Airport transfers", "City tour"],
-    "excluded": ["Flights", "Visa fees", "Personal expenses"]
+    "excluded": ["Flights", "Visa fees", "Personal expenses"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival in Dubai", "activities": ["Airport pickup", "Hotel check-in", "Palm Jumeirah visit", "Atlantis Aquaventure optional"] },
+        { "day": 2, "title": "Dubai City Tour", "activities": ["Burj Khalifa observation deck", "Dubai Mall exploration", "Dubai Fountain show", "Souk Al Bahar dinner"] },
+        { "day": 3, "title": "Desert Safari Adventure", "activities": ["Morning at leisure", "Afternoon desert safari", "Dune bashing experience", "BBQ dinner with belly dance"] },
+        { "day": 4, "title": "Old & New Dubai", "activities": ["Gold Souk visit", "Abra ride across Dubai Creek", "Dubai Frame visit", "Dhow cruise dinner"] },
+        { "day": 5, "title": "Departure", "activities": ["Breakfast at hotel", "Last-minute shopping", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "4-Star Hotel Downtown", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "4-Star Hotel Downtown", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "4-Star Hotel Downtown", "meals": "Breakfast & BBQ Dinner" },
+        { "night": 4, "accommodation": "4-Star Hotel Downtown", "meals": "Breakfast & Cruise Dinner" }
+      ]
+    }
   },
   {
     "id": "202",
@@ -87,7 +174,24 @@
     "description": "Explore vibrant Bangkok, beautiful Pattaya beaches, temples, and thrilling nightlife.",
     "highlights": ["Grand Palace", "Coral Island", "Alcazar Show", "Floating Market", "Safari World"],
     "included": ["Hotels", "Breakfast", "Sightseeing", "Transfers"],
-    "excluded": ["Flights", "Visa on arrival fee"]
+    "excluded": ["Flights", "Visa on arrival fee"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival in Bangkok", "activities": ["Airport pickup", "Hotel check-in", "Khao San Road exploration", "Thai dinner experience"] },
+        { "day": 2, "title": "Bangkok Temples", "activities": ["Grand Palace visit", "Wat Pho reclining Buddha", "Chao Phraya river cruise", "Asiatique night market"] },
+        { "day": 3, "title": "Floating Market & Transfer", "activities": ["Damnoen Saduak Floating Market", "Local Thai cooking class", "Transfer to Pattaya", "Walking Street nightlife"] },
+        { "day": 4, "title": "Coral Island Adventure", "activities": ["Speedboat to Coral Island", "Snorkeling and water sports", "Beach relaxation", "Alcazar cabaret show"] },
+        { "day": 5, "title": "Pattaya Exploration", "activities": ["Nong Nooch Tropical Garden", "Big Buddha Hill", "Art in Paradise museum", "Farewell seafood dinner"] },
+        { "day": 6, "title": "Departure", "activities": ["Breakfast at hotel", "Transfer to Bangkok airport", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Bangkok City Hotel", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "Bangkok City Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Pattaya Beach Resort", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Pattaya Beach Resort", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Pattaya Beach Resort", "meals": "Breakfast & Dinner" }
+      ]
+    }
   },
   {
     "id": "203",
@@ -102,7 +206,22 @@
     "description": "Discover the Lion City with its futuristic skyline, world-class attractions, and diverse cuisine.",
     "highlights": ["Marina Bay Sands", "Sentosa Island", "Universal Studios", "Gardens by the Bay", "Night Safari"],
     "included": ["4-star hotel", "Breakfast", "Airport transfers", "City tour"],
-    "excluded": ["Flights", "Theme park tickets"]
+    "excluded": ["Flights", "Theme park tickets"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival in Singapore", "activities": ["Changi Airport arrival", "Hotel check-in at Marina Bay", "Merlion Park visit", "Clarke Quay dinner"] },
+        { "day": 2, "title": "City Highlights", "activities": ["Gardens by the Bay", "Cloud Forest and Flower Dome", "Marina Bay Sands SkyPark", "Light and Water Show"] },
+        { "day": 3, "title": "Sentosa Island", "activities": ["Universal Studios Singapore", "S.E.A. Aquarium visit", "Madame Tussauds", "Wings of Time show"] },
+        { "day": 4, "title": "Culture & Wildlife", "activities": ["Chinatown exploration", "Little India walking tour", "Night Safari adventure", "Farewell dinner at Lau Pa Sat"] },
+        { "day": 5, "title": "Departure", "activities": ["Orchard Road shopping", "Jewel Changi exploration", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Marina Bay Hotel", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Marina Bay Hotel", "meals": "Breakfast & Dinner" }
+      ]
+    }
   },
   {
     "id": "204",
@@ -117,7 +236,26 @@
     "description": "Relax in tropical paradise with stunning beaches, ancient temples, and lush rice terraces.",
     "highlights": ["Ubud Rice Terraces", "Tanah Lot Temple", "Kuta Beach", "Mount Batur", "Spa treatments"],
     "included": ["Resort stay", "Breakfast", "Airport transfers", "Temple tours"],
-    "excluded": ["Flights", "Water sports"]
+    "excluded": ["Flights", "Water sports"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival in Bali", "activities": ["Ngurah Rai Airport pickup", "Resort check-in in Seminyak", "Beach sunset walk", "Welcome dinner"] },
+        { "day": 2, "title": "South Bali Temples", "activities": ["Uluwatu Temple morning visit", "Kecak fire dance show", "Jimbaran Bay seafood dinner", "Beach bonfire"] },
+        { "day": 3, "title": "Ubud Cultural Day", "activities": ["Tegallalang Rice Terraces", "Ubud Monkey Forest", "Traditional art market", "Balinese spa treatment"] },
+        { "day": 4, "title": "Mount Batur Sunrise", "activities": ["Early morning volcano trek", "Sunrise at Mount Batur crater", "Hot springs relaxation", "Coffee plantation visit"] },
+        { "day": 5, "title": "Tanah Lot & Beaches", "activities": ["Tanah Lot Temple sunset", "Canggu beach surfing", "Beach club experience", "Sunset cocktails"] },
+        { "day": 6, "title": "Island Hopping", "activities": ["Nusa Penida day trip", "Kelingking Beach visit", "Snorkeling with mantas", "Crystal Bay sunset"] },
+        { "day": 7, "title": "Departure", "activities": ["Leisurely breakfast", "Last-minute shopping", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Seminyak Beach Resort", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "Seminyak Beach Resort", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Ubud Forest Villa", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Ubud Forest Villa", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Seminyak Beach Resort", "meals": "Breakfast" },
+        { "night": 6, "accommodation": "Seminyak Beach Resort", "meals": "Breakfast" }
+      ]
+    }
   },
   {
     "id": "301",
@@ -132,7 +270,22 @@
     "description": "Ultimate romantic escape with overwater villas, pristine beaches, and crystal-clear waters.",
     "highlights": ["Overwater villa", "Sunset cruise", "Couples spa", "Snorkeling", "Private dinner"],
     "included": ["Luxury resort", "All meals", "Speedboat transfers", "Honeymoon amenities"],
-    "excluded": ["Flights", "Water activities"]
+    "excluded": ["Flights", "Water activities"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Paradise Arrival", "activities": ["Malé airport greeting", "Scenic speedboat transfer", "Overwater villa check-in", "Champagne welcome", "Private sunset dinner on beach"] },
+        { "day": 2, "title": "Romance on Water", "activities": ["Floating breakfast in villa", "Couples spa treatment", "Snorkeling at house reef", "Sunset dolphin cruise"] },
+        { "day": 3, "title": "Island Exploration", "activities": ["Local island visit", "Traditional Maldivian cooking class", "Underwater restaurant lunch", "Stargazing on sandbank"] },
+        { "day": 4, "title": "Adventure & Relaxation", "activities": ["Sunrise yoga session", "Jet ski adventure", "Private picnic on deserted island", "Romantic candlelit dinner"] },
+        { "day": 5, "title": "Farewell Paradise", "activities": ["Final floating breakfast", "Beach photoshoot", "Speedboat transfer", "Departure from Malé"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Overwater Villa", "meals": "All inclusive" },
+        { "night": 2, "accommodation": "Overwater Villa", "meals": "All inclusive" },
+        { "night": 3, "accommodation": "Overwater Villa", "meals": "All inclusive" },
+        { "night": 4, "accommodation": "Overwater Villa", "meals": "All inclusive" }
+      ]
+    }
   },
   {
     "id": "302",
@@ -147,7 +300,24 @@
     "description": "Celebrate love on this tropical island with stunning beaches, waterfalls, and romantic experiences.",
     "highlights": ["Beach resort", "Catamaran cruise", "Ile aux Cerfs", "Chamarel", "Couples massage"],
     "included": ["5-star resort", "Breakfast & Dinner", "Airport transfers", "Island tour"],
-    "excluded": ["Flights", "Personal expenses"]
+    "excluded": ["Flights", "Personal expenses"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Island Welcome", "activities": ["Airport arrival", "Resort check-in", "Beach walk at sunset", "Romantic dinner for two"] },
+        { "day": 2, "title": "North Island Tour", "activities": ["Grand Baie shopping", "Cap Malheureux church", "Pamplemousses Botanical Garden", "Sunset cocktails"] },
+        { "day": 3, "title": "Ile aux Cerfs", "activities": ["Catamaran cruise", "Ile aux Cerfs beach day", "Snorkeling adventure", "BBQ lunch on boat"] },
+        { "day": 4, "title": "South Island Beauty", "activities": ["Chamarel seven-colored earth", "Alexandra Falls", "Grand Bassin temple", "Rum distillery tasting"] },
+        { "day": 5, "title": "Spa & Relaxation", "activities": ["Couples spa day", "Private beach cabana", "Underwater sea walk", "Candlelit beach dinner"] },
+        { "day": 6, "title": "Departure", "activities": ["Leisurely breakfast", "Beach time", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "5-Star Beach Resort", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "5-Star Beach Resort", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "5-Star Beach Resort", "meals": "Breakfast & BBQ Lunch" },
+        { "night": 4, "accommodation": "5-Star Beach Resort", "meals": "Breakfast & Dinner" },
+        { "night": 5, "accommodation": "5-Star Beach Resort", "meals": "Breakfast & Dinner" }
+      ]
+    }
   },
   {
     "id": "303",
@@ -162,7 +332,24 @@
     "description": "Experience iconic white-washed buildings, stunning sunsets, and Mediterranean charm.",
     "highlights": ["Oia sunset", "Caldera view hotel", "Wine tasting", "Catamaran cruise", "Black sand beach"],
     "included": ["Boutique hotel", "Breakfast", "Airport transfers", "Wine tour"],
-    "excluded": ["Flights", "Meals not mentioned"]
+    "excluded": ["Flights", "Meals not mentioned"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival in Santorini", "activities": ["Airport pickup", "Cave hotel check-in Oia", "Village exploration", "Famous Oia sunset viewing"] },
+        { "day": 2, "title": "Caldera Cruise", "activities": ["Catamaran sailing trip", "Hot springs swim", "Red and White beaches", "Sunset dinner on boat"] },
+        { "day": 3, "title": "Wine & Culture", "activities": ["Santo Wines tasting", "Akrotiri archaeological site", "Black sand beach", "Traditional taverna dinner"] },
+        { "day": 4, "title": "Fira Exploration", "activities": ["Fira town walking tour", "Cable car to old port", "Donkey path adventure", "Rooftop dining with views"] },
+        { "day": 5, "title": "Romantic Day", "activities": ["Private caldera photoshoot", "Couples massage", "Sunset horseback riding", "Fine dining experience"] },
+        { "day": 6, "title": "Departure", "activities": ["Breakfast with caldera view", "Last-minute shopping", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Oia Cave Hotel", "meals": "Welcome dinner" },
+        { "night": 2, "accommodation": "Oia Cave Hotel", "meals": "Breakfast & Cruise dinner" },
+        { "night": 3, "accommodation": "Oia Cave Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Oia Cave Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 5, "accommodation": "Oia Cave Hotel", "meals": "Breakfast & Fine dining" }
+      ]
+    }
   },
   {
     "id": "304",
@@ -177,7 +364,26 @@
     "description": "Romantic mountain escape with scenic train rides, charming villages, and breathtaking Alpine views.",
     "highlights": ["Jungfrau", "Lake Lucerne", "Interlaken", "Chocolate factory", "Swiss rail pass"],
     "included": ["4-star hotels", "Breakfast", "Swiss travel pass", "Guided tours"],
-    "excluded": ["Flights", "Lunches and dinners"]
+    "excluded": ["Flights", "Lunches and dinners"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Zurich Arrival", "activities": ["Airport arrival", "Old town walking tour", "Lake Zurich cruise", "Swiss fondue dinner"] },
+        { "day": 2, "title": "Lucerne Romance", "activities": ["Train to Lucerne", "Chapel Bridge visit", "Mount Pilatus cable car", "Lakeside dinner"] },
+        { "day": 3, "title": "Interlaken Adventure", "activities": ["Scenic train to Interlaken", "Lake Thun boat ride", "Paragliding optional", "Harderkulm sunset"] },
+        { "day": 4, "title": "Jungfrau Summit", "activities": ["Train to Jungfraujoch", "Top of Europe experience", "Ice Palace visit", "Grindelwald village stroll"] },
+        { "day": 5, "title": "Chocolate & Cheese", "activities": ["Chocolate factory tour", "Cheese dairy visit", "Gruyères castle", "Traditional Swiss dinner"] },
+        { "day": 6, "title": "Zermatt & Matterhorn", "activities": ["Glacier Express journey", "Gornergrat viewpoint", "Matterhorn photo session", "Farewell dinner"] },
+        { "day": 7, "title": "Departure", "activities": ["Scenic train to Zurich", "Last shopping", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Zurich City Hotel", "meals": "Dinner included" },
+        { "night": 2, "accommodation": "Lucerne Lakeside Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Interlaken Alpine Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Interlaken Alpine Hotel", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Grindelwald Chalet", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Zermatt Mountain Lodge", "meals": "Breakfast & Dinner" }
+      ]
+    }
   },
   {
     "id": "401",
@@ -192,7 +398,32 @@
     "description": "Experience the best of Europe with Paris, Swiss Alps, and Italian charm in one unforgettable journey.",
     "highlights": ["Eiffel Tower", "Swiss Alps", "Venice canals", "Rome Colosseum", "Vatican City"],
     "included": ["3-star hotels", "Breakfast", "Coach travel", "Guided tours"],
-    "excluded": ["Flights", "Schengen visa", "Tips"]
+    "excluded": ["Flights", "Schengen visa", "Tips"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Paris Arrival", "activities": ["Airport pickup", "Hotel check-in", "Evening Seine river cruise", "Eiffel Tower sparkling lights"] },
+        { "day": 2, "title": "Paris Highlights", "activities": ["Louvre Museum tour", "Notre-Dame area walk", "Montmartre and Sacré-Cœur", "Moulin Rouge optional"] },
+        { "day": 3, "title": "Paris to Geneva", "activities": ["TGV to Geneva", "Lake Geneva walk", "Jet d'Eau fountain", "Old town exploration"] },
+        { "day": 4, "title": "Swiss Alps", "activities": ["Mount Titlis excursion", "Cliff walk experience", "Ice Flyer chairlift", "Lucerne evening stroll"] },
+        { "day": 5, "title": "Lucerne to Milan", "activities": ["Scenic coach journey", "Milan Duomo visit", "Galleria Vittorio Emanuele", "Italian dinner"] },
+        { "day": 6, "title": "Venice Day", "activities": ["Train to Venice", "St. Mark's Square", "Gondola ride", "Rialto Bridge sunset"] },
+        { "day": 7, "title": "Venice to Florence", "activities": ["Morning in Venice", "Train to Florence", "Ponte Vecchio walk", "Tuscan dinner"] },
+        { "day": 8, "title": "Florence Art Day", "activities": ["Uffizi Gallery tour", "Michelangelo's David", "Leather market shopping", "Piazzale Michelangelo sunset"] },
+        { "day": 9, "title": "Rome Discovery", "activities": ["Train to Rome", "Colosseum tour", "Roman Forum walk", "Trevi Fountain night visit"] },
+        { "day": 10, "title": "Vatican & Departure", "activities": ["Vatican City tour", "St. Peter's Basilica", "Sistine Chapel", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Paris City Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Paris City Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Geneva Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Lucerne Hotel", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Milan Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Venice Hotel", "meals": "Breakfast" },
+        { "night": 7, "accommodation": "Florence Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 8, "accommodation": "Florence Hotel", "meals": "Breakfast" },
+        { "night": 9, "accommodation": "Rome Hotel", "meals": "Breakfast" }
+      ]
+    }
   },
   {
     "id": "402",
@@ -207,7 +438,22 @@
     "description": "Fall in love with the City of Lights - iconic landmarks, world-class cuisine, and romantic ambiance.",
     "highlights": ["Eiffel Tower", "Louvre Museum", "Seine cruise", "Montmartre", "Versailles"],
     "included": ["Boutique hotel", "Breakfast", "Airport transfers", "City tour"],
-    "excluded": ["Flights", "Museum tickets"]
+    "excluded": ["Flights", "Museum tickets"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Bonjour Paris", "activities": ["Airport arrival", "Check-in near Champs-Élysées", "Arc de Triomphe visit", "Evening Eiffel Tower with champagne"] },
+        { "day": 2, "title": "Art & History", "activities": ["Louvre Museum morning", "Tuileries Garden walk", "Notre-Dame area exploration", "Seine river cruise at sunset"] },
+        { "day": 3, "title": "Versailles Day", "activities": ["Palace of Versailles tour", "Hall of Mirrors", "Gardens exploration", "Marie Antoinette's estate"] },
+        { "day": 4, "title": "Montmartre & More", "activities": ["Sacré-Cœur Basilica", "Artist square Place du Tertre", "Moulin Rouge photo", "Le Marais shopping", "Farewell dinner"] },
+        { "day": 5, "title": "Au Revoir", "activities": ["Breakfast at café", "Last-minute shopping", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Paris Boutique Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Paris Boutique Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Paris Boutique Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Paris Boutique Hotel", "meals": "Breakfast & Dinner" }
+      ]
+    }
   },
   {
     "id": "403",
@@ -222,7 +468,28 @@
     "description": "Discover Italy's rich history, art, and cuisine from Rome to Venice.",
     "highlights": ["Colosseum", "Vatican", "Uffizi Gallery", "Grand Canal", "Tuscany wine tour"],
     "included": ["Hotels", "Breakfast", "Train tickets", "Guided tours"],
-    "excluded": ["Flights", "Entrance fees"]
+    "excluded": ["Flights", "Entrance fees"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Rome Arrival", "activities": ["Airport pickup", "Hotel check-in near Pantheon", "Evening walk to Trevi Fountain", "Traditional Roman dinner"] },
+        { "day": 2, "title": "Ancient Rome", "activities": ["Colosseum guided tour", "Roman Forum exploration", "Palatine Hill views", "Trastevere dinner"] },
+        { "day": 3, "title": "Vatican City", "activities": ["Vatican Museums", "Sistine Chapel", "St. Peter's Basilica", "Castel Sant'Angelo"] },
+        { "day": 4, "title": "Rome to Florence", "activities": ["High-speed train to Florence", "Duomo climb", "Ponte Vecchio walk", "Gelato tasting tour"] },
+        { "day": 5, "title": "Tuscan Wine Tour", "activities": ["Chianti wine region", "Vineyard visits", "Wine and cheese tasting", "Tuscan countryside views"] },
+        { "day": 6, "title": "Florence Art", "activities": ["Uffizi Gallery morning", "Accademia and David", "San Lorenzo market", "Piazzale Michelangelo sunset"] },
+        { "day": 7, "title": "Venice Magic", "activities": ["Train to Venice", "Water taxi to hotel", "St. Mark's Square", "Gondola ride at sunset"] },
+        { "day": 8, "title": "Venice Departure", "activities": ["Rialto Market morning", "Last canal walk", "Water taxi to airport", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Rome Centro Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Rome Centro Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Rome Centro Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Florence Hotel", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Florence Hotel", "meals": "Breakfast & Wine lunch" },
+        { "night": 6, "accommodation": "Florence Hotel", "meals": "Breakfast" },
+        { "night": 7, "accommodation": "Venice Canal Hotel", "meals": "Breakfast" }
+      ]
+    }
   },
   {
     "id": "404",
@@ -237,7 +504,30 @@
     "description": "Experience the magic of Scandinavia with fjords, Northern Lights, and stunning landscapes.",
     "highlights": ["Norwegian Fjords", "Northern Lights", "Stockholm Old Town", "Helsinki", "Arctic Circle"],
     "included": ["Hotels", "Breakfast", "Scenic train", "Fjord cruise"],
-    "excluded": ["Flights", "Winter gear"]
+    "excluded": ["Flights", "Winter gear"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Oslo Arrival", "activities": ["Airport arrival", "Oslo opera house", "Vigeland Sculpture Park", "Karl Johans Gate walk"] },
+        { "day": 2, "title": "Oslo to Bergen", "activities": ["Norway in a Nutshell journey", "Flåm Railway scenic ride", "Aurlandsfjord cruise", "Bergen check-in"] },
+        { "day": 3, "title": "Bergen Exploration", "activities": ["Bryggen Hanseatic wharf", "Fish market visit", "Fløibanen funicular", "Bergen evening walk"] },
+        { "day": 4, "title": "Flight to Tromsø", "activities": ["Morning flight north", "Arctic Cathedral visit", "Cable car to Storsteinen", "Northern Lights hunt"] },
+        { "day": 5, "title": "Arctic Adventures", "activities": ["Husky sledding experience", "Sami cultural visit", "Reindeer feeding", "Northern Lights chase"] },
+        { "day": 6, "title": "Stockholm Arrival", "activities": ["Flight to Stockholm", "Gamla Stan old town", "Royal Palace visit", "ABBA Museum optional"] },
+        { "day": 7, "title": "Stockholm Islands", "activities": ["Djurgården island", "Vasa Museum", "Skansen open-air museum", "Stockholm archipelago cruise"] },
+        { "day": 8, "title": "Helsinki Day", "activities": ["Ferry to Helsinki", "Senate Square", "Rock Church visit", "Design District walk"] },
+        { "day": 9, "title": "Departure", "activities": ["Suomenlinna fortress", "Market Square", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Oslo City Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Bergen Harbour Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Bergen Harbour Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Tromsø Arctic Hotel", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Tromsø Arctic Hotel", "meals": "Breakfast & Lunch" },
+        { "night": 6, "accommodation": "Stockholm Hotel", "meals": "Breakfast" },
+        { "night": 7, "accommodation": "Stockholm Hotel", "meals": "Breakfast" },
+        { "night": 8, "accommodation": "Helsinki Hotel", "meals": "Breakfast" }
+      ]
+    }
   },
   {
     "id": "501",
@@ -252,7 +542,22 @@
     "description": "Inspire young minds with an educational journey to NASA's Johnson Space Center.",
     "highlights": ["Space Center Houston", "Astronaut training", "Mission Control", "Saturn V rocket", "Space simulations"],
     "included": ["Hotel", "Breakfast", "All entrance fees", "Expert guides"],
-    "excluded": ["Flights", "Meals not mentioned"]
+    "excluded": ["Flights", "Meals not mentioned"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Houston Arrival", "activities": ["Airport pickup", "Hotel check-in", "Houston downtown tour", "Welcome dinner"] },
+        { "day": 2, "title": "Space Center Day 1", "activities": ["Space Center Houston arrival", "Saturn V rocket complex", "Mission Control tour", "Astronaut gallery"] },
+        { "day": 3, "title": "Space Center Day 2", "activities": ["Astronaut training simulators", "Zero gravity experience", "Independence Plaza", "Space food tasting"] },
+        { "day": 4, "title": "Science & Discovery", "activities": ["Houston Museum of Natural Science", "Planetarium show", "Cockrell Butterfly Center", "Farewell space dinner"] },
+        { "day": 5, "title": "Departure", "activities": ["Breakfast at hotel", "Souvenir shopping", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Houston Downtown Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Houston Downtown Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Houston Downtown Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Houston Downtown Hotel", "meals": "Breakfast & Dinner" }
+      ]
+    }
   },
   {
     "id": "502",
@@ -267,7 +572,26 @@
     "description": "Walk through centuries of history at world-renowned universities and historic landmarks.",
     "highlights": ["Oxford University", "British Museum", "Tower of London", "Stonehenge", "Cambridge"],
     "included": ["Hotels", "Breakfast", "University tours", "Museum passes"],
-    "excluded": ["Flights", "Personal expenses"]
+    "excluded": ["Flights", "Personal expenses"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "London Arrival", "activities": ["Heathrow arrival", "Hotel check-in", "Westminster walking tour", "Big Ben and Parliament"] },
+        { "day": 2, "title": "London Museums", "activities": ["British Museum guided tour", "Natural History Museum", "Science Museum exploration", "Thames evening cruise"] },
+        { "day": 3, "title": "Royal London", "activities": ["Tower of London tour", "Crown Jewels viewing", "Tower Bridge experience", "Shakespeare's Globe theatre"] },
+        { "day": 4, "title": "Oxford Day", "activities": ["Train to Oxford", "Bodleian Library tour", "Christ Church College", "Harry Potter filming locations"] },
+        { "day": 5, "title": "Cambridge Visit", "activities": ["Train to Cambridge", "King's College Chapel", "Punting on River Cam", "Trinity College grounds"] },
+        { "day": 6, "title": "Stonehenge & Bath", "activities": ["Coach to Stonehenge", "Stone circle tour", "Bath Roman baths", "Georgian architecture walk"] },
+        { "day": 7, "title": "Departure", "activities": ["British breakfast", "Last London shopping", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "London Central Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "London Central Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "London Central Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Oxford Inn", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Cambridge Hotel", "meals": "Breakfast" },
+        { "night": 6, "accommodation": "London Central Hotel", "meals": "Breakfast" }
+      ]
+    }
   },
   {
     "id": "503",
@@ -282,7 +606,28 @@
     "description": "Uncover the mysteries of ancient Egypt with pyramids, temples, and the Nile River.",
     "highlights": ["Pyramids of Giza", "Sphinx", "Valley of Kings", "Nile cruise", "Egyptian Museum"],
     "included": ["Hotels & Cruise", "All meals on cruise", "Expert Egyptologist", "All entrance fees"],
-    "excluded": ["Flights", "Visa fees", "Tips"]
+    "excluded": ["Flights", "Visa fees", "Tips"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Cairo Arrival", "activities": ["Airport welcome", "Hotel check-in", "Khan El Khalili bazaar", "Egyptian dinner"] },
+        { "day": 2, "title": "Pyramids Day", "activities": ["Giza Pyramids complex", "Sphinx photo session", "Solar boat museum", "Sound and Light show"] },
+        { "day": 3, "title": "Cairo Museums", "activities": ["Egyptian Museum treasures", "Tutankhamun artifacts", "Citadel of Saladin", "Mohamed Ali Mosque"] },
+        { "day": 4, "title": "Fly to Luxor", "activities": ["Flight to Luxor", "Nile cruise embarkation", "Karnak Temple tour", "Luxor Temple at night"] },
+        { "day": 5, "title": "Valley of Kings", "activities": ["West Bank tour", "Valley of the Kings", "Hatshepsut Temple", "Colossi of Memnon"] },
+        { "day": 6, "title": "Nile Sailing", "activities": ["Edfu Temple visit", "Kom Ombo Temple", "Nile sailing and scenery", "Traditional Nubian show"] },
+        { "day": 7, "title": "Aswan", "activities": ["Aswan High Dam", "Philae Temple by boat", "Nubian village visit", "Felucca sunset ride"] },
+        { "day": 8, "title": "Departure", "activities": ["Breakfast on cruise", "Flight to Cairo", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Cairo 5-Star Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Cairo 5-Star Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Cairo 5-Star Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Nile Cruise Ship", "meals": "All inclusive" },
+        { "night": 5, "accommodation": "Nile Cruise Ship", "meals": "All inclusive" },
+        { "night": 6, "accommodation": "Nile Cruise Ship", "meals": "All inclusive" },
+        { "night": 7, "accommodation": "Nile Cruise Ship", "meals": "All inclusive" }
+      ]
+    }
   },
   {
     "id": "504",
@@ -297,6 +642,29 @@
     "description": "Educational wildlife adventure with expert naturalists in Africa's most iconic safari destinations.",
     "highlights": ["Masai Mara", "Serengeti", "Big Five", "Conservation lessons", "Maasai village visit"],
     "included": ["Safari lodges", "All meals", "Game drives", "Expert guides"],
-    "excluded": ["Flights", "Travel insurance", "Visa fees"]
+    "excluded": ["Flights", "Travel insurance", "Visa fees"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Nairobi Arrival", "activities": ["Airport welcome", "Safari briefing", "Giraffe Centre visit", "Karen Blixen Museum"] },
+        { "day": 2, "title": "Amboseli National Park", "activities": ["Drive to Amboseli", "Kilimanjaro backdrop views", "Elephant observation", "Conservation talk"] },
+        { "day": 3, "title": "Amboseli Safari", "activities": ["Sunrise game drive", "Bird watching session", "Maasai village cultural visit", "Wildlife photography lesson"] },
+        { "day": 4, "title": "Lake Nakuru", "activities": ["Drive to Lake Nakuru", "Flamingo observation", "Rhino tracking", "Lake ecosystem lecture"] },
+        { "day": 5, "title": "Masai Mara Transfer", "activities": ["Scenic drive to Mara", "Great Rift Valley viewpoint", "Lodge check-in", "Evening game drive"] },
+        { "day": 6, "title": "Masai Mara Safari", "activities": ["Full day game drive", "Big Five search", "Mara River crossing", "Bush lunch experience"] },
+        { "day": 7, "title": "Mara to Serengeti", "activities": ["Border crossing to Tanzania", "Serengeti National Park", "Endless plains exploration", "Campfire dinner"] },
+        { "day": 8, "title": "Serengeti Safari", "activities": ["Sunrise hot air balloon optional", "Full day game drive", "Predator observation", "Star gazing session"] },
+        { "day": 9, "title": "Departure", "activities": ["Final safari drive", "Flight to Nairobi/Arusha", "Airport transfer", "Departure"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Nairobi Safari Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Amboseli Lodge", "meals": "All meals" },
+        { "night": 3, "accommodation": "Amboseli Lodge", "meals": "All meals" },
+        { "night": 4, "accommodation": "Lake Nakuru Lodge", "meals": "All meals" },
+        { "night": 5, "accommodation": "Masai Mara Camp", "meals": "All meals" },
+        { "night": 6, "accommodation": "Masai Mara Camp", "meals": "All meals" },
+        { "night": 7, "accommodation": "Serengeti Lodge", "meals": "All meals" },
+        { "night": 8, "accommodation": "Serengeti Lodge", "meals": "All meals" }
+      ]
+    }
   }
 ]
