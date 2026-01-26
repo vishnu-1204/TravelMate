@@ -1,10 +1,10 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Star, MapPin, Clock, Check, X, Download, Sun, Moon, ArrowLeft } from 'lucide-react';
+import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Plane, Hotel, Utensils, Camera } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import packagesData from '@/data/packages.json';
 import { jsPDF } from 'jspdf';
-import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface PackageItinerary {
   days: { day: number; title: string; activities: string[] }[];
@@ -31,7 +31,6 @@ interface Package {
 const PackageDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'days' | 'nights'>('days');
 
   const packageData = (packagesData as Package[]).find((pkg) => pkg.id === id);
 
@@ -57,26 +56,22 @@ const PackageDetails = () => {
     const pageWidth = doc.internal.pageSize.getWidth();
     let yPosition = 20;
 
-    // Title
     doc.setFontSize(24);
     doc.setTextColor(30, 64, 175);
     doc.text(packageData.title, pageWidth / 2, yPosition, { align: 'center' });
     yPosition += 15;
 
-    // Subtitle
     doc.setFontSize(12);
     doc.setTextColor(100, 100, 100);
     doc.text(`${packageData.location} | ${packageData.duration}`, pageWidth / 2, yPosition, { align: 'center' });
     yPosition += 20;
 
-    // Description
     doc.setFontSize(10);
     doc.setTextColor(60, 60, 60);
     const descLines = doc.splitTextToSize(packageData.description, pageWidth - 40);
     doc.text(descLines, 20, yPosition);
     yPosition += descLines.length * 6 + 15;
 
-    // Day Itinerary (if available)
     if (packageData.itinerary?.days) {
       doc.setFontSize(16);
       doc.setTextColor(30, 64, 175);
@@ -108,7 +103,6 @@ const PackageDetails = () => {
       });
     }
 
-    // Night Accommodation (if available)
     if (packageData.itinerary?.nights) {
       if (yPosition > 200) {
         doc.addPage();
@@ -133,13 +127,11 @@ const PackageDetails = () => {
       });
     }
 
-    // Price
     yPosition += 15;
     doc.setFontSize(14);
     doc.setTextColor(30, 64, 175);
     doc.text(`Price: $${packageData.price} per person`, 20, yPosition);
 
-    // Footer
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
     doc.text('TravelWise - Your Trusted Travel Partner', pageWidth / 2, 285, { align: 'center' });
@@ -157,7 +149,7 @@ const PackageDetails = () => {
             alt={packageData.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
             <div className="page-container">
               <button
@@ -172,7 +164,7 @@ const PackageDetails = () => {
                 <span className="font-medium">{packageData.rating}</span>
                 <span className="text-white/80">({packageData.reviews} reviews)</span>
               </div>
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-3">
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-3 font-serif">
                 {packageData.title}
               </h1>
               <div className="flex flex-wrap items-center gap-4 text-white/90">
@@ -219,81 +211,95 @@ const PackageDetails = () => {
                   </div>
                 </div>
 
-                {/* Itinerary - Only show if available */}
+                {/* Day-by-Day Itinerary */}
                 {packageData.itinerary && (
                   <div className="bg-card rounded-xl p-6 shadow-card">
-                    <div className="flex items-center justify-between mb-6">
-                      <h2 className="text-xl font-bold text-foreground">Itinerary</h2>
-                      <div className="flex bg-secondary rounded-lg p-1">
-                        <button
-                          onClick={() => setActiveTab('days')}
-                          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                            activeTab === 'days'
-                              ? 'bg-primary text-primary-foreground'
-                              : 'text-muted-foreground hover:text-foreground'
-                          }`}
-                        >
-                          <Sun className="h-4 w-4" />
-                          Days
-                        </button>
-                        <button
-                          onClick={() => setActiveTab('nights')}
-                          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                            activeTab === 'nights'
-                              ? 'bg-primary text-primary-foreground'
-                              : 'text-muted-foreground hover:text-foreground'
-                          }`}
-                        >
-                          <Moon className="h-4 w-4" />
-                          Nights
-                        </button>
+                    <div className="flex items-center gap-3 mb-8">
+                      <div className="p-3 bg-primary/10 rounded-xl">
+                        <Camera className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-foreground">Day-by-Day Itinerary</h2>
+                        <p className="text-sm text-muted-foreground">Your complete travel journey</p>
                       </div>
                     </div>
 
-                    {activeTab === 'days' && packageData.itinerary.days ? (
+                    <div className="relative">
+                      {/* Timeline line */}
+                      <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20 hidden md:block" />
+
                       <div className="space-y-6">
-                        {packageData.itinerary.days.map((day) => (
-                          <div key={day.day} className="border-l-2 border-primary pl-4">
-                            <div className="flex items-center gap-3 mb-3">
-                              <span className="bg-primary text-primary-foreground text-sm font-bold px-3 py-1 rounded-full">
-                                Day {day.day}
-                              </span>
-                              <h3 className="font-semibold text-foreground">{day.title}</h3>
-                            </div>
-                            <ul className="space-y-2">
-                              {day.activities.map((activity, index) => (
-                                <li
-                                  key={index}
-                                  className="flex items-start gap-2 text-muted-foreground text-sm"
-                                >
-                                  <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                                  {activity}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    ) : activeTab === 'nights' && packageData.itinerary.nights ? (
-                      <div className="space-y-4">
-                        {packageData.itinerary.nights.map((night) => (
-                          <div
-                            key={night.night}
-                            className="flex items-center justify-between p-4 bg-secondary/50 rounded-lg"
-                          >
-                            <div className="flex items-center gap-4">
-                              <span className="bg-primary text-primary-foreground text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center">
-                                {night.night}
-                              </span>
-                              <div>
-                                <p className="font-medium text-foreground">{night.accommodation}</p>
-                                <p className="text-sm text-muted-foreground">{night.meals}</p>
+                        {packageData.itinerary.days.map((day, index) => {
+                          const night = packageData.itinerary?.nights.find(n => n.night === day.day);
+                          
+                          return (
+                            <motion.div
+                              key={day.day}
+                              initial={{ opacity: 0, x: -20 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: index * 0.1 }}
+                              className="relative"
+                            >
+                              {/* Day marker */}
+                              <div className="flex items-start gap-4">
+                                <div className="relative z-10 flex-shrink-0">
+                                  <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg">
+                                    <span className="text-primary-foreground font-bold text-lg">{day.day}</span>
+                                  </div>
+                                </div>
+
+                                <div className="flex-1 bg-secondary/30 rounded-xl p-5 border border-border/50 hover:border-primary/30 transition-colors">
+                                  {/* Day header */}
+                                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
+                                    <div>
+                                      <span className="text-xs font-medium text-primary uppercase tracking-wider">Day {day.day}</span>
+                                      <h3 className="text-lg font-semibold text-foreground">{day.title}</h3>
+                                    </div>
+                                    {index === 0 && (
+                                      <span className="inline-flex items-center gap-1 text-xs bg-green-500/10 text-green-600 px-3 py-1 rounded-full w-fit">
+                                        <Plane className="h-3 w-3" />
+                                        Arrival Day
+                                      </span>
+                                    )}
+                                    {index === packageData.itinerary!.days.length - 1 && (
+                                      <span className="inline-flex items-center gap-1 text-xs bg-amber-500/10 text-amber-600 px-3 py-1 rounded-full w-fit">
+                                        <Plane className="h-3 w-3" />
+                                        Departure Day
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  {/* Activities */}
+                                  <div className="space-y-2 mb-4">
+                                    {day.activities.map((activity, actIndex) => (
+                                      <div key={actIndex} className="flex items-start gap-3">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                                        <span className="text-sm text-muted-foreground">{activity}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+
+                                  {/* Accommodation info */}
+                                  {night && (
+                                    <div className="flex flex-wrap gap-4 pt-4 border-t border-border/50">
+                                      <div className="flex items-center gap-2 text-sm">
+                                        <Hotel className="h-4 w-4 text-primary" />
+                                        <span className="text-foreground font-medium">{night.accommodation}</span>
+                                      </div>
+                                      <div className="flex items-center gap-2 text-sm">
+                                        <Utensils className="h-4 w-4 text-primary" />
+                                        <span className="text-muted-foreground">{night.meals}</span>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        ))}
+                            </motion.div>
+                          );
+                        })}
                       </div>
-                    ) : null}
+                    </div>
                   </div>
                 )}
 
