@@ -43,16 +43,13 @@ const Register = () => {
     try {
       const { error } = await signUp(email, password);
       if (error) {
-        if (error.message.includes('already registered')) {
-          setError('This email is already registered. Please sign in instead.');
-        } else {
-          setError(error.message);
-        }
+        // Use generic error message to prevent account enumeration
+        setError('Unable to create account. Please check your information and try again.');
       } else {
         navigate('/');
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      setError('Unable to create account. Please try again later.');
     } finally {
       setLoading(false);
     }
