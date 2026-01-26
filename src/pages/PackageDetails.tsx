@@ -340,7 +340,7 @@ const PackageDetails = () => {
                   </div>
 
                   <Link
-                    to={`/payment/${packageData.id}`}
+                    to={`/package/${packageData.id}/payment`}
                     className="btn-primary w-full mb-4 flex items-center justify-center"
                   >
                     Book Now

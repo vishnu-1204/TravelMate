@@ -26,7 +26,7 @@ const PackageCard = ({
 }: PackageCardProps) => {
   return (
     <Link
-      to={`/packages/${id}`}
+      to={`/package/${id}`}
       className="card-travel group flex flex-col md:flex-row"
     >
       <div className="relative w-full md:w-72 h-56 md:h-auto overflow-hidden flex-shrink-0">
