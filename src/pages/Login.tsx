@@ -238,24 +238,6 @@ const Login = () => {
                   Apple
                 </button>
 
-                <button 
-                  type="button"
-                  disabled
-                  className="socialBtn opacity-50 cursor-not-allowed"
-                  title="Coming soon"
-                >
-                  GitHub
-                </button>
-
-                <button 
-                  type="button"
-                  disabled
-                  className="socialBtn opacity-50 cursor-not-allowed"
-                  title="Coming soon"
-                >
-                  Facebook
-                </button>
-
               </div>
 
             </div>
