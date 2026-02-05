@@ -92,11 +92,11 @@ const Login = () => {
             />
 
             {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-purple-900/70 to-black/80" />
+            <div className="absolute inset-0 bg-gradient-to-b from-sky-900/70 to-black/80" />
 
             {/* Logo */}
             <h2 className="absolute top-6 left-6 text-white text-xl font-semibold tracking-widest">
-              AMU
+              TravelMate
             </h2>
 
             {/* Back */}
@@ -133,7 +133,7 @@ const Login = () => {
 
             <p className="text-gray-400 mb-8">
               Don’t have an account?{" "}
-              <Link to="/register" className="text-purple-400 hover:underline">
+              <Link to="/register" className="text-sky-400 hover:underline">
                 Sign up
               </Link>
             </p>
@@ -178,7 +178,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 rounded-xl bg-purple-500 hover:bg-purple-600 transition font-medium flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-600 transition font-medium flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
