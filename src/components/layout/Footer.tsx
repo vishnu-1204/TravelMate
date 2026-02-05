@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <Plane className="h-8 w-8" />
-              <span className="text-xl font-bold">TravelWise</span>
+              <span className="text-xl font-bold">TravelMate</span>
             </Link>
             <p className="text-background/70 mb-4 max-w-md">
               Your trusted partner for unforgettable travel experiences. We craft personalized journeys that create lasting memories.
@@ -45,7 +45,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-background/70">
                 <Mail className="h-4 w-4" />
-                <span>hello@travelwise.com</span>
+                <span>hello@travelMate.com</span>
               </li>
               <li className="flex items-center gap-2 text-background/70">
                 <Phone className="h-4 w-4" />

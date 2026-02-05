@@ -2,282 +2,792 @@
   {
     "id": "101",
     "category": "india",
-    "title": "Kerala Backwaters Bliss",
-    "location": "Kerala, India",
+    "title": "Kerala Backwaters & Beaches",
+    "location": "Kochi, Alleppey, Kovalam",
     "duration": "6 Days / 5 Nights",
     "price": 899,
     "rating": 4.8,
-    "reviews": 412,
+    "reviews": 542,
     "image": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800",
-    "description": "Explore God's Own Country with serene backwaters, lush tea gardens, wildlife sanctuaries, and peaceful beaches.",
-    "highlights": ["Houseboat stay", "Munnar tea gardens", "Kathakali show", "Spice plantation", "Ayurvedic massage"],
-    "included": ["Accommodation", "Houseboat stay", "Daily breakfast", "Sightseeing", "Airport transfers"],
-    "excluded": ["Flights", "Personal expenses", "Tips"],
+    "description": "Serene backwaters, houseboats, and pristine beaches of God's Own Country.",
+    "highlights": ["Houseboat cruise", "Kovalam Beach", "Tea plantations", "Kathakali dance"],
+    "included": ["Hotels & Houseboat", "All meals", "Transfers", "Sightseeing"],
+    "excluded": ["Flights", "Personal expenses"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Arrival in Kochi", "activities": ["Airport pickup and transfer to hotel", "Explore Fort Kochi and Chinese fishing nets", "Evening Kathakali dance performance", "Welcome dinner at local restaurant"] },
-        { "day": 2, "title": "Kochi to Munnar", "activities": ["Scenic drive through spice plantations", "Visit Cheeyappara Waterfalls", "Check-in at Munnar hill resort", "Evening walk through tea estates"] },
-        { "day": 3, "title": "Munnar Exploration", "activities": ["Visit Tea Museum and factory", "Explore Eravikulam National Park", "Photo stop at Top Station", "Spice plantation tour with tasting"] },
-        { "day": 4, "title": "Munnar to Alleppey", "activities": ["Morning drive to Alleppey backwaters", "Board traditional Kerala houseboat", "Cruise through scenic canals", "Overnight stay on houseboat with meals"] },
-        { "day": 5, "title": "Backwaters & Beaches", "activities": ["Morning yoga on houseboat deck", "Disembark and visit Marari Beach", "Traditional Ayurvedic massage session", "Sunset beach walk"] },
-        { "day": 6, "title": "Departure", "activities": ["Breakfast at resort", "Last-minute shopping for spices", "Transfer to Kochi airport", "Departure with fond memories"] }
+        { "day": 1, "title": "Arrival Kochi", "activities": ["Fort Kochi", "Chinese fishing nets", "Spice market"] },
+        { "day": 2, "title": "Munnar", "activities": ["Tea gardens", "Mattupetty Dam", "Echo Point"] },
+        { "day": 3, "title": "Alleppey Houseboat", "activities": ["Backwater cruise", "Village views", "Sunset"] },
+        { "day": 4, "title": "Kovalam Beach", "activities": ["Beach relaxation", "Lighthouse", "Ayurvedic spa"] },
+        { "day": 5, "title": "Trivandrum", "activities": ["Padmanabhaswamy Temple", "Museum", "Shopping"] },
+        { "day": 6, "title": "Departure", "activities": ["Breakfast", "Airport transfer"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Fort Kochi Heritage Hotel", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "Munnar Hill Resort", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Munnar Hill Resort", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Traditional Houseboat", "meals": "All meals included" },
-        { "night": 5, "accommodation": "Marari Beach Resort", "meals": "Breakfast & Dinner" }
+        { "night": 1, "accommodation": "Kochi Heritage Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Munnar Resort", "meals": "All meals" },
+        { "night": 3, "accommodation": "Alleppey Houseboat", "meals": "All meals" },
+        { "night": 4, "accommodation": "Kovalam Beach Resort", "meals": "Breakfast & Dinner" },
+        { "night": 5, "accommodation": "Kovalam Beach Resort", "meals": "Breakfast" }
       ]
     }
   },
   {
     "id": "102",
     "category": "india",
-    "title": "Kashmir Paradise Tour",
-    "location": "Kashmir, India",
-    "duration": "7 Days / 6 Nights",
+    "title": "Rajasthan Royal Heritage",
+    "location": "Jaipur, Udaipur, Jodhpur",
+    "duration": "8 Days / 7 Nights",
     "price": 1199,
     "rating": 4.9,
-    "reviews": 358,
-    "image": "https://images.unsplash.com/photo-1566837945700-30057527ade0?w=800",
-    "description": "Experience heaven on earth with snow-capped mountains, lakes, gardens, and unforgettable houseboat stays.",
-    "highlights": ["Dal Lake", "Gulmarg snow", "Pahalgam valley", "Shikara ride"],
-    "included": ["Houseboat stay", "Hotels", "Daily breakfast", "Sightseeing"],
-    "excluded": ["Flights", "Snow activities charges"],
+    "reviews": 678,
+    "image": "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800",
+    "description": "Explore magnificent palaces, forts, and desert landscapes of royal Rajasthan.",
+    "highlights": ["Amber Fort", "City Palace", "Camel safari", "Lake Pichola"],
+    "included": ["Heritage hotels", "Breakfast & Dinner", "Transfers", "Guided tours"],
+    "excluded": ["Flights", "Lunch", "Entry fees"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Arrival in Srinagar", "activities": ["Airport pickup", "Transfer to Dal Lake houseboat", "Evening Shikara ride on Dal Lake", "Traditional Kashmiri dinner"] },
-        { "day": 2, "title": "Srinagar Mughal Gardens", "activities": ["Visit Nishat Bagh garden", "Explore Shalimar Bagh", "Hazratbal Shrine visit", "Local handicraft shopping"] },
-        { "day": 3, "title": "Gulmarg Excursion", "activities": ["Drive to Gulmarg meadows", "Gondola cable car ride", "Snow activities (seasonal)", "Pony ride through pine forests"] },
-        { "day": 4, "title": "Pahalgam Valley", "activities": ["Scenic drive to Pahalgam", "Visit Betaab Valley", "Aru Valley exploration", "River-side picnic lunch"] },
-        { "day": 5, "title": "Sonmarg Day Trip", "activities": ["Drive to Sonmarg glacier", "Thajiwas Glacier trek", "Sindh River valley views", "Photography session"] },
-        { "day": 6, "title": "Srinagar Leisure", "activities": ["Morning yoga on houseboat", "Visit local markets", "Kashmiri carpet weaving demo", "Farewell dinner cruise"] },
-        { "day": 7, "title": "Departure", "activities": ["Breakfast on houseboat", "Last Shikara ride", "Airport transfer", "Departure"] }
+        { "day": 1, "title": "Arrival Jaipur", "activities": ["City Palace", "Jantar Mantar", "Hawa Mahal"] },
+        { "day": 2, "title": "Jaipur Sightseeing", "activities": ["Amber Fort", "Jal Mahal", "Local bazaars"] },
+        { "day": 3, "title": "Pushkar", "activities": ["Brahma Temple", "Pushkar Lake", "Camel fair"] },
+        { "day": 4, "title": "Jodhpur", "activities": ["Mehrangarh Fort", "Jaswant Thada", "Clock Tower"] },
+        { "day": 5, "title": "Udaipur", "activities": ["City Palace", "Lake Pichola boat ride"] },
+        { "day": 6, "title": "Udaipur Leisure", "activities": ["Saheliyon ki Bari", "Vintage car museum"] },
+        { "day": 7, "title": "Chittorgarh", "activities": ["Fort visit", "Historical tour"] },
+        { "day": 8, "title": "Departure", "activities": ["Breakfast", "Transfer"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Deluxe Houseboat, Dal Lake", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "Deluxe Houseboat, Dal Lake", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Gulmarg Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Pahalgam Resort", "meals": "All meals" },
-        { "night": 5, "accommodation": "Deluxe Houseboat, Dal Lake", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Deluxe Houseboat, Dal Lake", "meals": "Breakfast & Dinner" }
+        { "night": 1, "accommodation": "Jaipur Palace Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Jaipur Palace Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Pushkar Resort", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Jodhpur Heritage Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 5, "accommodation": "Udaipur Lake Palace", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Udaipur Lake Palace", "meals": "Breakfast & Dinner" },
+        { "night": 7, "accommodation": "Udaipur Lake Palace", "meals": "Breakfast" }
       ]
     }
   },
   {
     "id": "103",
     "category": "india",
-    "title": "Royal Rajasthan Heritage",
-    "location": "Rajasthan, India",
-    "duration": "8 Days / 7 Nights",
-    "price": 1099,
+    "title": "Goa Beach Paradise",
+    "location": "North & South Goa",
+    "duration": "5 Days / 4 Nights",
+    "price": 699,
     "rating": 4.7,
-    "reviews": 441,
-    "image": "https://images.unsplash.com/photo-1599661046827-dacff0c0f09c?w=800",
-    "description": "Witness royal palaces, desert safaris, forts, and vibrant culture across Jaipur, Jodhpur, and Jaisalmer.",
-    "highlights": ["Amber Fort", "Desert safari", "City Palace", "Camel ride"],
-    "included": ["Heritage hotels", "Breakfast", "Sightseeing"],
-    "excluded": ["Flights", "Personal expenses"],
+    "reviews": 892,
+    "image": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800",
+    "description": "Sun, sand, and sea with vibrant nightlife and Portuguese heritage.",
+    "highlights": ["Beach hopping", "Water sports", "Spice plantation", "Night markets"],
+    "included": ["Beach resort", "Breakfast", "Airport transfers"],
+    "excluded": ["Flights", "Water sports", "Meals"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Arrival in Jaipur", "activities": ["Airport pickup", "Check-in at heritage hotel", "Evening at Chokhi Dhani village", "Traditional Rajasthani dinner"] },
-        { "day": 2, "title": "Jaipur Exploration", "activities": ["Amber Fort elephant ride", "City Palace tour", "Jantar Mantar observatory", "Hawa Mahal photo stop"] },
-        { "day": 3, "title": "Jaipur to Jodhpur", "activities": ["Drive to Jodhpur", "Visit Mehrangarh Fort", "Explore blue city streets", "Sunset from Umaid Bhawan"] },
-        { "day": 4, "title": "Jodhpur to Jaisalmer", "activities": ["Scenic drive to Jaisalmer", "Check-in at desert camp", "Evening desert safari", "Dinner under the stars"] },
-        { "day": 5, "title": "Jaisalmer Golden City", "activities": ["Jaisalmer Fort exploration", "Patwon Ki Haveli visit", "Gadisar Lake sunset", "Folk music performance"] },
-        { "day": 6, "title": "Desert Experience", "activities": ["Sunrise camel ride", "Village safari", "Traditional lunch", "Drive back to Jodhpur"] },
-        { "day": 7, "title": "Jodhpur to Udaipur", "activities": ["Drive to Udaipur", "Ranakpur Jain Temple visit", "Check-in at lake-view hotel", "Lake Pichola boat ride"] },
-        { "day": 8, "title": "Departure from Udaipur", "activities": ["City Palace morning tour", "Local market visit", "Airport transfer", "Departure"] }
+        { "day": 1, "title": "Arrival", "activities": ["Fira town", "Caldera views", "Welcome dinner"] },
+        { "day": 2, "title": "Beach Day", "activities": ["Red Beach", "Black Beach", "Swimming"] },
+        { "day": 3, "title": "Wine Tour", "activities": ["Vineyard visits", "Wine tasting", "Oia sunset"] },
+        { "day": 4, "title": "Boat Tour", "activities": ["Volcano visit", "Hot springs", "Thirassia island"] },
+        { "day": 5, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Jaipur Heritage Hotel", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "Jaipur Heritage Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Jodhpur Haveli", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Desert Camp Jaisalmer", "meals": "All meals" },
-        { "night": 5, "accommodation": "Jaisalmer Fort Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Jodhpur Haveli", "meals": "Breakfast & Dinner" },
-        { "night": 7, "accommodation": "Udaipur Lake View Hotel", "meals": "Breakfast" }
+        { "night": 1, "accommodation": "Cave Hotel Oia", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Cave Hotel Oia", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Cave Hotel Oia", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Cave Hotel Oia", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "132",
+    "category": "international",
+    "title": "Iceland Ring Road",
+    "location": "Reykjavik & Around",
+    "duration": "8 Days / 7 Nights",
+    "price": 2599,
+    "rating": 4.9,
+    "reviews": 434,
+    "image": "https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=800",
+    "description": "Glaciers, waterfalls, geysers, and Northern Lights.",
+    "highlights": ["Blue Lagoon", "Golden Circle", "Jokulsarlon", "Northern Lights"],
+    "included": ["Hotels", "Breakfast", "Car rental", "Blue Lagoon"],
+    "excluded": ["Flights", "Visa", "Fuel & Meals"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Reykjavik", "activities": ["City tour", "Hallgrimskirkja", "Harbor"] },
+        { "day": 2, "title": "Golden Circle", "activities": ["Thingvellir", "Geysir", "Gullfoss"] },
+        { "day": 3, "title": "South Coast", "activities": ["Seljalandsfoss", "Skogafoss", "Black beach"] },
+        { "day": 4, "title": "Jokulsarlon", "activities": ["Glacier lagoon", "Diamond beach", "Ice caves"] },
+        { "day": 5, "title": "East Fjords", "activities": ["Scenic drive", "Fishing villages"] },
+        { "day": 6, "title": "North Iceland", "activities": ["Myvatn", "Dettifoss", "Akureyri"] },
+        { "day": 7, "title": "West Iceland", "activities": ["Snaefellsnes Peninsula", "Kirkjufell"] },
+        { "day": 8, "title": "Departure", "activities": ["Blue Lagoon", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Reykjavik Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "South Iceland Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Vik Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "East Iceland Hotel", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Akureyri Hotel", "meals": "Breakfast" },
+        { "night": 6, "accommodation": "North Iceland Hotel", "meals": "Breakfast" },
+        { "night": 7, "accommodation": "Reykjavik Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "133",
+    "category": "international",
+    "title": "Morocco Imperial Cities",
+    "location": "Marrakech, Fes, Casablanca",
+    "duration": "7 Days / 6 Nights",
+    "price": 1399,
+    "rating": 4.7,
+    "reviews": 567,
+    "image": "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=800",
+    "description": "Colorful souks, desert camps, and ancient medinas.",
+    "highlights": ["Jemaa el-Fnaa", "Sahara desert", "Fes medina", "Atlas Mountains"],
+    "included": ["Riads & Hotels", "Breakfast & Dinner", "Desert camp", "Transfers"],
+    "excluded": ["Flights", "Visa", "Lunches"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Marrakech", "activities": ["Jemaa el-Fnaa", "Souks", "Koutoubia Mosque"] },
+        { "day": 2, "title": "Atlas Mountains", "activities": ["Berber villages", "Ouzoud waterfalls"] },
+        { "day": 3, "title": "Desert Journey", "activities": ["Ait Benhaddou", "Dades Valley", "Todra Gorge"] },
+        { "day": 4, "title": "Sahara Desert", "activities": ["Camel trek", "Desert camp", "Stargazing"] },
+        { "day": 5, "title": "Fes", "activities": ["Medina tour", "Tanneries", "Al Quaraouiyine"] },
+        { "day": 6, "title": "Casablanca", "activities": ["Hassan II Mosque", "Corniche", "Rick's Cafe"] },
+        { "day": 7, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Marrakech Riad", "meals": "Breakfast & Dinner" },
+        { "night": 2, "accommodation": "Marrakech Riad", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Dades Gorge Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Desert Camp", "meals": "All meals" },
+        { "night": 5, "accommodation": "Fes Riad", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Casablanca Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "134",
+    "category": "international",
+    "title": "New Zealand Adventure",
+    "location": "North & South Island",
+    "duration": "12 Days / 11 Nights",
+    "price": 3299,
+    "rating": 4.9,
+    "reviews": 389,
+    "image": "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=800",
+    "description": "Fjords, glaciers, adventure sports, and Hobbiton.",
+    "highlights": ["Milford Sound", "Queenstown", "Hobbiton", "Glaciers"],
+    "included": ["Hotels", "Breakfast", "Tours", "Inter-island ferry"],
+    "excluded": ["Flights", "Visa", "Adventure activities"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Auckland", "activities": ["Sky Tower", "Harbor", "City tour"] },
+        { "day": 2, "title": "Rotorua", "activities": ["Geothermal parks", "Maori culture", "Hot springs"] },
+        { "day": 3, "title": "Hobbiton", "activities": ["Movie set tour", "Shire exploration"] },
+        { "day": 4, "title": "Wellington", "activities": ["Te Papa Museum", "Cable car", "Waterfront"] },
+        { "day": 5, "title": "Ferry to South", "activities": ["Scenic ferry", "Marlborough Sounds"] },
+        { "day": 6, "title": "Christchurch", "activities": ["Garden city", "Punting", "Rebuild tour"] },
+        { "day": 7, "title": "Aoraki/Mt Cook", "activities": ["Glacier views", "Hiking trails"] },
+        { "day": 8, "title": "Queenstown", "activities": ["Lake Wakatipu", "Skyline Gondola"] },
+        { "day": 9, "title": "Adventure Day", "activities": ["Bungee jumping", "Jet boating", "Wine tour"] },
+        { "day": 10, "title": "Milford Sound", "activities": ["Fjord cruise", "Scenic drive"] },
+        { "day": 11, "title": "Wanaka", "activities": ["Lake Wanaka", "Puzzling World"] },
+        { "day": 12, "title": "Departure", "activities": ["Return to Queenstown", "Flight home"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Auckland Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Rotorua Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Rotorua Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Wellington Hotel", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Christchurch Hotel", "meals": "Breakfast" },
+        { "night": 6, "accommodation": "Mt Cook Lodge", "meals": "Breakfast" },
+        { "night": 7, "accommodation": "Queenstown Hotel", "meals": "Breakfast" },
+        { "night": 8, "accommodation": "Queenstown Hotel", "meals": "Breakfast" },
+        { "night": 9, "accommodation": "Queenstown Hotel", "meals": "Breakfast" },
+        { "night": 10, "accommodation": "Te Anau Hotel", "meals": "Breakfast" },
+        { "night": 11, "accommodation": "Wanaka Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "135",
+    "category": "international",
+    "title": "Turkey Heritage Trail",
+    "location": "Istanbul, Cappadocia, Pamukkale",
+    "duration": "8 Days / 7 Nights",
+    "price": 1499,
+    "rating": 4.8,
+    "reviews": 678,
+    "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800",
+    "description": "Byzantine heritage, fairy chimneys, and ancient ruins.",
+    "highlights": ["Hagia Sophia", "Hot air balloon", "Pamukkale terraces", "Ephesus"],
+    "included": ["Hotels", "Breakfast & Dinner", "Balloon ride", "Guided tours"],
+    "excluded": ["Flights", "Visa", "Lunches"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Istanbul", "activities": ["Hagia Sophia", "Blue Mosque", "Grand Bazaar"] },
+        { "day": 2, "title": "Istanbul Bosphorus", "activities": ["Topkapi Palace", "Boat cruise", "Spice market"] },
+        { "day": 3, "title": "Cappadocia", "activities": ["Flight", "Underground city", "Valley walk"] },
+        { "day": 4, "title": "Hot Air Balloon", "activities": ["Balloon ride", "Cave churches", "Pottery workshop"] },
+        { "day": 5, "title": "Pamukkale", "activities": ["Cotton Castle", "Hierapolis", "Thermal pools"] },
+        { "day": 6, "title": "Ephesus", "activities": ["Ancient city", "Library of Celsus", "Temple"] },
+        { "day": 7, "title": "Kusadasi", "activities": ["Beach time", "Shopping", "Boat trip"] },
+        { "day": 8, "title": "Departure", "activities": ["Transfer to Izmir", "Flight home"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Istanbul Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 2, "accommodation": "Istanbul Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Cappadocia Cave Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Cappadocia Cave Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 5, "accommodation": "Pamukkale Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Kusadasi Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 7, "accommodation": "Kusadasi Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "136",
+    "category": "international",
+    "title": "Egypt Nile Cruise",
+    "location": "Cairo, Luxor, Aswan",
+    "duration": "8 Days / 7 Nights",
+    "price": 1699,
+    "rating": 4.7,
+    "reviews": 534,
+    "image": "https://images.unsplash.com/photo-1539768942893-daf53e448371?w=800",
+    "description": "Pyramids, pharaohs, and a luxury Nile River cruise.",
+    "highlights": ["Pyramids of Giza", "Nile cruise", "Valley of the Kings", "Abu Simbel"],
+    "included": ["Hotels & Cruise", "All meals on cruise", "Guided tours", "Transfers"],
+    "excluded": ["Flights", "Visa", "Cairo meals"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Cairo Arrival", "activities": ["Pyramids", "Sphinx", "Egyptian Museum"] },
+        { "day": 2, "title": "Old Cairo", "activities": ["Citadel", "Khan el-Khalili", "Coptic Cairo"] },
+        { "day": 3, "title": "Luxor", "activities": ["Flight", "Karnak Temple", "Cruise embarkation"] },
+        { "day": 4, "title": "West Bank", "activities": ["Valley of the Kings", "Hatshepsut Temple", "Sailing"] },
+        { "day": 5, "title": "Nile Cruise", "activities": ["Edfu Temple", "Kom Ombo", "Sailing"] },
+        { "day": 6, "title": "Aswan", "activities": ["Philae Temple", "High Dam", "Nubian village"] },
+        { "day": 7, "title": "Abu Simbel", "activities": ["Temple visit", "Return to Cairo"] },
+        { "day": 8, "title": "Departure", "activities": ["Free time", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Cairo Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Cairo Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Nile Cruise Ship", "meals": "All meals" },
+        { "night": 4, "accommodation": "Nile Cruise Ship", "meals": "All meals" },
+        { "night": 5, "accommodation": "Nile Cruise Ship", "meals": "All meals" },
+        { "night": 6, "accommodation": "Aswan Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 7, "accommodation": "Cairo Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "137",
+    "category": "international",
+    "title": "Vietnam Heritage Tour",
+    "location": "Hanoi, Halong Bay, Hoi An",
+    "duration": "9 Days / 8 Nights",
+    "price": 1399,
+    "rating": 4.8,
+    "reviews": 612,
+    "image": "https://images.unsplash.com/photo-1528127269322-539801943592?w=800",
+    "description": "Emerald waters, ancient towns, and vibrant street life.",
+    "highlights": ["Halong Bay cruise", "Hoi An lanterns", "Cu Chi Tunnels", "Mekong Delta"],
+    "included": ["Hotels", "Breakfast & select meals", "Halong cruise", "Tours"],
+    "excluded": ["Flights", "Visa", "Some meals"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Hanoi Arrival", "activities": ["Old Quarter", "Hoan Kiem Lake", "Water puppets"] },
+        { "day": 2, "title": "Hanoi Tour", "activities": ["Ho Chi Minh Mausoleum", "Temple of Literature", "Street food"] },
+        { "day": 3, "title": "Halong Bay", "activities": ["Cruise boarding", "Island visits", "Kayaking"] },
+        { "day": 4, "title": "Halong to Hoi An", "activities": ["Morning cruise", "Flight to Danang", "Hoi An check-in"] },
+        { "day": 5, "title": "Hoi An", "activities": ["Ancient town", "Japanese Bridge", "Tailor shops"] },
+        { "day": 6, "title": "My Son", "activities": ["Temple ruins", "Basket boat ride", "Lantern evening"] },
+        { "day": 7, "title": "Ho Chi Minh City", "activities": ["Flight", "War Museum", "Notre-Dame Cathedral"] },
+        { "day": 8, "title": "Cu Chi & Mekong", "activities": ["Tunnels tour", "Mekong Delta", "Floating market"] },
+        { "day": 9, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Hanoi Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Hanoi Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Halong Bay Cruise", "meals": "All meals" },
+        { "night": 4, "accommodation": "Hoi An Hotel", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Hoi An Hotel", "meals": "Breakfast" },
+        { "night": 6, "accommodation": "Hoi An Hotel", "meals": "Breakfast" },
+        { "night": 7, "accommodation": "Ho Chi Minh Hotel", "meals": "Breakfast" },
+        { "night": 8, "accommodation": "Ho Chi Minh Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "138",
+    "category": "international",
+    "title": "Peru Inca Trail",
+    "location": "Lima, Cusco, Machu Picchu",
+    "duration": "8 Days / 7 Nights",
+    "price": 1999,
+    "rating": 4.9,
+    "reviews": 445,
+    "image": "https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=800",
+    "description": "Ancient Incan citadels, Sacred Valley, and Amazon jungle.",
+    "highlights": ["Machu Picchu", "Sacred Valley", "Cusco", "Rainbow Mountain"],
+    "included": ["Hotels", "Breakfast & dinners", "Machu Picchu train", "Guided tours"],
+    "excluded": ["Flights", "Visa", "Lunches"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Lima", "activities": ["Historic center", "Miraflores", "Larco Museum"] },
+        { "day": 2, "title": "Cusco", "activities": ["Flight", "Acclimatization", "Plaza de Armas"] },
+        { "day": 3, "title": "Sacred Valley", "activities": ["Pisac market", "Ollantaytambo", "Chinchero"] },
+        { "day": 4, "title": "Machu Picchu", "activities": ["Train journey", "Guided tour", "Huayna Picchu"] },
+        { "day": 5, "title": "Return Cusco", "activities": ["Train back", "Cusco exploration"] },
+        { "day": 6, "title": "Rainbow Mountain", "activities": ["Trek to Vinicunca", "Colorful peaks"] },
+        { "day": 7, "title": "Cusco Culture", "activities": ["Sacsayhuaman", "San Blas", "Shopping"] },
+        { "day": 8, "title": "Departure", "activities": ["Transfer", "Flight home"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Lima Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Cusco Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Sacred Valley Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Aguas Calientes Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 5, "accommodation": "Cusco Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Cusco Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 7, "accommodation": "Cusco Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "139",
+    "category": "international",
+    "title": "South Africa Safari",
+    "location": "Cape Town, Kruger, Johannesburg",
+    "duration": "10 Days / 9 Nights",
+    "price": 2799,
+    "rating": 4.9,
+    "reviews": 389,
+    "image": "https://images.unsplash.com/photo-1484318571209-661cf29a69c3?w=800",
+    "description": "Big Five safaris, wine regions, and stunning coastlines.",
+    "highlights": ["Kruger safari", "Table Mountain", "Cape Winelands", "Garden Route"],
+    "included": ["Hotels & Lodges", "Breakfast & dinners", "Safari drives", "Tours"],
+    "excluded": ["Flights", "Visa", "Lunches"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Cape Town", "activities": ["Table Mountain", "V&A Waterfront", "Signal Hill"] },
+        { "day": 2, "title": "Cape Peninsula", "activities": ["Cape Point", "Penguins", "Chapman's Peak"] },
+        { "day": 3, "title": "Winelands", "activities": ["Stellenbosch", "Wine tasting", "Franschhoek"] },
+        { "day": 4, "title": "Garden Route", "activities": ["Hermanus", "Whale watching", "Coastal drive"] },
+        { "day": 5, "title": "Knysna", "activities": ["Lagoon", "Elephant sanctuary", "Featherbed Nature Reserve"] },
+        { "day": 6, "title": "To Kruger", "activities": ["Flight", "Lodge check-in", "Sunset drive"] },
+        { "day": 7, "title": "Safari Day", "activities": ["Morning game drive", "Bush walk", "Evening drive"] },
+        { "day": 8, "title": "Full Day Safari", "activities": ["Full day game drive", "Big Five tracking", "Bush dinner"] },
+        { "day": 9, "title": "Johannesburg", "activities": ["Apartheid Museum", "Soweto", "Gold Reef City"] },
+        { "day": 10, "title": "Departure", "activities": ["Cradle of Humankind", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Cape Town Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Cape Town Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Stellenbosch Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Garden Route Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 5, "accommodation": "Knysna Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Kruger Safari Lodge", "meals": "All meals" },
+        { "night": 7, "accommodation": "Kruger Safari Lodge", "meals": "All meals" },
+        { "night": 8, "accommodation": "Kruger Safari Lodge", "meals": "All meals" },
+        { "night": 9, "accommodation": "Johannesburg Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "140",
+    "category": "international",
+    "title": "Croatia Adriatic Coast",
+    "location": "Dubrovnik, Split, Zagreb",
+    "duration": "7 Days / 6 Nights",
+    "price": 1599,
+    "rating": 4.8,
+    "reviews": 478,
+    "image": "https://images.unsplash.com/photo-1555990538-c31f2da08a18?w=800",
+    "description": "Medieval towns, island hopping, and crystal-clear waters.",
+    "highlights": ["Dubrovnik walls", "Plitvice Lakes", "Island cruising", "Game of Thrones sites"],
+    "included": ["Hotels", "Breakfast", "Island boat trips", "City tours"],
+    "excluded": ["Flights", "Visa", "Meals"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Dubrovnik", "activities": ["Old Town walls", "Stradun", "Cable car"] },
+        { "day": 2, "title": "Island Hopping", "activities": ["Lokrum", "Elaphiti Islands", "Beach time"] },
+        { "day": 3, "title": "Split", "activities": ["Diocletian's Palace", "Riva promenade", "Marjan Hill"] },
+        { "day": 4, "title": "Hvar Island", "activities": ["Ferry", "Lavender fields", "Beach clubs"] },
+        { "day": 5, "title": "Plitvice", "activities": ["National Park", "Waterfalls", "Hiking trails"] },
+        { "day": 6, "title": "Zagreb", "activities": ["Upper Town", "St. Mark's Church", "Museum"] },
+        { "day": 7, "title": "Departure", "activities": ["Dolac Market", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Dubrovnik Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Dubrovnik Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Split Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Hvar Hotel", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Plitvice Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Zagreb Hotel", "meals": "Breakfast" }
       ]
     }
   },
   {
     "id": "104",
     "category": "india",
-    "title": "Goa Beach & Party Tour",
-    "location": "Goa, India",
-    "duration": "5 Days / 4 Nights",
-    "price": 699,
-    "rating": 4.7,
-    "reviews": 522,
-    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
-    "description": "Sun, sand, nightlife, and beaches. Goa is the perfect mix of relaxation and fun.",
-    "highlights": ["Baga Beach", "Water sports", "Cruise party", "Beach shacks"],
-    "included": ["Beach resort", "Breakfast", "Sightseeing"],
-    "excluded": ["Flights", "Water sports charges"],
+    "title": "Golden Triangle Classic",
+    "location": "Delhi, Agra, Jaipur",
+    "duration": "6 Days / 5 Nights",
+    "price": 799,
+    "rating": 4.8,
+    "reviews": 1024,
+    "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800",
+    "description": "India's most iconic circuit featuring the Taj Mahal and royal palaces.",
+    "highlights": ["Taj Mahal", "Red Fort", "Amber Fort", "Qutub Minar"],
+    "included": ["Hotels", "Breakfast & Dinner", "Transfers", "Guide"],
+    "excluded": ["Flights", "Monument fees"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Arrival in Goa", "activities": ["Airport pickup", "Check-in at beach resort", "Relax at Calangute Beach", "Sunset at beach shack"] },
-        { "day": 2, "title": "North Goa Beaches", "activities": ["Visit Baga Beach", "Water sports adventure", "Anjuna flea market", "Night party at Tito's Lane"] },
-        { "day": 3, "title": "Heritage & Culture", "activities": ["Old Goa churches tour", "Fontainhas Latin Quarter", "Spice plantation visit", "Mandovi river cruise"] },
-        { "day": 4, "title": "South Goa Exploration", "activities": ["Palolem Beach visit", "Butterfly Beach boat trip", "Cabo de Rama Fort", "Farewell beach dinner"] },
-        { "day": 5, "title": "Departure", "activities": ["Leisure morning at resort", "Last-minute shopping", "Airport transfer", "Departure"] }
+        { "day": 1, "title": "Delhi Arrival", "activities": ["India Gate", "Qutub Minar", "Lotus Temple"] },
+        { "day": 2, "title": "Old Delhi", "activities": ["Red Fort", "Jama Masjid", "Chandni Chowk"] },
+        { "day": 3, "title": "Agra", "activities": ["Taj Mahal sunrise", "Agra Fort", "Mehtab Bagh"] },
+        { "day": 4, "title": "Jaipur", "activities": ["Fatehpur Sikri enroute", "City Palace"] },
+        { "day": 5, "title": "Jaipur Tour", "activities": ["Amber Fort", "Hawa Mahal", "Shopping"] },
+        { "day": 6, "title": "Departure", "activities": ["Transfer to Delhi", "Flight home"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Calangute Beach Resort", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "Calangute Beach Resort", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Calangute Beach Resort", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Calangute Beach Resort", "meals": "Breakfast & Dinner" }
+        { "night": 1, "accommodation": "Delhi City Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Delhi City Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Agra Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Jaipur Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 5, "accommodation": "Jaipur Hotel", "meals": "Breakfast" }
       ]
     }
   },
   {
-    "id": "201",
-    "category": "international",
-    "title": "Dubai Extravaganza",
-    "location": "Dubai, UAE",
-    "duration": "5 Days / 4 Nights",
+    "id": "105",
+    "category": "india",
+    "title": "Himachal Mountain Escape",
+    "location": "Shimla & Manali, India",
+    "duration": "7 Days / 6 Nights",
+    "price": 999,
+    "rating": 4.7,
+    "reviews": 386,
+    "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800",
+    "description": "Snowy mountains, pine forests, and peaceful hill towns.",
+    "highlights": ["Rohtang Pass", "Mall Road", "Solang Valley", "Hadimba Temple"],
+    "included": ["Hotels", "Breakfast & Dinner", "Sightseeing", "Transfers"],
+    "excluded": ["Flights", "Personal expenses"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival Shimla", "activities": ["Hotel check-in", "Mall Road walk", "Christ Church visit"] },
+        { "day": 2, "title": "Shimla Sightseeing", "activities": ["Kufri visit", "Himalayan views", "Local shopping"] },
+        { "day": 3, "title": "Shimla to Manali", "activities": ["Scenic drive", "Valley photography", "Resort check-in"] },
+        { "day": 4, "title": "Manali Local", "activities": ["Hadimba Temple", "Old Manali", "Cafe hopping"] },
+        { "day": 5, "title": "Solang Valley", "activities": ["Adventure sports", "Snow activities", "Cable car ride"] },
+        { "day": 6, "title": "Leisure Day", "activities": ["Shopping", "River walk", "Relaxation"] },
+        { "day": 7, "title": "Departure", "activities": ["Breakfast", "Checkout", "Return journey"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Shimla Hill Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Shimla Hill Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Manali Resort", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Manali Resort", "meals": "Breakfast & Dinner" },
+        { "night": 5, "accommodation": "Manali Resort", "meals": "Breakfast & Dinner" },
+        { "night": 6, "accommodation": "Manali Resort", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "106",
+    "category": "india",
+    "title": "Ladakh Adventure Circuit",
+    "location": "Leh & Nubra, India",
+    "duration": "6 Days / 5 Nights",
     "price": 1299,
     "rating": 4.8,
-    "reviews": 623,
-    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800",
-    "description": "Experience the magic of Dubai with iconic landmarks, desert safari, and world-class shopping.",
-    "highlights": ["Burj Khalifa", "Desert Safari", "Dubai Mall", "Palm Jumeirah", "Dhow Cruise"],
-    "included": ["4-star hotel", "Breakfast", "Airport transfers", "City tour"],
-    "excluded": ["Flights", "Visa fees", "Personal expenses"],
+    "reviews": 301,
+    "image": "https://images.unsplash.com/photo-1548013146-72479768bada?w=800",
+    "description": "High-altitude adventure with monasteries and dramatic landscapes.",
+    "highlights": ["Pangong Lake", "Khardung La", "Nubra Valley", "Monasteries"],
+    "included": ["Hotels & Camps", "Breakfast & Dinner", "Permits", "Transfers"],
+    "excluded": ["Flights", "Oxygen charges"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Arrival in Dubai", "activities": ["Airport pickup", "Hotel check-in", "Palm Jumeirah visit", "Atlantis Aquaventure optional"] },
-        { "day": 2, "title": "Dubai City Tour", "activities": ["Burj Khalifa observation deck", "Dubai Mall exploration", "Dubai Fountain show", "Souk Al Bahar dinner"] },
-        { "day": 3, "title": "Desert Safari Adventure", "activities": ["Morning at leisure", "Afternoon desert safari", "Dune bashing experience", "BBQ dinner with belly dance"] },
-        { "day": 4, "title": "Old & New Dubai", "activities": ["Gold Souk visit", "Abra ride across Dubai Creek", "Dubai Frame visit", "Dhow cruise dinner"] },
-        { "day": 5, "title": "Departure", "activities": ["Breakfast at hotel", "Last-minute shopping", "Airport transfer", "Departure"] }
+        { "day": 1, "title": "Arrival Leh", "activities": ["Acclimatization", "Local market walk"] },
+        { "day": 2, "title": "Leh Monasteries", "activities": ["Hemis", "Thiksey", "Shey Palace"] },
+        { "day": 3, "title": "Nubra Valley", "activities": ["Khardung La pass", "Camel ride", "Sand dunes"] },
+        { "day": 4, "title": "Pangong Lake", "activities": ["Lake views", "Photography", "Camp stay"] },
+        { "day": 5, "title": "Return Leh", "activities": ["Scenic drive", "Souvenir shopping"] },
+        { "day": 6, "title": "Departure", "activities": ["Checkout", "Airport transfer"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "4-Star Hotel Downtown", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "4-Star Hotel Downtown", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "4-Star Hotel Downtown", "meals": "Breakfast & BBQ Dinner" },
-        { "night": 4, "accommodation": "4-Star Hotel Downtown", "meals": "Breakfast & Cruise Dinner" }
+        { "night": 1, "accommodation": "Leh Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Leh Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Nubra Camp", "meals": "All meals" },
+        { "night": 4, "accommodation": "Pangong Camp", "meals": "All meals" },
+        { "night": 5, "accommodation": "Leh Hotel", "meals": "Breakfast" }
       ]
     }
   },
   {
-    "id": "202",
-    "category": "international",
-    "title": "Thailand Adventure",
-    "location": "Bangkok & Pattaya, Thailand",
-    "duration": "6 Days / 5 Nights",
-    "price": 999,
-    "rating": 4.6,
-    "reviews": 489,
-    "image": "https://images.unsplash.com/photo-1528181304800-259b08848526?w=800",
-    "description": "Explore vibrant Bangkok, beautiful Pattaya beaches, temples, and thrilling nightlife.",
-    "highlights": ["Grand Palace", "Coral Island", "Alcazar Show", "Floating Market", "Safari World"],
-    "included": ["Hotels", "Breakfast", "Sightseeing", "Transfers"],
-    "excluded": ["Flights", "Visa on arrival fee"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival in Bangkok", "activities": ["Airport pickup", "Hotel check-in", "Khao San Road exploration", "Thai dinner experience"] },
-        { "day": 2, "title": "Bangkok Temples", "activities": ["Grand Palace visit", "Wat Pho reclining Buddha", "Chao Phraya river cruise", "Asiatique night market"] },
-        { "day": 3, "title": "Floating Market & Transfer", "activities": ["Damnoen Saduak Floating Market", "Local Thai cooking class", "Transfer to Pattaya", "Walking Street nightlife"] },
-        { "day": 4, "title": "Coral Island Adventure", "activities": ["Speedboat to Coral Island", "Snorkeling and water sports", "Beach relaxation", "Alcazar cabaret show"] },
-        { "day": 5, "title": "Pattaya Exploration", "activities": ["Nong Nooch Tropical Garden", "Big Buddha Hill", "Art in Paradise museum", "Farewell seafood dinner"] },
-        { "day": 6, "title": "Departure", "activities": ["Breakfast at hotel", "Transfer to Bangkok airport", "Departure"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Bangkok City Hotel", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "Bangkok City Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Pattaya Beach Resort", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Pattaya Beach Resort", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Pattaya Beach Resort", "meals": "Breakfast & Dinner" }
-      ]
-    }
-  },
-  {
-    "id": "203",
-    "category": "international",
-    "title": "Singapore Delight",
-    "location": "Singapore",
+    "id": "107",
+    "category": "india",
+    "title": "Andaman Island Escape",
+    "location": "Port Blair & Havelock",
     "duration": "5 Days / 4 Nights",
-    "price": 1499,
-    "rating": 4.9,
-    "reviews": 567,
-    "image": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800",
-    "description": "Discover the Lion City with its futuristic skyline, world-class attractions, and diverse cuisine.",
-    "highlights": ["Marina Bay Sands", "Sentosa Island", "Universal Studios", "Gardens by the Bay", "Night Safari"],
-    "included": ["4-star hotel", "Breakfast", "Airport transfers", "City tour"],
-    "excluded": ["Flights", "Theme park tickets"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival in Singapore", "activities": ["Changi Airport arrival", "Hotel check-in at Marina Bay", "Merlion Park visit", "Clarke Quay dinner"] },
-        { "day": 2, "title": "City Highlights", "activities": ["Gardens by the Bay", "Cloud Forest and Flower Dome", "Marina Bay Sands SkyPark", "Light and Water Show"] },
-        { "day": 3, "title": "Sentosa Island", "activities": ["Universal Studios Singapore", "S.E.A. Aquarium visit", "Madame Tussauds", "Wings of Time show"] },
-        { "day": 4, "title": "Culture & Wildlife", "activities": ["Chinatown exploration", "Little India walking tour", "Night Safari adventure", "Farewell dinner at Lau Pa Sat"] },
-        { "day": 5, "title": "Departure", "activities": ["Orchard Road shopping", "Jewel Changi exploration", "Airport transfer", "Departure"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Marina Bay Hotel", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Marina Bay Hotel", "meals": "Breakfast & Dinner" }
-      ]
-    }
-  },
-  {
-    "id": "204",
-    "category": "international",
-    "title": "Bali Paradise Escape",
-    "location": "Bali, Indonesia",
-    "duration": "7 Days / 6 Nights",
-    "price": 1199,
-    "rating": 4.8,
+    "price": 1099,
+    "rating": 4.7,
     "reviews": 412,
-    "image": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800",
-    "description": "Relax in tropical paradise with stunning beaches, ancient temples, and lush rice terraces.",
-    "highlights": ["Ubud Rice Terraces", "Tanah Lot Temple", "Kuta Beach", "Mount Batur", "Spa treatments"],
-    "included": ["Resort stay", "Breakfast", "Airport transfers", "Temple tours"],
+    "image": "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?w=800",
+    "description": "Crystal-clear waters, coral reefs, and white-sand beaches.",
+    "highlights": ["Radhanagar Beach", "Snorkeling", "Cellular Jail", "Boat rides"],
+    "included": ["Resorts", "Breakfast", "Ferry transfers", "Sightseeing"],
     "excluded": ["Flights", "Water sports"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Arrival in Bali", "activities": ["Ngurah Rai Airport pickup", "Resort check-in in Seminyak", "Beach sunset walk", "Welcome dinner"] },
-        { "day": 2, "title": "South Bali Temples", "activities": ["Uluwatu Temple morning visit", "Kecak fire dance show", "Jimbaran Bay seafood dinner", "Beach bonfire"] },
-        { "day": 3, "title": "Ubud Cultural Day", "activities": ["Tegallalang Rice Terraces", "Ubud Monkey Forest", "Traditional art market", "Balinese spa treatment"] },
-        { "day": 4, "title": "Mount Batur Sunrise", "activities": ["Early morning volcano trek", "Sunrise at Mount Batur crater", "Hot springs relaxation", "Coffee plantation visit"] },
-        { "day": 5, "title": "Tanah Lot & Beaches", "activities": ["Tanah Lot Temple sunset", "Canggu beach surfing", "Beach club experience", "Sunset cocktails"] },
-        { "day": 6, "title": "Island Hopping", "activities": ["Nusa Penida day trip", "Kelingking Beach visit", "Snorkeling with mantas", "Crystal Bay sunset"] },
-        { "day": 7, "title": "Departure", "activities": ["Leisurely breakfast", "Last-minute shopping", "Airport transfer", "Departure"] }
+        { "day": 1, "title": "Port Blair", "activities": ["Cellular Jail", "Light & sound show"] },
+        { "day": 2, "title": "Havelock Island", "activities": ["Ferry transfer", "Beach leisure"] },
+        { "day": 3, "title": "Island Fun", "activities": ["Snorkeling", "Sunset views"] },
+        { "day": 4, "title": "Return Port Blair", "activities": ["Shopping", "Local tour"] },
+        { "day": 5, "title": "Departure", "activities": ["Checkout", "Airport transfer"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Seminyak Beach Resort", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "Seminyak Beach Resort", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Ubud Forest Villa", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Ubud Forest Villa", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Seminyak Beach Resort", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "Seminyak Beach Resort", "meals": "Breakfast" }
+        { "night": 1, "accommodation": "Port Blair Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Havelock Resort", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Havelock Resort", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Port Blair Hotel", "meals": "Breakfast" }
       ]
     }
   },
   {
-    "id": "301",
-    "category": "honeymoon",
-    "title": "Maldives Romantic Getaway",
-    "location": "Maldives",
-    "duration": "5 Days / 4 Nights",
-    "price": 2999,
-    "rating": 4.9,
-    "reviews": 234,
-    "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800",
-    "description": "Ultimate romantic escape with overwater villas, pristine beaches, and crystal-clear waters.",
-    "highlights": ["Overwater villa", "Sunset cruise", "Couples spa", "Snorkeling", "Private dinner"],
-    "included": ["Luxury resort", "All meals", "Speedboat transfers", "Honeymoon amenities"],
-    "excluded": ["Flights", "Water activities"],
+    "id": "108",
+    "category": "india",
+    "title": "Varanasi Spiritual Journey",
+    "location": "Varanasi, India",
+    "duration": "3 Days / 2 Nights",
+    "price": 499,
+    "rating": 4.6,
+    "reviews": 528,
+    "image": "https://images.unsplash.com/photo-1609943244576-9b9a8c6d5a78?w=800",
+    "description": "Experience India's spiritual heart on the banks of the Ganges.",
+    "highlights": ["Ganga Aarti", "Boat ride", "Temples", "Sarnath"],
+    "included": ["Hotel", "Breakfast", "Local guide"],
+    "excluded": ["Flights"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Paradise Arrival", "activities": ["Malé airport greeting", "Scenic speedboat transfer", "Overwater villa check-in", "Champagne welcome", "Private sunset dinner on beach"] },
-        { "day": 2, "title": "Romance on Water", "activities": ["Floating breakfast in villa", "Couples spa treatment", "Snorkeling at house reef", "Sunset dolphin cruise"] },
-        { "day": 3, "title": "Island Exploration", "activities": ["Local island visit", "Traditional Maldivian cooking class", "Underwater restaurant lunch", "Stargazing on sandbank"] },
-        { "day": 4, "title": "Adventure & Relaxation", "activities": ["Sunrise yoga session", "Jet ski adventure", "Private picnic on deserted island", "Romantic candlelit dinner"] },
-        { "day": 5, "title": "Farewell Paradise", "activities": ["Final floating breakfast", "Beach photoshoot", "Speedboat transfer", "Departure from Malé"] }
+        { "day": 1, "title": "Arrival", "activities": ["Temple visits", "Evening Ganga Aarti"] },
+        { "day": 2, "title": "Spiritual Tour", "activities": ["Sunrise boat ride", "Sarnath visit"] },
+        { "day": 3, "title": "Departure", "activities": ["Checkout", "Return"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Ganges View Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Ganges View Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "109",
+    "category": "india",
+    "title": "Darjeeling Tea Trail",
+    "location": "Darjeeling & Gangtok",
+    "duration": "5 Days / 4 Nights",
+    "price": 849,
+    "rating": 4.7,
+    "reviews": 287,
+    "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800",
+    "description": "Misty mountains, tea gardens, and Himalayan monasteries.",
+    "highlights": ["Tiger Hill sunrise", "Toy train", "Tea estates", "Tsomgo Lake"],
+    "included": ["Hotels", "Breakfast & Dinner", "Transfers", "Permits"],
+    "excluded": ["Flights", "Cable car rides"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival Darjeeling", "activities": ["Mall Road", "Himalayan views"] },
+        { "day": 2, "title": "Darjeeling Tour", "activities": ["Tiger Hill sunrise", "Tea garden", "Toy train"] },
+        { "day": 3, "title": "Gangtok", "activities": ["Scenic drive", "MG Marg walk"] },
+        { "day": 4, "title": "Tsomgo Lake", "activities": ["Lake visit", "Baba Mandir", "Yak ride"] },
+        { "day": 5, "title": "Departure", "activities": ["Shopping", "Transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Darjeeling Resort", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Darjeeling Resort", "meals": "Breakfast & Dinner" },
+        { "night": 3, "accommodation": "Gangtok Hotel", "meals": "Breakfast & Dinner" },
+        { "night": 4, "accommodation": "Gangtok Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "110",
+    "category": "india",
+    "title": "Mysore Palace Heritage",
+    "location": "Mysore & Coorg",
+    "duration": "4 Days / 3 Nights",
+    "price": 649,
+    "rating": 4.6,
+    "reviews": 341,
+    "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800",
+    "description": "Royal palaces, coffee plantations, and sandalwood heritage.",
+    "highlights": ["Mysore Palace", "Brindavan Gardens", "Coffee estates", "Abbey Falls"],
+    "included": ["Hotels", "Breakfast", "Sightseeing", "Transfers"],
+    "excluded": ["Flights", "Entrance fees"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Mysore Arrival", "activities": ["Mysore Palace", "Chamundi Hill"] },
+        { "day": 2, "title": "Mysore Tour", "activities": ["Zoo", "Brindavan Gardens", "Market"] },
+        { "day": 3, "title": "Coorg", "activities": ["Coffee plantation", "Abbey Falls", "Raja's Seat"] },
+        { "day": 4, "title": "Departure", "activities": ["Breakfast", "Transfer to Bangalore"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Mysore Heritage Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Mysore Heritage Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Coorg Plantation Stay", "meals": "Breakfast & Dinner" }
+      ]
+    }
+  },
+  {
+    "id": "111",
+    "category": "international",
+    "title": "Dubai Luxury Experience",
+    "location": "Dubai, UAE",
+    "duration": "5 Days / 4 Nights",
+    "price": 1599,
+    "rating": 4.9,
+    "reviews": 756,
+    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800",
+    "description": "Skyscrapers, luxury shopping, desert safaris, and modern marvels.",
+    "highlights": ["Burj Khalifa", "Desert safari", "Dubai Mall", "Marina cruise"],
+    "included": ["5-star hotel", "Breakfast", "Desert safari", "City tour"],
+    "excluded": ["Flights", "Visa", "Burj Khalifa tickets"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival", "activities": ["Hotel check-in", "Dubai Mall", "Fountain show"] },
+        { "day": 2, "title": "Modern Dubai", "activities": ["Burj Khalifa", "Dubai Frame", "Gold Souk"] },
+        { "day": 3, "title": "Desert Safari", "activities": ["Dune bashing", "Camel ride", "BBQ dinner"] },
+        { "day": 4, "title": "Leisure Day", "activities": ["Beach club", "Shopping", "Marina walk"] },
+        { "day": 5, "title": "Departure", "activities": ["Checkout", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "5-Star Hotel Downtown", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "5-Star Hotel Downtown", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "5-Star Hotel Downtown", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "5-Star Hotel Downtown", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "112",
+    "category": "international",
+    "title": "Thailand Island Hopper",
+    "location": "Bangkok, Phuket, Krabi",
+    "duration": "7 Days / 6 Nights",
+    "price": 1299,
+    "rating": 4.8,
+    "reviews": 892,
+    "image": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800",
+    "description": "Tropical beaches, vibrant culture, and island adventures.",
+    "highlights": ["Phi Phi Islands", "James Bond Island", "Bangkok temples", "Night markets"],
+    "included": ["Hotels", "Breakfast", "Island tours", "Transfers"],
+    "excluded": ["Flights", "Visa", "Some meals"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Bangkok Arrival", "activities": ["Grand Palace", "Wat Pho", "River cruise"] },
+        { "day": 2, "title": "Bangkok Tour", "activities": ["Floating market", "Shopping", "Night markets"] },
+        { "day": 3, "title": "Phuket", "activities": ["Flight to Phuket", "Patong Beach"] },
+        { "day": 4, "title": "Phi Phi Islands", "activities": ["Island hopping", "Snorkeling", "Beach time"] },
+        { "day": 5, "title": "Krabi", "activities": ["James Bond Island", "Kayaking"] },
+        { "day": 6, "title": "Beach Day", "activities": ["Railay Beach", "Relaxation"] },
+        { "day": 7, "title": "Departure", "activities": ["Transfer", "Flight home"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Bangkok City Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Bangkok City Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Phuket Beach Resort", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Phuket Beach Resort", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Krabi Resort", "meals": "Breakfast" },
+        { "night": 6, "accommodation": "Krabi Resort", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "113",
+    "category": "international",
+    "title": "Bali Spiritual Retreat",
+    "location": "Ubud, Seminyak, Uluwatu",
+    "duration": "6 Days / 5 Nights",
+    "price": 1099,
+    "rating": 4.9,
+    "reviews": 634,
+    "image": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800",
+    "description": "Rice terraces, ancient temples, yoga, and stunning beaches.",
+    "highlights": ["Tegalalang Rice Terrace", "Uluwatu Temple", "Yoga sessions", "Beach clubs"],
+    "included": ["Villas", "Breakfast", "Yoga classes", "Temple tours"],
+    "excluded": ["Flights", "Visa", "Spa treatments"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Ubud Arrival", "activities": ["Rice terraces", "Monkey Forest", "Art market"] },
+        { "day": 2, "title": "Cultural Ubud", "activities": ["Temple visits", "Traditional dance", "Yoga"] },
+        { "day": 3, "title": "Adventure Day", "activities": ["Waterfall trek", "Coffee plantation", "Swing"] },
+        { "day": 4, "title": "Seminyak", "activities": ["Beach transfer", "Sunset beach club"] },
+        { "day": 5, "title": "Uluwatu", "activities": ["Temple visit", "Kecak dance", "Beach dining"] },
+        { "day": 6, "title": "Departure", "activities": ["Morning yoga", "Transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Ubud Villa", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Ubud Villa", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Ubud Villa", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Seminyak Beach Hotel", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Seminyak Beach Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "114",
+    "category": "international",
+    "title": "Singapore City Break",
+    "location": "Singapore",
+    "duration": "4 Days / 3 Nights",
+    "price": 999,
+    "rating": 4.7,
+    "reviews": 512,
+    "image": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800",
+    "description": "Futuristic city with gardens, diverse cuisine, and cultural districts.",
+    "highlights": ["Gardens by the Bay", "Marina Bay Sands", "Sentosa Island", "Hawker centers"],
+    "included": ["Hotel", "Breakfast", "City tour", "Sentosa pass"],
+    "excluded": ["Flights", "Visa", "Meals"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival", "activities": ["Marina Bay", "Merlion", "Gardens by the Bay"] },
+        { "day": 2, "title": "Cultural Tour", "activities": ["Chinatown", "Little India", "Arab Street"] },
+        { "day": 3, "title": "Sentosa", "activities": ["Universal Studios", "Beach", "Cable car"] },
+        { "day": 4, "title": "Departure", "activities": ["Orchard Road shopping", "Transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "115",
+    "category": "international",
+    "title": "Maldives Overwater Bliss",
+    "location": "Male & Resort Island",
+    "duration": "5 Days / 4 Nights",
+    "price": 2499,
+    "rating": 5.0,
+    "reviews": 423,
+    "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800",
+    "description": "Luxury overwater villas, pristine lagoons, and world-class diving.",
+    "highlights": ["Overwater villa", "Snorkeling", "Spa treatments", "Sunset cruise"],
+    "included": ["Luxury resort", "All meals", "Water activities", "Transfers"],
+    "excluded": ["Flights", "Visa", "Diving courses"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival", "activities": ["Seaplane transfer", "Villa check-in", "Beach sunset"] },
+        { "day": 2, "title": "Water Sports", "activities": ["Snorkeling", "Kayaking", "Beach relaxation"] },
+        { "day": 3, "title": "Island Hopping", "activities": ["Local island visit", "Dolphin watching", "Sandbank picnic"] },
+        { "day": 4, "title": "Spa & Leisure", "activities": ["Couple spa", "Sunset cruise", "Fine dining"] },
+        { "day": 5, "title": "Departure", "activities": ["Breakfast", "Seaplane transfer"] }
       ],
       "nights": [
         { "night": 1, "accommodation": "Overwater Villa", "meals": "All inclusive" },
@@ -288,382 +798,440 @@
     }
   },
   {
-    "id": "302",
-    "category": "honeymoon",
-    "title": "Mauritius Love Story",
-    "location": "Mauritius",
-    "duration": "6 Days / 5 Nights",
-    "price": 2499,
-    "rating": 4.8,
-    "reviews": 189,
-    "image": "https://images.unsplash.com/photo-1544550581-5f7ceaf7f992?w=800",
-    "description": "Celebrate love on this tropical island with stunning beaches, waterfalls, and romantic experiences.",
-    "highlights": ["Beach resort", "Catamaran cruise", "Ile aux Cerfs", "Chamarel", "Couples massage"],
-    "included": ["5-star resort", "Breakfast & Dinner", "Airport transfers", "Island tour"],
-    "excluded": ["Flights", "Personal expenses"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Island Welcome", "activities": ["Airport arrival", "Resort check-in", "Beach walk at sunset", "Romantic dinner for two"] },
-        { "day": 2, "title": "North Island Tour", "activities": ["Grand Baie shopping", "Cap Malheureux church", "Pamplemousses Botanical Garden", "Sunset cocktails"] },
-        { "day": 3, "title": "Ile aux Cerfs", "activities": ["Catamaran cruise", "Ile aux Cerfs beach day", "Snorkeling adventure", "BBQ lunch on boat"] },
-        { "day": 4, "title": "South Island Beauty", "activities": ["Chamarel seven-colored earth", "Alexandra Falls", "Grand Bassin temple", "Rum distillery tasting"] },
-        { "day": 5, "title": "Spa & Relaxation", "activities": ["Couples spa day", "Private beach cabana", "Underwater sea walk", "Candlelit beach dinner"] },
-        { "day": 6, "title": "Departure", "activities": ["Leisurely breakfast", "Beach time", "Airport transfer", "Departure"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "5-Star Beach Resort", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "5-Star Beach Resort", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "5-Star Beach Resort", "meals": "Breakfast & BBQ Lunch" },
-        { "night": 4, "accommodation": "5-Star Beach Resort", "meals": "Breakfast & Dinner" },
-        { "night": 5, "accommodation": "5-Star Beach Resort", "meals": "Breakfast & Dinner" }
-      ]
-    }
-  },
-  {
-    "id": "303",
-    "category": "honeymoon",
-    "title": "Santorini Greek Romance",
-    "location": "Santorini, Greece",
-    "duration": "6 Days / 5 Nights",
-    "price": 3299,
-    "rating": 4.9,
-    "reviews": 267,
-    "image": "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800",
-    "description": "Experience iconic white-washed buildings, stunning sunsets, and Mediterranean charm.",
-    "highlights": ["Oia sunset", "Caldera view hotel", "Wine tasting", "Catamaran cruise", "Black sand beach"],
-    "included": ["Boutique hotel", "Breakfast", "Airport transfers", "Wine tour"],
-    "excluded": ["Flights", "Meals not mentioned"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival in Santorini", "activities": ["Airport pickup", "Cave hotel check-in Oia", "Village exploration", "Famous Oia sunset viewing"] },
-        { "day": 2, "title": "Caldera Cruise", "activities": ["Catamaran sailing trip", "Hot springs swim", "Red and White beaches", "Sunset dinner on boat"] },
-        { "day": 3, "title": "Wine & Culture", "activities": ["Santo Wines tasting", "Akrotiri archaeological site", "Black sand beach", "Traditional taverna dinner"] },
-        { "day": 4, "title": "Fira Exploration", "activities": ["Fira town walking tour", "Cable car to old port", "Donkey path adventure", "Rooftop dining with views"] },
-        { "day": 5, "title": "Romantic Day", "activities": ["Private caldera photoshoot", "Couples massage", "Sunset horseback riding", "Fine dining experience"] },
-        { "day": 6, "title": "Departure", "activities": ["Breakfast with caldera view", "Last-minute shopping", "Airport transfer", "Departure"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Oia Cave Hotel", "meals": "Welcome dinner" },
-        { "night": 2, "accommodation": "Oia Cave Hotel", "meals": "Breakfast & Cruise dinner" },
-        { "night": 3, "accommodation": "Oia Cave Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Oia Cave Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 5, "accommodation": "Oia Cave Hotel", "meals": "Breakfast & Fine dining" }
-      ]
-    }
-  },
-  {
-    "id": "304",
-    "category": "honeymoon",
-    "title": "Swiss Alps Romance",
-    "location": "Switzerland",
-    "duration": "7 Days / 6 Nights",
-    "price": 3999,
-    "rating": 4.9,
-    "reviews": 198,
-    "image": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=800",
-    "description": "Romantic mountain escape with scenic train rides, charming villages, and breathtaking Alpine views.",
-    "highlights": ["Jungfrau", "Lake Lucerne", "Interlaken", "Chocolate factory", "Swiss rail pass"],
-    "included": ["4-star hotels", "Breakfast", "Swiss travel pass", "Guided tours"],
-    "excluded": ["Flights", "Lunches and dinners"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Zurich Arrival", "activities": ["Airport arrival", "Old town walking tour", "Lake Zurich cruise", "Swiss fondue dinner"] },
-        { "day": 2, "title": "Lucerne Romance", "activities": ["Train to Lucerne", "Chapel Bridge visit", "Mount Pilatus cable car", "Lakeside dinner"] },
-        { "day": 3, "title": "Interlaken Adventure", "activities": ["Scenic train to Interlaken", "Lake Thun boat ride", "Paragliding optional", "Harderkulm sunset"] },
-        { "day": 4, "title": "Jungfrau Summit", "activities": ["Train to Jungfraujoch", "Top of Europe experience", "Ice Palace visit", "Grindelwald village stroll"] },
-        { "day": 5, "title": "Chocolate & Cheese", "activities": ["Chocolate factory tour", "Cheese dairy visit", "Gruyères castle", "Traditional Swiss dinner"] },
-        { "day": 6, "title": "Zermatt & Matterhorn", "activities": ["Glacier Express journey", "Gornergrat viewpoint", "Matterhorn photo session", "Farewell dinner"] },
-        { "day": 7, "title": "Departure", "activities": ["Scenic train to Zurich", "Last shopping", "Airport transfer", "Departure"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Zurich City Hotel", "meals": "Dinner included" },
-        { "night": 2, "accommodation": "Lucerne Lakeside Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Interlaken Alpine Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Interlaken Alpine Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Grindelwald Chalet", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Zermatt Mountain Lodge", "meals": "Breakfast & Dinner" }
-      ]
-    }
-  },
-  {
-    "id": "401",
-    "category": "europe",
-    "title": "Classic Europe Tour",
-    "location": "France, Switzerland, Italy",
-    "duration": "10 Days / 9 Nights",
-    "price": 2999,
-    "rating": 4.8,
-    "reviews": 534,
-    "image": "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800",
-    "description": "Experience the best of Europe with Paris, Swiss Alps, and Italian charm in one unforgettable journey.",
-    "highlights": ["Eiffel Tower", "Swiss Alps", "Venice canals", "Rome Colosseum", "Vatican City"],
-    "included": ["3-star hotels", "Breakfast", "Coach travel", "Guided tours"],
-    "excluded": ["Flights", "Schengen visa", "Tips"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Paris Arrival", "activities": ["Airport pickup", "Hotel check-in", "Evening Seine river cruise", "Eiffel Tower sparkling lights"] },
-        { "day": 2, "title": "Paris Highlights", "activities": ["Louvre Museum tour", "Notre-Dame area walk", "Montmartre and Sacré-Cœur", "Moulin Rouge optional"] },
-        { "day": 3, "title": "Paris to Geneva", "activities": ["TGV to Geneva", "Lake Geneva walk", "Jet d'Eau fountain", "Old town exploration"] },
-        { "day": 4, "title": "Swiss Alps", "activities": ["Mount Titlis excursion", "Cliff walk experience", "Ice Flyer chairlift", "Lucerne evening stroll"] },
-        { "day": 5, "title": "Lucerne to Milan", "activities": ["Scenic coach journey", "Milan Duomo visit", "Galleria Vittorio Emanuele", "Italian dinner"] },
-        { "day": 6, "title": "Venice Day", "activities": ["Train to Venice", "St. Mark's Square", "Gondola ride", "Rialto Bridge sunset"] },
-        { "day": 7, "title": "Venice to Florence", "activities": ["Morning in Venice", "Train to Florence", "Ponte Vecchio walk", "Tuscan dinner"] },
-        { "day": 8, "title": "Florence Art Day", "activities": ["Uffizi Gallery tour", "Michelangelo's David", "Leather market shopping", "Piazzale Michelangelo sunset"] },
-        { "day": 9, "title": "Rome Discovery", "activities": ["Train to Rome", "Colosseum tour", "Roman Forum walk", "Trevi Fountain night visit"] },
-        { "day": 10, "title": "Vatican & Departure", "activities": ["Vatican City tour", "St. Peter's Basilica", "Sistine Chapel", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Paris City Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Paris City Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Geneva Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Lucerne Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Milan Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Venice Hotel", "meals": "Breakfast" },
-        { "night": 7, "accommodation": "Florence Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 8, "accommodation": "Florence Hotel", "meals": "Breakfast" },
-        { "night": 9, "accommodation": "Rome Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "402",
-    "category": "europe",
-    "title": "Romantic Paris Getaway",
+    "id": "116",
+    "category": "international",
+    "title": "Paris Romantic Getaway",
     "location": "Paris, France",
+    "duration": "5 Days / 4 Nights",
+    "price": 1899,
+    "rating": 4.9,
+    "reviews": 845,
+    "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800",
+    "description": "City of love with iconic landmarks, art, and French cuisine.",
+    "highlights": ["Eiffel Tower", "Louvre Museum", "Seine cruise", "Montmartre"],
+    "included": ["Hotel", "Breakfast", "Museum passes", "City tour"],
+    "excluded": ["Flights", "Visa", "Meals"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival", "activities": ["Eiffel Tower", "Champs-Élysées", "Arc de Triomphe"] },
+        { "day": 2, "title": "Art & Culture", "activities": ["Louvre Museum", "Notre-Dame", "Latin Quarter"] },
+        { "day": 3, "title": "Versailles", "activities": ["Palace tour", "Gardens", "Marie Antoinette estate"] },
+        { "day": 4, "title": "Montmartre", "activities": ["Sacré-Cœur", "Artists square", "Seine cruise"] },
+        { "day": 5, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Central Paris Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Central Paris Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Central Paris Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Central Paris Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "117",
+    "category": "international",
+    "title": "Swiss Alps Adventure",
+    "location": "Zurich, Interlaken, Zermatt",
+    "duration": "7 Days / 6 Nights",
+    "price": 2299,
+    "rating": 4.9,
+    "reviews": 567,
+    "image": "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800",
+    "description": "Snow-capped peaks, alpine villages, and scenic train journeys.",
+    "highlights": ["Jungfraujoch", "Matterhorn", "Glacier Express", "Lake Lucerne"],
+    "included": ["Hotels", "Breakfast", "Swiss Pass", "Cable cars"],
+    "excluded": ["Flights", "Visa", "Lunches & Dinners"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Zurich Arrival", "activities": ["Old Town", "Lake Zurich", "Bahnhofstrasse"] },
+        { "day": 2, "title": "Lucerne", "activities": ["Chapel Bridge", "Lake cruise", "Mt. Pilatus"] },
+        { "day": 3, "title": "Interlaken", "activities": ["Scenic train", "Harder Kulm", "Adventure activities"] },
+        { "day": 4, "title": "Jungfraujoch", "activities": ["Top of Europe", "Ice Palace", "Snow activities"] },
+        { "day": 5, "title": "Zermatt", "activities": ["Matterhorn views", "Gornergrat railway"] },
+        { "day": 6, "title": "Glacier Express", "activities": ["Scenic train journey", "Mountain villages"] },
+        { "day": 7, "title": "Departure", "activities": ["Transfer", "Flight home"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Zurich Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Lucerne Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Interlaken Resort", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Interlaken Resort", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Zermatt Chalet", "meals": "Breakfast" },
+        { "night": 6, "accommodation": "Mountain Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "118",
+    "category": "international",
+    "title": "Australia East Coast",
+    "location": "Sydney, Cairns, Melbourne",
+    "duration": "10 Days / 9 Nights",
+    "price": 2899,
+    "rating": 4.8,
+    "reviews": 456,
+    "image": "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800",
+    "description": "Great Barrier Reef, Sydney Opera House, and coastal wonders.",
+    "highlights": ["Opera House", "Great Barrier Reef", "Great Ocean Road", "Wildlife"],
+    "included": ["Hotels", "Breakfast", "Reef tour", "City tours"],
+    "excluded": ["Flights", "Visa", "Most meals"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Sydney Arrival", "activities": ["Opera House", "Harbour Bridge", "Circular Quay"] },
+        { "day": 2, "title": "Sydney Beaches", "activities": ["Bondi Beach", "Coastal walk", "The Rocks"] },
+        { "day": 3, "title": "Blue Mountains", "activities": ["Three Sisters", "Scenic World", "Waterfalls"] },
+        { "day": 4, "title": "Cairns", "activities": ["Flight to Cairns", "Esplanade Lagoon"] },
+        { "day": 5, "title": "Great Barrier Reef", "activities": ["Reef cruise", "Snorkeling", "Marine life"] },
+        { "day": 6, "title": "Daintree Rainforest", "activities": ["Rainforest tour", "Cape Tribulation"] },
+        { "day": 7, "title": "Melbourne", "activities": ["Federation Square", "Laneways", "Coffee culture"] },
+        { "day": 8, "title": "Great Ocean Road", "activities": ["12 Apostles", "Coastal drive", "Wildlife"] },
+        { "day": 9, "title": "Melbourne Explore", "activities": ["Queen Victoria Market", "St Kilda Beach"] },
+        { "day": 10, "title": "Departure", "activities": ["Checkout", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Sydney Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Sydney Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Sydney Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Cairns Resort", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Cairns Resort", "meals": "Breakfast" },
+        { "night": 6, "accommodation": "Cairns Resort", "meals": "Breakfast" },
+        { "night": 7, "accommodation": "Melbourne Hotel", "meals": "Breakfast" },
+        { "night": 8, "accommodation": "Melbourne Hotel", "meals": "Breakfast" },
+        { "night": 9, "accommodation": "Melbourne Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "119",
+    "category": "international",
+    "title": "Japan Cherry Blossom",
+    "location": "Tokyo, Kyoto, Osaka",
+    "duration": "8 Days / 7 Nights",
+    "price": 2199,
+    "rating": 4.9,
+    "reviews": 723,
+    "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800",
+    "description": "Ancient temples, modern cities, cherry blossoms, and sushi.",
+    "highlights": ["Mount Fuji", "Temples", "Cherry blossoms", "Tokyo Tower"],
+    "included": ["Hotels", "Breakfast", "JR Pass", "Guided tours"],
+    "excluded": ["Flights", "Visa", "Lunches & Dinners"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Tokyo Arrival", "activities": ["Shibuya Crossing", "Shinjuku", "Tokyo Tower"] },
+        { "day": 2, "title": "Modern Tokyo", "activities": ["Akihabara", "Harajuku", "Meiji Shrine"] },
+        { "day": 3, "title": "Mt. Fuji Day Trip", "activities": ["5th Station", "Lake Kawaguchi", "Hakone"] },
+        { "day": 4, "title": "Kyoto", "activities": ["Bullet train", "Fushimi Inari", "Gion district"] },
+        { "day": 5, "title": "Kyoto Temples", "activities": ["Kinkaku-ji", "Arashiyama Bamboo", "Kiyomizu-dera"] },
+        { "day": 6, "title": "Nara Day Trip", "activities": ["Todai-ji Temple", "Deer park", "Traditional streets"] },
+        { "day": 7, "title": "Osaka", "activities": ["Osaka Castle", "Dotonbori", "Street food"] },
+        { "day": 8, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Tokyo Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Tokyo Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Tokyo Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Kyoto Ryokan", "meals": "Breakfast" },
+        { "night": 5, "accommodation": "Kyoto Ryokan", "meals": "Breakfast" },
+        { "night": 6, "accommodation": "Kyoto Ryokan", "meals": "Breakfast" },
+        { "night": 7, "accommodation": "Osaka Hotel", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "120",
+    "category": "international",
+    "title": "New York City Explorer",
+    "location": "New York, USA",
     "duration": "5 Days / 4 Nights",
     "price": 1799,
     "rating": 4.7,
-    "reviews": 423,
-    "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800",
-    "description": "Fall in love with the City of Lights - iconic landmarks, world-class cuisine, and romantic ambiance.",
-    "highlights": ["Eiffel Tower", "Louvre Museum", "Seine cruise", "Montmartre", "Versailles"],
-    "included": ["Boutique hotel", "Breakfast", "Airport transfers", "City tour"],
-    "excluded": ["Flights", "Museum tickets"],
+    "reviews": 934,
+    "image": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800",
+    "description": "The city that never sleeps with iconic landmarks and culture.",
+    "highlights": ["Statue of Liberty", "Central Park", "Times Square", "Broadway"],
+    "included": ["Hotel", "Breakfast", "City pass", "Transfers"],
+    "excluded": ["Flights", "Visa", "Broadway tickets"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Bonjour Paris", "activities": ["Airport arrival", "Check-in near Champs-Élysées", "Arc de Triomphe visit", "Evening Eiffel Tower with champagne"] },
-        { "day": 2, "title": "Art & History", "activities": ["Louvre Museum morning", "Tuileries Garden walk", "Notre-Dame area exploration", "Seine river cruise at sunset"] },
-        { "day": 3, "title": "Versailles Day", "activities": ["Palace of Versailles tour", "Hall of Mirrors", "Gardens exploration", "Marie Antoinette's estate"] },
-        { "day": 4, "title": "Montmartre & More", "activities": ["Sacré-Cœur Basilica", "Artist square Place du Tertre", "Moulin Rouge photo", "Le Marais shopping", "Farewell dinner"] },
-        { "day": 5, "title": "Au Revoir", "activities": ["Breakfast at café", "Last-minute shopping", "Airport transfer", "Departure"] }
+        { "day": 1, "title": "Arrival", "activities": ["Times Square", "Broadway district", "Rockefeller Center"] },
+        { "day": 2, "title": "Landmarks", "activities": ["Statue of Liberty", "Ellis Island", "Wall Street"] },
+        { "day": 3, "title": "Museums", "activities": ["Met Museum", "Central Park", "5th Avenue"] },
+        { "day": 4, "title": "Brooklyn", "activities": ["Brooklyn Bridge", "DUMBO", "Coney Island"] },
+        { "day": 5, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Paris Boutique Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Paris Boutique Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Paris Boutique Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Paris Boutique Hotel", "meals": "Breakfast & Dinner" }
+        { "night": 1, "accommodation": "Manhattan Hotel", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Manhattan Hotel", "meals": "Breakfast" },
+        { "night": 3, "accommodation": "Manhattan Hotel", "meals": "Breakfast" },
+        { "night": 4, "accommodation": "Manhattan Hotel", "meals": "Breakfast" }
       ]
     }
   },
   {
-    "id": "403",
-    "category": "europe",
-    "title": "Italian Dream",
-    "location": "Rome, Florence, Venice",
-    "duration": "8 Days / 7 Nights",
-    "price": 2499,
+    "id": "121",
+    "category": "india",
+    "title": "Rishikesh Yoga Retreat",
+    "location": "Rishikesh, Uttarakhand",
+    "duration": "4 Days / 3 Nights",
+    "price": 549,
     "rating": 4.8,
-    "reviews": 389,
-    "image": "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800",
-    "description": "Discover Italy's rich history, art, and cuisine from Rome to Venice.",
-    "highlights": ["Colosseum", "Vatican", "Uffizi Gallery", "Grand Canal", "Tuscany wine tour"],
-    "included": ["Hotels", "Breakfast", "Train tickets", "Guided tours"],
-    "excluded": ["Flights", "Entrance fees"],
+    "reviews": 412,
+    "image": "https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800",
+    "description": "Yoga capital of the world with ashrams and Ganges rafting.",
+    "highlights": ["Yoga sessions", "River rafting", "Beatles Ashram", "Ganga Aarti"],
+    "included": ["Ashram stay", "Vegetarian meals", "Yoga classes", "Meditation"],
+    "excluded": ["Flights", "Adventure activities"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Rome Arrival", "activities": ["Airport pickup", "Hotel check-in near Pantheon", "Evening walk to Trevi Fountain", "Traditional Roman dinner"] },
-        { "day": 2, "title": "Ancient Rome", "activities": ["Colosseum guided tour", "Roman Forum exploration", "Palatine Hill views", "Trastevere dinner"] },
-        { "day": 3, "title": "Vatican City", "activities": ["Vatican Museums", "Sistine Chapel", "St. Peter's Basilica", "Castel Sant'Angelo"] },
-        { "day": 4, "title": "Rome to Florence", "activities": ["High-speed train to Florence", "Duomo climb", "Ponte Vecchio walk", "Gelato tasting tour"] },
-        { "day": 5, "title": "Tuscan Wine Tour", "activities": ["Chianti wine region", "Vineyard visits", "Wine and cheese tasting", "Tuscan countryside views"] },
-        { "day": 6, "title": "Florence Art", "activities": ["Uffizi Gallery morning", "Accademia and David", "San Lorenzo market", "Piazzale Michelangelo sunset"] },
-        { "day": 7, "title": "Venice Magic", "activities": ["Train to Venice", "Water taxi to hotel", "St. Mark's Square", "Gondola ride at sunset"] },
-        { "day": 8, "title": "Venice Departure", "activities": ["Rialto Market morning", "Last canal walk", "Water taxi to airport", "Departure"] }
+        { "day": 1, "title": "Arrival", "activities": ["Ashram check-in", "Evening yoga", "Ganga Aarti"] },
+        { "day": 2, "title": "Yoga & Meditation", "activities": ["Morning yoga", "Meditation", "Temple visits"] },
+        { "day": 3, "title": "Adventure", "activities": ["River rafting", "Beatles Ashram", "Lakshman Jhula"] },
+        { "day": 4, "title": "Departure", "activities": ["Sunrise yoga", "Checkout"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Rome Centro Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Rome Centro Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Rome Centro Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Florence Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Florence Hotel", "meals": "Breakfast & Wine lunch" },
-        { "night": 6, "accommodation": "Florence Hotel", "meals": "Breakfast" },
-        { "night": 7, "accommodation": "Venice Canal Hotel", "meals": "Breakfast" }
+        { "night": 1, "accommodation": "Yoga Ashram", "meals": "All vegetarian meals" },
+        { "night": 2, "accommodation": "Yoga Ashram", "meals": "All vegetarian meals" },
+        { "night": 3, "accommodation": "Yoga Ashram", "meals": "Breakfast" }
       ]
     }
   },
   {
-    "id": "404",
-    "category": "europe",
-    "title": "Nordic Wonders",
-    "location": "Norway, Sweden, Finland",
-    "duration": "9 Days / 8 Nights",
-    "price": 3499,
-    "rating": 4.9,
-    "reviews": 267,
-    "image": "https://images.unsplash.com/photo-1520769669658-f07657f5a307?w=800",
-    "description": "Experience the magic of Scandinavia with fjords, Northern Lights, and stunning landscapes.",
-    "highlights": ["Norwegian Fjords", "Northern Lights", "Stockholm Old Town", "Helsinki", "Arctic Circle"],
-    "included": ["Hotels", "Breakfast", "Scenic train", "Fjord cruise"],
-    "excluded": ["Flights", "Winter gear"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Oslo Arrival", "activities": ["Airport arrival", "Oslo opera house", "Vigeland Sculpture Park", "Karl Johans Gate walk"] },
-        { "day": 2, "title": "Oslo to Bergen", "activities": ["Norway in a Nutshell journey", "Flåm Railway scenic ride", "Aurlandsfjord cruise", "Bergen check-in"] },
-        { "day": 3, "title": "Bergen Exploration", "activities": ["Bryggen Hanseatic wharf", "Fish market visit", "Fløibanen funicular", "Bergen evening walk"] },
-        { "day": 4, "title": "Flight to Tromsø", "activities": ["Morning flight north", "Arctic Cathedral visit", "Cable car to Storsteinen", "Northern Lights hunt"] },
-        { "day": 5, "title": "Arctic Adventures", "activities": ["Husky sledding experience", "Sami cultural visit", "Reindeer feeding", "Northern Lights chase"] },
-        { "day": 6, "title": "Stockholm Arrival", "activities": ["Flight to Stockholm", "Gamla Stan old town", "Royal Palace visit", "ABBA Museum optional"] },
-        { "day": 7, "title": "Stockholm Islands", "activities": ["Djurgården island", "Vasa Museum", "Skansen open-air museum", "Stockholm archipelago cruise"] },
-        { "day": 8, "title": "Helsinki Day", "activities": ["Ferry to Helsinki", "Senate Square", "Rock Church visit", "Design District walk"] },
-        { "day": 9, "title": "Departure", "activities": ["Suomenlinna fortress", "Market Square", "Airport transfer", "Departure"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Oslo City Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Bergen Harbour Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Bergen Harbour Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Tromsø Arctic Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Tromsø Arctic Hotel", "meals": "Breakfast & Lunch" },
-        { "night": 6, "accommodation": "Stockholm Hotel", "meals": "Breakfast" },
-        { "night": 7, "accommodation": "Stockholm Hotel", "meals": "Breakfast" },
-        { "night": 8, "accommodation": "Helsinki Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "501",
-    "category": "educational",
-    "title": "NASA Space Center Tour",
-    "location": "Houston, USA",
-    "duration": "5 Days / 4 Nights",
-    "price": 1999,
-    "rating": 4.9,
-    "reviews": 156,
-    "image": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800",
-    "description": "Inspire young minds with an educational journey to NASA's Johnson Space Center.",
-    "highlights": ["Space Center Houston", "Astronaut training", "Mission Control", "Saturn V rocket", "Space simulations"],
-    "included": ["Hotel", "Breakfast", "All entrance fees", "Expert guides"],
-    "excluded": ["Flights", "Meals not mentioned"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Houston Arrival", "activities": ["Airport pickup", "Hotel check-in", "Houston downtown tour", "Welcome dinner"] },
-        { "day": 2, "title": "Space Center Day 1", "activities": ["Space Center Houston arrival", "Saturn V rocket complex", "Mission Control tour", "Astronaut gallery"] },
-        { "day": 3, "title": "Space Center Day 2", "activities": ["Astronaut training simulators", "Zero gravity experience", "Independence Plaza", "Space food tasting"] },
-        { "day": 4, "title": "Science & Discovery", "activities": ["Houston Museum of Natural Science", "Planetarium show", "Cockrell Butterfly Center", "Farewell space dinner"] },
-        { "day": 5, "title": "Departure", "activities": ["Breakfast at hotel", "Souvenir shopping", "Airport transfer", "Departure"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Houston Downtown Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Houston Downtown Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Houston Downtown Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Houston Downtown Hotel", "meals": "Breakfast & Dinner" }
-      ]
-    }
-  },
-  {
-    "id": "502",
-    "category": "educational",
-    "title": "Historical Britain",
-    "location": "London & Oxford, UK",
-    "duration": "7 Days / 6 Nights",
-    "price": 2299,
+    "id": "122",
+    "category": "india",
+    "title": "Jaisalmer Desert Safari",
+    "location": "Jaisalmer, Rajasthan",
+    "duration": "3 Days / 2 Nights",
+    "price": 599,
     "rating": 4.7,
-    "reviews": 198,
-    "image": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800",
-    "description": "Walk through centuries of history at world-renowned universities and historic landmarks.",
-    "highlights": ["Oxford University", "British Museum", "Tower of London", "Stonehenge", "Cambridge"],
-    "included": ["Hotels", "Breakfast", "University tours", "Museum passes"],
+    "reviews": 368,
+    "image": "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800",
+    "description": "Golden city with desert camps, sand dunes, and camel safaris.",
+    "highlights": ["Desert camp", "Camel safari", "Jaisalmer Fort", "Sand dunes"],
+    "included": ["Hotel & Camp", "All meals", "Camel safari", "Cultural show"],
     "excluded": ["Flights", "Personal expenses"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "London Arrival", "activities": ["Heathrow arrival", "Hotel check-in", "Westminster walking tour", "Big Ben and Parliament"] },
-        { "day": 2, "title": "London Museums", "activities": ["British Museum guided tour", "Natural History Museum", "Science Museum exploration", "Thames evening cruise"] },
-        { "day": 3, "title": "Royal London", "activities": ["Tower of London tour", "Crown Jewels viewing", "Tower Bridge experience", "Shakespeare's Globe theatre"] },
-        { "day": 4, "title": "Oxford Day", "activities": ["Train to Oxford", "Bodleian Library tour", "Christ Church College", "Harry Potter filming locations"] },
-        { "day": 5, "title": "Cambridge Visit", "activities": ["Train to Cambridge", "King's College Chapel", "Punting on River Cam", "Trinity College grounds"] },
-        { "day": 6, "title": "Stonehenge & Bath", "activities": ["Coach to Stonehenge", "Stone circle tour", "Bath Roman baths", "Georgian architecture walk"] },
-        { "day": 7, "title": "Departure", "activities": ["British breakfast", "Last London shopping", "Airport transfer", "Departure"] }
+        { "day": 1, "title": "Arrival", "activities": ["Fort visit", "Patwon ki Haveli", "Gadisar Lake"] },
+        { "day": 2, "title": "Desert Camp", "activities": ["Camel safari", "Sam sand dunes", "Cultural evening"] },
+        { "day": 3, "title": "Departure", "activities": ["Sunrise views", "Local shopping", "Transfer"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "London Central Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "London Central Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "London Central Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Oxford Inn", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Cambridge Hotel", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "London Central Hotel", "meals": "Breakfast" }
+        { "night": 1, "accommodation": "Heritage Haveli", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Desert Camp", "meals": "All meals" }
       ]
     }
   },
   {
-    "id": "503",
-    "category": "educational",
-    "title": "Ancient Egypt Explorer",
-    "location": "Cairo & Luxor, Egypt",
-    "duration": "8 Days / 7 Nights",
-    "price": 1899,
-    "rating": 4.8,
+    "id": "123",
+    "category": "india",
+    "title": "Ooty Hill Station Retreat",
+    "location": "Ooty, Tamil Nadu",
+    "duration": "3 Days / 2 Nights",
+    "price": 449,
+    "rating": 4.5,
+    "reviews": 287,
+    "image": "https://images.unsplash.com/photo-1571696522137-4e6faeb2b218?w=800",
+    "description": "Queen of hill stations with tea gardens and toy train rides.",
+    "highlights": ["Toy train", "Botanical gardens", "Ooty Lake", "Tea estates"],
+    "included": ["Hotel", "Breakfast", "Sightseeing", "Transfers"],
+    "excluded": ["Flights", "Toy train tickets"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival", "activities": ["Ooty Lake", "Rose Garden", "Local market"] },
+        { "day": 2, "title": "Sightseeing", "activities": ["Botanical Garden", "Doddabetta Peak", "Tea factory"] },
+        { "day": 3, "title": "Departure", "activities": ["Toy train ride", "Checkout"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Hill Resort", "meals": "Breakfast & Dinner" },
+        { "night": 2, "accommodation": "Hill Resort", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "124",
+    "category": "india",
+    "title": "Khajuraho Temple Circuit",
+    "location": "Khajuraho, Madhya Pradesh",
+    "duration": "2 Days / 1 Night",
+    "price": 399,
+    "rating": 4.6,
     "reviews": 234,
-    "image": "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800",
-    "description": "Uncover the mysteries of ancient Egypt with pyramids, temples, and the Nile River.",
-    "highlights": ["Pyramids of Giza", "Sphinx", "Valley of Kings", "Nile cruise", "Egyptian Museum"],
-    "included": ["Hotels & Cruise", "All meals on cruise", "Expert Egyptologist", "All entrance fees"],
-    "excluded": ["Flights", "Visa fees", "Tips"],
+    "image": "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=800",
+    "description": "UNESCO World Heritage temples with intricate sculptures.",
+    "highlights": ["Temple complex", "Light & sound show", "Sculptures", "Museum"],
+    "included": ["Hotel", "Breakfast", "Temple tour", "Guide"],
+    "excluded": ["Flights", "Entry fees"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Cairo Arrival", "activities": ["Airport welcome", "Hotel check-in", "Khan El Khalili bazaar", "Egyptian dinner"] },
-        { "day": 2, "title": "Pyramids Day", "activities": ["Giza Pyramids complex", "Sphinx photo session", "Solar boat museum", "Sound and Light show"] },
-        { "day": 3, "title": "Cairo Museums", "activities": ["Egyptian Museum treasures", "Tutankhamun artifacts", "Citadel of Saladin", "Mohamed Ali Mosque"] },
-        { "day": 4, "title": "Fly to Luxor", "activities": ["Flight to Luxor", "Nile cruise embarkation", "Karnak Temple tour", "Luxor Temple at night"] },
-        { "day": 5, "title": "Valley of Kings", "activities": ["West Bank tour", "Valley of the Kings", "Hatshepsut Temple", "Colossi of Memnon"] },
-        { "day": 6, "title": "Nile Sailing", "activities": ["Edfu Temple visit", "Kom Ombo Temple", "Nile sailing and scenery", "Traditional Nubian show"] },
-        { "day": 7, "title": "Aswan", "activities": ["Aswan High Dam", "Philae Temple by boat", "Nubian village visit", "Felucca sunset ride"] },
-        { "day": 8, "title": "Departure", "activities": ["Breakfast on cruise", "Flight to Cairo", "Airport transfer", "Departure"] }
+        { "day": 1, "title": "Temple Tour", "activities": ["Western group temples", "Museum", "Light show"] },
+        { "day": 2, "title": "Departure", "activities": ["Eastern temples", "Shopping", "Transfer"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Cairo 5-Star Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Cairo 5-Star Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Cairo 5-Star Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Nile Cruise Ship", "meals": "All inclusive" },
-        { "night": 5, "accommodation": "Nile Cruise Ship", "meals": "All inclusive" },
-        { "night": 6, "accommodation": "Nile Cruise Ship", "meals": "All inclusive" },
-        { "night": 7, "accommodation": "Nile Cruise Ship", "meals": "All inclusive" }
+        { "night": 1, "accommodation": "Temple View Hotel", "meals": "Breakfast & Dinner" }
       ]
     }
   },
   {
-    "id": "504",
-    "category": "educational",
-    "title": "Wildlife Safari Academy",
-    "location": "Kenya & Tanzania",
-    "duration": "9 Days / 8 Nights",
-    "price": 2799,
-    "rating": 4.9,
-    "reviews": 145,
-    "image": "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
-    "description": "Educational wildlife adventure with expert naturalists in Africa's most iconic safari destinations.",
-    "highlights": ["Masai Mara", "Serengeti", "Big Five", "Conservation lessons", "Maasai village visit"],
-    "included": ["Safari lodges", "All meals", "Game drives", "Expert guides"],
-    "excluded": ["Flights", "Travel insurance", "Visa fees"],
+    "id": "125",
+    "category": "india",
+    "title": "Hampi Heritage Ruins",
+    "location": "Hampi, Karnataka",
+    "duration": "3 Days / 2 Nights",
+    "price": 499,
+    "rating": 4.7,
+    "reviews": 356,
+    "image": "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=800",
+    "description": "Ancient ruins, boulder-strewn landscapes, and Vijayanagara history.",
+    "highlights": ["Virupaksha Temple", "Stone chariot", "Vittala Temple", "Matanga Hill"],
+    "included": ["Hotel", "Breakfast", "Bicycle rental", "Guide"],
+    "excluded": ["Flights", "Entry fees"],
     "itinerary": {
       "days": [
-        { "day": 1, "title": "Nairobi Arrival", "activities": ["Airport welcome", "Safari briefing", "Giraffe Centre visit", "Karen Blixen Museum"] },
-        { "day": 2, "title": "Amboseli National Park", "activities": ["Drive to Amboseli", "Kilimanjaro backdrop views", "Elephant observation", "Conservation talk"] },
-        { "day": 3, "title": "Amboseli Safari", "activities": ["Sunrise game drive", "Bird watching session", "Maasai village cultural visit", "Wildlife photography lesson"] },
-        { "day": 4, "title": "Lake Nakuru", "activities": ["Drive to Lake Nakuru", "Flamingo observation", "Rhino tracking", "Lake ecosystem lecture"] },
-        { "day": 5, "title": "Masai Mara Transfer", "activities": ["Scenic drive to Mara", "Great Rift Valley viewpoint", "Lodge check-in", "Evening game drive"] },
-        { "day": 6, "title": "Masai Mara Safari", "activities": ["Full day game drive", "Big Five search", "Mara River crossing", "Bush lunch experience"] },
-        { "day": 7, "title": "Mara to Serengeti", "activities": ["Border crossing to Tanzania", "Serengeti National Park", "Endless plains exploration", "Campfire dinner"] },
-        { "day": 8, "title": "Serengeti Safari", "activities": ["Sunrise hot air balloon optional", "Full day game drive", "Predator observation", "Star gazing session"] },
-        { "day": 9, "title": "Departure", "activities": ["Final safari drive", "Flight to Nairobi/Arusha", "Airport transfer", "Departure"] }
+        { "day": 1, "title": "Arrival", "activities": ["Virupaksha Temple", "Hampi Bazaar", "Riverside"] },
+        { "day": 2, "title": "Full Day Tour", "activities": ["Vittala Temple", "Stone Chariot", "Royal enclosure"] },
+        { "day": 3, "title": "Departure", "activities": ["Matanga Hill sunrise", "Checkout"] }
       ],
       "nights": [
-        { "night": 1, "accommodation": "Nairobi Safari Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Amboseli Lodge", "meals": "All meals" },
-        { "night": 3, "accommodation": "Amboseli Lodge", "meals": "All meals" },
-        { "night": 4, "accommodation": "Lake Nakuru Lodge", "meals": "All meals" },
-        { "night": 5, "accommodation": "Masai Mara Camp", "meals": "All meals" },
-        { "night": 6, "accommodation": "Masai Mara Camp", "meals": "All meals" },
-        { "night": 7, "accommodation": "Serengeti Lodge", "meals": "All meals" },
-        { "night": 8, "accommodation": "Serengeti Lodge", "meals": "All meals" }
+        { "night": 1, "accommodation": "Heritage Guesthouse", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "Heritage Guesthouse", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "126",
+    "category": "india",
+    "title": "Kaziranga Wildlife Safari",
+    "location": "Kaziranga, Assam",
+    "duration": "3 Days / 2 Nights",
+    "price": 799,
+    "rating": 4.8,
+    "reviews": 289,
+    "image": "https://images.unsplash.com/photo-1551871812-77e5c7e0ee86?w=800",
+    "description": "One-horned rhinos, elephants, and diverse wildlife sanctuary.",
+    "highlights": ["Rhino safari", "Elephant ride", "Jeep safari", "Bird watching"],
+    "included": ["Resort", "All meals", "Safari permits", "Guided tours"],
+    "excluded": ["Flights", "Camera fees"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival", "activities": ["Check-in", "Evening safari", "Nature walk"] },
+        { "day": 2, "title": "Wildlife Safari", "activities": ["Morning jeep safari", "Elephant safari", "Bird watching"] },
+        { "day": 3, "title": "Departure", "activities": ["Early morning safari", "Checkout"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Jungle Resort", "meals": "All meals" },
+        { "night": 2, "accommodation": "Jungle Resort", "meals": "Breakfast & Dinner" }
+      ]
+    }
+  },
+  {
+    "id": "127",
+    "category": "india",
+    "title": "Rann of Kutch White Desert",
+    "location": "Kutch, Gujarat",
+    "duration": "3 Days / 2 Nights",
+    "price": 649,
+    "rating": 4.6,
+    "reviews": 312,
+    "image": "https://images.unsplash.com/photo-1608096299230-c8c30e3b6a1e?w=800",
+    "description": "Vast white salt desert with cultural villages and full moon magic.",
+    "highlights": ["White Rann", "Cultural villages", "Handicrafts", "Desert festival"],
+    "included": ["Tent accommodation", "All meals", "Village tours", "Cultural show"],
+    "excluded": ["Flights", "Personal shopping"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival", "activities": ["White Rann visit", "Sunset views", "Folk dance"] },
+        { "day": 2, "title": "Village Tour", "activities": ["Craft villages", "Bhuj city", "Aina Mahal"] },
+        { "day": 3, "title": "Departure", "activities": ["Sunrise at Rann", "Shopping", "Transfer"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Luxury Tent Resort", "meals": "All meals" },
+        { "night": 2, "accommodation": "Luxury Tent Resort", "meals": "Breakfast & Dinner" }
+      ]
+    }
+  },
+  {
+    "id": "128",
+    "category": "india",
+    "title": "Spiti Valley Adventure",
+    "location": "Spiti, Himachal Pradesh",
+    "duration": "7 Days / 6 Nights",
+    "price": 1399,
+    "rating": 4.9,
+    "reviews": 198,
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800",
+    "description": "Cold desert mountains, ancient monasteries, and remote villages.",
+    "highlights": ["Key Monastery", "Chandratal Lake", "Tabo", "Mountain passes"],
+    "included": ["Homestays & Hotels", "All meals", "Permits", "Transport"],
+    "excluded": ["Flights", "Personal gear"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Shimla to Narkanda", "activities": ["Scenic drive", "Acclimatization"] },
+        { "day": 2, "title": "Kalpa", "activities": ["Kinnaur valley", "Kinner Kailash views"] },
+        { "day": 3, "title": "Tabo", "activities": ["Monastery visit", "Ancient murals"] },
+        { "day": 4, "title": "Dhankar & Pin Valley", "activities": ["Monastery", "Valley trek"] },
+        { "day": 5, "title": "Kaza", "activities": ["Key Monastery", "Kibber village", "Local culture"] },
+        { "day": 6, "title": "Chandratal", "activities": ["Mountain lake", "Camping", "Stargazing"] },
+        { "day": 7, "title": "Return", "activities": ["Return journey", "End of tour"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Narkanda Hotel", "meals": "Dinner" },
+        { "night": 2, "accommodation": "Kalpa Homestay", "meals": "All meals" },
+        { "night": 3, "accommodation": "Tabo Guesthouse", "meals": "All meals" },
+        { "night": 4, "accommodation": "Dhankar Homestay", "meals": "All meals" },
+        { "night": 5, "accommodation": "Kaza Hotel", "meals": "All meals" },
+        { "night": 6, "accommodation": "Chandratal Camp", "meals": "All meals" }
+      ]
+    }
+  },
+  {
+    "id": "129",
+    "category": "india",
+    "title": "Pondicherry French Riviera",
+    "location": "Pondicherry, Tamil Nadu",
+    "duration": "3 Days / 2 Nights",
+    "price": 449,
+    "rating": 4.5,
+    "reviews": 478,
+    "image": "https://images.unsplash.com/photo-1580114176193-82c021e39979?w=800",
+    "description": "French colonial charm with beaches, ashram, and cafes.",
+    "highlights": ["French Quarter", "Auroville", "Beach promenade", "Cafes"],
+    "included": ["Heritage hotel", "Breakfast", "Auroville tour"],
+    "excluded": ["Flights", "Meals"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival", "activities": ["French Quarter walk", "Beach promenade", "Cafe hopping"] },
+        { "day": 2, "title": "Auroville", "activities": ["Matrimandir", "Beach visit", "Shopping"] },
+        { "day": 3, "title": "Departure", "activities": ["Sri Aurobindo Ashram", "Checkout"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "French Villa", "meals": "Breakfast" },
+        { "night": 2, "accommodation": "French Villa", "meals": "Breakfast" }
+      ]
+    }
+  },
+  {
+    "id": "130",
+    "category": "india",
+    "title": "Sunderbans Mangrove Safari",
+    "location": "Sunderbans, West Bengal",
+    "duration": "3 Days / 2 Nights",
+    "price": 699,
+    "rating": 4.6,
+    "reviews": 234,
+    "image": "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=800",
+    "description": "Royal Bengal Tigers, mangrove forests, and river cruises.",
+    "highlights": ["Tiger spotting", "River safari", "Mangrove forest", "Village tours"],
+    "included": ["Boat accommodation", "All meals", "Safari permits", "Guide"],
+    "excluded": ["Flights", "Camera fees"],
+    "itinerary": {
+      "days": [
+        { "day": 1, "title": "Arrival", "activities": ["Boat journey", "Forest entry", "Bird watching"] },
+        { "day": 2, "title": "Safari Day", "activities": ["Tiger tracking", "Multiple zone visits", "Watchtowers"] },
+        { "day": 3, "title": "Departure", "activities": ["Morning safari", "Village visit", "Return"] }
+      ],
+      "nights": [
+        { "night": 1, "accommodation": "Forest Lodge Boat", "meals": "All meals" },
+        { "night": 2, "accommodation": "Forest Lodge Boat", "meals": "Breakfast & Lunch" }
       ]
     }
   }
