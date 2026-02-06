@@ -29,7 +29,7 @@ const packageCategories = [
   {
     id: 'educational',
     title: 'Educational Tour Packages',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800',
+    image: 'https://images.unsplash.com/photo-1764072970350-2ce4f354a483?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8RWR1Y2F0aW9uYWwlMjB0b3VyfGVufDB8fDB8fHww',
     size: 'small'
   }
 ];

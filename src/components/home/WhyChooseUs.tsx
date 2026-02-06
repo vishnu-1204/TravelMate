@@ -28,7 +28,7 @@ const WhyChooseUs = () => {
     <section className="py-20 bg-secondary/30">
       <div className="page-container">
         <div className="text-center mb-12">
-          <h2 className="section-title">Why Choose TravelWise</h2>
+          <h2 className="section-title">Why Choose TravelMate</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
             We're committed to making your travel experience exceptional from start to finish
           </p>

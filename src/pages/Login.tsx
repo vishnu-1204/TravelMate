@@ -87,7 +87,7 @@ const Login = () => {
           <div className="relative hidden lg:block">
 
             <img
-              src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600"
+              src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800"
               className="absolute inset-0 w-full h-full object-cover"
             />
 
