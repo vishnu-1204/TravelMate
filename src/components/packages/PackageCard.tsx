@@ -60,7 +60,7 @@ const PackageCard = ({
         </p>
         <div className="flex items-center justify-between mt-auto">
           <div>
-            <span className="text-2xl font-bold text-primary">${price}</span>
+            <span className="text-2xl font-bold text-primary">₹{price}</span>
             <span className="text-muted-foreground text-sm"> / person</span>
           </div>
           <div className="flex items-center text-primary font-medium group-hover:gap-2 transition-all">
