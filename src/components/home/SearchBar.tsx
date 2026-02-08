@@ -42,7 +42,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.3 }}
-      className="relative z-30 -mt-12 md:-mt-14 px-4"
+      className="relative z-30 py-8 px-4"
     >
       <div className="max-w-5xl mx-auto">
         <div className="bg-card rounded-2xl shadow-xl border border-border/50 p-3 md:p-4">
