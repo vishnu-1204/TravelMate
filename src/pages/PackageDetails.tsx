@@ -130,7 +130,7 @@ const PackageDetails = () => {
     yPosition += 15;
     doc.setFontSize(14);
     doc.setTextColor(30, 64, 175);
-    doc.text(`Price: $${packageData.price} per person`, 20, yPosition);
+    doc.text(`Price: ₹${packageData.price} per person`, 20, yPosition);
 
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
@@ -341,7 +341,7 @@ const PackageDetails = () => {
                 <div className="bg-card rounded-xl p-6 shadow-card sticky top-24">
                   <div className="text-center mb-6">
                     <p className="text-muted-foreground text-sm">Starting from</p>
-                    <p className="text-4xl font-bold text-primary">${packageData.price}</p>
+                    <p className="text-4xl font-bold text-primary">₹{packageData.price}</p>
                     <p className="text-muted-foreground text-sm">per person</p>
                   </div>
 

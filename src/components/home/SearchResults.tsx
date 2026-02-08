@@ -105,7 +105,7 @@ const SearchResults = ({ results, hasSearched }: SearchResultsProps) => {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-lg font-bold text-primary">${pkg.price}</span>
+                        <span className="text-lg font-bold text-primary">₹{pkg.price}</span>
                         <span className="text-xs text-muted-foreground"> /person</span>
                       </div>
                       <Button
