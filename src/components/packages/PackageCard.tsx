@@ -35,9 +35,6 @@ const PackageCard = ({
           alt={title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-          Popular
-        </div>
       </div>
       <div className="p-6 flex flex-col flex-1">
         <div className="flex items-center gap-1 text-amber-500 mb-2">
