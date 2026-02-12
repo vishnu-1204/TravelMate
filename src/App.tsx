@@ -11,6 +11,10 @@ import Register from "./pages/Register";
 import Packages from "./pages/Packages";
 import PackageDetails from "./pages/PackageDetails";
 import Payment from "./pages/Payment";
+import Blog from "./pages/Blog";
+import BlogDetails from "./pages/BlogDetails";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +31,10 @@ const AnimatedRoutes = () => {
         <Route path="/packages/:category" element={<Packages />} />
         <Route path="/package/:id" element={<PackageDetails />} />
         <Route path="/package/:id/payment" element={<Payment />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogDetails />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
