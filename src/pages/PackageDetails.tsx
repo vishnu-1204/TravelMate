@@ -365,7 +365,7 @@ const PackageDetails = () => {
                       Need help? Contact our travel experts
                     </p>
                     <p className="text-primary font-medium text-center mt-1">
-                      +1 (555) 123-4567
+                      +91 93245 79945
                     </p>
                   </div>
                 </div>
