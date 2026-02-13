@@ -1,105 +1,37 @@
 import express from "express";
-import db from "./db";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import cors from "cors";
+import { config } from "./config/env";
+import { initDatabase } from "./db";
+import authRoutes from "./routes/auth";
 
 const app = express();
+
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-const SECRET = "mysecretkey";
+// Routes
+app.use("/api/auth", authRoutes);
 
-// ================= CREATE USERS TABLE =================
-db.run(`
-CREATE TABLE IF NOT EXISTS users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  email TEXT UNIQUE,
-  password TEXT
-)
-`);
-
-// ================= HOME ROUTE =================
-app.get("/users", (req, res) => {
-  res.send("Server working 🚀");
+// Health check
+app.get("/", (req, res) => {
+  res.json({ status: "🚀 Auth server running", timestamp: new Date().toISOString() });
 });
 
-// ================= REGISTER =================
-app.get("/register", (req, res) => {
-  res.send("Register API working");
-});
-
-app.post("/register", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    db.run(
-      "INSERT INTO users (email, password) VALUES (?, ?)",
-      [email, hashedPassword],
-      function (err) {
-        if (err) {
-          return res.status(400).json({ message: "User already exists" });
-        }
-
-        return res.status(201).json({
-          message: "User registered successfully ✅",
-          userId: this.lastID
-        });
-      }
-    );
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Registration failed" });
-  }
-});
-
-// ================= LOGIN =================
-app.post("/login", (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: "Email and password required" });
-  }
-
-  db.get(
-    "SELECT * FROM users WHERE email = ?",
-    [email],
-    async (err, user: any) => {
-
-      if (err) {
-        return res.status(500).json({ message: "Database error" });
-      }
-
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      const match = await bcrypt.compare(password, user.password);
-
-      if (!match) {
-        return res.status(401).json({ message: "Wrong password" });
-      }
-
-      const token = jwt.sign(
-        { id: user.id, email: user.email },
-        SECRET,
-        { expiresIn: "1h" }
-      );
-
-      res.json({
-        message: "Login successful",
-        token
-      });
-    }
-  );
-});
-
-// ================= SERVER =================
-app.listen(3000, () => {
-  console.log("Server running on port 3000 🚀");
-});
+// Start server
+initDatabase()
+  .then(() => {
+    app.listen(config.port, () => {
+      console.log(`\n🚀 Server running on http://localhost:${config.port}`);
+      console.log(`📡 API Base: http://localhost:${config.port}/api/auth`);
+      console.log(`\nEndpoints:`);
+      console.log(`  POST /api/auth/register`);
+      console.log(`  POST /api/auth/login`);
+      console.log(`  GET  /api/auth/profile  (requires Bearer token)`);
+      console.log(`  GET  /api/auth/users    (testing only)\n`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to initialize database:", err);
+    process.exit(1);
+  });
