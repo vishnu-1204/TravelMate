@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2, Server } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import PageTransition from "@/components/layout/PageTransition";
 import { z } from "zod";
@@ -19,7 +19,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
 
-  const { signIn, isLocalAuth } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
 
   const handleGoogleLogin = async () => {
@@ -137,13 +137,6 @@ const Login = () => {
                 Sign up
               </Link>
             </p>
-
-            {isLocalAuth && (
-              <div className="bg-sky-500/10 border border-sky-500/30 text-sky-300 px-4 py-3 rounded-lg mb-6 text-sm flex items-center gap-2">
-                <Server size={16} />
-                Connected to local Express server (localhost:3000)
-              </div>
-            )}
 
             {error && (
               <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg mb-6 text-sm">
