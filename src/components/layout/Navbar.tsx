@@ -80,15 +80,9 @@ function Navbar() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition"
+                className="w-9 h-9 rounded-full bg-sky-500 flex items-center justify-center text-sm font-bold text-white hover:bg-sky-400 transition"
               >
-                <div className="w-7 h-7 rounded-full bg-sky-500 flex items-center justify-center text-xs font-bold text-white">
-                  {userInitial}
-                </div>
-                <span className="text-sm max-w-[120px] truncate hidden xl:inline">
-                  {user.email}
-                </span>
-                <ChevronDown className="h-3.5 w-3.5" />
+                {userInitial}
               </button>
 
               {profileOpen && (
@@ -96,6 +90,9 @@ function Navbar() {
                   <div className="px-4 py-3 border-b border-white/10">
                     <p className="text-xs text-gray-400">Signed in as</p>
                     <p className="text-sm text-white truncate">{user.email}</p>
+                    {user.user_metadata?.full_name && (
+                      <p className="text-xs text-gray-400 truncate mt-1">{user.user_metadata.full_name}</p>
+                    )}
                   </div>
                   <button
                     onClick={handleSignOut}
