@@ -8,7 +8,7 @@ import { lovable } from "@/integrations/lovable";
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
+  email: z.string().trim().toLowerCase().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -76,15 +76,28 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const { error } = await signUp(email, password);
+      const { error, needsEmailVerification } = await signUp(email, password);
       if (error) {
-        // Use generic error message to prevent account enumeration
-        setError('Unable to create account. Please check your information and try again.');
+        const rawMessage = error.message?.trim();
+        if (rawMessage?.toLowerCase().includes('user already registered')) {
+          setError('This email is already registered. Please log in instead.');
+        } else {
+          setError(rawMessage || 'Unable to create account. Please try again.');
+        }
       } else {
-        navigate('/');
+        if (needsEmailVerification) {
+          navigate('/login', {
+            state: {
+              message: `Account created for ${email.trim().toLowerCase()}. Please verify your email before logging in.`,
+            },
+          });
+        } else {
+          navigate('/');
+        }
       }
     } catch (err) {
-      setError('Unable to create account. Please try again later.');
+      const message = err instanceof Error ? err.message : 'Unable to create account. Please try again later.';
+      setError(message);
     } finally {
       setLoading(false);
     }

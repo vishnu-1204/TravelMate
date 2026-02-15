@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import PageTransition from "@/components/layout/PageTransition";
 import { z } from "zod";
 import { lovable } from "@/integrations/lovable";
+import { supabase } from "@/integrations/supabase/client";
 
 const loginSchema = z.object({
-  email: z.string().email("Enter valid email"),
+  email: z.string().trim().toLowerCase().email("Enter valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -16,11 +17,16 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [showResendVerification, setShowResendVerification] = useState(false);
 
   const { signIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const signupMessage = (location.state as { message?: string } | null)?.message;
 
   const handleGoogleLogin = async () => {
     setSocialLoading("google");
@@ -59,6 +65,8 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setInfo("");
+    setShowResendVerification(false);
 
     const validation = loginSchema.safeParse({ email, password });
     if (!validation.success) {
@@ -69,10 +77,48 @@ const Login = () => {
     setLoading(true);
     try {
       const { error } = await signIn(email, password);
-      if (error) setError("Invalid login credentials");
-      else navigate("/");
+      if (error) {
+        const message = error.message?.toLowerCase() || "";
+        if (message.includes("email not confirmed")) {
+          setError("Please verify your email first, then try to log in.");
+          setShowResendVerification(true);
+        } else {
+          setError("Invalid login credentials");
+        }
+      } else navigate("/");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setError("");
+    setInfo("");
+
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
+      setError("Please enter your email address first.");
+      return;
+    }
+
+    setResendLoading(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: normalizedEmail,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+        },
+      });
+
+      if (error) {
+        setError(error.message || "Unable to resend verification email.");
+        return;
+      }
+
+      setInfo("Verification email sent. Check your inbox and spam folder.");
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -138,10 +184,33 @@ const Login = () => {
               </Link>
             </p>
 
+            {signupMessage && (
+              <div className="bg-sky-500/10 border border-sky-500/30 text-sky-300 px-4 py-3 rounded-lg mb-6 text-sm">
+                {signupMessage}
+              </div>
+            )}
+
+            {info && (
+              <div className="bg-sky-500/10 border border-sky-500/30 text-sky-300 px-4 py-3 rounded-lg mb-6 text-sm">
+                {info}
+              </div>
+            )}
+
             {error && (
               <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg mb-6 text-sm">
                 {error}
               </div>
+            )}
+
+            {showResendVerification && (
+              <button
+                type="button"
+                onClick={handleResendVerification}
+                disabled={resendLoading}
+                className="mb-6 text-sm text-sky-400 hover:underline disabled:opacity-60"
+              >
+                {resendLoading ? "Sending verification email..." : "Resend verification email"}
+              </button>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-5">
