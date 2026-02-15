@@ -1,16 +1,29 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User } from 'lucide-react';
+import { Menu, X, User, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleSignOut = async () => {
+    setProfileOpen(false);
     await signOut();
-    navigate('/');
+    navigate('/login');
   };
 
   const navLinks = [
@@ -23,6 +36,8 @@ function Navbar() {
     { name: 'Contact', path: '/contact' },
     { name: 'About', path: '/about' },
   ];
+
+  const userInitial = user?.email?.charAt(0).toUpperCase() || 'U';
 
   return (
     <nav
@@ -62,12 +77,35 @@ function Navbar() {
         {/* Auth Section */}
         <div className="hidden lg:flex items-center gap-3">
           {user ? (
-            <div
-              title={user.email}
-              className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition cursor-pointer"
-              onClick={handleSignOut}
-            >
-              <User className="h-4 w-4" />
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition"
+              >
+                <div className="w-7 h-7 rounded-full bg-sky-500 flex items-center justify-center text-xs font-bold text-white">
+                  {userInitial}
+                </div>
+                <span className="text-sm max-w-[120px] truncate hidden xl:inline">
+                  {user.email}
+                </span>
+                <ChevronDown className="h-3.5 w-3.5" />
+              </button>
+
+              {profileOpen && (
+                <div className="absolute right-0 top-full mt-2 w-56 bg-[#2b2836] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50">
+                  <div className="px-4 py-3 border-b border-white/10">
+                    <p className="text-xs text-gray-400">Signed in as</p>
+                    <p className="text-sm text-white truncate">{user.email}</p>
+                  </div>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <Link
@@ -109,15 +147,23 @@ function Navbar() {
             ))}
 
             {user ? (
-              <div
-                title={user.email}
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-white/20 text-white cursor-pointer"
-                onClick={() => {
-                  handleSignOut();
-                  setIsOpen(false);
-                }}
-              >
-                <User className="h-5 w-5" />
+              <div className="border-t border-white/10 pt-4 mt-2">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-sm font-bold text-white">
+                    {userInitial}
+                  </div>
+                  <span className="text-sm text-white truncate">{user.email}</span>
+                </div>
+                <button
+                  onClick={() => {
+                    handleSignOut();
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center gap-2 text-red-400 text-sm hover:text-red-300 transition"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
+                </button>
               </div>
             ) : (
               <Link
