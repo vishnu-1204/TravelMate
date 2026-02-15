@@ -3,6 +3,7 @@ import cors from "cors";
 import { config } from "./config/env";
 import { initDatabase } from "./db";
 import authRoutes from "./routes/auth";
+import bookingRoutes from "./routes/booking";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/booking", bookingRoutes);
 
 // Health check
 app.get("/", (req, res) => {
@@ -29,6 +31,7 @@ initDatabase()
       console.log(`  POST /api/auth/login`);
       console.log(`  GET  /api/auth/profile  (requires Bearer token)`);
       console.log(`  GET  /api/auth/users    (testing only)\n`);
+      console.log(`  POST /api/booking/confirmation-email\n`);
     });
   })
   .catch((err) => {

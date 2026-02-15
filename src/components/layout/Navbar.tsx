@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, UserCircle } from 'lucide-react';
+import { Menu, X, LogOut, UserCircle, Receipt } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 function Navbar() {
@@ -41,13 +41,7 @@ function Navbar() {
   const userInitial = fullName?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U';
 
   return (
-    <nav
-      className={`nav-container transition-all duration-300 ${
-        user
-          ? 'bg-gradient-to-r from-[#0f2027] via-[#203a43] to-[#2c5364] shadow-lg'
-          : ''
-      }`}
-    >
+    <nav className="nav-container transition-all duration-300">
       <div className="max-w-7xl mx-auto flex items-center justify-between h-16 gap-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
@@ -104,6 +98,16 @@ function Navbar() {
                   >
                     <UserCircle className="h-4 w-4" />
                     My Profile
+                  </button>
+                  <button
+                    onClick={() => {
+                      setProfileOpen(false);
+                      navigate('/my-bookings');
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-sky-300 hover:bg-white/5 transition border-t border-white/10"
+                  >
+                    <Receipt className="h-4 w-4" />
+                    My Bookings
                   </button>
                   <button
                     onClick={handleSignOut}
@@ -171,6 +175,16 @@ function Navbar() {
                 >
                   <UserCircle className="h-4 w-4" />
                   My Profile
+                </button>
+                <button
+                  onClick={() => {
+                    navigate('/my-bookings');
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center gap-2 text-sky-300 text-sm hover:text-sky-200 transition mb-3"
+                >
+                  <Receipt className="h-4 w-4" />
+                  My Bookings
                 </button>
                 <button
                   onClick={() => {

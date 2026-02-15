@@ -42,6 +42,10 @@ const HeroSection = () => {
   };
 
   const slide = heroSlides[currentSlide];
+  const [titleFirst, titleSecond] = slide.title.split(',');
+
+  const toCapitalized = (value: string) =>
+    value ? value.charAt(0).toUpperCase() + value.slice(1) : value;
 
   const textVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -91,7 +95,7 @@ const HeroSection = () => {
               className="text-[hsl(var(--cyan-accent))] text-xl md:text-2xl mb-4"
               style={{ fontFamily: "'Pacifico', cursive" }}
             >
-              {slide.accent}
+              {toCapitalized(slide.accent)}
             </motion.p>
             
             {/* Main Title */}
@@ -101,9 +105,9 @@ const HeroSection = () => {
               className="text-4xl md:text-6xl lg:text-7xl text-white mb-6 tracking-wide"
               style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400 }}
             >
-              {slide.title.split(',')[0]}
+              {toCapitalized((titleFirst || '').trim())}
               <span className="text-[hsl(var(--cyan-accent))]">, </span>
-              {slide.title.split(',')[1]?.trim()}
+              {toCapitalized((titleSecond || '').trim())}
             </motion.h1>
             
             {/* Quote */}

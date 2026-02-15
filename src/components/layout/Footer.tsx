@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Plane, Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Plane } from 'lucide-react';
+import { FaInstagram, FaLinkedinIn, FaYoutube, FaGoogle } from 'react-icons/fa6';
 
 const Footer = () => {
   return (
@@ -7,71 +8,99 @@ const Footer = () => {
       <div className="page-container">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
-          {/* Brand */}
+          {/* Corporate Office */}
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
-
               <Plane className="h-8 w-8" />
-
               <span className="text-xl font-bold">
                 Travel<span className="text-[hsl(var(--cyan-accent))]">Mate</span>
               </span>
-
             </Link>
 
             <p className="text-background/70 mb-4 max-w-md">
-              Your trusted partner for unforgettable travel experiences. We craft personalized journeys that create lasting memories.
+              Corporate Office
+              <br />
+              TravelMate Pvt LTD,
+              <br />
+              Novel Tech Park,
+              <br />
+              Opposite to 1 MG Mall,
+              <br />
+              MG Road, Bangalore - 560042
+              <br />
+              Karnataka, India.
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Head Office */}
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-background/70 hover:text-background transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/packages" className="text-background/70 hover:text-background transition-colors">
-                  Packages
-                </Link>
-              </li>
-              <li>
-                <Link to="/login" className="text-background/70 hover:text-background transition-colors">
-                  Login
-                </Link>
-              </li>
-            </ul>
+            <h4 className="font-semibold mb-4">Head Office</h4>
+            <p className="text-background/70 leading-7">
+              TravelMate Pvt LTD,
+              <br />
+              No.1, Gemini Parsn,
+              <br />
+              Kodambakkam High Road,
+              <br />
+              Nungambakkam, Chennai - 600006
+              <br />
+              Tamil Nadu, India.
+            </p>
           </div>
 
-          {/* Contact */}
+          {/* Branches */}
           <div>
-            <h4 className="font-semibold mb-4">Contact Us</h4>
-            <ul className="space-y-3">
-
-              <li className="flex items-center gap-2 text-background/70">
-                <Mail className="h-4 w-4" />
-                <span>hello@travelmate.com</span>
-              </li>
-
-              <li className="flex items-center gap-2 text-background/70">
-                <Phone className="h-4 w-4" />
-                <span>+91 93245 79945</span>
-              </li>
-
-              <li className="flex items-center gap-2 text-background/70">
-                <MapPin className="h-4 w-4" />
-                <span>Chennai, Tamil Nadu</span>
-              </li>
-
-            </ul>
+            <h4 className="font-semibold mb-4">Our Branches</h4>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-background/70">
+              <span>Mumbai</span>
+              <span>Trichy</span>
+              <span>Hyderabad</span>
+              <span>Salem</span>
+              <span>Bangalore</span>
+              <span>Kochi</span>
+              <span>Chennai</span>
+              <span>Vellore</span>
+              <span>Coimbatore</span>
+              <span>Pondicherry</span>
+              <span>Erode</span>
+              <span>Nagercoil</span>
+              <span>Madurai</span>
+              <span>Kanyakumari</span>
+            </div>
           </div>
 
         </div>
 
-        <div className="border-t border-background/20 mt-8 pt-8 text-center text-background/60">
+        <div className="border-t border-background/20 mt-8 pt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-background/70">
+          <div className="flex items-center gap-2">
+            <Phone className="h-4 w-4" />
+            <span>Call Us: +91 9940882200</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Mail className="h-4 w-4" />
+            <span>Email Us: mail@travelmate.in</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <MapPin className="h-4 w-4" />
+            <span>Follow Us:</span>
+            <div className="flex items-center gap-3">
+              <a href="#" aria-label="Instagram" className="hover:text-background transition-colors">
+                <FaInstagram className="h-4 w-4" />
+              </a>
+              <a href="#" aria-label="LinkedIn" className="hover:text-background transition-colors">
+                <FaLinkedinIn className="h-4 w-4" />
+              </a>
+              <a href="#" aria-label="YouTube" className="hover:text-background transition-colors">
+                <FaYoutube className="h-4 w-4" />
+              </a>
+              <a href="#" aria-label="Google" className="hover:text-background transition-colors">
+                <FaGoogle className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center text-background/60">
           <p>&copy; {new Date().getFullYear()} TravelMate. All rights reserved.</p>
         </div>
       </div>
