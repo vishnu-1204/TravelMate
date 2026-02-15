@@ -8,6 +8,7 @@ import packagesData from '@/data/packages.json';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { jsPDF } from 'jspdf';
 
 declare global {
   interface Window {
@@ -45,6 +46,20 @@ type BookingDraft = {
   extras: ExtraServices;
 };
 
+type PackageItinerary = {
+  days: { day: number; title: string; activities: string[] }[];
+  nights: { night: number; accommodation: string; meals: string }[];
+};
+
+type PackageData = {
+  id: string;
+  title: string;
+  location: string;
+  duration: string;
+  price: number;
+  itinerary?: PackageItinerary;
+};
+
 const ROOM_SURCHARGE_PER_PERSON: Record<RoomType, number> = {
   Single: 1200,
   Double: 600,
@@ -73,7 +88,7 @@ const Payment = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const packageData = packagesData.find((pkg) => pkg.id === id);
+  const packageData = (packagesData as PackageData[]).find((pkg) => pkg.id === id);
   const backendBaseUrl = import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000';
   const storageKey = useMemo(() => `travelmate-booking-draft-${id || 'unknown'}`, [id]);
 
@@ -143,6 +158,100 @@ const Payment = () => {
   const subtotal = basePrice + roomSurcharge + mealCost + insuranceCost + pickupCost;
   const taxes = Math.round(subtotal * 0.1);
   const grandTotal = subtotal + taxes;
+
+  const downloadBookingItinerary = (bookingReference: string) => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let y = 18;
+
+    doc.setFontSize(22);
+    doc.setTextColor(30, 64, 175);
+    doc.text('TravelMate Booking Itinerary', pageWidth / 2, y, { align: 'center' });
+    y += 12;
+
+    doc.setFontSize(15);
+    doc.text(packageData.title, pageWidth / 2, y, { align: 'center' });
+    y += 8;
+
+    doc.setFontSize(11);
+    doc.setTextColor(70, 70, 70);
+    doc.text(`${packageData.location} | ${packageData.duration}`, pageWidth / 2, y, {
+      align: 'center',
+    });
+    y += 12;
+
+    doc.setFontSize(10);
+    doc.setTextColor(60, 60, 60);
+    doc.text(`Booking Ref: ${bookingReference}`, 16, y);
+    y += 6;
+    doc.text(`Travel Date: ${travelDate || '-'}`, 16, y);
+    y += 6;
+    doc.text(`Passengers: ${totalPassengers}`, 16, y);
+    y += 6;
+    doc.text(`Amount Paid: Rs ${grandTotal.toLocaleString()}`, 16, y);
+    y += 10;
+
+    if (packageData.itinerary?.days?.length) {
+      doc.setFontSize(14);
+      doc.setTextColor(30, 64, 175);
+      doc.text('Day-by-Day Plan', 16, y);
+      y += 8;
+
+      doc.setFontSize(10);
+      doc.setTextColor(60, 60, 60);
+      packageData.itinerary.days.forEach((day) => {
+        if (y > 270) {
+          doc.addPage();
+          y = 18;
+        }
+
+        doc.setTextColor(30, 64, 175);
+        doc.text(`Day ${day.day}: ${day.title}`, 16, y);
+        y += 6;
+
+        doc.setTextColor(60, 60, 60);
+        day.activities.forEach((activity) => {
+          if (y > 275) {
+            doc.addPage();
+            y = 18;
+          }
+          doc.text(`- ${activity}`, 20, y);
+          y += 5;
+        });
+        y += 3;
+      });
+    }
+
+    if (packageData.itinerary?.nights?.length) {
+      if (y > 245) {
+        doc.addPage();
+        y = 18;
+      }
+
+      doc.setFontSize(14);
+      doc.setTextColor(30, 64, 175);
+      doc.text('Accommodation', 16, y);
+      y += 8;
+
+      doc.setFontSize(10);
+      doc.setTextColor(60, 60, 60);
+      packageData.itinerary.nights.forEach((night) => {
+        if (y > 275) {
+          doc.addPage();
+          y = 18;
+        }
+        doc.text(
+          `Night ${night.night}: ${night.accommodation} | Meals: ${night.meals}`,
+          20,
+          y
+        );
+        y += 5;
+      });
+    }
+
+    const safeTitle = packageData.title.replace(/\s+/g, '-');
+    doc.save(`${safeTitle}-${bookingReference}-Itinerary.pdf`);
+  };
 
   const addTraveler = () => {
     setTravelers((prev) => [...prev, createTraveler(prev.length + 1, user?.email || '')]);
@@ -259,7 +368,13 @@ const Payment = () => {
     setSuccess(true);
     setLoading(false);
     localStorage.removeItem(storageKey);
-    toast.success('Payment successful. Ticket generated.');
+    try {
+      downloadBookingItinerary(ref);
+      toast.success('Payment successful. Itinerary PDF downloaded.');
+    } catch {
+      toast.success('Payment successful. Booking confirmed.');
+      toast.info('Could not auto-download itinerary PDF. Please try again from package details.');
+    }
   };
 
   if (success) {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Loader2, PencilLine, ShieldCheck, ShieldAlert } from 'lucide-react';
+import { Loader2, PencilLine, ShieldCheck, ShieldAlert, UserRound } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import { useAuth } from '@/hooks/useAuth';
@@ -133,6 +133,8 @@ const Profile = () => {
     if (!last4) return '';
     return `XXXX-XXXX-${last4}`;
   }, [metadataDetails.aadhaar_last4, profile?.aadhaar_last4]);
+  const profileName = formData.full_name || (user?.user_metadata?.full_name as string | undefined) || 'User';
+  const profileInitial = profileName.trim().charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U';
 
   const onEdit = () => {
     setEditing(true);
@@ -311,17 +313,26 @@ const Profile = () => {
   };
 
   return (
-    <Layout>
+    <Layout hideFooter>
       <PageTransition>
         <section className="min-h-screen bg-gradient-to-b from-[#6b6678] to-[#4d4a59] py-10 px-4">
           <div className="max-w-6xl mx-auto space-y-6">
             <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-6 text-white">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                  <h1 className="text-3xl font-semibold">My Profile</h1>
-                  <p className="text-gray-300 text-sm mt-1">
-                    Manage your personal information securely.
-                  </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-sky-500/20 border border-sky-400/40 flex items-center justify-center">
+                    {profileInitial ? (
+                      <span className="text-2xl font-semibold text-sky-200">{profileInitial}</span>
+                    ) : (
+                      <UserRound className="h-7 w-7 text-sky-200" />
+                    )}
+                  </div>
+                  <div>
+                    <h1 className="text-3xl font-semibold">My Profile</h1>
+                    <p className="text-gray-300 text-sm mt-1">
+                      Manage your personal information securely.
+                    </p>
+                  </div>
                 </div>
                 {!editing ? (
                   <button

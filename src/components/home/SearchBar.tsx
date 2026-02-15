@@ -30,8 +30,15 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [guestsOpen, setGuestsOpen] = useState(false);
+  const [validationError, setValidationError] = useState('');
 
   const handleSearch = () => {
+    if (!destination.trim() || !checkIn || !checkOut) {
+      setValidationError('please fill of these fields');
+      return;
+    }
+
+    setValidationError('');
     onSearch({ destination, checkIn, checkOut, adults, children });
   };
 
@@ -191,6 +198,11 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
               </Button>
             </div>
           </div>
+          {validationError && (
+            <p className="mt-3 px-2 text-sm text-red-500" role="alert" aria-live="polite">
+              {validationError}
+            </p>
+          )}
         </div>
       </div>
     </motion.div>
