@@ -17,6 +17,7 @@ import Blog from "./pages/Blog";
 import BlogDetails from "./pages/BlogDetails";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,14 @@ const AnimatedRoutes = () => {
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

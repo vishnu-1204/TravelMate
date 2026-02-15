@@ -76,24 +76,66 @@ export type Database = {
       }
       profiles: {
         Row: {
+          aadhaar_hash: string | null
+          aadhaar_last4: string | null
+          address: string | null
+          alternate_email: string | null
+          avatar_path: string | null
+          bio: string | null
+          city: string | null
+          country: string | null
           created_at: string
+          date_of_birth: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
           full_name: string | null
+          gender: string | null
           id: string
+          occupation: string | null
           phone: string | null
+          state: string | null
           updated_at: string
         }
         Insert: {
+          aadhaar_hash?: string | null
+          aadhaar_last4?: string | null
+          address?: string | null
+          alternate_email?: string | null
+          avatar_path?: string | null
+          bio?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
+          date_of_birth?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
           full_name?: string | null
+          gender?: string | null
           id: string
+          occupation?: string | null
           phone?: string | null
+          state?: string | null
           updated_at?: string
         }
         Update: {
+          aadhaar_hash?: string | null
+          aadhaar_last4?: string | null
+          address?: string | null
+          alternate_email?: string | null
+          avatar_path?: string | null
+          bio?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
+          date_of_birth?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
           full_name?: string | null
+          gender?: string | null
           id?: string
+          occupation?: string | null
           phone?: string | null
+          state?: string | null
           updated_at?: string
         }
         Relationships: []

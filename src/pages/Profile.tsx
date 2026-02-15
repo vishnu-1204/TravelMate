@@ -1,0 +1,695 @@
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Loader2, PencilLine, ShieldCheck, ShieldAlert } from 'lucide-react';
+import Layout from '@/components/layout/Layout';
+import PageTransition from '@/components/layout/PageTransition';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+
+type ProfileRow = {
+  id: string;
+  full_name: string | null;
+  phone: string | null;
+  aadhaar_hash: string | null;
+  aadhaar_last4: string | null;
+  date_of_birth: string | null;
+  gender: string | null;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  country: string | null;
+  emergency_contact_name: string | null;
+  emergency_contact_phone: string | null;
+  alternate_email: string | null;
+  occupation: string | null;
+  bio: string | null;
+  avatar_path: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+type FormData = {
+  full_name: string;
+  phone: string;
+  aadhaar_input: string;
+  date_of_birth: string;
+  gender: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  emergency_contact_name: string;
+  emergency_contact_phone: string;
+  alternate_email: string;
+  occupation: string;
+  bio: string;
+};
+
+const emptyForm: FormData = {
+  full_name: '',
+  phone: '',
+  aadhaar_input: '',
+  date_of_birth: '',
+  gender: '',
+  address: '',
+  city: '',
+  state: '',
+  country: '',
+  emergency_contact_name: '',
+  emergency_contact_phone: '',
+  alternate_email: '',
+  occupation: '',
+  bio: '',
+};
+
+const Profile = () => {
+  const { user, signOut } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [profile, setProfile] = useState<ProfileRow | null>(null);
+  const [clearAadhaar, setClearAadhaar] = useState(false);
+  const [formData, setFormData] = useState<FormData>(emptyForm);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const metadataDetails = useMemo(
+    () => getProfileDetailsFromUser(user?.user_metadata),
+    [user?.user_metadata]
+  );
+
+  const emailVerified = !!user?.email_confirmed_at;
+  const phoneVerified = !!user?.phone_confirmed_at;
+
+  const loadProfile = useCallback(
+    async (userId: string) => {
+      setLoading(true);
+      setError('');
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', userId)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        let profileData = data as ProfileRow | null;
+        if (!profileData) {
+          const seed = {
+            id: userId,
+            full_name: (user?.user_metadata?.full_name as string | undefined) || null,
+            phone: null,
+          };
+          const { data: inserted, error: insertError } = await supabase
+            .from('profiles')
+            .insert(seed)
+            .select('*')
+            .single();
+
+          if (insertError) throw insertError;
+          profileData = inserted as ProfileRow;
+        }
+
+        setProfile(profileData);
+        setFormData(toForm(profileData, metadataDetails));
+      } catch (e) {
+        const message = e instanceof Error ? e.message : 'Failed to load profile.';
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [metadataDetails, user?.user_metadata?.full_name]
+  );
+
+  useEffect(() => {
+    if (!user?.id) return;
+    void loadProfile(user.id);
+  }, [loadProfile, user?.id]);
+
+  const maskedAadhaar = useMemo(() => {
+    const last4 = profile?.aadhaar_last4 || metadataDetails.aadhaar_last4 || '';
+    if (!last4) return '';
+    return `XXXX-XXXX-${last4}`;
+  }, [metadataDetails.aadhaar_last4, profile?.aadhaar_last4]);
+
+  const onEdit = () => {
+    setEditing(true);
+    setError('');
+    setSuccess('');
+  };
+
+  const onCancel = () => {
+    if (!profile) return;
+    setFormData(toForm(profile, metadataDetails));
+    setClearAadhaar(false);
+    setEditing(false);
+    setError('');
+    setSuccess('');
+  };
+
+  const onInputChange = (key: keyof FormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const onSave = async () => {
+    if (!user || !profile) return;
+
+    const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setSaving(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      let usedMetadataFallback = false;
+      let aadhaarHash = profile.aadhaar_hash;
+      let aadhaarLast4 = profile.aadhaar_last4;
+      const normalizedAadhaar = formData.aadhaar_input.replace(/\D/g, '');
+
+      if (clearAadhaar) {
+        aadhaarHash = null;
+        aadhaarLast4 = null;
+      } else if (normalizedAadhaar) {
+        aadhaarHash = await sha256(normalizedAadhaar);
+        aadhaarLast4 = normalizedAadhaar.slice(-4);
+      }
+
+      const payload = {
+        id: user.id,
+        full_name: toNullable(formData.full_name),
+        phone: toNullable(formData.phone),
+        aadhaar_hash: aadhaarHash,
+        aadhaar_last4: aadhaarLast4,
+        date_of_birth: normalizeDateForDb(formData.date_of_birth),
+        gender: toNullable(formData.gender),
+        address: toNullable(formData.address),
+        city: toNullable(formData.city),
+        state: toNullable(formData.state),
+        country: toNullable(formData.country),
+        emergency_contact_name: toNullable(formData.emergency_contact_name),
+        emergency_contact_phone: toNullable(formData.emergency_contact_phone),
+        alternate_email: toNullable(formData.alternate_email),
+        occupation: toNullable(formData.occupation),
+        bio: toNullable(formData.bio),
+        avatar_path: profile.avatar_path,
+      };
+
+      const { data: updated, error: updateError } = await supabase
+        .from('profiles')
+        .upsert(payload, { onConflict: 'id' })
+        .select('*')
+        .single();
+
+      let updatedProfileData = updated as ProfileRow | null;
+      if (updateError && isProfileSchemaError(updateError.message || '')) {
+        usedMetadataFallback = true;
+        const minimalPayload = {
+          id: user.id,
+          full_name: payload.full_name,
+          phone: payload.phone,
+        };
+        const { data: minimalUpdated, error: minimalError } = await supabase
+          .from('profiles')
+          .upsert(minimalPayload, { onConflict: 'id' })
+          .select('*')
+          .single();
+
+        if (minimalError) {
+          throw new Error(minimalError.message || 'Profile update failed.');
+        }
+        updatedProfileData = minimalUpdated as ProfileRow;
+      } else if (updateError) {
+        throw new Error(updateError.message || 'Profile update failed.');
+      }
+
+      const profileDetails = {
+        date_of_birth: payload.date_of_birth,
+        gender: payload.gender,
+        address: payload.address,
+        city: payload.city,
+        state: payload.state,
+        country: payload.country,
+        emergency_contact_name: payload.emergency_contact_name,
+        emergency_contact_phone: payload.emergency_contact_phone,
+        alternate_email: payload.alternate_email,
+        occupation: payload.occupation,
+        bio: payload.bio,
+        aadhaar_last4: payload.aadhaar_last4,
+        aadhaar_hash: payload.aadhaar_hash,
+      };
+
+      await supabase.auth.updateUser({
+        data: {
+          full_name: payload.full_name,
+          profile_details: profileDetails,
+        },
+      });
+
+      if (updatedProfileData) {
+        setProfile(updatedProfileData);
+        setFormData(toForm(updatedProfileData, profileDetails));
+      }
+      setClearAadhaar(false);
+      setEditing(false);
+      setSuccess(
+        usedMetadataFallback
+          ? 'Profile updated successfully. Advanced fields were saved to account metadata.'
+          : 'Profile updated successfully.'
+      );
+    } catch (e) {
+      const message = getErrorMessage(e, 'Failed to update profile.');
+      setError(message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const sendPasswordReset = async () => {
+    if (!user?.email) return;
+    setError('');
+    setSuccess('');
+
+    const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
+      redirectTo: `${window.location.origin}/login`,
+    });
+
+    if (error) {
+      setError(error.message || 'Unable to send password reset email.');
+      return;
+    }
+    setSuccess(`Password reset email sent to ${user.email}.`);
+  };
+
+  const deleteAccountData = async () => {
+    if (!user || !profile) return;
+    const confirmed = window.confirm(
+      'This will delete your profile data and sign you out. Continue?'
+    );
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const { error } = await supabase.from('profiles').delete().eq('id', user.id);
+      if (error) throw error;
+
+      await signOut();
+      window.location.assign('/');
+    } catch (e) {
+      const message = getErrorMessage(e, 'Failed to delete account data.');
+      setError(message);
+      setDeleting(false);
+    }
+  };
+
+  return (
+    <Layout>
+      <PageTransition>
+        <section className="min-h-screen bg-gradient-to-b from-[#6b6678] to-[#4d4a59] py-10 px-4">
+          <div className="max-w-6xl mx-auto space-y-6">
+            <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-6 text-white">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <h1 className="text-3xl font-semibold">My Profile</h1>
+                  <p className="text-gray-300 text-sm mt-1">
+                    Manage your personal information securely.
+                  </p>
+                </div>
+                {!editing ? (
+                  <button
+                    onClick={onEdit}
+                    className="inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-600 px-5 py-2 rounded-lg transition"
+                  >
+                    <PencilLine className="h-4 w-4" />
+                    Edit Profile
+                  </button>
+                ) : (
+                  <div className="flex gap-3">
+                    <button
+                      onClick={onCancel}
+                      disabled={saving}
+                      className="px-5 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition disabled:opacity-60"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={onSave}
+                      disabled={saving}
+                      className="px-5 py-2 rounded-lg bg-sky-500 hover:bg-sky-600 transition disabled:opacity-60 inline-flex items-center gap-2"
+                    >
+                      {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                      Save Changes
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {loading ? (
+              <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-10 flex items-center justify-center text-white">
+                <Loader2 className="h-6 w-6 animate-spin mr-3" />
+                Loading profile...
+              </div>
+            ) : (
+              <>
+                {error && (
+                  <div className="bg-red-500/10 border border-red-500/40 text-red-300 rounded-xl px-4 py-3">
+                    {error}
+                  </div>
+                )}
+                {success && (
+                  <div className="bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 rounded-xl px-4 py-3">
+                    {success}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 gap-6">
+                  <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-6 text-white">
+                    <h2 className="text-lg font-semibold mb-5">Personal Details</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Field label="Full Name" value={formData.full_name} onChange={(v) => onInputChange('full_name', v)} editing={editing} required />
+                      <Field label="Email" value={user?.email || ''} editing={false} readOnly />
+                      <Field label="Phone Number" value={formData.phone} onChange={(v) => onInputChange('phone', v)} editing={editing} placeholder="10 digit number" />
+                      <Field label="Date of Birth" value={formData.date_of_birth} onChange={(v) => onInputChange('date_of_birth', v)} editing={editing} type="date" />
+                      <SelectField
+                        label="Gender"
+                        value={formData.gender}
+                        onChange={(v) => onInputChange('gender', v)}
+                        editing={editing}
+                        options={[
+                          { value: '', label: 'Select gender' },
+                          { value: 'male', label: 'Male' },
+                          { value: 'female', label: 'Female' },
+                          { value: 'other', label: 'Other' },
+                          { value: 'prefer_not_to_say', label: 'Prefer not to say' },
+                        ]}
+                      />
+                      <Field label="Occupation" value={formData.occupation} onChange={(v) => onInputChange('occupation', v)} editing={editing} />
+                      <Field label="Aadhaar Number" value={formData.aadhaar_input} onChange={(v) => onInputChange('aadhaar_input', v)} editing={editing} placeholder={maskedAadhaar || '12 digit number'} />
+                      <div className="flex items-end pb-2">
+                        {editing && (
+                          <label className="inline-flex items-center gap-2 text-sm text-gray-300">
+                            <input
+                              type="checkbox"
+                              checked={clearAadhaar}
+                              onChange={(e) => setClearAadhaar(e.target.checked)}
+                              className="rounded border-white/20 bg-white/10"
+                            />
+                            Clear stored Aadhaar (kept hashed only)
+                          </label>
+                        )}
+                      </div>
+                      <Field label="Address" value={formData.address} onChange={(v) => onInputChange('address', v)} editing={editing} className="md:col-span-2" />
+                      <Field label="City" value={formData.city} onChange={(v) => onInputChange('city', v)} editing={editing} />
+                      <Field label="State" value={formData.state} onChange={(v) => onInputChange('state', v)} editing={editing} />
+                      <Field label="Country" value={formData.country} onChange={(v) => onInputChange('country', v)} editing={editing} />
+                      <Field label="Alternate Email" value={formData.alternate_email} onChange={(v) => onInputChange('alternate_email', v)} editing={editing} />
+                      <Field label="Emergency Contact Name" value={formData.emergency_contact_name} onChange={(v) => onInputChange('emergency_contact_name', v)} editing={editing} />
+                      <Field label="Emergency Contact Phone" value={formData.emergency_contact_phone} onChange={(v) => onInputChange('emergency_contact_phone', v)} editing={editing} placeholder="10 digit number" />
+                      <TextAreaField label="Bio (optional)" value={formData.bio} onChange={(v) => onInputChange('bio', v)} editing={editing} className="md:col-span-2" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-6 text-white">
+                    <h2 className="text-lg font-semibold mb-4">Verification Status</h2>
+                    <div className="space-y-3 text-sm">
+                      <StatusRow label="Email verification" ok={emailVerified} />
+                      <StatusRow label="Phone verification" ok={phoneVerified} />
+                    </div>
+                  </div>
+
+                  <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-6 text-white">
+                    <h2 className="text-lg font-semibold mb-4">Security Settings</h2>
+                    <div className="space-y-4">
+                      <button
+                        type="button"
+                        onClick={sendPasswordReset}
+                        className="w-full text-left px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm"
+                      >
+                        Send password reset email
+                      </button>
+                      <div className="px-4 py-3 rounded-lg bg-white/5 text-sm text-gray-300">
+                        Two-factor authentication: optional, not enabled yet.
+                      </div>
+                      <button
+                        type="button"
+                        onClick={deleteAccountData}
+                        disabled={deleting}
+                        className="w-full text-left px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 hover:bg-red-500/20 transition text-sm disabled:opacity-60"
+                      >
+                        {deleting ? 'Deleting account data...' : 'Delete account data'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+      </PageTransition>
+    </Layout>
+  );
+};
+
+type FieldProps = {
+  label: string;
+  value: string;
+  onChange?: (value: string) => void;
+  editing: boolean;
+  required?: boolean;
+  readOnly?: boolean;
+  placeholder?: string;
+  type?: string;
+  className?: string;
+};
+
+const Field = ({
+  label,
+  value,
+  onChange,
+  editing,
+  required = false,
+  readOnly = false,
+  placeholder = '',
+  type = 'text',
+  className = '',
+}: FieldProps) => (
+  <div className={className}>
+    <label className="block text-xs text-gray-300 mb-1">
+      {label}
+      {required ? ' *' : ''}
+    </label>
+    <input
+      type={type}
+      value={value}
+      readOnly={!editing || readOnly}
+      placeholder={placeholder}
+      onChange={(e) => onChange?.(e.target.value)}
+      className={`w-full rounded-lg px-3 py-2 text-sm transition ${
+        !editing || readOnly
+          ? 'bg-white/5 border border-white/10 text-gray-200'
+          : 'bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-sky-500'
+      }`}
+    />
+  </div>
+);
+
+type SelectFieldProps = {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  editing: boolean;
+  options: Array<{ value: string; label: string }>;
+};
+
+const SelectField = ({ label, value, onChange, editing, options }: SelectFieldProps) => (
+  <div>
+    <label className="block text-xs text-gray-300 mb-1">{label}</label>
+    <select
+      value={value}
+      disabled={!editing}
+      onChange={(e) => onChange(e.target.value)}
+      className={`w-full rounded-lg px-3 py-2 text-sm transition ${
+        !editing
+          ? 'bg-white/5 border border-white/10 text-gray-200'
+          : 'bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-sky-500'
+      }`}
+    >
+      {options.map((option) => (
+        <option key={option.value} value={option.value} className="text-black">
+          {option.label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+type TextAreaFieldProps = {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  editing: boolean;
+  className?: string;
+};
+
+const TextAreaField = ({ label, value, onChange, editing, className = '' }: TextAreaFieldProps) => (
+  <div className={className}>
+    <label className="block text-xs text-gray-300 mb-1">{label}</label>
+    <textarea
+      value={value}
+      readOnly={!editing}
+      rows={4}
+      onChange={(e) => onChange(e.target.value)}
+      className={`w-full rounded-lg px-3 py-2 text-sm transition ${
+        !editing
+          ? 'bg-white/5 border border-white/10 text-gray-200'
+          : 'bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-sky-500'
+      }`}
+    />
+  </div>
+);
+
+const StatusRow = ({ label, ok }: { label: string; ok: boolean }) => (
+  <div className="flex items-center justify-between border border-white/10 rounded-lg px-3 py-2">
+    <span>{label}</span>
+    <span className={`inline-flex items-center gap-1 ${ok ? 'text-emerald-300' : 'text-amber-300'}`}>
+      {ok ? <ShieldCheck className="h-4 w-4" /> : <ShieldAlert className="h-4 w-4" />}
+      {ok ? 'Verified' : 'Pending'}
+    </span>
+  </div>
+);
+
+function toNullable(value: string) {
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
+}
+
+function normalizeDateForDb(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+  const ddmmyyyy = trimmed.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  if (ddmmyyyy) {
+    const [, dd, mm, yyyy] = ddmmyyyy;
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  return trimmed;
+}
+
+function toForm(profile: ProfileRow, metadata?: Partial<ExtendedProfileDetails>): FormData {
+  return {
+    full_name: profile.full_name || '',
+    phone: profile.phone || '',
+    aadhaar_input: '',
+    date_of_birth: profile.date_of_birth || metadata?.date_of_birth || '',
+    gender: profile.gender || metadata?.gender || '',
+    address: profile.address || metadata?.address || '',
+    city: profile.city || metadata?.city || '',
+    state: profile.state || metadata?.state || '',
+    country: profile.country || metadata?.country || '',
+    emergency_contact_name: profile.emergency_contact_name || metadata?.emergency_contact_name || '',
+    emergency_contact_phone: profile.emergency_contact_phone || metadata?.emergency_contact_phone || '',
+    alternate_email: profile.alternate_email || metadata?.alternate_email || '',
+    occupation: profile.occupation || metadata?.occupation || '',
+    bio: profile.bio || metadata?.bio || '',
+  };
+}
+
+function validateForm(formData: FormData) {
+  if (!formData.full_name.trim()) {
+    return 'Full name is required.';
+  }
+
+  const phone = formData.phone.replace(/\D/g, '');
+  if (phone && phone.length !== 10) {
+    return 'Phone number must be 10 digits.';
+  }
+
+  const emergencyPhone = formData.emergency_contact_phone.replace(/\D/g, '');
+  if (emergencyPhone && emergencyPhone.length !== 10) {
+    return 'Emergency contact phone must be 10 digits.';
+  }
+
+  const aadhaar = formData.aadhaar_input.replace(/\D/g, '');
+  if (aadhaar && aadhaar.length !== 12) {
+    return 'Aadhaar number must be 12 digits.';
+  }
+
+  const altEmail = formData.alternate_email.trim();
+  if (altEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(altEmail)) {
+    return 'Alternate email format is invalid.';
+  }
+
+  if (formData.date_of_birth) {
+    const dob = new Date(formData.date_of_birth);
+    if (Number.isNaN(dob.getTime()) || dob > new Date()) {
+      return 'Date of birth is invalid.';
+    }
+  }
+
+  return '';
+}
+
+async function sha256(value: string) {
+  const data = new TextEncoder().encode(value);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+function isProfileSchemaError(message: string) {
+  const lower = message.toLowerCase();
+  return (
+    (lower.includes('column') && lower.includes('does not exist')) ||
+    lower.includes('could not find the') ||
+    lower.includes('schema cache')
+  );
+}
+
+function getErrorMessage(error: unknown, fallback: string) {
+  if (error instanceof Error) {
+    return error.message || fallback;
+  }
+  if (typeof error === 'object' && error !== null) {
+    const maybeMessage = (error as { message?: unknown }).message;
+    if (typeof maybeMessage === 'string' && maybeMessage.trim()) {
+      return maybeMessage;
+    }
+  }
+  if (typeof error === 'string' && error.trim()) {
+    return error;
+  }
+  return fallback;
+}
+
+type ExtendedProfileDetails = Omit<FormData, 'full_name' | 'phone' | 'aadhaar_input'> & {
+  aadhaar_last4?: string | null;
+  aadhaar_hash?: string | null;
+};
+
+function getProfileDetailsFromUser(userMetadata: unknown): Partial<ExtendedProfileDetails> {
+  if (!userMetadata || typeof userMetadata !== 'object') {
+    return {};
+  }
+
+  const details = (userMetadata as { profile_details?: unknown }).profile_details;
+  if (!details || typeof details !== 'object') {
+    return {};
+  }
+
+  return details as Partial<ExtendedProfileDetails>;
+}
+
+export default Profile;
