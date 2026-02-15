@@ -190,6 +190,12 @@ const Login = () => {
                 )}
               </button>
 
+              {/* Forgot Password */}
+              <div className="text-right">
+                <Link to="/forgot-password" className="text-sm text-sky-400 hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
             </form>
 
             {/* Social */}
