@@ -1,66 +1,71 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { Star, MapPin, Clock, ArrowRight } from 'lucide-react';
 
 interface PackageCardProps {
   id: string;
   title: string;
-  location: string;
+  destination: string;
   duration: string;
   price: number;
+  discount: number;
   rating: number;
   reviews: number;
-  image: string;
-  description: string;
+  imageUrl: string;
+  shortDescription: string;
 }
 
 const PackageCard = ({
   id,
   title,
-  location,
+  destination,
   duration,
   price,
+  discount,
   rating,
   reviews,
-  image,
-  description,
+  imageUrl,
+  shortDescription,
 }: PackageCardProps) => {
+  const finalPrice = discount > 0 ? Math.round(price * (1 - discount / 100)) : price;
+
   return (
-    <Link
-      to={`/package/${id}`}
-      className="card-travel group flex flex-col md:flex-row"
-    >
-      <div className="relative w-full md:w-72 h-56 md:h-auto overflow-hidden flex-shrink-0">
+    <Link to={`/package/${id}`} className="card-travel group overflow-hidden">
+      <div className="relative h-56 overflow-hidden">
         <img
-          src={image}
+          src={imageUrl}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
+        {discount > 0 ? (
+          <div className="absolute top-3 left-3 rounded-full bg-red-500 text-white text-xs font-semibold px-3 py-1">
+            {discount}% OFF
+          </div>
+        ) : null}
       </div>
-      <div className="p-6 flex flex-col flex-1">
+      <div className="p-5 flex flex-col">
         <div className="flex items-center gap-1 text-amber-500 mb-2">
           <Star className="h-4 w-4 fill-current" />
           <span className="text-sm font-medium">{rating}</span>
-          <span className="text-muted-foreground text-sm">
-            ({reviews} reviews)
-          </span>
+          <span className="text-muted-foreground text-sm">({reviews} reviews)</span>
         </div>
-        <h3 className="text-xl font-bold text-foreground mb-2">{title}</h3>
+        <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-1">{title}</h3>
         <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm mb-3">
           <div className="flex items-center gap-1">
             <MapPin className="h-4 w-4" />
-            <span>{location}</span>
+            <span>{destination}</span>
           </div>
           <div className="flex items-center gap-1">
             <Clock className="h-4 w-4" />
             <span>{duration}</span>
           </div>
         </div>
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">
-          {description}
-        </p>
-        <div className="flex items-center justify-between mt-auto">
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-2 min-h-10">{shortDescription}</p>
+        <div className="flex items-end justify-between mt-auto">
           <div>
-            <span className="text-2xl font-bold text-primary">₹{price}</span>
+            {discount > 0 ? (
+              <p className="text-xs text-muted-foreground line-through">₹{price.toLocaleString('en-IN')}</p>
+            ) : null}
+            <span className="text-2xl font-bold text-primary">₹{finalPrice.toLocaleString('en-IN')}</span>
             <span className="text-muted-foreground text-sm"> / person</span>
           </div>
           <div className="flex items-center text-primary font-medium group-hover:gap-2 transition-all">

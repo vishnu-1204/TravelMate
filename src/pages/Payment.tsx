@@ -4,11 +4,11 @@ import { User, Calendar, Lock, ArrowLeft, Check, Loader2, Plus, Trash2, CreditCa
 import { AnimatePresence, motion } from 'framer-motion';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
-import packagesData from '@/data/packages.json';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { jsPDF } from 'jspdf';
+import { getPackageById, type TravelPackage } from '@/lib/packagesApi';
 
 declare global {
   interface Window {
@@ -46,20 +46,6 @@ type BookingDraft = {
   extras: ExtraServices;
 };
 
-type PackageItinerary = {
-  days: { day: number; title: string; activities: string[] }[];
-  nights: { night: number; accommodation: string; meals: string }[];
-};
-
-type PackageData = {
-  id: string;
-  title: string;
-  location: string;
-  duration: string;
-  price: number;
-  itinerary?: PackageItinerary;
-};
-
 const ROOM_SURCHARGE_PER_PERSON: Record<RoomType, number> = {
   Single: 1200,
   Double: 600,
@@ -71,6 +57,7 @@ const EXTRA_PRICING = {
   insurancePerPerson: 350,
   airportPickupFlat: 1200,
 };
+const isTestingMode = import.meta.env.DEV;
 
 const createTraveler = (index: number, defaultEmail = ''): Traveler => ({
   id: `${Date.now()}-${index}`,
@@ -88,7 +75,8 @@ const Payment = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const packageData = (packagesData as PackageData[]).find((pkg) => pkg.id === id);
+  const [packageData, setPackageData] = useState<TravelPackage | null>(null);
+  const [packageLoading, setPackageLoading] = useState(true);
   const backendBaseUrl = import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000';
   const storageKey = useMemo(() => `travelmate-booking-draft-${id || 'unknown'}`, [id]);
 
@@ -103,6 +91,32 @@ const Payment = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [bookingRef, setBookingRef] = useState('');
+  const [formError, setFormError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+
+    const loadPackage = async () => {
+      if (!id) {
+        setPackageData(null);
+        setPackageLoading(false);
+        return;
+      }
+
+      setPackageLoading(true);
+      const pkg = await getPackageById(id);
+      if (!active) return;
+
+      setPackageData(pkg || null);
+      setPackageLoading(false);
+    };
+
+    void loadPackage();
+
+    return () => {
+      active = false;
+    };
+  }, [id]);
 
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
@@ -131,6 +145,18 @@ const Payment = () => {
     const draft: BookingDraft = { travelers, travelDate, roomType, extras };
     localStorage.setItem(storageKey, JSON.stringify(draft));
   }, [extras, roomType, storageKey, travelDate, travelers]);
+
+  if (packageLoading) {
+    return (
+      <Layout>
+        <PageTransition>
+          <div className="min-h-[60vh] flex items-center justify-center">
+            <p className="text-muted-foreground">Loading package details...</p>
+          </div>
+        </PageTransition>
+      </Layout>
+    );
+  }
 
   if (!packageData) {
     return (
@@ -254,14 +280,17 @@ const Payment = () => {
   };
 
   const addTraveler = () => {
+    setFormError('');
     setTravelers((prev) => [...prev, createTraveler(prev.length + 1, user?.email || '')]);
   };
 
   const removeTraveler = (travelerId: string) => {
+    setFormError('');
     setTravelers((prev) => (prev.length > 1 ? prev.filter((t) => t.id !== travelerId) : prev));
   };
 
   const updateTraveler = (travelerId: string, field: keyof Traveler, value: string) => {
+    setFormError('');
     setTravelers((prev) =>
       prev.map((traveler) =>
         traveler.id === travelerId ? { ...traveler, [field]: value } : traveler
@@ -269,47 +298,71 @@ const Payment = () => {
     );
   };
 
-  const validateBooking = (): string | null => {
+  const autoFillAllFields = () => {
+    if (!isTestingMode) return;
+    setFormError('');
+    const date = new Date();
+    date.setDate(date.getDate() + 14);
+    const autoDate = date.toISOString().split('T')[0];
+
+    setTravelDate(autoDate);
+    setRoomType('Double');
+
+    setTravelers((prev) =>
+      prev.map((traveler, index) => ({
+        ...traveler,
+        fullName: `Traveler ${index + 1}`,
+        age: String(25 + index),
+        gender: index % 2 === 0 ? 'Male' : 'Female',
+        mobile: `9${String(100000000 + index).slice(-9)}`,
+        email: index === 0 && user?.email ? user.email : `traveler${index + 1}@mail.com`,
+        aadhaar: `${111122223333 + index}`,
+        passport: `P${1234567 + index}`,
+      }))
+    );
+  };
+
+  const validateBooking = (): boolean => {
     if (!travelDate) {
-      return 'Please select a travel date.';
+      return false;
     }
 
     const selectedDate = new Date(travelDate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (selectedDate < today) {
-      return 'Travel date cannot be in the past.';
+      return false;
     }
 
     for (let i = 0; i < travelers.length; i += 1) {
       const traveler = travelers[i];
-      const label = `Traveler ${i + 1}`;
-      if (!traveler.fullName.trim()) return `${label}: Full name is required.`;
+      if (!traveler.fullName.trim()) return false;
       if (!traveler.age.trim() || Number(traveler.age) < 1 || Number(traveler.age) > 120) {
-        return `${label}: Age must be between 1 and 120.`;
+        return false;
       }
-      if (!traveler.gender) return `${label}: Gender is required.`;
+      if (!traveler.gender) return false;
       if (!/^[6-9]\d{9}$/.test(traveler.mobile.trim())) {
-        return `${label}: Mobile number must be a valid 10-digit Indian number.`;
+        return false;
       }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(traveler.email.trim())) {
-        return `${label}: Email is invalid.`;
+        return false;
       }
       if (!/^\d{12}$/.test(traveler.aadhaar.trim())) {
-        return `${label}: Aadhaar must be 12 digits.`;
+        return false;
       }
     }
 
-    return null;
+    return true;
   };
 
   const handleCardPayment = async () => {
-    const error = validateBooking();
-    if (error) {
-      toast.error(error);
+    const isValid = validateBooking();
+    if (!isValid) {
+      setFormError('Please fill all required fields.');
       return;
     }
 
+    setFormError('');
     setLoading(true);
     await delay(600);
     if (!user?.id) {
@@ -451,28 +504,82 @@ const Payment = () => {
                 <div className="bg-card rounded-xl p-6 shadow-card">
                   <h2 className="text-lg font-bold text-foreground mb-4">Package Details</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <DetailRow label="Package ID" value={packageData.id} />
                     <DetailRow label="Package Name" value={packageData.title} />
+                    <DetailRow label="Category" value={packageData.category} />
                     <DetailRow label="Destination" value={packageData.location} />
                     <DetailRow label="Duration" value={packageData.duration} />
+                    <DetailRow label="Rating" value={`${packageData.rating}/5`} />
+                    <DetailRow label="Reviews" value={`${packageData.reviews}`} />
+                    <DetailRow label="Highlights" value={`${packageData.highlights.length}`} />
+                    <DetailRow label="Included Items" value={`${packageData.included.length}`} />
+                    <DetailRow label="Excluded Items" value={`${packageData.excluded.length}`} />
                     <DetailRow label="Price per person" value={`₹${packageData.price.toLocaleString()}`} />
                   </div>
                 </div>
 
                 <div className="bg-card rounded-xl p-6 shadow-card">
+                  <div className="mt-4 text-sm text-muted-foreground">
+                    <p className="text-xs uppercase tracking-wide mb-1">Description</p>
+                    <p>{packageData.description}</p>
+                  </div>
+                  <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-muted-foreground mb-2">Highlights</p>
+                      <ul className="space-y-1 text-foreground">
+                        {packageData.highlights.map((item) => (
+                          <li key={item}>- {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-muted-foreground mb-2">Included</p>
+                      <ul className="space-y-1 text-foreground">
+                        {packageData.included.map((item) => (
+                          <li key={item}>- {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-muted-foreground mb-2">Excluded</p>
+                      <ul className="space-y-1 text-foreground">
+                        {packageData.excluded.map((item) => (
+                          <li key={item}>- {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                       <User className="h-5 w-5 text-primary" />
                       Traveler Details
                     </h2>
-                    <button
-                      type="button"
-                      onClick={addTraveler}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition"
-                    >
-                      <Plus className="h-4 w-4" />
-                      Add Traveler
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {isTestingMode ? (
+                        <button
+                          type="button"
+                          onClick={autoFillAllFields}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-primary/40 transition"
+                        >
+                          Auto Fill All Fields
+                        </button>
+                      ) : null}
+                      <button
+                        type="button"
+                        onClick={addTraveler}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition"
+                      >
+                        <Plus className="h-4 w-4" />
+                        Add Traveler
+                      </button>
+                    </div>
                   </div>
+
+                  {formError ? (
+                    <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-600">
+                      {formError}
+                    </div>
+                  ) : null}
 
                   <AnimatePresence initial={false}>
                     <div className="space-y-4">
@@ -561,13 +668,19 @@ const Payment = () => {
                       label="Travel Date"
                       type="date"
                       value={travelDate}
-                      onChange={setTravelDate}
+                      onChange={(value) => {
+                        setFormError('');
+                        setTravelDate(value);
+                      }}
                       required
                     />
                     <FormSelect
                       label="Room Type"
                       value={roomType}
-                      onChange={(value) => setRoomType(value as RoomType)}
+                      onChange={(value) => {
+                        setFormError('');
+                        setRoomType(value as RoomType);
+                      }}
                       options={['Single', 'Double', 'Family']}
                     />
                   </div>

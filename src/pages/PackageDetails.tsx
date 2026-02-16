@@ -1,38 +1,53 @@
-import { useParams, useNavigate, Link } from 'react-router-dom';
+﻿import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Plane, Hotel, Utensils, Camera } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
-import packagesData from '@/data/packages.json';
+import { getPackageById, type TravelPackage } from '@/lib/packagesApi';
 import { jsPDF } from 'jspdf';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
-interface PackageItinerary {
-  days: { day: number; title: string; activities: string[] }[];
-  nights: { night: number; accommodation: string; meals: string }[];
-}
-
-interface Package {
-  id: string;
-  category: string;
-  title: string;
-  location: string;
-  duration: string;
-  price: number;
-  rating: number;
-  reviews: number;
-  image: string;
-  description: string;
-  highlights: string[];
-  included: string[];
-  excluded: string[];
-  itinerary?: PackageItinerary;
-}
-
-const PackageDetails = () => {
+export default function PackageDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [packageData, setPackageData] = useState<TravelPackage | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const packageData = (packagesData as Package[]).find((pkg) => pkg.id === id);
+  useEffect(() => {
+    let active = true;
+
+    const loadPackage = async () => {
+      if (!id) {
+        setPackageData(null);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      const pkg = await getPackageById(id);
+      if (!active) return;
+      setPackageData(pkg || null);
+      setLoading(false);
+    };
+
+    void loadPackage();
+
+    return () => {
+      active = false;
+    };
+  }, [id]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <PageTransition>
+          <div className="min-h-[60vh] flex items-center justify-center">
+            <p className="text-muted-foreground">Loading package details...</p>
+          </div>
+        </PageTransition>
+      </Layout>
+    );
+  }
 
   if (!packageData) {
     return (
@@ -51,6 +66,41 @@ const PackageDetails = () => {
     );
   }
 
+  const discountedPrice =
+    packageData.discount > 0
+      ? Math.round(packageData.price * (1 - packageData.discount / 100))
+      : packageData.price;
+  const itineraryDays =
+    packageData.itinerary?.days && packageData.itinerary.days.length > 0
+      ? packageData.itinerary.days
+      : Array.from({ length: Math.max(2, packageData.durationDays || 3) }, (_, index) => ({
+          day: index + 1,
+          title:
+            index === 0
+              ? `Arrival in ${packageData.destination}`
+              : index === Math.max(2, packageData.durationDays || 3) - 1
+              ? 'Departure'
+              : `Explore ${packageData.destination}`,
+          activities:
+            index === 0
+              ? ['Arrival and hotel check-in', 'Local orientation walk']
+              : index === Math.max(2, packageData.durationDays || 3) - 1
+              ? ['Breakfast at hotel', 'Checkout and return transfer']
+              : packageData.highlights.slice(0, 3),
+        }));
+
+  const itineraryNights =
+    packageData.itinerary?.nights && packageData.itinerary.nights.length > 0
+      ? packageData.itinerary.nights
+      : Array.from(
+          { length: Math.max(1, (packageData.durationDays || itineraryDays.length) - 1) },
+          (_, index) => ({
+            night: index + 1,
+            accommodation: 'Comfort hotel stay',
+            meals: 'Breakfast',
+          })
+        );
+
   const downloadItinerary = () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -63,7 +113,7 @@ const PackageDetails = () => {
 
     doc.setFontSize(12);
     doc.setTextColor(100, 100, 100);
-    doc.text(`${packageData.location} | ${packageData.duration}`, pageWidth / 2, yPosition, { align: 'center' });
+    doc.text(`${packageData.destination} | ${packageData.duration}`, pageWidth / 2, yPosition, { align: 'center' });
     yPosition += 20;
 
     doc.setFontSize(10);
@@ -72,13 +122,13 @@ const PackageDetails = () => {
     doc.text(descLines, 20, yPosition);
     yPosition += descLines.length * 6 + 15;
 
-    if (packageData.itinerary?.days) {
+    if (itineraryDays.length > 0) {
       doc.setFontSize(16);
       doc.setTextColor(30, 64, 175);
       doc.text('Day-by-Day Itinerary', 20, yPosition);
       yPosition += 10;
 
-      packageData.itinerary.days.forEach((day) => {
+      itineraryDays.forEach((day) => {
         if (yPosition > 260) {
           doc.addPage();
           yPosition = 20;
@@ -96,14 +146,14 @@ const PackageDetails = () => {
             doc.addPage();
             yPosition = 20;
           }
-          doc.text(`• ${activity}`, 25, yPosition);
+          doc.text(`â€¢ ${activity}`, 25, yPosition);
           yPosition += 6;
         });
         yPosition += 5;
       });
     }
 
-    if (packageData.itinerary?.nights) {
+    if (itineraryNights.length > 0) {
       if (yPosition > 200) {
         doc.addPage();
         yPosition = 20;
@@ -115,7 +165,7 @@ const PackageDetails = () => {
       doc.text('Accommodation Details', 20, yPosition);
       yPosition += 10;
 
-      packageData.itinerary.nights.forEach((night) => {
+      itineraryNights.forEach((night) => {
         if (yPosition > 270) {
           doc.addPage();
           yPosition = 20;
@@ -130,7 +180,7 @@ const PackageDetails = () => {
     yPosition += 15;
     doc.setFontSize(14);
     doc.setTextColor(30, 64, 175);
-    doc.text(`Price: ₹${packageData.price} per person`, 20, yPosition);
+    doc.text(`Price: â‚¹${packageData.price} per person`, 20, yPosition);
 
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
@@ -167,11 +217,11 @@ const PackageDetails = () => {
               <h1 className="text-3xl md:text-5xl font-bold text-white mb-3 font-serif">
                 {packageData.title}
               </h1>
-              <div className="flex flex-wrap items-center gap-4 text-white/90">
-                <div className="flex items-center gap-1">
-                  <MapPin className="h-5 w-5" />
-                  <span>{packageData.location}</span>
-                </div>
+                <div className="flex flex-wrap items-center gap-4 text-white/90">
+                  <div className="flex items-center gap-1">
+                    <MapPin className="h-5 w-5" />
+                    <span>{packageData.destination}</span>
+                  </div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-5 w-5" />
                   <span>{packageData.duration}</span>
@@ -211,8 +261,55 @@ const PackageDetails = () => {
                   </div>
                 </div>
 
+                <div className="bg-card rounded-xl p-6 shadow-card">
+                  <h2 className="text-xl font-bold text-foreground mb-4">Available Dates</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {packageData.availableDates.map((date) => (
+                      <span key={date} className="text-sm px-3 py-1 rounded-full bg-primary/10 text-primary">
+                        {new Date(date).toLocaleDateString('en-IN', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Included/Excluded */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-card rounded-xl p-6 shadow-card">
+                    <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
+                      <Check className="h-5 w-5 text-green-500" />
+                      What's Included
+                    </h3>
+                    <ul className="space-y-2">
+                      {packageData.included.map((item, index) => (
+                        <li key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Check className="h-4 w-4 text-green-500" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="bg-card rounded-xl p-6 shadow-card">
+                    <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
+                      <X className="h-5 w-5 text-red-500" />
+                      What's Excluded
+                    </h3>
+                    <ul className="space-y-2">
+                      {packageData.excluded.map((item, index) => (
+                        <li key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <X className="h-4 w-4 text-red-500" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
                 {/* Day-by-Day Itinerary */}
-                {packageData.itinerary && (
+                {itineraryDays.length > 0 && (
                   <div className="bg-card rounded-xl p-6 shadow-card">
                     <div className="flex items-center gap-3 mb-8">
                       <div className="p-3 bg-primary/10 rounded-xl">
@@ -229,9 +326,9 @@ const PackageDetails = () => {
                       <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20 hidden md:block" />
 
                       <div className="space-y-6">
-                        {packageData.itinerary.days.map((day, index) => {
-                          const night = packageData.itinerary?.nights.find(n => n.night === day.day);
-                          
+                        {itineraryDays.map((day, index) => {
+                          const night = itineraryNights.find((n) => n.night === day.day);
+
                           return (
                             <motion.div
                               key={day.day}
@@ -262,7 +359,7 @@ const PackageDetails = () => {
                                         Arrival Day
                                       </span>
                                     )}
-                                    {index === packageData.itinerary!.days.length - 1 && (
+                                    {index === itineraryDays.length - 1 && (
                                       <span className="inline-flex items-center gap-1 text-xs bg-amber-500/10 text-amber-600 px-3 py-1 rounded-full w-fit">
                                         <Plane className="h-3 w-3" />
                                         Departure Day
@@ -302,38 +399,6 @@ const PackageDetails = () => {
                     </div>
                   </div>
                 )}
-
-                {/* Included/Excluded */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-card rounded-xl p-6 shadow-card">
-                    <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
-                      <Check className="h-5 w-5 text-green-500" />
-                      What's Included
-                    </h3>
-                    <ul className="space-y-2">
-                      {packageData.included.map((item, index) => (
-                        <li key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Check className="h-4 w-4 text-green-500" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="bg-card rounded-xl p-6 shadow-card">
-                    <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
-                      <X className="h-5 w-5 text-red-500" />
-                      What's Excluded
-                    </h3>
-                    <ul className="space-y-2">
-                      {packageData.excluded.map((item, index) => (
-                        <li key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <X className="h-4 w-4 text-red-500" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
               </div>
 
               {/* Sidebar */}
@@ -341,7 +406,17 @@ const PackageDetails = () => {
                 <div className="bg-card rounded-xl p-6 shadow-card sticky top-24">
                   <div className="text-center mb-6">
                     <p className="text-muted-foreground text-sm">Starting from</p>
-                    <p className="text-4xl font-bold text-primary">₹{packageData.price}</p>
+                    {packageData.discount > 0 ? (
+                      <p className="text-sm text-muted-foreground line-through">
+                        ₹{packageData.price.toLocaleString('en-IN')}
+                      </p>
+                    ) : null}
+                    <p className="text-4xl font-bold text-primary">₹{discountedPrice.toLocaleString('en-IN')}</p>
+                    {packageData.discount > 0 ? (
+                      <p className="text-xs text-emerald-600 font-medium mt-1">
+                        Save {packageData.discount}% on this departure
+                      </p>
+                    ) : null}
                     <p className="text-muted-foreground text-sm">per person</p>
                   </div>
 
@@ -376,6 +451,5 @@ const PackageDetails = () => {
       </PageTransition>
     </Layout>
   );
-};
+}
 
-export default PackageDetails;

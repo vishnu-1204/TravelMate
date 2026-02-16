@@ -1,12 +1,12 @@
-import { type ReactNode, useEffect, useMemo, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Users, Receipt, Loader2, MapPin } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import packagesData from '@/data/packages.json';
 import { toast } from 'sonner';
+import { getPackages } from '@/lib/packagesApi';
 
 type BookingRow = {
   id: string;
@@ -26,6 +26,7 @@ const MyBookings = () => {
   const [clearing, setClearing] = useState(false);
   const [error, setError] = useState('');
   const [bookings, setBookings] = useState<BookingRow[]>([]);
+  const [packageImageById, setPackageImageById] = useState<Map<string, string>>(new Map());
 
   useEffect(() => {
     if (!user?.id) return;
@@ -55,10 +56,23 @@ const MyBookings = () => {
     void loadBookings();
   }, [user?.id]);
 
-  const packageImageById = useMemo(() => {
-    const map = new Map<string, string>();
-    packagesData.forEach((pkg) => map.set(pkg.id, pkg.image));
-    return map;
+  useEffect(() => {
+    let active = true;
+
+    const loadPackages = async () => {
+      const packages = await getPackages();
+      if (!active) return;
+
+      const map = new Map<string, string>();
+      packages.forEach((pkg) => map.set(pkg.id, pkg.image));
+      setPackageImageById(map);
+    };
+
+    void loadPackages();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   const clearMyBookings = async () => {
@@ -116,7 +130,7 @@ const MyBookings = () => {
             ) : bookings.length === 0 ? (
               <div className="bg-card rounded-xl p-8 shadow-card text-center">
                 <p className="text-muted-foreground mb-4">No bookings yet.</p>
-                <Link to="/packages/india" className="btn-primary">
+                <Link to="/packages/indian" className="btn-primary">
                   Explore Packages
                 </Link>
               </div>

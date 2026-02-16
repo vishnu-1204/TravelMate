@@ -1,1238 +1,3962 @@
 [
   {
-    "id": "101",
-    "category": "india",
-    "title": "Kerala Backwaters & Beaches",
-    "location": "Kochi, Alleppey, Kovalam",
-    "duration": "6 Days / 5 Nights",
-    "price": 899,
-    "rating": 4.8,
-    "reviews": 542,
-    "image": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800",
-    "description": "Serene backwaters, houseboats, and pristine beaches of God's Own Country.",
-    "highlights": ["Houseboat cruise", "Kovalam Beach", "Tea plantations", "Kathakali dance"],
-    "included": ["Hotels & Houseboat", "All meals", "Transfers", "Sightseeing"],
-    "excluded": ["Flights", "Personal expenses"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival Kochi", "activities": ["Fort Kochi", "Chinese fishing nets", "Spice market"] },
-        { "day": 2, "title": "Munnar", "activities": ["Tea gardens", "Mattupetty Dam", "Echo Point"] },
-        { "day": 3, "title": "Alleppey Houseboat", "activities": ["Backwater cruise", "Village views", "Sunset"] },
-        { "day": 4, "title": "Kovalam Beach", "activities": ["Beach relaxation", "Lighthouse", "Ayurvedic spa"] },
-        { "day": 5, "title": "Trivandrum", "activities": ["Padmanabhaswamy Temple", "Museum", "Shopping"] },
-        { "day": 6, "title": "Departure", "activities": ["Breakfast", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Kochi Heritage Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Munnar Resort", "meals": "All meals" },
-        { "night": 3, "accommodation": "Alleppey Houseboat", "meals": "All meals" },
-        { "night": 4, "accommodation": "Kovalam Beach Resort", "meals": "Breakfast & Dinner" },
-        { "night": 5, "accommodation": "Kovalam Beach Resort", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "102",
-    "category": "india",
-    "title": "Rajasthan Royal Heritage",
-    "location": "Jaipur, Udaipur, Jodhpur",
-    "duration": "8 Days / 7 Nights",
-    "price": 1199,
-    "rating": 4.9,
-    "reviews": 678,
-    "image": "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800",
-    "description": "Explore magnificent palaces, forts, and desert landscapes of royal Rajasthan.",
-    "highlights": ["Amber Fort", "City Palace", "Camel safari", "Lake Pichola"],
-    "included": ["Heritage hotels", "Breakfast & Dinner", "Transfers", "Guided tours"],
-    "excluded": ["Flights", "Lunch", "Entry fees"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival Jaipur", "activities": ["City Palace", "Jantar Mantar", "Hawa Mahal"] },
-        { "day": 2, "title": "Jaipur Sightseeing", "activities": ["Amber Fort", "Jal Mahal", "Local bazaars"] },
-        { "day": 3, "title": "Pushkar", "activities": ["Brahma Temple", "Pushkar Lake", "Camel fair"] },
-        { "day": 4, "title": "Jodhpur", "activities": ["Mehrangarh Fort", "Jaswant Thada", "Clock Tower"] },
-        { "day": 5, "title": "Udaipur", "activities": ["City Palace", "Lake Pichola boat ride"] },
-        { "day": 6, "title": "Udaipur Leisure", "activities": ["Saheliyon ki Bari", "Vintage car museum"] },
-        { "day": 7, "title": "Chittorgarh", "activities": ["Fort visit", "Historical tour"] },
-        { "day": 8, "title": "Departure", "activities": ["Breakfast", "Transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Jaipur Palace Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Jaipur Palace Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Pushkar Resort", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Jodhpur Heritage Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 5, "accommodation": "Udaipur Lake Palace", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Udaipur Lake Palace", "meals": "Breakfast & Dinner" },
-        { "night": 7, "accommodation": "Udaipur Lake Palace", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "103",
-    "category": "india",
-    "title": "Goa Beach Paradise",
-    "location": "North & South Goa",
-    "duration": "5 Days / 4 Nights",
-    "price": 699,
-    "rating": 4.7,
-    "reviews": 892,
-    "image": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800",
-    "description": "Sun, sand, and sea with vibrant nightlife and Portuguese heritage.",
-    "highlights": ["Beach hopping", "Water sports", "Spice plantation", "Night markets"],
-    "included": ["Beach resort", "Breakfast", "Airport transfers"],
-    "excluded": ["Flights", "Water sports", "Meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Fira town", "Caldera views", "Welcome dinner"] },
-        { "day": 2, "title": "Beach Day", "activities": ["Red Beach", "Black Beach", "Swimming"] },
-        { "day": 3, "title": "Wine Tour", "activities": ["Vineyard visits", "Wine tasting", "Oia sunset"] },
-        { "day": 4, "title": "Boat Tour", "activities": ["Volcano visit", "Hot springs", "Thirassia island"] },
-        { "day": 5, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Cave Hotel Oia", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Cave Hotel Oia", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Cave Hotel Oia", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Cave Hotel Oia", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "132",
+    "id": "1001",
+    "packageId": "TM-INT-01",
     "category": "international",
-    "title": "Iceland Ring Road",
-    "location": "Reykjavik & Around",
-    "duration": "8 Days / 7 Nights",
-    "price": 2599,
-    "rating": 4.9,
-    "reviews": 434,
-    "image": "https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=800",
-    "description": "Glaciers, waterfalls, geysers, and Northern Lights.",
-    "highlights": ["Blue Lagoon", "Golden Circle", "Jokulsarlon", "Northern Lights"],
-    "included": ["Hotels", "Breakfast", "Car rental", "Blue Lagoon"],
-    "excluded": ["Flights", "Visa", "Fuel & Meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Reykjavik", "activities": ["City tour", "Hallgrimskirkja", "Harbor"] },
-        { "day": 2, "title": "Golden Circle", "activities": ["Thingvellir", "Geysir", "Gullfoss"] },
-        { "day": 3, "title": "South Coast", "activities": ["Seljalandsfoss", "Skogafoss", "Black beach"] },
-        { "day": 4, "title": "Jokulsarlon", "activities": ["Glacier lagoon", "Diamond beach", "Ice caves"] },
-        { "day": 5, "title": "East Fjords", "activities": ["Scenic drive", "Fishing villages"] },
-        { "day": 6, "title": "North Iceland", "activities": ["Myvatn", "Dettifoss", "Akureyri"] },
-        { "day": 7, "title": "West Iceland", "activities": ["Snaefellsnes Peninsula", "Kirkjufell"] },
-        { "day": 8, "title": "Departure", "activities": ["Blue Lagoon", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Reykjavik Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "South Iceland Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Vik Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "East Iceland Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Akureyri Hotel", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "North Iceland Hotel", "meals": "Breakfast" },
-        { "night": 7, "accommodation": "Reykjavik Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "133",
-    "category": "international",
-    "title": "Morocco Imperial Cities",
-    "location": "Marrakech, Fes, Casablanca",
+    "categoryLabel": "International Tours",
+    "title": "Swiss Alpine Panorama",
+    "destination": "Zurich, Lucerne, Interlaken",
     "duration": "7 Days / 6 Nights",
-    "price": 1399,
-    "rating": 4.7,
-    "reviews": 567,
-    "image": "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=800",
-    "description": "Colorful souks, desert camps, and ancient medinas.",
-    "highlights": ["Jemaa el-Fnaa", "Sahara desert", "Fes medina", "Atlas Mountains"],
-    "included": ["Riads & Hotels", "Breakfast & Dinner", "Desert camp", "Transfers"],
-    "excluded": ["Flights", "Visa", "Lunches"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Marrakech", "activities": ["Jemaa el-Fnaa", "Souks", "Koutoubia Mosque"] },
-        { "day": 2, "title": "Atlas Mountains", "activities": ["Berber villages", "Ouzoud waterfalls"] },
-        { "day": 3, "title": "Desert Journey", "activities": ["Ait Benhaddou", "Dades Valley", "Todra Gorge"] },
-        { "day": 4, "title": "Sahara Desert", "activities": ["Camel trek", "Desert camp", "Stargazing"] },
-        { "day": 5, "title": "Fes", "activities": ["Medina tour", "Tanneries", "Al Quaraouiyine"] },
-        { "day": 6, "title": "Casablanca", "activities": ["Hassan II Mosque", "Corniche", "Rick's Cafe"] },
-        { "day": 7, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Marrakech Riad", "meals": "Breakfast & Dinner" },
-        { "night": 2, "accommodation": "Marrakech Riad", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Dades Gorge Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Desert Camp", "meals": "All meals" },
-        { "night": 5, "accommodation": "Fes Riad", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Casablanca Hotel", "meals": "Breakfast" }
-      ]
-    }
+    "durationDays": 7,
+    "price": 184999,
+    "discount": 0,
+    "rating": 4.3,
+    "reviews": 120,
+    "shortDescription": "Scenic train rides, alpine villages, and postcard-perfect Swiss landscapes.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Zurich, Lucerne, Interlaken",
+    "image": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?w=1200",
+    "description": "Scenic train rides, alpine villages, and postcard-perfect Swiss landscapes.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
   },
   {
-    "id": "134",
+    "id": "1002",
+    "packageId": "TM-INT-02",
     "category": "international",
-    "title": "New Zealand Adventure",
-    "location": "North & South Island",
-    "duration": "12 Days / 11 Nights",
-    "price": 3299,
-    "rating": 4.9,
-    "reviews": 389,
-    "image": "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=800",
-    "description": "Fjords, glaciers, adventure sports, and Hobbiton.",
-    "highlights": ["Milford Sound", "Queenstown", "Hobbiton", "Glaciers"],
-    "included": ["Hotels", "Breakfast", "Tours", "Inter-island ferry"],
-    "excluded": ["Flights", "Visa", "Adventure activities"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Auckland", "activities": ["Sky Tower", "Harbor", "City tour"] },
-        { "day": 2, "title": "Rotorua", "activities": ["Geothermal parks", "Maori culture", "Hot springs"] },
-        { "day": 3, "title": "Hobbiton", "activities": ["Movie set tour", "Shire exploration"] },
-        { "day": 4, "title": "Wellington", "activities": ["Te Papa Museum", "Cable car", "Waterfront"] },
-        { "day": 5, "title": "Ferry to South", "activities": ["Scenic ferry", "Marlborough Sounds"] },
-        { "day": 6, "title": "Christchurch", "activities": ["Garden city", "Punting", "Rebuild tour"] },
-        { "day": 7, "title": "Aoraki/Mt Cook", "activities": ["Glacier views", "Hiking trails"] },
-        { "day": 8, "title": "Queenstown", "activities": ["Lake Wakatipu", "Skyline Gondola"] },
-        { "day": 9, "title": "Adventure Day", "activities": ["Bungee jumping", "Jet boating", "Wine tour"] },
-        { "day": 10, "title": "Milford Sound", "activities": ["Fjord cruise", "Scenic drive"] },
-        { "day": 11, "title": "Wanaka", "activities": ["Lake Wanaka", "Puzzling World"] },
-        { "day": 12, "title": "Departure", "activities": ["Return to Queenstown", "Flight home"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Auckland Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Rotorua Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Rotorua Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Wellington Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Christchurch Hotel", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "Mt Cook Lodge", "meals": "Breakfast" },
-        { "night": 7, "accommodation": "Queenstown Hotel", "meals": "Breakfast" },
-        { "night": 8, "accommodation": "Queenstown Hotel", "meals": "Breakfast" },
-        { "night": 9, "accommodation": "Queenstown Hotel", "meals": "Breakfast" },
-        { "night": 10, "accommodation": "Te Anau Hotel", "meals": "Breakfast" },
-        { "night": 11, "accommodation": "Wanaka Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "135",
-    "category": "international",
-    "title": "Turkey Heritage Trail",
-    "location": "Istanbul, Cappadocia, Pamukkale",
+    "categoryLabel": "International Tours",
+    "title": "Japan Sakura Discovery",
+    "destination": "Tokyo, Kyoto, Osaka",
     "duration": "8 Days / 7 Nights",
-    "price": 1499,
-    "rating": 4.8,
-    "reviews": 678,
-    "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800",
-    "description": "Byzantine heritage, fairy chimneys, and ancient ruins.",
-    "highlights": ["Hagia Sophia", "Hot air balloon", "Pamukkale terraces", "Ephesus"],
-    "included": ["Hotels", "Breakfast & Dinner", "Balloon ride", "Guided tours"],
-    "excluded": ["Flights", "Visa", "Lunches"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Istanbul", "activities": ["Hagia Sophia", "Blue Mosque", "Grand Bazaar"] },
-        { "day": 2, "title": "Istanbul Bosphorus", "activities": ["Topkapi Palace", "Boat cruise", "Spice market"] },
-        { "day": 3, "title": "Cappadocia", "activities": ["Flight", "Underground city", "Valley walk"] },
-        { "day": 4, "title": "Hot Air Balloon", "activities": ["Balloon ride", "Cave churches", "Pottery workshop"] },
-        { "day": 5, "title": "Pamukkale", "activities": ["Cotton Castle", "Hierapolis", "Thermal pools"] },
-        { "day": 6, "title": "Ephesus", "activities": ["Ancient city", "Library of Celsus", "Temple"] },
-        { "day": 7, "title": "Kusadasi", "activities": ["Beach time", "Shopping", "Boat trip"] },
-        { "day": 8, "title": "Departure", "activities": ["Transfer to Izmir", "Flight home"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Istanbul Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 2, "accommodation": "Istanbul Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Cappadocia Cave Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Cappadocia Cave Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 5, "accommodation": "Pamukkale Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Kusadasi Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 7, "accommodation": "Kusadasi Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "136",
-    "category": "international",
-    "title": "Egypt Nile Cruise",
-    "location": "Cairo, Luxor, Aswan",
-    "duration": "8 Days / 7 Nights",
-    "price": 1699,
-    "rating": 4.7,
-    "reviews": 534,
-    "image": "https://images.unsplash.com/photo-1539768942893-daf53e448371?w=800",
-    "description": "Pyramids, pharaohs, and a luxury Nile River cruise.",
-    "highlights": ["Pyramids of Giza", "Nile cruise", "Valley of the Kings", "Abu Simbel"],
-    "included": ["Hotels & Cruise", "All meals on cruise", "Guided tours", "Transfers"],
-    "excluded": ["Flights", "Visa", "Cairo meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Cairo Arrival", "activities": ["Pyramids", "Sphinx", "Egyptian Museum"] },
-        { "day": 2, "title": "Old Cairo", "activities": ["Citadel", "Khan el-Khalili", "Coptic Cairo"] },
-        { "day": 3, "title": "Luxor", "activities": ["Flight", "Karnak Temple", "Cruise embarkation"] },
-        { "day": 4, "title": "West Bank", "activities": ["Valley of the Kings", "Hatshepsut Temple", "Sailing"] },
-        { "day": 5, "title": "Nile Cruise", "activities": ["Edfu Temple", "Kom Ombo", "Sailing"] },
-        { "day": 6, "title": "Aswan", "activities": ["Philae Temple", "High Dam", "Nubian village"] },
-        { "day": 7, "title": "Abu Simbel", "activities": ["Temple visit", "Return to Cairo"] },
-        { "day": 8, "title": "Departure", "activities": ["Free time", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Cairo Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Cairo Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Nile Cruise Ship", "meals": "All meals" },
-        { "night": 4, "accommodation": "Nile Cruise Ship", "meals": "All meals" },
-        { "night": 5, "accommodation": "Nile Cruise Ship", "meals": "All meals" },
-        { "night": 6, "accommodation": "Aswan Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 7, "accommodation": "Cairo Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "137",
-    "category": "international",
-    "title": "Vietnam Heritage Tour",
-    "location": "Hanoi, Halong Bay, Hoi An",
-    "duration": "9 Days / 8 Nights",
-    "price": 1399,
-    "rating": 4.8,
-    "reviews": 612,
-    "image": "https://images.unsplash.com/photo-1528127269322-539801943592?w=800",
-    "description": "Emerald waters, ancient towns, and vibrant street life.",
-    "highlights": ["Halong Bay cruise", "Hoi An lanterns", "Cu Chi Tunnels", "Mekong Delta"],
-    "included": ["Hotels", "Breakfast & select meals", "Halong cruise", "Tours"],
-    "excluded": ["Flights", "Visa", "Some meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Hanoi Arrival", "activities": ["Old Quarter", "Hoan Kiem Lake", "Water puppets"] },
-        { "day": 2, "title": "Hanoi Tour", "activities": ["Ho Chi Minh Mausoleum", "Temple of Literature", "Street food"] },
-        { "day": 3, "title": "Halong Bay", "activities": ["Cruise boarding", "Island visits", "Kayaking"] },
-        { "day": 4, "title": "Halong to Hoi An", "activities": ["Morning cruise", "Flight to Danang", "Hoi An check-in"] },
-        { "day": 5, "title": "Hoi An", "activities": ["Ancient town", "Japanese Bridge", "Tailor shops"] },
-        { "day": 6, "title": "My Son", "activities": ["Temple ruins", "Basket boat ride", "Lantern evening"] },
-        { "day": 7, "title": "Ho Chi Minh City", "activities": ["Flight", "War Museum", "Notre-Dame Cathedral"] },
-        { "day": 8, "title": "Cu Chi & Mekong", "activities": ["Tunnels tour", "Mekong Delta", "Floating market"] },
-        { "day": 9, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Hanoi Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Hanoi Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Halong Bay Cruise", "meals": "All meals" },
-        { "night": 4, "accommodation": "Hoi An Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Hoi An Hotel", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "Hoi An Hotel", "meals": "Breakfast" },
-        { "night": 7, "accommodation": "Ho Chi Minh Hotel", "meals": "Breakfast" },
-        { "night": 8, "accommodation": "Ho Chi Minh Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "138",
-    "category": "international",
-    "title": "Peru Inca Trail",
-    "location": "Lima, Cusco, Machu Picchu",
-    "duration": "8 Days / 7 Nights",
-    "price": 1999,
-    "rating": 4.9,
-    "reviews": 445,
-    "image": "https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=800",
-    "description": "Ancient Incan citadels, Sacred Valley, and Amazon jungle.",
-    "highlights": ["Machu Picchu", "Sacred Valley", "Cusco", "Rainbow Mountain"],
-    "included": ["Hotels", "Breakfast & dinners", "Machu Picchu train", "Guided tours"],
-    "excluded": ["Flights", "Visa", "Lunches"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Lima", "activities": ["Historic center", "Miraflores", "Larco Museum"] },
-        { "day": 2, "title": "Cusco", "activities": ["Flight", "Acclimatization", "Plaza de Armas"] },
-        { "day": 3, "title": "Sacred Valley", "activities": ["Pisac market", "Ollantaytambo", "Chinchero"] },
-        { "day": 4, "title": "Machu Picchu", "activities": ["Train journey", "Guided tour", "Huayna Picchu"] },
-        { "day": 5, "title": "Return Cusco", "activities": ["Train back", "Cusco exploration"] },
-        { "day": 6, "title": "Rainbow Mountain", "activities": ["Trek to Vinicunca", "Colorful peaks"] },
-        { "day": 7, "title": "Cusco Culture", "activities": ["Sacsayhuaman", "San Blas", "Shopping"] },
-        { "day": 8, "title": "Departure", "activities": ["Transfer", "Flight home"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Lima Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Cusco Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Sacred Valley Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Aguas Calientes Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 5, "accommodation": "Cusco Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Cusco Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 7, "accommodation": "Cusco Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "139",
-    "category": "international",
-    "title": "South Africa Safari",
-    "location": "Cape Town, Kruger, Johannesburg",
-    "duration": "10 Days / 9 Nights",
-    "price": 2799,
-    "rating": 4.9,
-    "reviews": 389,
-    "image": "https://images.unsplash.com/photo-1484318571209-661cf29a69c3?w=800",
-    "description": "Big Five safaris, wine regions, and stunning coastlines.",
-    "highlights": ["Kruger safari", "Table Mountain", "Cape Winelands", "Garden Route"],
-    "included": ["Hotels & Lodges", "Breakfast & dinners", "Safari drives", "Tours"],
-    "excluded": ["Flights", "Visa", "Lunches"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Cape Town", "activities": ["Table Mountain", "V&A Waterfront", "Signal Hill"] },
-        { "day": 2, "title": "Cape Peninsula", "activities": ["Cape Point", "Penguins", "Chapman's Peak"] },
-        { "day": 3, "title": "Winelands", "activities": ["Stellenbosch", "Wine tasting", "Franschhoek"] },
-        { "day": 4, "title": "Garden Route", "activities": ["Hermanus", "Whale watching", "Coastal drive"] },
-        { "day": 5, "title": "Knysna", "activities": ["Lagoon", "Elephant sanctuary", "Featherbed Nature Reserve"] },
-        { "day": 6, "title": "To Kruger", "activities": ["Flight", "Lodge check-in", "Sunset drive"] },
-        { "day": 7, "title": "Safari Day", "activities": ["Morning game drive", "Bush walk", "Evening drive"] },
-        { "day": 8, "title": "Full Day Safari", "activities": ["Full day game drive", "Big Five tracking", "Bush dinner"] },
-        { "day": 9, "title": "Johannesburg", "activities": ["Apartheid Museum", "Soweto", "Gold Reef City"] },
-        { "day": 10, "title": "Departure", "activities": ["Cradle of Humankind", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Cape Town Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Cape Town Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Stellenbosch Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Garden Route Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 5, "accommodation": "Knysna Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Kruger Safari Lodge", "meals": "All meals" },
-        { "night": 7, "accommodation": "Kruger Safari Lodge", "meals": "All meals" },
-        { "night": 8, "accommodation": "Kruger Safari Lodge", "meals": "All meals" },
-        { "night": 9, "accommodation": "Johannesburg Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "140",
-    "category": "international",
-    "title": "Croatia Adriatic Coast",
-    "location": "Dubrovnik, Split, Zagreb",
-    "duration": "7 Days / 6 Nights",
-    "price": 1599,
-    "rating": 4.8,
-    "reviews": 478,
-    "image": "https://images.unsplash.com/photo-1555990538-c31f2da08a18?w=800",
-    "description": "Medieval towns, island hopping, and crystal-clear waters.",
-    "highlights": ["Dubrovnik walls", "Plitvice Lakes", "Island cruising", "Game of Thrones sites"],
-    "included": ["Hotels", "Breakfast", "Island boat trips", "City tours"],
-    "excluded": ["Flights", "Visa", "Meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Dubrovnik", "activities": ["Old Town walls", "Stradun", "Cable car"] },
-        { "day": 2, "title": "Island Hopping", "activities": ["Lokrum", "Elaphiti Islands", "Beach time"] },
-        { "day": 3, "title": "Split", "activities": ["Diocletian's Palace", "Riva promenade", "Marjan Hill"] },
-        { "day": 4, "title": "Hvar Island", "activities": ["Ferry", "Lavender fields", "Beach clubs"] },
-        { "day": 5, "title": "Plitvice", "activities": ["National Park", "Waterfalls", "Hiking trails"] },
-        { "day": 6, "title": "Zagreb", "activities": ["Upper Town", "St. Mark's Church", "Museum"] },
-        { "day": 7, "title": "Departure", "activities": ["Dolac Market", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Dubrovnik Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Dubrovnik Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Split Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Hvar Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Plitvice Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Zagreb Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "104",
-    "category": "india",
-    "title": "Golden Triangle Classic",
-    "location": "Delhi, Agra, Jaipur",
-    "duration": "6 Days / 5 Nights",
-    "price": 799,
-    "rating": 4.8,
-    "reviews": 1024,
-    "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800",
-    "description": "India's most iconic circuit featuring the Taj Mahal and royal palaces.",
-    "highlights": ["Taj Mahal", "Red Fort", "Amber Fort", "Qutub Minar"],
-    "included": ["Hotels", "Breakfast & Dinner", "Transfers", "Guide"],
-    "excluded": ["Flights", "Monument fees"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Delhi Arrival", "activities": ["India Gate", "Qutub Minar", "Lotus Temple"] },
-        { "day": 2, "title": "Old Delhi", "activities": ["Red Fort", "Jama Masjid", "Chandni Chowk"] },
-        { "day": 3, "title": "Agra", "activities": ["Taj Mahal sunrise", "Agra Fort", "Mehtab Bagh"] },
-        { "day": 4, "title": "Jaipur", "activities": ["Fatehpur Sikri enroute", "City Palace"] },
-        { "day": 5, "title": "Jaipur Tour", "activities": ["Amber Fort", "Hawa Mahal", "Shopping"] },
-        { "day": 6, "title": "Departure", "activities": ["Transfer to Delhi", "Flight home"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Delhi City Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Delhi City Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Agra Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Jaipur Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 5, "accommodation": "Jaipur Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "105",
-    "category": "india",
-    "title": "Himachal Mountain Escape",
-    "location": "Shimla & Manali, India",
-    "duration": "7 Days / 6 Nights",
-    "price": 999,
-    "rating": 4.7,
-    "reviews": 386,
-    "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800",
-    "description": "Snowy mountains, pine forests, and peaceful hill towns.",
-    "highlights": ["Rohtang Pass", "Mall Road", "Solang Valley", "Hadimba Temple"],
-    "included": ["Hotels", "Breakfast & Dinner", "Sightseeing", "Transfers"],
-    "excluded": ["Flights", "Personal expenses"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival Shimla", "activities": ["Hotel check-in", "Mall Road walk", "Christ Church visit"] },
-        { "day": 2, "title": "Shimla Sightseeing", "activities": ["Kufri visit", "Himalayan views", "Local shopping"] },
-        { "day": 3, "title": "Shimla to Manali", "activities": ["Scenic drive", "Valley photography", "Resort check-in"] },
-        { "day": 4, "title": "Manali Local", "activities": ["Hadimba Temple", "Old Manali", "Cafe hopping"] },
-        { "day": 5, "title": "Solang Valley", "activities": ["Adventure sports", "Snow activities", "Cable car ride"] },
-        { "day": 6, "title": "Leisure Day", "activities": ["Shopping", "River walk", "Relaxation"] },
-        { "day": 7, "title": "Departure", "activities": ["Breakfast", "Checkout", "Return journey"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Shimla Hill Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Shimla Hill Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Manali Resort", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Manali Resort", "meals": "Breakfast & Dinner" },
-        { "night": 5, "accommodation": "Manali Resort", "meals": "Breakfast & Dinner" },
-        { "night": 6, "accommodation": "Manali Resort", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "106",
-    "category": "india",
-    "title": "Ladakh Adventure Circuit",
-    "location": "Leh & Nubra, India",
-    "duration": "6 Days / 5 Nights",
-    "price": 1299,
-    "rating": 4.8,
-    "reviews": 301,
-    "image": "https://images.unsplash.com/photo-1548013146-72479768bada?w=800",
-    "description": "High-altitude adventure with monasteries and dramatic landscapes.",
-    "highlights": ["Pangong Lake", "Khardung La", "Nubra Valley", "Monasteries"],
-    "included": ["Hotels & Camps", "Breakfast & Dinner", "Permits", "Transfers"],
-    "excluded": ["Flights", "Oxygen charges"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival Leh", "activities": ["Acclimatization", "Local market walk"] },
-        { "day": 2, "title": "Leh Monasteries", "activities": ["Hemis", "Thiksey", "Shey Palace"] },
-        { "day": 3, "title": "Nubra Valley", "activities": ["Khardung La pass", "Camel ride", "Sand dunes"] },
-        { "day": 4, "title": "Pangong Lake", "activities": ["Lake views", "Photography", "Camp stay"] },
-        { "day": 5, "title": "Return Leh", "activities": ["Scenic drive", "Souvenir shopping"] },
-        { "day": 6, "title": "Departure", "activities": ["Checkout", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Leh Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Leh Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Nubra Camp", "meals": "All meals" },
-        { "night": 4, "accommodation": "Pangong Camp", "meals": "All meals" },
-        { "night": 5, "accommodation": "Leh Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "107",
-    "category": "india",
-    "title": "Andaman Island Escape",
-    "location": "Port Blair & Havelock",
-    "duration": "5 Days / 4 Nights",
-    "price": 1099,
-    "rating": 4.7,
-    "reviews": 412,
-    "image": "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?w=800",
-    "description": "Crystal-clear waters, coral reefs, and white-sand beaches.",
-    "highlights": ["Radhanagar Beach", "Snorkeling", "Cellular Jail", "Boat rides"],
-    "included": ["Resorts", "Breakfast", "Ferry transfers", "Sightseeing"],
-    "excluded": ["Flights", "Water sports"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Port Blair", "activities": ["Cellular Jail", "Light & sound show"] },
-        { "day": 2, "title": "Havelock Island", "activities": ["Ferry transfer", "Beach leisure"] },
-        { "day": 3, "title": "Island Fun", "activities": ["Snorkeling", "Sunset views"] },
-        { "day": 4, "title": "Return Port Blair", "activities": ["Shopping", "Local tour"] },
-        { "day": 5, "title": "Departure", "activities": ["Checkout", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Port Blair Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Havelock Resort", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Havelock Resort", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Port Blair Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "108",
-    "category": "india",
-    "title": "Varanasi Spiritual Journey",
-    "location": "Varanasi, India",
-    "duration": "3 Days / 2 Nights",
-    "price": 499,
-    "rating": 4.6,
-    "reviews": 528,
-    "image": "https://images.unsplash.com/photo-1609943244576-9b9a8c6d5a78?w=800",
-    "description": "Experience India's spiritual heart on the banks of the Ganges.",
-    "highlights": ["Ganga Aarti", "Boat ride", "Temples", "Sarnath"],
-    "included": ["Hotel", "Breakfast", "Local guide"],
-    "excluded": ["Flights"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Temple visits", "Evening Ganga Aarti"] },
-        { "day": 2, "title": "Spiritual Tour", "activities": ["Sunrise boat ride", "Sarnath visit"] },
-        { "day": 3, "title": "Departure", "activities": ["Checkout", "Return"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Ganges View Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Ganges View Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "109",
-    "category": "india",
-    "title": "Darjeeling Tea Trail",
-    "location": "Darjeeling & Gangtok",
-    "duration": "5 Days / 4 Nights",
-    "price": 849,
-    "rating": 4.7,
-    "reviews": 287,
-    "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800",
-    "description": "Misty mountains, tea gardens, and Himalayan monasteries.",
-    "highlights": ["Tiger Hill sunrise", "Toy train", "Tea estates", "Tsomgo Lake"],
-    "included": ["Hotels", "Breakfast & Dinner", "Transfers", "Permits"],
-    "excluded": ["Flights", "Cable car rides"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival Darjeeling", "activities": ["Mall Road", "Himalayan views"] },
-        { "day": 2, "title": "Darjeeling Tour", "activities": ["Tiger Hill sunrise", "Tea garden", "Toy train"] },
-        { "day": 3, "title": "Gangtok", "activities": ["Scenic drive", "MG Marg walk"] },
-        { "day": 4, "title": "Tsomgo Lake", "activities": ["Lake visit", "Baba Mandir", "Yak ride"] },
-        { "day": 5, "title": "Departure", "activities": ["Shopping", "Transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Darjeeling Resort", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Darjeeling Resort", "meals": "Breakfast & Dinner" },
-        { "night": 3, "accommodation": "Gangtok Hotel", "meals": "Breakfast & Dinner" },
-        { "night": 4, "accommodation": "Gangtok Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "110",
-    "category": "india",
-    "title": "Mysore Palace Heritage",
-    "location": "Mysore & Coorg",
-    "duration": "4 Days / 3 Nights",
-    "price": 649,
-    "rating": 4.6,
-    "reviews": 341,
-    "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800",
-    "description": "Royal palaces, coffee plantations, and sandalwood heritage.",
-    "highlights": ["Mysore Palace", "Brindavan Gardens", "Coffee estates", "Abbey Falls"],
-    "included": ["Hotels", "Breakfast", "Sightseeing", "Transfers"],
-    "excluded": ["Flights", "Entrance fees"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Mysore Arrival", "activities": ["Mysore Palace", "Chamundi Hill"] },
-        { "day": 2, "title": "Mysore Tour", "activities": ["Zoo", "Brindavan Gardens", "Market"] },
-        { "day": 3, "title": "Coorg", "activities": ["Coffee plantation", "Abbey Falls", "Raja's Seat"] },
-        { "day": 4, "title": "Departure", "activities": ["Breakfast", "Transfer to Bangalore"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Mysore Heritage Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Mysore Heritage Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Coorg Plantation Stay", "meals": "Breakfast & Dinner" }
-      ]
-    }
-  },
-  {
-    "id": "111",
-    "category": "international",
-    "title": "Dubai Luxury Experience",
-    "location": "Dubai, UAE",
-    "duration": "5 Days / 4 Nights",
-    "price": 1599,
-    "rating": 4.9,
-    "reviews": 756,
-    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800",
-    "description": "Skyscrapers, luxury shopping, desert safaris, and modern marvels.",
-    "highlights": ["Burj Khalifa", "Desert safari", "Dubai Mall", "Marina cruise"],
-    "included": ["5-star hotel", "Breakfast", "Desert safari", "City tour"],
-    "excluded": ["Flights", "Visa", "Burj Khalifa tickets"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Hotel check-in", "Dubai Mall", "Fountain show"] },
-        { "day": 2, "title": "Modern Dubai", "activities": ["Burj Khalifa", "Dubai Frame", "Gold Souk"] },
-        { "day": 3, "title": "Desert Safari", "activities": ["Dune bashing", "Camel ride", "BBQ dinner"] },
-        { "day": 4, "title": "Leisure Day", "activities": ["Beach club", "Shopping", "Marina walk"] },
-        { "day": 5, "title": "Departure", "activities": ["Checkout", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "5-Star Hotel Downtown", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "5-Star Hotel Downtown", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "5-Star Hotel Downtown", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "5-Star Hotel Downtown", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "112",
-    "category": "international",
-    "title": "Thailand Island Hopper",
-    "location": "Bangkok, Phuket, Krabi",
-    "duration": "7 Days / 6 Nights",
-    "price": 1299,
-    "rating": 4.8,
-    "reviews": 892,
-    "image": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800",
-    "description": "Tropical beaches, vibrant culture, and island adventures.",
-    "highlights": ["Phi Phi Islands", "James Bond Island", "Bangkok temples", "Night markets"],
-    "included": ["Hotels", "Breakfast", "Island tours", "Transfers"],
-    "excluded": ["Flights", "Visa", "Some meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Bangkok Arrival", "activities": ["Grand Palace", "Wat Pho", "River cruise"] },
-        { "day": 2, "title": "Bangkok Tour", "activities": ["Floating market", "Shopping", "Night markets"] },
-        { "day": 3, "title": "Phuket", "activities": ["Flight to Phuket", "Patong Beach"] },
-        { "day": 4, "title": "Phi Phi Islands", "activities": ["Island hopping", "Snorkeling", "Beach time"] },
-        { "day": 5, "title": "Krabi", "activities": ["James Bond Island", "Kayaking"] },
-        { "day": 6, "title": "Beach Day", "activities": ["Railay Beach", "Relaxation"] },
-        { "day": 7, "title": "Departure", "activities": ["Transfer", "Flight home"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Bangkok City Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Bangkok City Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Phuket Beach Resort", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Phuket Beach Resort", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Krabi Resort", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "Krabi Resort", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "113",
-    "category": "international",
-    "title": "Bali Spiritual Retreat",
-    "location": "Ubud, Seminyak, Uluwatu",
-    "duration": "6 Days / 5 Nights",
-    "price": 1099,
-    "rating": 4.9,
-    "reviews": 634,
-    "image": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800",
-    "description": "Rice terraces, ancient temples, yoga, and stunning beaches.",
-    "highlights": ["Tegalalang Rice Terrace", "Uluwatu Temple", "Yoga sessions", "Beach clubs"],
-    "included": ["Villas", "Breakfast", "Yoga classes", "Temple tours"],
-    "excluded": ["Flights", "Visa", "Spa treatments"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Ubud Arrival", "activities": ["Rice terraces", "Monkey Forest", "Art market"] },
-        { "day": 2, "title": "Cultural Ubud", "activities": ["Temple visits", "Traditional dance", "Yoga"] },
-        { "day": 3, "title": "Adventure Day", "activities": ["Waterfall trek", "Coffee plantation", "Swing"] },
-        { "day": 4, "title": "Seminyak", "activities": ["Beach transfer", "Sunset beach club"] },
-        { "day": 5, "title": "Uluwatu", "activities": ["Temple visit", "Kecak dance", "Beach dining"] },
-        { "day": 6, "title": "Departure", "activities": ["Morning yoga", "Transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Ubud Villa", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Ubud Villa", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Ubud Villa", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Seminyak Beach Hotel", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Seminyak Beach Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "114",
-    "category": "international",
-    "title": "Singapore City Break",
-    "location": "Singapore",
-    "duration": "4 Days / 3 Nights",
-    "price": 999,
-    "rating": 4.7,
-    "reviews": 512,
-    "image": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800",
-    "description": "Futuristic city with gardens, diverse cuisine, and cultural districts.",
-    "highlights": ["Gardens by the Bay", "Marina Bay Sands", "Sentosa Island", "Hawker centers"],
-    "included": ["Hotel", "Breakfast", "City tour", "Sentosa pass"],
-    "excluded": ["Flights", "Visa", "Meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Marina Bay", "Merlion", "Gardens by the Bay"] },
-        { "day": 2, "title": "Cultural Tour", "activities": ["Chinatown", "Little India", "Arab Street"] },
-        { "day": 3, "title": "Sentosa", "activities": ["Universal Studios", "Beach", "Cable car"] },
-        { "day": 4, "title": "Departure", "activities": ["Orchard Road shopping", "Transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Marina Bay Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "115",
-    "category": "international",
-    "title": "Maldives Overwater Bliss",
-    "location": "Male & Resort Island",
-    "duration": "5 Days / 4 Nights",
-    "price": 2499,
-    "rating": 5.0,
-    "reviews": 423,
-    "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800",
-    "description": "Luxury overwater villas, pristine lagoons, and world-class diving.",
-    "highlights": ["Overwater villa", "Snorkeling", "Spa treatments", "Sunset cruise"],
-    "included": ["Luxury resort", "All meals", "Water activities", "Transfers"],
-    "excluded": ["Flights", "Visa", "Diving courses"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Seaplane transfer", "Villa check-in", "Beach sunset"] },
-        { "day": 2, "title": "Water Sports", "activities": ["Snorkeling", "Kayaking", "Beach relaxation"] },
-        { "day": 3, "title": "Island Hopping", "activities": ["Local island visit", "Dolphin watching", "Sandbank picnic"] },
-        { "day": 4, "title": "Spa & Leisure", "activities": ["Couple spa", "Sunset cruise", "Fine dining"] },
-        { "day": 5, "title": "Departure", "activities": ["Breakfast", "Seaplane transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Overwater Villa", "meals": "All inclusive" },
-        { "night": 2, "accommodation": "Overwater Villa", "meals": "All inclusive" },
-        { "night": 3, "accommodation": "Overwater Villa", "meals": "All inclusive" },
-        { "night": 4, "accommodation": "Overwater Villa", "meals": "All inclusive" }
-      ]
-    }
-  },
-  {
-    "id": "116",
-    "category": "international",
-    "title": "Paris Romantic Getaway",
-    "location": "Paris, France",
-    "duration": "5 Days / 4 Nights",
-    "price": 1899,
-    "rating": 4.9,
-    "reviews": 845,
-    "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800",
-    "description": "City of love with iconic landmarks, art, and French cuisine.",
-    "highlights": ["Eiffel Tower", "Louvre Museum", "Seine cruise", "Montmartre"],
-    "included": ["Hotel", "Breakfast", "Museum passes", "City tour"],
-    "excluded": ["Flights", "Visa", "Meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Eiffel Tower", "Champs-Élysées", "Arc de Triomphe"] },
-        { "day": 2, "title": "Art & Culture", "activities": ["Louvre Museum", "Notre-Dame", "Latin Quarter"] },
-        { "day": 3, "title": "Versailles", "activities": ["Palace tour", "Gardens", "Marie Antoinette estate"] },
-        { "day": 4, "title": "Montmartre", "activities": ["Sacré-Cœur", "Artists square", "Seine cruise"] },
-        { "day": 5, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Central Paris Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Central Paris Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Central Paris Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Central Paris Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "117",
-    "category": "international",
-    "title": "Swiss Alps Adventure",
-    "location": "Zurich, Interlaken, Zermatt",
-    "duration": "7 Days / 6 Nights",
-    "price": 2299,
-    "rating": 4.9,
-    "reviews": 567,
-    "image": "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800",
-    "description": "Snow-capped peaks, alpine villages, and scenic train journeys.",
-    "highlights": ["Jungfraujoch", "Matterhorn", "Glacier Express", "Lake Lucerne"],
-    "included": ["Hotels", "Breakfast", "Swiss Pass", "Cable cars"],
-    "excluded": ["Flights", "Visa", "Lunches & Dinners"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Zurich Arrival", "activities": ["Old Town", "Lake Zurich", "Bahnhofstrasse"] },
-        { "day": 2, "title": "Lucerne", "activities": ["Chapel Bridge", "Lake cruise", "Mt. Pilatus"] },
-        { "day": 3, "title": "Interlaken", "activities": ["Scenic train", "Harder Kulm", "Adventure activities"] },
-        { "day": 4, "title": "Jungfraujoch", "activities": ["Top of Europe", "Ice Palace", "Snow activities"] },
-        { "day": 5, "title": "Zermatt", "activities": ["Matterhorn views", "Gornergrat railway"] },
-        { "day": 6, "title": "Glacier Express", "activities": ["Scenic train journey", "Mountain villages"] },
-        { "day": 7, "title": "Departure", "activities": ["Transfer", "Flight home"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Zurich Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Lucerne Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Interlaken Resort", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Interlaken Resort", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Zermatt Chalet", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "Mountain Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "118",
-    "category": "international",
-    "title": "Australia East Coast",
-    "location": "Sydney, Cairns, Melbourne",
-    "duration": "10 Days / 9 Nights",
-    "price": 2899,
-    "rating": 4.8,
-    "reviews": 456,
-    "image": "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800",
-    "description": "Great Barrier Reef, Sydney Opera House, and coastal wonders.",
-    "highlights": ["Opera House", "Great Barrier Reef", "Great Ocean Road", "Wildlife"],
-    "included": ["Hotels", "Breakfast", "Reef tour", "City tours"],
-    "excluded": ["Flights", "Visa", "Most meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Sydney Arrival", "activities": ["Opera House", "Harbour Bridge", "Circular Quay"] },
-        { "day": 2, "title": "Sydney Beaches", "activities": ["Bondi Beach", "Coastal walk", "The Rocks"] },
-        { "day": 3, "title": "Blue Mountains", "activities": ["Three Sisters", "Scenic World", "Waterfalls"] },
-        { "day": 4, "title": "Cairns", "activities": ["Flight to Cairns", "Esplanade Lagoon"] },
-        { "day": 5, "title": "Great Barrier Reef", "activities": ["Reef cruise", "Snorkeling", "Marine life"] },
-        { "day": 6, "title": "Daintree Rainforest", "activities": ["Rainforest tour", "Cape Tribulation"] },
-        { "day": 7, "title": "Melbourne", "activities": ["Federation Square", "Laneways", "Coffee culture"] },
-        { "day": 8, "title": "Great Ocean Road", "activities": ["12 Apostles", "Coastal drive", "Wildlife"] },
-        { "day": 9, "title": "Melbourne Explore", "activities": ["Queen Victoria Market", "St Kilda Beach"] },
-        { "day": 10, "title": "Departure", "activities": ["Checkout", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Sydney Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Sydney Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Sydney Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Cairns Resort", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Cairns Resort", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "Cairns Resort", "meals": "Breakfast" },
-        { "night": 7, "accommodation": "Melbourne Hotel", "meals": "Breakfast" },
-        { "night": 8, "accommodation": "Melbourne Hotel", "meals": "Breakfast" },
-        { "night": 9, "accommodation": "Melbourne Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "119",
-    "category": "international",
-    "title": "Japan Cherry Blossom",
+    "durationDays": 8,
+    "price": 159999,
+    "discount": 10,
+    "rating": 4.4,
+    "reviews": 167,
+    "shortDescription": "Classic Japan with cherry blossoms, temples, and vibrant city life.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
     "location": "Tokyo, Kyoto, Osaka",
-    "duration": "8 Days / 7 Nights",
-    "price": 2199,
-    "rating": 4.9,
-    "reviews": 723,
-    "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800",
-    "description": "Ancient temples, modern cities, cherry blossoms, and sushi.",
-    "highlights": ["Mount Fuji", "Temples", "Cherry blossoms", "Tokyo Tower"],
-    "included": ["Hotels", "Breakfast", "JR Pass", "Guided tours"],
-    "excluded": ["Flights", "Visa", "Lunches & Dinners"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Tokyo Arrival", "activities": ["Shibuya Crossing", "Shinjuku", "Tokyo Tower"] },
-        { "day": 2, "title": "Modern Tokyo", "activities": ["Akihabara", "Harajuku", "Meiji Shrine"] },
-        { "day": 3, "title": "Mt. Fuji Day Trip", "activities": ["5th Station", "Lake Kawaguchi", "Hakone"] },
-        { "day": 4, "title": "Kyoto", "activities": ["Bullet train", "Fushimi Inari", "Gion district"] },
-        { "day": 5, "title": "Kyoto Temples", "activities": ["Kinkaku-ji", "Arashiyama Bamboo", "Kiyomizu-dera"] },
-        { "day": 6, "title": "Nara Day Trip", "activities": ["Todai-ji Temple", "Deer park", "Traditional streets"] },
-        { "day": 7, "title": "Osaka", "activities": ["Osaka Castle", "Dotonbori", "Street food"] },
-        { "day": 8, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Tokyo Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Tokyo Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Tokyo Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Kyoto Ryokan", "meals": "Breakfast" },
-        { "night": 5, "accommodation": "Kyoto Ryokan", "meals": "Breakfast" },
-        { "night": 6, "accommodation": "Kyoto Ryokan", "meals": "Breakfast" },
-        { "night": 7, "accommodation": "Osaka Hotel", "meals": "Breakfast" }
-      ]
-    }
+    "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200",
+    "description": "Classic Japan with cherry blossoms, temples, and vibrant city life.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
   },
   {
-    "id": "120",
+    "id": "1003",
+    "packageId": "TM-INT-03",
     "category": "international",
-    "title": "New York City Explorer",
-    "location": "New York, USA",
+    "categoryLabel": "International Tours",
+    "title": "Bali Culture & Coast",
+    "destination": "Ubud, Seminyak, Nusa Dua",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 88999,
+    "discount": 15,
+    "rating": 4.5,
+    "reviews": 214,
+    "shortDescription": "Balinese temples, rice terraces, beach clubs, and sunset dining.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Ubud, Seminyak, Nusa Dua",
+    "image": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200",
+    "description": "Balinese temples, rice terraces, beach clubs, and sunset dining.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1004",
+    "packageId": "TM-INT-04",
+    "category": "international",
+    "categoryLabel": "International Tours",
+    "title": "Dubai City & Desert",
+    "destination": "Dubai, Abu Dhabi",
     "duration": "5 Days / 4 Nights",
-    "price": 1799,
-    "rating": 4.7,
-    "reviews": 934,
-    "image": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800",
-    "description": "The city that never sleeps with iconic landmarks and culture.",
-    "highlights": ["Statue of Liberty", "Central Park", "Times Square", "Broadway"],
-    "included": ["Hotel", "Breakfast", "City pass", "Transfers"],
-    "excluded": ["Flights", "Visa", "Broadway tickets"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Times Square", "Broadway district", "Rockefeller Center"] },
-        { "day": 2, "title": "Landmarks", "activities": ["Statue of Liberty", "Ellis Island", "Wall Street"] },
-        { "day": 3, "title": "Museums", "activities": ["Met Museum", "Central Park", "5th Avenue"] },
-        { "day": 4, "title": "Brooklyn", "activities": ["Brooklyn Bridge", "DUMBO", "Coney Island"] },
-        { "day": 5, "title": "Departure", "activities": ["Shopping", "Airport transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Manhattan Hotel", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Manhattan Hotel", "meals": "Breakfast" },
-        { "night": 3, "accommodation": "Manhattan Hotel", "meals": "Breakfast" },
-        { "night": 4, "accommodation": "Manhattan Hotel", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "121",
-    "category": "india",
-    "title": "Rishikesh Yoga Retreat",
-    "location": "Rishikesh, Uttarakhand",
-    "duration": "4 Days / 3 Nights",
-    "price": 549,
-    "rating": 4.8,
-    "reviews": 412,
-    "image": "https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800",
-    "description": "Yoga capital of the world with ashrams and Ganges rafting.",
-    "highlights": ["Yoga sessions", "River rafting", "Beatles Ashram", "Ganga Aarti"],
-    "included": ["Ashram stay", "Vegetarian meals", "Yoga classes", "Meditation"],
-    "excluded": ["Flights", "Adventure activities"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Ashram check-in", "Evening yoga", "Ganga Aarti"] },
-        { "day": 2, "title": "Yoga & Meditation", "activities": ["Morning yoga", "Meditation", "Temple visits"] },
-        { "day": 3, "title": "Adventure", "activities": ["River rafting", "Beatles Ashram", "Lakshman Jhula"] },
-        { "day": 4, "title": "Departure", "activities": ["Sunrise yoga", "Checkout"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Yoga Ashram", "meals": "All vegetarian meals" },
-        { "night": 2, "accommodation": "Yoga Ashram", "meals": "All vegetarian meals" },
-        { "night": 3, "accommodation": "Yoga Ashram", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "122",
-    "category": "india",
-    "title": "Jaisalmer Desert Safari",
-    "location": "Jaisalmer, Rajasthan",
-    "duration": "3 Days / 2 Nights",
-    "price": 599,
-    "rating": 4.7,
-    "reviews": 368,
-    "image": "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800",
-    "description": "Golden city with desert camps, sand dunes, and camel safaris.",
-    "highlights": ["Desert camp", "Camel safari", "Jaisalmer Fort", "Sand dunes"],
-    "included": ["Hotel & Camp", "All meals", "Camel safari", "Cultural show"],
-    "excluded": ["Flights", "Personal expenses"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Fort visit", "Patwon ki Haveli", "Gadisar Lake"] },
-        { "day": 2, "title": "Desert Camp", "activities": ["Camel safari", "Sam sand dunes", "Cultural evening"] },
-        { "day": 3, "title": "Departure", "activities": ["Sunrise views", "Local shopping", "Transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Heritage Haveli", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Desert Camp", "meals": "All meals" }
-      ]
-    }
-  },
-  {
-    "id": "123",
-    "category": "india",
-    "title": "Ooty Hill Station Retreat",
-    "location": "Ooty, Tamil Nadu",
-    "duration": "3 Days / 2 Nights",
-    "price": 449,
-    "rating": 4.5,
-    "reviews": 287,
-    "image": "https://images.unsplash.com/photo-1571696522137-4e6faeb2b218?w=800",
-    "description": "Queen of hill stations with tea gardens and toy train rides.",
-    "highlights": ["Toy train", "Botanical gardens", "Ooty Lake", "Tea estates"],
-    "included": ["Hotel", "Breakfast", "Sightseeing", "Transfers"],
-    "excluded": ["Flights", "Toy train tickets"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Ooty Lake", "Rose Garden", "Local market"] },
-        { "day": 2, "title": "Sightseeing", "activities": ["Botanical Garden", "Doddabetta Peak", "Tea factory"] },
-        { "day": 3, "title": "Departure", "activities": ["Toy train ride", "Checkout"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Hill Resort", "meals": "Breakfast & Dinner" },
-        { "night": 2, "accommodation": "Hill Resort", "meals": "Breakfast" }
-      ]
-    }
-  },
-  {
-    "id": "124",
-    "category": "india",
-    "title": "Khajuraho Temple Circuit",
-    "location": "Khajuraho, Madhya Pradesh",
-    "duration": "2 Days / 1 Night",
-    "price": 399,
+    "durationDays": 5,
+    "price": 79999,
+    "discount": 0,
     "rating": 4.6,
-    "reviews": 234,
-    "image": "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=800",
-    "description": "UNESCO World Heritage temples with intricate sculptures.",
-    "highlights": ["Temple complex", "Light & sound show", "Sculptures", "Museum"],
-    "included": ["Hotel", "Breakfast", "Temple tour", "Guide"],
-    "excluded": ["Flights", "Entry fees"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Temple Tour", "activities": ["Western group temples", "Museum", "Light show"] },
-        { "day": 2, "title": "Departure", "activities": ["Eastern temples", "Shopping", "Transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Temple View Hotel", "meals": "Breakfast & Dinner" }
-      ]
-    }
+    "reviews": 261,
+    "shortDescription": "Luxury skyline, desert safari, theme parks, and shopping avenues.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Dubai, Abu Dhabi",
+    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200",
+    "description": "Luxury skyline, desert safari, theme parks, and shopping avenues.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
   },
   {
-    "id": "125",
-    "category": "india",
-    "title": "Hampi Heritage Ruins",
-    "location": "Hampi, Karnataka",
-    "duration": "3 Days / 2 Nights",
-    "price": 499,
+    "id": "1005",
+    "packageId": "TM-INT-05",
+    "category": "international",
+    "categoryLabel": "International Tours",
+    "title": "Turkey Classics Trail",
+    "destination": "Istanbul, Cappadocia, Pamukkale",
+    "duration": "8 Days / 7 Nights",
+    "durationDays": 8,
+    "price": 124999,
+    "discount": 10,
     "rating": 4.7,
-    "reviews": 356,
-    "image": "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=800",
-    "description": "Ancient ruins, boulder-strewn landscapes, and Vijayanagara history.",
-    "highlights": ["Virupaksha Temple", "Stone chariot", "Vittala Temple", "Matanga Hill"],
-    "included": ["Hotel", "Breakfast", "Bicycle rental", "Guide"],
-    "excluded": ["Flights", "Entry fees"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Virupaksha Temple", "Hampi Bazaar", "Riverside"] },
-        { "day": 2, "title": "Full Day Tour", "activities": ["Vittala Temple", "Stone Chariot", "Royal enclosure"] },
-        { "day": 3, "title": "Departure", "activities": ["Matanga Hill sunrise", "Checkout"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Heritage Guesthouse", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "Heritage Guesthouse", "meals": "Breakfast" }
-      ]
-    }
+    "reviews": 308,
+    "shortDescription": "Historic bazaars, hot air balloons, and ancient Roman heritage.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1527838832700-5059252407fa?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Istanbul, Cappadocia, Pamukkale",
+    "image": "https://images.unsplash.com/photo-1527838832700-5059252407fa?w=1200",
+    "description": "Historic bazaars, hot air balloons, and ancient Roman heritage.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
   },
   {
-    "id": "126",
-    "category": "india",
-    "title": "Kaziranga Wildlife Safari",
-    "location": "Kaziranga, Assam",
-    "duration": "3 Days / 2 Nights",
-    "price": 799,
-    "rating": 4.8,
-    "reviews": 289,
-    "image": "https://images.unsplash.com/photo-1551871812-77e5c7e0ee86?w=800",
-    "description": "One-horned rhinos, elephants, and diverse wildlife sanctuary.",
-    "highlights": ["Rhino safari", "Elephant ride", "Jeep safari", "Bird watching"],
-    "included": ["Resort", "All meals", "Safari permits", "Guided tours"],
-    "excluded": ["Flights", "Camera fees"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Check-in", "Evening safari", "Nature walk"] },
-        { "day": 2, "title": "Wildlife Safari", "activities": ["Morning jeep safari", "Elephant safari", "Bird watching"] },
-        { "day": 3, "title": "Departure", "activities": ["Early morning safari", "Checkout"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Jungle Resort", "meals": "All meals" },
-        { "night": 2, "accommodation": "Jungle Resort", "meals": "Breakfast & Dinner" }
-      ]
-    }
-  },
-  {
-    "id": "127",
-    "category": "india",
-    "title": "Rann of Kutch White Desert",
-    "location": "Kutch, Gujarat",
-    "duration": "3 Days / 2 Nights",
-    "price": 649,
-    "rating": 4.6,
-    "reviews": 312,
-    "image": "https://images.unsplash.com/photo-1608096299230-c8c30e3b6a1e?w=800",
-    "description": "Vast white salt desert with cultural villages and full moon magic.",
-    "highlights": ["White Rann", "Cultural villages", "Handicrafts", "Desert festival"],
-    "included": ["Tent accommodation", "All meals", "Village tours", "Cultural show"],
-    "excluded": ["Flights", "Personal shopping"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["White Rann visit", "Sunset views", "Folk dance"] },
-        { "day": 2, "title": "Village Tour", "activities": ["Craft villages", "Bhuj city", "Aina Mahal"] },
-        { "day": 3, "title": "Departure", "activities": ["Sunrise at Rann", "Shopping", "Transfer"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Luxury Tent Resort", "meals": "All meals" },
-        { "night": 2, "accommodation": "Luxury Tent Resort", "meals": "Breakfast & Dinner" }
-      ]
-    }
-  },
-  {
-    "id": "128",
-    "category": "india",
-    "title": "Spiti Valley Adventure",
-    "location": "Spiti, Himachal Pradesh",
+    "id": "1006",
+    "packageId": "TM-INT-06",
+    "category": "international",
+    "categoryLabel": "International Tours",
+    "title": "Vietnam Highlights",
+    "destination": "Hanoi, Halong Bay, Da Nang",
     "duration": "7 Days / 6 Nights",
-    "price": 1399,
-    "rating": 4.9,
-    "reviews": 198,
-    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800",
-    "description": "Cold desert mountains, ancient monasteries, and remote villages.",
-    "highlights": ["Key Monastery", "Chandratal Lake", "Tabo", "Mountain passes"],
-    "included": ["Homestays & Hotels", "All meals", "Permits", "Transport"],
-    "excluded": ["Flights", "Personal gear"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Shimla to Narkanda", "activities": ["Scenic drive", "Acclimatization"] },
-        { "day": 2, "title": "Kalpa", "activities": ["Kinnaur valley", "Kinner Kailash views"] },
-        { "day": 3, "title": "Tabo", "activities": ["Monastery visit", "Ancient murals"] },
-        { "day": 4, "title": "Dhankar & Pin Valley", "activities": ["Monastery", "Valley trek"] },
-        { "day": 5, "title": "Kaza", "activities": ["Key Monastery", "Kibber village", "Local culture"] },
-        { "day": 6, "title": "Chandratal", "activities": ["Mountain lake", "Camping", "Stargazing"] },
-        { "day": 7, "title": "Return", "activities": ["Return journey", "End of tour"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Narkanda Hotel", "meals": "Dinner" },
-        { "night": 2, "accommodation": "Kalpa Homestay", "meals": "All meals" },
-        { "night": 3, "accommodation": "Tabo Guesthouse", "meals": "All meals" },
-        { "night": 4, "accommodation": "Dhankar Homestay", "meals": "All meals" },
-        { "night": 5, "accommodation": "Kaza Hotel", "meals": "All meals" },
-        { "night": 6, "accommodation": "Chandratal Camp", "meals": "All meals" }
-      ]
-    }
+    "durationDays": 7,
+    "price": 94999,
+    "discount": 15,
+    "rating": 4.8,
+    "reviews": 355,
+    "shortDescription": "Cruise, heritage towns, and local culinary experiences across Vietnam.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1528127269322-539801943592?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Hanoi, Halong Bay, Da Nang",
+    "image": "https://images.unsplash.com/photo-1528127269322-539801943592?w=1200",
+    "description": "Cruise, heritage towns, and local culinary experiences across Vietnam.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
   },
   {
-    "id": "129",
-    "category": "india",
-    "title": "Pondicherry French Riviera",
-    "location": "Pondicherry, Tamil Nadu",
-    "duration": "3 Days / 2 Nights",
-    "price": 449,
+    "id": "1007",
+    "packageId": "TM-INT-07",
+    "category": "international",
+    "categoryLabel": "International Tours",
+    "title": "New Zealand Explorer",
+    "destination": "Auckland, Queenstown, Christchurch",
+    "duration": "10 Days / 9 Nights",
+    "durationDays": 10,
+    "price": 219999,
+    "discount": 0,
+    "rating": 4.3,
+    "reviews": 402,
+    "shortDescription": "Snow peaks, fjords, and adventure destinations in both islands.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Auckland, Queenstown, Christchurch",
+    "image": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200",
+    "description": "Snow peaks, fjords, and adventure destinations in both islands.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1008",
+    "packageId": "TM-INT-08",
+    "category": "international",
+    "categoryLabel": "International Tours",
+    "title": "Egypt Nile Heritage",
+    "destination": "Cairo, Luxor, Aswan",
+    "duration": "8 Days / 7 Nights",
+    "durationDays": 8,
+    "price": 139999,
+    "discount": 10,
+    "rating": 4.4,
+    "reviews": 449,
+    "shortDescription": "Pyramids, Nile cruise, and legendary temples of ancient Egypt.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1539768942893-daf53e448371?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Cairo, Luxor, Aswan",
+    "image": "https://images.unsplash.com/photo-1539768942893-daf53e448371?w=1200",
+    "description": "Pyramids, Nile cruise, and legendary temples of ancient Egypt.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1009",
+    "packageId": "TM-IND-01",
+    "category": "indian",
+    "categoryLabel": "Indian Tours",
+    "title": "Kashmir Valley Escape",
+    "destination": "Srinagar, Gulmarg, Pahalgam",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 58999,
+    "discount": 0,
+    "rating": 4.4,
+    "reviews": 230,
+    "shortDescription": "Shikara rides, mountain meadows, and Mughal gardens in Kashmir.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Srinagar, Gulmarg, Pahalgam",
+    "image": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?w=1200",
+    "description": "Shikara rides, mountain meadows, and Mughal gardens in Kashmir.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1010",
+    "packageId": "TM-IND-02",
+    "category": "indian",
+    "categoryLabel": "Indian Tours",
+    "title": "Kerala Backwaters Retreat",
+    "destination": "Kochi, Munnar, Alleppey",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 52999,
+    "discount": 10,
     "rating": 4.5,
-    "reviews": 478,
-    "image": "https://images.unsplash.com/photo-1580114176193-82c021e39979?w=800",
-    "description": "French colonial charm with beaches, ashram, and cafes.",
-    "highlights": ["French Quarter", "Auroville", "Beach promenade", "Cafes"],
-    "included": ["Heritage hotel", "Breakfast", "Auroville tour"],
-    "excluded": ["Flights", "Meals"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["French Quarter walk", "Beach promenade", "Cafe hopping"] },
-        { "day": 2, "title": "Auroville", "activities": ["Matrimandir", "Beach visit", "Shopping"] },
-        { "day": 3, "title": "Departure", "activities": ["Sri Aurobindo Ashram", "Checkout"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "French Villa", "meals": "Breakfast" },
-        { "night": 2, "accommodation": "French Villa", "meals": "Breakfast" }
-      ]
-    }
+    "reviews": 277,
+    "shortDescription": "Tea hills, houseboat stays, and authentic Kerala cuisine.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Kochi, Munnar, Alleppey",
+    "image": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1200",
+    "description": "Tea hills, houseboat stays, and authentic Kerala cuisine.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
   },
   {
-    "id": "130",
-    "category": "india",
-    "title": "Sunderbans Mangrove Safari",
-    "location": "Sunderbans, West Bengal",
-    "duration": "3 Days / 2 Nights",
-    "price": 699,
+    "id": "1011",
+    "packageId": "TM-IND-03",
+    "category": "indian",
+    "categoryLabel": "Indian Tours",
+    "title": "Golden Triangle Plus",
+    "destination": "Delhi, Agra, Jaipur",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 42999,
+    "discount": 15,
     "rating": 4.6,
-    "reviews": 234,
-    "image": "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=800",
-    "description": "Royal Bengal Tigers, mangrove forests, and river cruises.",
-    "highlights": ["Tiger spotting", "River safari", "Mangrove forest", "Village tours"],
-    "included": ["Boat accommodation", "All meals", "Safari permits", "Guide"],
-    "excluded": ["Flights", "Camera fees"],
-    "itinerary": {
-      "days": [
-        { "day": 1, "title": "Arrival", "activities": ["Boat journey", "Forest entry", "Bird watching"] },
-        { "day": 2, "title": "Safari Day", "activities": ["Tiger tracking", "Multiple zone visits", "Watchtowers"] },
-        { "day": 3, "title": "Departure", "activities": ["Morning safari", "Village visit", "Return"] }
-      ],
-      "nights": [
-        { "night": 1, "accommodation": "Forest Lodge Boat", "meals": "All meals" },
-        { "night": 2, "accommodation": "Forest Lodge Boat", "meals": "Breakfast & Lunch" }
-      ]
-    }
+    "reviews": 324,
+    "shortDescription": "India's iconic heritage circuit with forts, palaces, and Taj Mahal.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Delhi, Agra, Jaipur",
+    "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1200",
+    "description": "India's iconic heritage circuit with forts, palaces, and Taj Mahal.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1012",
+    "packageId": "TM-IND-04",
+    "category": "indian",
+    "categoryLabel": "Indian Tours",
+    "title": "North East Wonders",
+    "destination": "Gangtok, Pelling, Darjeeling",
+    "duration": "7 Days / 6 Nights",
+    "durationDays": 7,
+    "price": 61999,
+    "discount": 0,
+    "rating": 4.7,
+    "reviews": 371,
+    "shortDescription": "Monasteries, mountain viewpoints, and serene Himalayan towns.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Gangtok, Pelling, Darjeeling",
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200",
+    "description": "Monasteries, mountain viewpoints, and serene Himalayan towns.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1013",
+    "packageId": "TM-IND-05",
+    "category": "indian",
+    "categoryLabel": "Indian Tours",
+    "title": "Rajasthan Royal Trail",
+    "destination": "Jaipur, Jodhpur, Udaipur",
+    "duration": "7 Days / 6 Nights",
+    "durationDays": 7,
+    "price": 64999,
+    "discount": 10,
+    "rating": 4.8,
+    "reviews": 418,
+    "shortDescription": "Royal palaces, desert culture, and lakeside evenings.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Jaipur, Jodhpur, Udaipur",
+    "image": "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1200",
+    "description": "Royal palaces, desert culture, and lakeside evenings.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1014",
+    "packageId": "TM-IND-06",
+    "category": "indian",
+    "categoryLabel": "Indian Tours",
+    "title": "Andaman Island Delight",
+    "destination": "Port Blair, Havelock, Neil",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 69999,
+    "discount": 15,
+    "rating": 4.3,
+    "reviews": 465,
+    "shortDescription": "Crystal beaches, snorkeling, and relaxed island experiences.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1589308078055-eb82fe5f9f70?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Port Blair, Havelock, Neil",
+    "image": "https://images.unsplash.com/photo-1589308078055-eb82fe5f9f70?w=1200",
+    "description": "Crystal beaches, snorkeling, and relaxed island experiences.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1015",
+    "packageId": "TM-IND-07",
+    "category": "indian",
+    "categoryLabel": "Indian Tours",
+    "title": "Hampi & Badami Heritage",
+    "destination": "Hampi, Badami, Pattadakal",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 36999,
+    "discount": 0,
+    "rating": 4.4,
+    "reviews": 512,
+    "shortDescription": "Stone temples, ruins, and history-rich architecture trails.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Hampi, Badami, Pattadakal",
+    "image": "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=1200",
+    "description": "Stone temples, ruins, and history-rich architecture trails.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1016",
+    "packageId": "TM-IND-08",
+    "category": "indian",
+    "categoryLabel": "Indian Tours",
+    "title": "Goa Leisure Break",
+    "destination": "North Goa, South Goa",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 32999,
+    "discount": 10,
+    "rating": 4.5,
+    "reviews": 559,
+    "shortDescription": "Beaches, nightlife, seafood, and Portuguese charm in Goa.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "North Goa, South Goa",
+    "image": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1200",
+    "description": "Beaches, nightlife, seafood, and Portuguese charm in Goa.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1017",
+    "packageId": "TM-HON-01",
+    "category": "honeymoon",
+    "categoryLabel": "Honeymoon Packages",
+    "title": "Maldives Water Villa Romance",
+    "destination": "Male, Maafushi",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 149999,
+    "discount": 0,
+    "rating": 4.5,
+    "reviews": 340,
+    "shortDescription": "Private villas, sunset cruises, and candlelight beach dinners.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Male, Maafushi",
+    "image": "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=1200",
+    "description": "Private villas, sunset cruises, and candlelight beach dinners.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1018",
+    "packageId": "TM-HON-02",
+    "category": "honeymoon",
+    "categoryLabel": "Honeymoon Packages",
+    "title": "Paris & Swiss Honeymoon",
+    "destination": "Paris, Lucerne, Interlaken",
+    "duration": "8 Days / 7 Nights",
+    "durationDays": 8,
+    "price": 219999,
+    "discount": 10,
+    "rating": 4.6,
+    "reviews": 387,
+    "shortDescription": "Romantic city walks and alpine train journeys.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Paris, Lucerne, Interlaken",
+    "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200",
+    "description": "Romantic city walks and alpine train journeys.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1019",
+    "packageId": "TM-HON-03",
+    "category": "honeymoon",
+    "categoryLabel": "Honeymoon Packages",
+    "title": "Bali Couple Special",
+    "destination": "Ubud, Nusa Penida, Seminyak",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 99999,
+    "discount": 15,
+    "rating": 4.7,
+    "reviews": 434,
+    "shortDescription": "Spa rituals, rice terrace views, and private beach moments.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Ubud, Nusa Penida, Seminyak",
+    "image": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=1200",
+    "description": "Spa rituals, rice terrace views, and private beach moments.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1020",
+    "packageId": "TM-HON-04",
+    "category": "honeymoon",
+    "categoryLabel": "Honeymoon Packages",
+    "title": "Santorini Dream Escape",
+    "destination": "Santorini, Athens",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 189999,
+    "discount": 0,
+    "rating": 4.8,
+    "reviews": 481,
+    "shortDescription": "Iconic white-blue villages and cliffside sunset stays.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Santorini, Athens",
+    "image": "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200",
+    "description": "Iconic white-blue villages and cliffside sunset stays.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1021",
+    "packageId": "TM-HON-05",
+    "category": "honeymoon",
+    "categoryLabel": "Honeymoon Packages",
+    "title": "Kashmir Couple Retreat",
+    "destination": "Srinagar, Sonmarg, Gulmarg",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 55999,
+    "discount": 10,
+    "rating": 4.3,
+    "reviews": 528,
+    "shortDescription": "Houseboat romance and snowy mountain scenery.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1621496503747-6f6f5d7ab6d6?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Srinagar, Sonmarg, Gulmarg",
+    "image": "https://images.unsplash.com/photo-1621496503747-6f6f5d7ab6d6?w=1200",
+    "description": "Houseboat romance and snowy mountain scenery.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1022",
+    "packageId": "TM-HON-06",
+    "category": "honeymoon",
+    "categoryLabel": "Honeymoon Packages",
+    "title": "Kerala Honeymoon Escape",
+    "destination": "Munnar, Thekkady, Alleppey",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 49999,
+    "discount": 15,
+    "rating": 4.4,
+    "reviews": 575,
+    "shortDescription": "Tea valleys, spice gardens, and private houseboat night.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Munnar, Thekkady, Alleppey",
+    "image": "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=1200",
+    "description": "Tea valleys, spice gardens, and private houseboat night.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1023",
+    "packageId": "TM-HON-07",
+    "category": "honeymoon",
+    "categoryLabel": "Honeymoon Packages",
+    "title": "Mauritius Love Journey",
+    "destination": "North Coast, South Coast",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 169999,
+    "discount": 0,
+    "rating": 4.5,
+    "reviews": 622,
+    "shortDescription": "Turquoise lagoons, island excursions, and luxury beach stays.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1514896856000-91cb63e923ba?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "North Coast, South Coast",
+    "image": "https://images.unsplash.com/photo-1514896856000-91cb63e923ba?w=1200",
+    "description": "Turquoise lagoons, island excursions, and luxury beach stays.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1024",
+    "packageId": "TM-HON-08",
+    "category": "honeymoon",
+    "categoryLabel": "Honeymoon Packages",
+    "title": "Bhutan Bliss for Two",
+    "destination": "Paro, Thimphu, Punakha",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 89999,
+    "discount": 10,
+    "rating": 4.6,
+    "reviews": 669,
+    "shortDescription": "Monasteries, valleys, and peaceful Himalayan romance.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Paro, Thimphu, Punakha",
+    "image": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1200",
+    "description": "Monasteries, valleys, and peaceful Himalayan romance.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1025",
+    "packageId": "TM-GRO-01",
+    "category": "group",
+    "categoryLabel": "Group Tours",
+    "title": "Thailand Fun Squad",
+    "destination": "Bangkok, Pattaya, Phuket",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 74999,
+    "discount": 0,
+    "rating": 4.6,
+    "reviews": 450,
+    "shortDescription": "Perfect for friends with nightlife, islands, and shared adventures.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1528181304800-259b08848526?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Bangkok, Pattaya, Phuket",
+    "image": "https://images.unsplash.com/photo-1528181304800-259b08848526?w=1200",
+    "description": "Perfect for friends with nightlife, islands, and shared adventures.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1026",
+    "packageId": "TM-GRO-02",
+    "category": "group",
+    "categoryLabel": "Group Tours",
+    "title": "Europe Multi-Country Group",
+    "destination": "France, Switzerland, Italy",
+    "duration": "10 Days / 9 Nights",
+    "durationDays": 10,
+    "price": 239999,
+    "discount": 10,
+    "rating": 4.7,
+    "reviews": 497,
+    "shortDescription": "Guided coach journey through Europe's iconic highlights.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1499856871958-5b9357976b82?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "France, Switzerland, Italy",
+    "image": "https://images.unsplash.com/photo-1499856871958-5b9357976b82?w=1200",
+    "description": "Guided coach journey through Europe's iconic highlights.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1027",
+    "packageId": "TM-GRO-03",
+    "category": "group",
+    "categoryLabel": "Group Tours",
+    "title": "Himachal Friends Escape",
+    "destination": "Shimla, Manali, Kasol",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 45999,
+    "discount": 15,
+    "rating": 4.8,
+    "reviews": 544,
+    "shortDescription": "Snow activities, caf?s, and scenic mountain drives.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Shimla, Manali, Kasol",
+    "image": "https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?w=1200",
+    "description": "Snow activities, caf?s, and scenic mountain drives.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1028",
+    "packageId": "TM-GRO-04",
+    "category": "group",
+    "categoryLabel": "Group Tours",
+    "title": "Rajasthan Cultural Caravan",
+    "destination": "Jaipur, Jodhpur, Jaisalmer",
+    "duration": "7 Days / 6 Nights",
+    "durationDays": 7,
+    "price": 54999,
+    "discount": 0,
+    "rating": 4.3,
+    "reviews": 591,
+    "shortDescription": "Fort tours, folk evenings, and desert camping for groups.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Jaipur, Jodhpur, Jaisalmer",
+    "image": "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=1200",
+    "description": "Fort tours, folk evenings, and desert camping for groups.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1029",
+    "packageId": "TM-GRO-05",
+    "category": "group",
+    "categoryLabel": "Group Tours",
+    "title": "Vietnam Group Explorer",
+    "destination": "Hanoi, Danang, Ho Chi Minh",
+    "duration": "8 Days / 7 Nights",
+    "durationDays": 8,
+    "price": 109999,
+    "discount": 10,
+    "rating": 4.4,
+    "reviews": 638,
+    "shortDescription": "Street food tours and activity-packed itinerary for teams.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1504457047772-27faf1c00561?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Hanoi, Danang, Ho Chi Minh",
+    "image": "https://images.unsplash.com/photo-1504457047772-27faf1c00561?w=1200",
+    "description": "Street food tours and activity-packed itinerary for teams.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1030",
+    "packageId": "TM-GRO-06",
+    "category": "group",
+    "categoryLabel": "Group Tours",
+    "title": "Goa Party Group Getaway",
+    "destination": "North Goa",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 29999,
+    "discount": 15,
+    "rating": 4.5,
+    "reviews": 685,
+    "shortDescription": "Beach hostels, party circuits, and watersports sessions.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "North Goa",
+    "image": "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=1200",
+    "description": "Beach hostels, party circuits, and watersports sessions.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1031",
+    "packageId": "TM-GRO-07",
+    "category": "group",
+    "categoryLabel": "Group Tours",
+    "title": "Dubai Corporate Break",
+    "destination": "Dubai",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 85999,
+    "discount": 0,
+    "rating": 4.6,
+    "reviews": 732,
+    "shortDescription": "Team travel with city tours and premium evening cruises.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Dubai",
+    "image": "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?w=1200",
+    "description": "Team travel with city tours and premium evening cruises.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1032",
+    "packageId": "TM-GRO-08",
+    "category": "group",
+    "categoryLabel": "Group Tours",
+    "title": "Sikkim Group Adventure",
+    "destination": "Gangtok, Lachung",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 48999,
+    "discount": 10,
+    "rating": 4.7,
+    "reviews": 779,
+    "shortDescription": "High-altitude lakes and group-friendly mountain stays.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1584204559709-ca7d413229eb?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Gangtok, Lachung",
+    "image": "https://images.unsplash.com/photo-1584204559709-ca7d413229eb?w=1200",
+    "description": "High-altitude lakes and group-friendly mountain stays.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1033",
+    "packageId": "TM-EDU-01",
+    "category": "educational",
+    "categoryLabel": "Educational Tours",
+    "title": "STEM Singapore Learning Tour",
+    "destination": "Singapore",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 92999,
+    "discount": 0,
+    "rating": 4.7,
+    "reviews": 560,
+    "shortDescription": "Science centres, innovation labs, and structured student workshops.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Singapore",
+    "image": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200",
+    "description": "Science centres, innovation labs, and structured student workshops.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1034",
+    "packageId": "TM-EDU-02",
+    "category": "educational",
+    "categoryLabel": "Educational Tours",
+    "title": "Delhi Heritage School Trip",
+    "destination": "Delhi, Agra",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 28999,
+    "discount": 10,
+    "rating": 4.8,
+    "reviews": 607,
+    "shortDescription": "Curriculum-aligned history modules with guided monument visits.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1532664189809-02133fee698d?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Delhi, Agra",
+    "image": "https://images.unsplash.com/photo-1532664189809-02133fee698d?w=1200",
+    "description": "Curriculum-aligned history modules with guided monument visits.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1035",
+    "packageId": "TM-EDU-03",
+    "category": "educational",
+    "categoryLabel": "Educational Tours",
+    "title": "ISRO & Science Bengaluru Tour",
+    "destination": "Bengaluru, Mysuru",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 35999,
+    "discount": 15,
+    "rating": 4.3,
+    "reviews": 654,
+    "shortDescription": "Aerospace exposure, museums, and technology campus interactions.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Bengaluru, Mysuru",
+    "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200",
+    "description": "Aerospace exposure, museums, and technology campus interactions.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1036",
+    "packageId": "TM-EDU-04",
+    "category": "educational",
+    "categoryLabel": "Educational Tours",
+    "title": "Jaipur Architecture Immersion",
+    "destination": "Jaipur",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 26999,
+    "discount": 0,
+    "rating": 4.4,
+    "reviews": 701,
+    "shortDescription": "Hands-on heritage architecture learning for design students.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1598091383021-15ddea10925d?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Jaipur",
+    "image": "https://images.unsplash.com/photo-1598091383021-15ddea10925d?w=1200",
+    "description": "Hands-on heritage architecture learning for design students.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1037",
+    "packageId": "TM-EDU-05",
+    "category": "educational",
+    "categoryLabel": "Educational Tours",
+    "title": "Kerala Ecology Study Tour",
+    "destination": "Kochi, Thekkady, Kumarakom",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 39999,
+    "discount": 10,
+    "rating": 4.5,
+    "reviews": 748,
+    "shortDescription": "Biodiversity, wetlands, and sustainability learning sessions.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Kochi, Thekkady, Kumarakom",
+    "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200",
+    "description": "Biodiversity, wetlands, and sustainability learning sessions.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1038",
+    "packageId": "TM-EDU-06",
+    "category": "educational",
+    "categoryLabel": "Educational Tours",
+    "title": "Mumbai Media & Business Tour",
+    "destination": "Mumbai",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 31999,
+    "discount": 15,
+    "rating": 4.6,
+    "reviews": 795,
+    "shortDescription": "Film, finance, and entrepreneurship-focused educational modules.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Mumbai",
+    "image": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?w=1200",
+    "description": "Film, finance, and entrepreneurship-focused educational modules.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1039",
+    "packageId": "TM-EDU-07",
+    "category": "educational",
+    "categoryLabel": "Educational Tours",
+    "title": "Ahmedabad Management Trek",
+    "destination": "Ahmedabad, Gandhinagar",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 27999,
+    "discount": 0,
+    "rating": 4.7,
+    "reviews": 842,
+    "shortDescription": "Industry visits and leadership labs for college groups.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Ahmedabad, Gandhinagar",
+    "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200",
+    "description": "Industry visits and leadership labs for college groups.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1040",
+    "packageId": "TM-EDU-08",
+    "category": "educational",
+    "categoryLabel": "Educational Tours",
+    "title": "Chennai Maritime & Tech Tour",
+    "destination": "Chennai, Mahabalipuram",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 33999,
+    "discount": 10,
+    "rating": 4.8,
+    "reviews": 889,
+    "shortDescription": "Ports, marine museums, and engineering-centric guided sessions.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Chennai, Mahabalipuram",
+    "image": "https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=1200",
+    "description": "Ports, marine museums, and engineering-centric guided sessions.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1041",
+    "packageId": "TM-ADV-01",
+    "category": "adventure",
+    "categoryLabel": "Adventure Tours",
+    "title": "Ladakh High Pass Expedition",
+    "destination": "Leh, Nubra, Pangong",
+    "duration": "8 Days / 7 Nights",
+    "durationDays": 8,
+    "price": 78999,
+    "discount": 0,
+    "rating": 4.8,
+    "reviews": 670,
+    "shortDescription": "High-altitude road trip with monasteries and dramatic landscapes.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Leh, Nubra, Pangong",
+    "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200",
+    "description": "High-altitude road trip with monasteries and dramatic landscapes.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1042",
+    "packageId": "TM-ADV-02",
+    "category": "adventure",
+    "categoryLabel": "Adventure Tours",
+    "title": "Spiti Valley Overland",
+    "destination": "Kaza, Tabo, Chandratal",
+    "duration": "9 Days / 8 Nights",
+    "durationDays": 9,
+    "price": 71999,
+    "discount": 10,
+    "rating": 4.3,
+    "reviews": 717,
+    "shortDescription": "Remote valley circuits, campsites, and rugged mountain drives.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1500534623283-312aade485b7?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Kaza, Tabo, Chandratal",
+    "image": "https://images.unsplash.com/photo-1500534623283-312aade485b7?w=1200",
+    "description": "Remote valley circuits, campsites, and rugged mountain drives.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1043",
+    "packageId": "TM-ADV-03",
+    "category": "adventure",
+    "categoryLabel": "Adventure Tours",
+    "title": "Rishikesh Adventure Camp",
+    "destination": "Rishikesh",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 24999,
+    "discount": 15,
+    "rating": 4.4,
+    "reviews": 764,
+    "shortDescription": "Rafting, cliff jump, and riverside camping with guides.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1521334884684-d80222895322?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Rishikesh",
+    "image": "https://images.unsplash.com/photo-1521334884684-d80222895322?w=1200",
+    "description": "Rafting, cliff jump, and riverside camping with guides.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1044",
+    "packageId": "TM-ADV-04",
+    "category": "adventure",
+    "categoryLabel": "Adventure Tours",
+    "title": "Meghalaya Caves & Waterfalls",
+    "destination": "Shillong, Cherrapunji, Dawki",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 47999,
+    "discount": 0,
+    "rating": 4.5,
+    "reviews": 811,
+    "shortDescription": "Caving, living root bridges, and crystal river boating.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Shillong, Cherrapunji, Dawki",
+    "image": "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=1200",
+    "description": "Caving, living root bridges, and crystal river boating.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1045",
+    "packageId": "TM-ADV-05",
+    "category": "adventure",
+    "categoryLabel": "Adventure Tours",
+    "title": "Nepal Trekking Circuit",
+    "destination": "Kathmandu, Pokhara, Annapurna Region",
+    "duration": "9 Days / 8 Nights",
+    "durationDays": 9,
+    "price": 89999,
+    "discount": 10,
+    "rating": 4.6,
+    "reviews": 858,
+    "shortDescription": "Guided trekking with cultural immersion in Himalayan villages.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Kathmandu, Pokhara, Annapurna Region",
+    "image": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200",
+    "description": "Guided trekking with cultural immersion in Himalayan villages.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1046",
+    "packageId": "TM-ADV-06",
+    "category": "adventure",
+    "categoryLabel": "Adventure Tours",
+    "title": "Andaman Scuba Adventure",
+    "destination": "Havelock, Neil Island",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 68999,
+    "discount": 15,
+    "rating": 4.7,
+    "reviews": 905,
+    "shortDescription": "Certified dive sessions and island adventure experiences.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1551316679-9c6ae9dec224?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Havelock, Neil Island",
+    "image": "https://images.unsplash.com/photo-1551316679-9c6ae9dec224?w=1200",
+    "description": "Certified dive sessions and island adventure experiences.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1047",
+    "packageId": "TM-ADV-07",
+    "category": "adventure",
+    "categoryLabel": "Adventure Tours",
+    "title": "Auli Ski & Snow Escape",
+    "destination": "Auli, Joshimath",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 41999,
+    "discount": 0,
+    "rating": 4.8,
+    "reviews": 952,
+    "shortDescription": "Ski training, ropeway rides, and alpine meadow stays.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1551524164-6cf2ac3c9f2e?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Auli, Joshimath",
+    "image": "https://images.unsplash.com/photo-1551524164-6cf2ac3c9f2e?w=1200",
+    "description": "Ski training, ropeway rides, and alpine meadow stays.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1048",
+    "packageId": "TM-ADV-08",
+    "category": "adventure",
+    "categoryLabel": "Adventure Tours",
+    "title": "Bhutan Mountain Biking Trail",
+    "destination": "Thimphu, Paro, Punakha",
+    "duration": "7 Days / 6 Nights",
+    "durationDays": 7,
+    "price": 97999,
+    "discount": 10,
+    "rating": 4.3,
+    "reviews": 999,
+    "shortDescription": "Cross-country biking and monastery trail adventures.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Thimphu, Paro, Punakha",
+    "image": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200",
+    "description": "Cross-country biking and monastery trail adventures.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1049",
+    "packageId": "TM-FAM-01",
+    "category": "family",
+    "categoryLabel": "Family Tours",
+    "title": "Singapore Family Fun",
+    "destination": "Singapore",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 99999,
+    "discount": 0,
+    "rating": 4.3,
+    "reviews": 780,
+    "shortDescription": "Universal Studios, Night Safari, and kid-friendly attractions.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1526481280695-3c46961d4aee?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Singapore",
+    "image": "https://images.unsplash.com/photo-1526481280695-3c46961d4aee?w=1200",
+    "description": "Universal Studios, Night Safari, and kid-friendly attractions.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1050",
+    "packageId": "TM-FAM-02",
+    "category": "family",
+    "categoryLabel": "Family Tours",
+    "title": "Dubai Family Holiday",
+    "destination": "Dubai, Abu Dhabi",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 112999,
+    "discount": 10,
+    "rating": 4.4,
+    "reviews": 827,
+    "shortDescription": "Theme parks, aquariums, and smooth family-friendly travel planning.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Dubai, Abu Dhabi",
+    "image": "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200",
+    "description": "Theme parks, aquariums, and smooth family-friendly travel planning.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1051",
+    "packageId": "TM-FAM-03",
+    "category": "family",
+    "categoryLabel": "Family Tours",
+    "title": "Kerala Family Escape",
+    "destination": "Kochi, Munnar, Alleppey",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 55999,
+    "discount": 15,
+    "rating": 4.5,
+    "reviews": 874,
+    "shortDescription": "Nature, leisure, and comfortable stays for all age groups.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1605538883669-8259fe6e3961?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Kochi, Munnar, Alleppey",
+    "image": "https://images.unsplash.com/photo-1605538883669-8259fe6e3961?w=1200",
+    "description": "Nature, leisure, and comfortable stays for all age groups.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1052",
+    "packageId": "TM-FAM-04",
+    "category": "family",
+    "categoryLabel": "Family Tours",
+    "title": "Kashmir Family Delight",
+    "destination": "Srinagar, Gulmarg, Pahalgam",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 62999,
+    "discount": 0,
+    "rating": 4.6,
+    "reviews": 921,
+    "shortDescription": "Scenic mountains, gardens, and easy-paced sightseeing.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1518732714860-b62714ce0c59?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Srinagar, Gulmarg, Pahalgam",
+    "image": "https://images.unsplash.com/photo-1518732714860-b62714ce0c59?w=1200",
+    "description": "Scenic mountains, gardens, and easy-paced sightseeing.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1053",
+    "packageId": "TM-FAM-05",
+    "category": "family",
+    "categoryLabel": "Family Tours",
+    "title": "Thailand Family Leisure",
+    "destination": "Bangkok, Pattaya",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 76999,
+    "discount": 10,
+    "rating": 4.7,
+    "reviews": 968,
+    "shortDescription": "Safe, fun, and balanced activities for children and parents.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1520262454473-a1a82276a574?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Bangkok, Pattaya",
+    "image": "https://images.unsplash.com/photo-1520262454473-a1a82276a574?w=1200",
+    "description": "Safe, fun, and balanced activities for children and parents.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1054",
+    "packageId": "TM-FAM-06",
+    "category": "family",
+    "categoryLabel": "Family Tours",
+    "title": "Andaman Family Explorer",
+    "destination": "Port Blair, Havelock",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 64999,
+    "discount": 15,
+    "rating": 4.8,
+    "reviews": 1015,
+    "shortDescription": "Beach relaxation and marine experiences for families.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1493558103817-58b2924bce98?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Port Blair, Havelock",
+    "image": "https://images.unsplash.com/photo-1493558103817-58b2924bce98?w=1200",
+    "description": "Beach relaxation and marine experiences for families.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1055",
+    "packageId": "TM-FAM-07",
+    "category": "family",
+    "categoryLabel": "Family Tours",
+    "title": "Himachal Family Retreat",
+    "destination": "Shimla, Manali",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 49999,
+    "discount": 0,
+    "rating": 4.3,
+    "reviews": 1062,
+    "shortDescription": "Toy train, snow points, and mountain views for all.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Shimla, Manali",
+    "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200",
+    "description": "Toy train, snow points, and mountain views for all.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1056",
+    "packageId": "TM-FAM-08",
+    "category": "family",
+    "categoryLabel": "Family Tours",
+    "title": "Rajasthan Family Heritage",
+    "destination": "Jaipur, Udaipur",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 47999,
+    "discount": 10,
+    "rating": 4.4,
+    "reviews": 1109,
+    "shortDescription": "Palaces, lake city vibes, and cultural evenings.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Jaipur, Udaipur",
+    "image": "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1200",
+    "description": "Palaces, lake city vibes, and cultural evenings.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1057",
+    "packageId": "TM-LUX-01",
+    "category": "luxury",
+    "categoryLabel": "Luxury Tours",
+    "title": "Swiss Deluxe Rail Journey",
+    "destination": "Zurich, Zermatt, St. Moritz",
+    "duration": "8 Days / 7 Nights",
+    "durationDays": 8,
+    "price": 339999,
+    "discount": 0,
+    "rating": 4.4,
+    "reviews": 890,
+    "shortDescription": "First-class scenic rail routes and premium boutique stays.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1464822759844-d150ad6d1a28?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Zurich, Zermatt, St. Moritz",
+    "image": "https://images.unsplash.com/photo-1464822759844-d150ad6d1a28?w=1200",
+    "description": "First-class scenic rail routes and premium boutique stays.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1058",
+    "packageId": "TM-LUX-02",
+    "category": "luxury",
+    "categoryLabel": "Luxury Tours",
+    "title": "Maldives Signature Luxury",
+    "destination": "Private Island Resort",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 289999,
+    "discount": 10,
+    "rating": 4.5,
+    "reviews": 937,
+    "shortDescription": "All-inclusive overwater villas and private butler service.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Private Island Resort",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+    "description": "All-inclusive overwater villas and private butler service.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1059",
+    "packageId": "TM-LUX-03",
+    "category": "luxury",
+    "categoryLabel": "Luxury Tours",
+    "title": "Dubai Platinum Experience",
+    "destination": "Dubai",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 239999,
+    "discount": 15,
+    "rating": 4.6,
+    "reviews": 984,
+    "shortDescription": "Helicopter tour, Burj experiences, and luxury desert camps.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Dubai",
+    "image": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
+    "description": "Helicopter tour, Burj experiences, and luxury desert camps.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1060",
+    "packageId": "TM-LUX-04",
+    "category": "luxury",
+    "categoryLabel": "Luxury Tours",
+    "title": "Paris Luxury Escape",
+    "destination": "Paris, Champagne",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 279999,
+    "discount": 0,
+    "rating": 4.7,
+    "reviews": 1031,
+    "shortDescription": "Michelin dining, river cruises, and curated shopping sessions.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1508051123996-69f8caf4891e?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Paris, Champagne",
+    "image": "https://images.unsplash.com/photo-1508051123996-69f8caf4891e?w=1200",
+    "description": "Michelin dining, river cruises, and curated shopping sessions.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1061",
+    "packageId": "TM-LUX-05",
+    "category": "luxury",
+    "categoryLabel": "Luxury Tours",
+    "title": "Rajasthan Palace Residency",
+    "destination": "Jaipur, Udaipur, Jodhpur",
+    "duration": "7 Days / 6 Nights",
+    "durationDays": 7,
+    "price": 199999,
+    "discount": 10,
+    "rating": 4.8,
+    "reviews": 1078,
+    "shortDescription": "Stay in restored palaces with private heritage experiences.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1482192597420-4817fdd66e8e?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Jaipur, Udaipur, Jodhpur",
+    "image": "https://images.unsplash.com/photo-1482192597420-4817fdd66e8e?w=1200",
+    "description": "Stay in restored palaces with private heritage experiences.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1062",
+    "packageId": "TM-LUX-06",
+    "category": "luxury",
+    "categoryLabel": "Luxury Tours",
+    "title": "Bali Luxury Wellness",
+    "destination": "Ubud, Nusa Dua",
+    "duration": "6 Days / 5 Nights",
+    "durationDays": 6,
+    "price": 179999,
+    "discount": 15,
+    "rating": 4.3,
+    "reviews": 1125,
+    "shortDescription": "Spa retreats, private villas, and curated wellness itineraries.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1519821172141-b5d8d2a42f8f?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Ubud, Nusa Dua",
+    "image": "https://images.unsplash.com/photo-1519821172141-b5d8d2a42f8f?w=1200",
+    "description": "Spa retreats, private villas, and curated wellness itineraries.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1063",
+    "packageId": "TM-LUX-07",
+    "category": "luxury",
+    "categoryLabel": "Luxury Tours",
+    "title": "Iceland Premium Adventure",
+    "destination": "Reykjavik, Vik, Akureyri",
+    "duration": "8 Days / 7 Nights",
+    "durationDays": 8,
+    "price": 329999,
+    "discount": 0,
+    "rating": 4.4,
+    "reviews": 1172,
+    "shortDescription": "Super jeep tours, glacier stays, and bespoke excursions.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Reykjavik, Vik, Akureyri",
+    "image": "https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=1200",
+    "description": "Super jeep tours, glacier stays, and bespoke excursions.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1064",
+    "packageId": "TM-LUX-08",
+    "category": "luxury",
+    "categoryLabel": "Luxury Tours",
+    "title": "Japan Luxury Seasons",
+    "destination": "Tokyo, Hakone, Kyoto",
+    "duration": "8 Days / 7 Nights",
+    "durationDays": 8,
+    "price": 309999,
+    "discount": 10,
+    "rating": 4.5,
+    "reviews": 1219,
+    "shortDescription": "Ryokan stays, private tea ceremonies, and fine dining.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Tokyo, Hakone, Kyoto",
+    "image": "https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=1200",
+    "description": "Ryokan stays, private tea ceremonies, and fine dining.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1065",
+    "packageId": "TM-BUD-01",
+    "category": "budget",
+    "categoryLabel": "Budget Tours",
+    "title": "Goa Budget Break",
+    "destination": "North Goa",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 18999,
+    "discount": 0,
+    "rating": 4.5,
+    "reviews": 1000,
+    "shortDescription": "Affordable beach holiday with clean stays and local transport.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "North Goa",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+    "description": "Affordable beach holiday with clean stays and local transport.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1066",
+    "packageId": "TM-BUD-02",
+    "category": "budget",
+    "categoryLabel": "Budget Tours",
+    "title": "Manali Backpacker Trip",
+    "destination": "Manali, Solang",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 22999,
+    "discount": 10,
+    "rating": 4.6,
+    "reviews": 1047,
+    "shortDescription": "Budget mountain travel with hostel options and sightseeing.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Manali, Solang",
+    "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200",
+    "description": "Budget mountain travel with hostel options and sightseeing.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1067",
+    "packageId": "TM-BUD-03",
+    "category": "budget",
+    "categoryLabel": "Budget Tours",
+    "title": "Jaipur Smart Saver",
+    "destination": "Jaipur",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 15999,
+    "discount": 15,
+    "rating": 4.7,
+    "reviews": 1094,
+    "shortDescription": "Low-cost heritage getaway with curated city experiences.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Jaipur",
+    "image": "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1200",
+    "description": "Low-cost heritage getaway with curated city experiences.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1068",
+    "packageId": "TM-BUD-04",
+    "category": "budget",
+    "categoryLabel": "Budget Tours",
+    "title": "Kerala Economy Escape",
+    "destination": "Kochi, Alleppey",
+    "duration": "4 Days / 3 Nights",
+    "durationDays": 4,
+    "price": 24999,
+    "discount": 0,
+    "rating": 4.8,
+    "reviews": 1141,
+    "shortDescription": "Value-for-money package with quality essentials included.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Kochi, Alleppey",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+    "description": "Value-for-money package with quality essentials included.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1069",
+    "packageId": "TM-BUD-05",
+    "category": "budget",
+    "categoryLabel": "Budget Tours",
+    "title": "Thailand Budget Starter",
+    "destination": "Bangkok, Pattaya",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 49999,
+    "discount": 10,
+    "rating": 4.3,
+    "reviews": 1188,
+    "shortDescription": "International budget package with flights and guided tours.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1528181304800-259b08848526?w=1200",
+    "availableDates": [
+      "2026-03-05",
+      "2026-04-12",
+      "2026-05-19",
+      "2026-06-26"
+    ],
+    "location": "Bangkok, Pattaya",
+    "image": "https://images.unsplash.com/photo-1528181304800-259b08848526?w=1200",
+    "description": "International budget package with flights and guided tours.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1070",
+    "packageId": "TM-BUD-06",
+    "category": "budget",
+    "categoryLabel": "Budget Tours",
+    "title": "Varanasi Pilgrim Budget",
+    "destination": "Varanasi, Sarnath",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 13999,
+    "discount": 15,
+    "rating": 4.4,
+    "reviews": 1235,
+    "shortDescription": "Spiritual and cultural tour designed for budget-conscious travelers.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=1200",
+    "availableDates": [
+      "2026-04-05",
+      "2026-05-12",
+      "2026-06-19",
+      "2026-07-26"
+    ],
+    "location": "Varanasi, Sarnath",
+    "image": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=1200",
+    "description": "Spiritual and cultural tour designed for budget-conscious travelers.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1071",
+    "packageId": "TM-BUD-07",
+    "category": "budget",
+    "categoryLabel": "Budget Tours",
+    "title": "Rishikesh Budget Camp",
+    "destination": "Rishikesh",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 11999,
+    "discount": 0,
+    "rating": 4.5,
+    "reviews": 1282,
+    "shortDescription": "Riverfront camping with meals and adventure add-ons.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1521334884684-d80222895322?w=1200",
+    "availableDates": [
+      "2026-05-05",
+      "2026-06-12",
+      "2026-07-19",
+      "2026-08-26"
+    ],
+    "location": "Rishikesh",
+    "image": "https://images.unsplash.com/photo-1521334884684-d80222895322?w=1200",
+    "description": "Riverfront camping with meals and adventure add-ons.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
+  },
+  {
+    "id": "1072",
+    "packageId": "TM-BUD-08",
+    "category": "budget",
+    "categoryLabel": "Budget Tours",
+    "title": "Pondicherry Pocket Holiday",
+    "destination": "Pondicherry",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 14999,
+    "discount": 10,
+    "rating": 4.6,
+    "reviews": 1329,
+    "shortDescription": "Affordable seaside retreat with heritage walks and cafes.",
+    "highlights": [
+      "Guided sightseeing tours",
+      "Comfortable hotel stay",
+      "Airport/Station transfers",
+      "Local experience activities"
+    ],
+    "inclusions": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "exclusions": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1470004914212-05527e49370b?w=1200",
+    "availableDates": [
+      "2026-06-05",
+      "2026-07-12",
+      "2026-08-19",
+      "2026-09-26"
+    ],
+    "location": "Pondicherry",
+    "image": "https://images.unsplash.com/photo-1470004914212-05527e49370b?w=1200",
+    "description": "Affordable seaside retreat with heritage walks and cafes.",
+    "included": [
+      "Hotel accommodation",
+      "Daily breakfast",
+      "Intercity transfers",
+      "Sightseeing as per itinerary"
+    ],
+    "excluded": [
+      "Airfare/Train fare unless mentioned",
+      "Personal expenses",
+      "Travel insurance",
+      "Meals not listed in inclusions"
+    ]
   }
 ]

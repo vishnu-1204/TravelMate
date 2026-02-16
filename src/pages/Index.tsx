@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import HeroSection from '@/components/home/HeroSection';
@@ -7,7 +7,7 @@ import SearchResults from '@/components/home/SearchResults';
 import FeaturedPackages from '@/components/home/FeaturedPackages';
 import WhyChooseUs from '@/components/home/WhyChooseUs';
 import Testimonials from '@/components/home/Testimonials';
-import packagesData from '@/data/packages.json';
+import { getPackages, type TravelPackage } from '@/lib/packagesApi';
 
 interface SearchFilters {
   destination: string;
@@ -18,13 +18,30 @@ interface SearchFilters {
 }
 
 const Index = () => {
-  const [searchResults, setSearchResults] = useState<typeof packagesData>([]);
+  const [allPackages, setAllPackages] = useState<TravelPackage[]>([]);
+  const [searchResults, setSearchResults] = useState<TravelPackage[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadPackages = async () => {
+      const packages = await getPackages();
+      if (!active) return;
+      setAllPackages(packages);
+    };
+
+    void loadPackages();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const handleSearch = useCallback((filters: SearchFilters) => {
     const { destination, checkIn, checkOut } = filters;
 
-    let filtered = [...packagesData];
+    let filtered = [...allPackages];
 
     // Filter by destination (match against title, location, or category)
     if (destination.trim()) {
@@ -53,7 +70,7 @@ const Index = () => {
 
     setSearchResults(filtered);
     setHasSearched(true);
-  }, []);
+  }, [allPackages]);
 
   return (
     <Layout>
