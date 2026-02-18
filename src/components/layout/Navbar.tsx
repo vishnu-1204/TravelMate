@@ -120,12 +120,20 @@ function Navbar() {
               )}
             </div>
           ) : (
-            <Link
-              to="/login"
-              className="bg-[hsl(var(--cyan-accent))] text-[hsl(220,25%,12%)] px-6 py-2 rounded-full font-medium text-sm hover:opacity-90 transition-opacity"
-            >
-              Login
-            </Link>
+            <>
+              <Link
+                to="/login"
+                className="bg-sky-500 text-white px-6 py-2 rounded-full font-medium text-sm hover:bg-sky-400 transition-colors"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="border border-white/50 text-white px-6 py-2 rounded-full font-medium text-sm hover:border-white hover:bg-white/10 transition-colors"
+              >
+                Sign Up
+              </Link>
+            </>
           )}
         </div>
 
@@ -198,13 +206,22 @@ function Navbar() {
                 </button>
               </div>
             ) : (
-              <Link
-                to="/login"
-                className="bg-[hsl(var(--cyan-accent))] text-[hsl(220,25%,12%)] px-6 py-2 rounded-full font-medium text-sm text-center hover:opacity-90 transition-opacity"
-                onClick={() => setIsOpen(false)}
-              >
-                Login
-              </Link>
+              <>
+                <Link
+                  to="/login"
+                  className="bg-sky-500 text-white px-6 py-2 rounded-full font-medium text-sm text-center hover:bg-sky-400 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="border border-white/50 text-white px-6 py-2 rounded-full font-medium text-sm text-center hover:border-white hover:bg-white/10 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Sign Up
+                </Link>
+              </>
             )}
           </div>
         </div>

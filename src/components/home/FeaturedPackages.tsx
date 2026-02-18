@@ -1,4 +1,4 @@
-﻿import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import { getPackages, type TravelPackage } from '@/lib/packagesApi';
 import { packageCategories } from '@/lib/packageCategories';
@@ -31,6 +31,42 @@ const FeaturedPackages = () => {
     return countMap;
   }, [packages]);
 
+  const featuredCategories = useMemo(
+    () => [
+      {
+        id: 'indian',
+        title: 'Indian Tour Packages',
+        image: packageCategories.find((category) => category.id === 'indian')?.image || '',
+      },
+      {
+        id: 'international',
+        title: 'International Tour Packages',
+        image: packageCategories.find((category) => category.id === 'international')?.image || '',
+      },
+      {
+        id: 'educational',
+        title: 'Educational Tour Packages',
+        image: packageCategories.find((category) => category.id === 'educational')?.image || '',
+      },
+      {
+        id: 'group',
+        title: 'Group Tours',
+        image: packageCategories.find((category) => category.id === 'group')?.image || '',
+      },
+      {
+        id: 'solo',
+        title: 'Solo Trips',
+        image: 'https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=1200',
+      },
+      {
+        id: 'european',
+        title: 'European Packages',
+        image: 'https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=1200',
+      },
+    ],
+    []
+  );
+
   return (
     <section className="py-20 bg-[hsl(220,25%,12%)]">
       <div className="page-container">
@@ -43,7 +79,7 @@ const FeaturedPackages = () => {
         <p className="text-white/80 mb-10">Choose from curated tours across all major travel styles.</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {packageCategories.map((category) => (
+          {featuredCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => navigate(`/packages/${category.id}`)}

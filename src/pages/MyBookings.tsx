@@ -77,7 +77,7 @@ const MyBookings = () => {
 
   const clearMyBookings = async () => {
     if (!user?.id) return;
-    const confirmed = window.confirm('Delete all your bookings? This is for testing and cannot be undone.');
+    const confirmed = window.confirm('Delete all your bookings? This cannot be undone.');
     if (!confirmed) return;
 
     setClearing(true);
@@ -91,7 +91,7 @@ const MyBookings = () => {
 
     setBookings([]);
     setClearing(false);
-    toast.success('All test bookings cleared.');
+    toast.success('All bookings cleared.');
   };
 
   return (

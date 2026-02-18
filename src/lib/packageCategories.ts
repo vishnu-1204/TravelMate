@@ -28,7 +28,7 @@ export const packageCategories: PackageCategory[] = [
   {
     id: 'educational',
     title: 'Educational Tours',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200',
+    image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200',
   },
   {
     id: 'adventure',
