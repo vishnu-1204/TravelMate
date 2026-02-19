@@ -40,7 +40,7 @@ const FeaturedPackages = () => {
     () => [
       {
         id: 'domestic',
-        title: 'Domestic Tour Packages',
+        title: 'Indian Tour Packages',
         image: packageCategories.find((category) => category.id === 'domestic')?.image || '',
       },
       {
@@ -60,13 +60,8 @@ const FeaturedPackages = () => {
       },
       {
         id: 'adventure',
-        title: 'Adventure Trips',
-        image: 'https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=1200',
-      },
-      {
-        id: 'honeymoon',
-        title: 'Honeymoon Escapes',
-        image: 'https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=1200',
+        title: 'Solo Trips',
+        image: packageCategories.find((category) => category.id === 'adventure')?.image || '',
       },
     ],
     []

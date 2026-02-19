@@ -1,3 +1,5 @@
+import packagesData from '@/data/packages.json';
+
 export type PackageItinerary = {
   days: { day: number; title: string; activities: string[] }[];
   nights: { night: number; accommodation: string; meals: string }[];
@@ -69,10 +71,8 @@ export type PackagesPage = {
   refreshedAt: string;
 };
 
-const BACKEND_BASE_URL = (import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000').replace(
-  /\/+$/,
-  ''
-);
+const BACKEND_BASE_URL = import.meta.env.VITE_AUTH_BACKEND_URL?.replace(/\/+$/, '');
+const DEFAULT_REFRESHED_AT = new Date().toISOString();
 
 const normalizeCategory = (category?: string) => {
   if (!category) return undefined;
@@ -80,7 +80,96 @@ const normalizeCategory = (category?: string) => {
   return category;
 };
 
+const normalizePackage = (pkg: Omit<TravelPackage, 'source' | 'trendingScore' | 'budgetFriendly' | 'lastUpdatedAt'>): TravelPackage => ({
+  ...pkg,
+  location: pkg.location || pkg.destination,
+  image: pkg.image || pkg.imageUrl,
+  imageUrl: pkg.imageUrl || pkg.image,
+  source: 'amadeus',
+  trendingScore: pkg.rating * Math.max(1, pkg.reviews),
+  budgetFriendly: pkg.price <= 100000,
+  lastUpdatedAt: DEFAULT_REFRESHED_AT,
+});
+
+const localPackages: TravelPackage[] = (packagesData as Omit<
+  TravelPackage,
+  'source' | 'trendingScore' | 'budgetFriendly' | 'lastUpdatedAt'
+>[]).map(normalizePackage);
+
+const comparePackages = (
+  a: TravelPackage,
+  b: TravelPackage,
+  sortBy: NonNullable<PackageQuery['sortBy']>,
+  sortOrder: NonNullable<PackageQuery['sortOrder']>
+) => {
+  const direction = sortOrder === 'asc' ? 1 : -1;
+  if (sortBy === 'price') return (a.price - b.price) * direction;
+  if (sortBy === 'rating') return (a.rating - b.rating) * direction;
+  if (sortBy === 'duration') return (a.durationDays - b.durationDays) * direction;
+  return (a.trendingScore - b.trendingScore) * direction;
+};
+
+const getPackagesPageFromLocal = (query: PackageQuery = {}): PackagesPage => {
+  const normalizedCategory = normalizeCategory(query.category);
+  const sortBy = query.sortBy || 'trending';
+  const sortOrder = query.sortOrder || 'desc';
+  const offset = query.offset || 0;
+  const limit = query.limit || 12;
+  const searchTerm = query.search?.trim().toLowerCase();
+  const destinationTerm = query.destination?.trim().toLowerCase();
+
+  let filtered = [...localPackages];
+
+  if (normalizedCategory) {
+    filtered = filtered.filter((pkg) => pkg.category === normalizedCategory);
+  }
+  if (searchTerm) {
+    filtered = filtered.filter((pkg) => pkg.title.toLowerCase().includes(searchTerm));
+  }
+  if (destinationTerm) {
+    filtered = filtered.filter(
+      (pkg) =>
+        pkg.destination.toLowerCase().includes(destinationTerm) || pkg.location.toLowerCase().includes(destinationTerm)
+    );
+  }
+  if (typeof query.minPrice === 'number') {
+    filtered = filtered.filter((pkg) => pkg.price >= query.minPrice!);
+  }
+  if (typeof query.maxPrice === 'number') {
+    filtered = filtered.filter((pkg) => pkg.price <= query.maxPrice!);
+  }
+  if (typeof query.minDuration === 'number') {
+    filtered = filtered.filter((pkg) => pkg.durationDays >= query.minDuration!);
+  }
+  if (typeof query.maxDuration === 'number') {
+    filtered = filtered.filter((pkg) => pkg.durationDays <= query.maxDuration!);
+  }
+  if (typeof query.minRating === 'number') {
+    filtered = filtered.filter((pkg) => pkg.rating >= query.minRating!);
+  }
+
+  filtered.sort((a, b) => comparePackages(a, b, sortBy, sortOrder));
+
+  const packages = filtered.slice(offset, offset + limit);
+
+  return {
+    packages,
+    count: packages.length,
+    total: filtered.length,
+    offset,
+    limit,
+    sortBy,
+    sortOrder,
+    source: 'cache',
+    refreshedAt: DEFAULT_REFRESHED_AT,
+  };
+};
+
 export const getPackagesPage = async (query: PackageQuery = {}): Promise<PackagesPage> => {
+  if (!BACKEND_BASE_URL) {
+    return getPackagesPageFromLocal(query);
+  }
+
   const url = new URL(`${BACKEND_BASE_URL}/api/packages`);
   const normalizedCategory = normalizeCategory(query.category);
 
@@ -97,27 +186,31 @@ export const getPackagesPage = async (query: PackageQuery = {}): Promise<Package
   if (query.sortBy) url.searchParams.set('sortBy', query.sortBy);
   if (query.sortOrder) url.searchParams.set('sortOrder', query.sortOrder);
 
-  const response = await fetch(url.toString());
-  if (!response.ok) {
-    throw new Error(`Package fetch failed: ${response.status}`);
-  }
+  try {
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+      throw new Error(`Package fetch failed: ${response.status}`);
+    }
 
-  const payload = (await response.json()) as Partial<PackagesPage>;
-  if (!Array.isArray(payload.packages) || typeof payload.total !== 'number') {
-    throw new Error('Invalid package payload');
-  }
+    const payload = (await response.json()) as Partial<PackagesPage>;
+    if (!Array.isArray(payload.packages) || typeof payload.total !== 'number') {
+      throw new Error('Invalid package payload');
+    }
 
-  return {
-    packages: payload.packages,
-    count: typeof payload.count === 'number' ? payload.count : payload.packages.length,
-    total: payload.total,
-    offset: typeof payload.offset === 'number' ? payload.offset : query.offset || 0,
-    limit: typeof payload.limit === 'number' ? payload.limit : query.limit || 12,
-    sortBy: payload.sortBy || query.sortBy || 'trending',
-    sortOrder: payload.sortOrder || query.sortOrder || 'desc',
-    source: payload.source || 'cache',
-    refreshedAt: payload.refreshedAt || new Date().toISOString(),
-  };
+    return {
+      packages: payload.packages,
+      count: typeof payload.count === 'number' ? payload.count : payload.packages.length,
+      total: payload.total,
+      offset: typeof payload.offset === 'number' ? payload.offset : query.offset || 0,
+      limit: typeof payload.limit === 'number' ? payload.limit : query.limit || 12,
+      sortBy: payload.sortBy || query.sortBy || 'trending',
+      sortOrder: payload.sortOrder || query.sortOrder || 'desc',
+      source: payload.source || 'cache',
+      refreshedAt: payload.refreshedAt || DEFAULT_REFRESHED_AT,
+    };
+  } catch {
+    return getPackagesPageFromLocal(query);
+  }
 };
 
 export const getPackages = async (query: PackageQuery = {}): Promise<TravelPackage[]> => {
@@ -126,12 +219,19 @@ export const getPackages = async (query: PackageQuery = {}): Promise<TravelPacka
 };
 
 export const getPackageById = async (id: string): Promise<TravelPackage | undefined> => {
-  const response = await fetch(`${BACKEND_BASE_URL}/api/packages/${id}`);
-  if (response.status === 404) return undefined;
-  if (!response.ok) {
-    throw new Error(`Package fetch failed: ${response.status}`);
+  if (!BACKEND_BASE_URL) {
+    return localPackages.find((pkg) => pkg.id === id);
   }
-  const payload = (await response.json()) as { package?: TravelPackage };
-  return payload.package;
-};
 
+  try {
+    const response = await fetch(`${BACKEND_BASE_URL}/api/packages/${id}`);
+    if (response.status === 404) return undefined;
+    if (!response.ok) {
+      throw new Error(`Package fetch failed: ${response.status}`);
+    }
+    const payload = (await response.json()) as { package?: TravelPackage };
+    return payload.package;
+  } catch {
+    return localPackages.find((pkg) => pkg.id === id);
+  }
+};
