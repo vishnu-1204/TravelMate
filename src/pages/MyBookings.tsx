@@ -60,12 +60,17 @@ const MyBookings = () => {
     let active = true;
 
     const loadPackages = async () => {
-      const packages = await getPackages();
-      if (!active) return;
+      try {
+        const packages = await getPackages({ limit: 100, sortBy: 'trending', sortOrder: 'desc' });
+        if (!active) return;
 
-      const map = new Map<string, string>();
-      packages.forEach((pkg) => map.set(pkg.id, pkg.image));
-      setPackageImageById(map);
+        const map = new Map<string, string>();
+        packages.forEach((pkg) => map.set(pkg.id, pkg.image));
+        setPackageImageById(map);
+      } catch {
+        if (!active) return;
+        setPackageImageById(new Map());
+      }
     };
 
     void loadPackages();
@@ -130,7 +135,7 @@ const MyBookings = () => {
             ) : bookings.length === 0 ? (
               <div className="bg-card rounded-xl p-8 shadow-card text-center">
                 <p className="text-muted-foreground mb-4">No bookings yet.</p>
-                <Link to="/packages/indian" className="btn-primary">
+                <Link to="/packages/domestic" className="btn-primary">
                   Explore Packages
                 </Link>
               </div>
@@ -146,6 +151,9 @@ const MyBookings = () => {
                             'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800'
                           }
                           alt={booking.package_title}
+                          onError={(event) => {
+                            event.currentTarget.src = '/placeholder.svg';
+                          }}
                           className="w-full h-44 md:h-full object-cover"
                         />
                       </div>

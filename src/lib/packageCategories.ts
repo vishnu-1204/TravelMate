@@ -11,8 +11,8 @@ export const packageCategories: PackageCategory[] = [
     image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=1200',
   },
   {
-    id: 'indian',
-    title: 'Indian Tours',
+    id: 'domestic',
+    title: 'Domestic Tours',
     image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200',
   },
   {
@@ -36,19 +36,9 @@ export const packageCategories: PackageCategory[] = [
     image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200',
   },
   {
-    id: 'family',
-    title: 'Family Tours',
-    image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1200',
-  },
-  {
-    id: 'luxury',
-    title: 'Luxury Tours',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200',
-  },
-  {
-    id: 'budget',
-    title: 'Budget Tours',
-    image: 'https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1200',
+    id: 'trending',
+    title: 'Trending Picks',
+    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200',
   },
 ];
 

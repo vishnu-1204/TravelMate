@@ -1,22 +1,52 @@
-﻿import Layout from '@/components/layout/Layout';
+import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import PackageCard from '@/components/packages/PackageCard';
-import { packageCategories, packageCategoryLabelById } from '@/lib/packageCategories';
+import { Skeleton } from '@/components/ui/skeleton';
 import { getPackagesPage, type TravelPackage } from '@/lib/packagesApi';
 import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-type SortOption = 'price-low-high' | 'price-high-low' | 'rating-high-low' | 'duration-short-long';
+type SortOption =
+  | 'trending'
+  | 'price-low-high'
+  | 'price-high-low'
+  | 'rating-high-low'
+  | 'duration-short-long';
 
-const sortMap: Record<SortOption, { sortBy: 'price' | 'rating' | 'duration'; sortOrder: 'asc' | 'desc' }> = {
-  'price-low-high': { sortBy: 'price', sortOrder: 'asc' },
-  'price-high-low': { sortBy: 'price', sortOrder: 'desc' },
-  'rating-high-low': { sortBy: 'rating', sortOrder: 'desc' },
-  'duration-short-long': { sortBy: 'duration', sortOrder: 'asc' },
-};
+const categoryOptions = [
+  { id: 'all', label: 'All Categories' },
+  { id: 'international', label: 'International' },
+  { id: 'domestic', label: 'Domestic' },
+  { id: 'honeymoon', label: 'Honeymoon' },
+  { id: 'group', label: 'Group' },
+  { id: 'educational', label: 'Educational' },
+  { id: 'adventure', label: 'Adventure' },
+];
+
+const sortMap: Record<SortOption, { sortBy: 'price' | 'rating' | 'duration' | 'trending'; sortOrder: 'asc' | 'desc' }> =
+  {
+    trending: { sortBy: 'trending', sortOrder: 'desc' },
+    'price-low-high': { sortBy: 'price', sortOrder: 'asc' },
+    'price-high-low': { sortBy: 'price', sortOrder: 'desc' },
+    'rating-high-low': { sortBy: 'rating', sortOrder: 'desc' },
+    'duration-short-long': { sortBy: 'duration', sortOrder: 'asc' },
+  };
 
 const pageSize = 12;
+
+const PackageCardSkeleton = () => (
+  <div className="rounded-xl border border-border overflow-hidden bg-card">
+    <Skeleton className="h-56 w-full rounded-none" />
+    <div className="p-5 space-y-3">
+      <Skeleton className="h-4 w-1/3" />
+      <Skeleton className="h-6 w-5/6" />
+      <Skeleton className="h-4 w-2/3" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-8 w-1/2" />
+    </div>
+  </div>
+);
 
 const Packages = () => {
   const { category } = useParams<{ category?: string }>();
@@ -26,10 +56,18 @@ const Packages = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(category || 'all');
-  const [sortBy, setSortBy] = useState<SortOption>('rating-high-low');
+  const [sortBy, setSortBy] = useState<SortOption>('trending');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [destination, setDestination] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [minDuration, setMinDuration] = useState('');
+  const [maxDuration, setMaxDuration] = useState('');
+  const [minRating, setMinRating] = useState('');
+  const [reloadToken, setReloadToken] = useState(0);
 
   useEffect(() => {
     setSelectedCategory(category || 'all');
@@ -40,11 +78,9 @@ const Packages = () => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm.trim());
       setPage(1);
-    }, 300);
+    }, 350);
 
-    return () => {
-      clearTimeout(timer);
-    };
+    return () => clearTimeout(timer);
   }, [searchTerm]);
 
   useEffect(() => {
@@ -52,21 +88,36 @@ const Packages = () => {
 
     const loadPackages = async () => {
       setLoading(true);
-      const sortQuery = sortMap[sortBy];
+      setError('');
 
-      const result = await getPackagesPage({
-        category: selectedCategory === 'all' ? undefined : selectedCategory,
-        search: debouncedSearch || undefined,
-        sortBy: sortQuery.sortBy,
-        sortOrder: sortQuery.sortOrder,
-        limit: pageSize,
-        offset: (page - 1) * pageSize,
-      });
+      try {
+        const sortQuery = sortMap[sortBy];
+        const result = await getPackagesPage({
+          category: selectedCategory === 'all' ? undefined : selectedCategory,
+          search: debouncedSearch || undefined,
+          destination: destination.trim() || undefined,
+          minPrice: minPrice ? Number(minPrice) : undefined,
+          maxPrice: maxPrice ? Number(maxPrice) : undefined,
+          minDuration: minDuration ? Number(minDuration) : undefined,
+          maxDuration: maxDuration ? Number(maxDuration) : undefined,
+          minRating: minRating ? Number(minRating) : undefined,
+          sortBy: sortQuery.sortBy,
+          sortOrder: sortQuery.sortOrder,
+          limit: pageSize,
+          offset: (page - 1) * pageSize,
+        });
 
-      if (!active) return;
-      setPackages(result.packages);
-      setTotal(result.total);
-      setLoading(false);
+        if (!active) return;
+        setPackages(result.packages);
+        setTotal(result.total);
+      } catch (err) {
+        if (!active) return;
+        setPackages([]);
+        setTotal(0);
+        setError(err instanceof Error ? err.message : 'Failed to load packages');
+      } finally {
+        if (active) setLoading(false);
+      }
     };
 
     void loadPackages();
@@ -74,12 +125,12 @@ const Packages = () => {
     return () => {
       active = false;
     };
-  }, [selectedCategory, debouncedSearch, sortBy, page]);
+  }, [selectedCategory, debouncedSearch, sortBy, page, destination, minPrice, maxPrice, minDuration, maxDuration, minRating, reloadToken]);
 
   const pageTitle =
     selectedCategory === 'all'
-      ? 'All Travel Packages'
-      : packageCategoryLabelById[selectedCategory] || 'Travel Packages';
+      ? 'Live Travel Packages'
+      : categoryOptions.find((option) => option.id === selectedCategory)?.label || 'Travel Packages';
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
@@ -97,7 +148,7 @@ const Packages = () => {
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">{pageTitle}</h1>
               <p className="text-white/90 text-lg max-w-2xl mx-auto mb-8">
-                Explore curated tours across international, Indian, luxury, honeymoon, and more categories.
+                Real-time packages powered by external travel APIs and cached for fast discovery.
               </p>
             </div>
 
@@ -108,22 +159,95 @@ const Packages = () => {
                   type="text"
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
-                  placeholder="Search by destination or package name"
+                  placeholder="Search by package title"
                   className="w-full pl-10 pr-3 py-3 rounded-xl border border-border bg-background text-foreground"
                 />
               </div>
+
+              <input
+                type="text"
+                value={destination}
+                onChange={(event) => {
+                  setDestination(event.target.value);
+                  setPage(1);
+                }}
+                placeholder="Destination"
+                className="w-full py-3 px-3 rounded-xl border border-border bg-background text-foreground"
+              />
 
               <select
                 value={selectedCategory}
                 onChange={(event) => handleCategoryChange(event.target.value)}
                 className="w-full py-3 px-3 rounded-xl border border-border bg-background text-foreground"
               >
-                <option value="all">All Categories</option>
-                {packageCategories.map((item) => (
+                {categoryOptions.map((item) => (
                   <option key={item.id} value={item.id}>
-                    {item.title}
+                    {item.label}
                   </option>
                 ))}
+              </select>
+
+              <input
+                type="number"
+                min={0}
+                value={minPrice}
+                onChange={(event) => {
+                  setMinPrice(event.target.value);
+                  setPage(1);
+                }}
+                placeholder="Min price"
+                className="w-full py-3 px-3 rounded-xl border border-border bg-background text-foreground"
+              />
+
+              <input
+                type="number"
+                min={0}
+                value={maxPrice}
+                onChange={(event) => {
+                  setMaxPrice(event.target.value);
+                  setPage(1);
+                }}
+                placeholder="Max price"
+                className="w-full py-3 px-3 rounded-xl border border-border bg-background text-foreground"
+              />
+
+              <input
+                type="number"
+                min={1}
+                value={minDuration}
+                onChange={(event) => {
+                  setMinDuration(event.target.value);
+                  setPage(1);
+                }}
+                placeholder="Min days"
+                className="w-full py-3 px-3 rounded-xl border border-border bg-background text-foreground"
+              />
+
+              <input
+                type="number"
+                min={1}
+                value={maxDuration}
+                onChange={(event) => {
+                  setMaxDuration(event.target.value);
+                  setPage(1);
+                }}
+                placeholder="Max days"
+                className="w-full py-3 px-3 rounded-xl border border-border bg-background text-foreground"
+              />
+
+              <select
+                value={minRating}
+                onChange={(event) => {
+                  setMinRating(event.target.value);
+                  setPage(1);
+                }}
+                className="w-full py-3 px-3 rounded-xl border border-border bg-background text-foreground"
+              >
+                <option value="">Min rating</option>
+                <option value="4.5">4.5+</option>
+                <option value="4.2">4.2+</option>
+                <option value="4.0">4.0+</option>
+                <option value="3.8">3.8+</option>
               </select>
 
               <select
@@ -134,6 +258,7 @@ const Packages = () => {
                 }}
                 className="w-full py-3 px-3 rounded-xl border border-border bg-background text-foreground"
               >
+                <option value="trending">Sort: Trending</option>
                 <option value="rating-high-low">Sort: Rating (High to Low)</option>
                 <option value="price-low-high">Sort: Price (Low to High)</option>
                 <option value="price-high-low">Sort: Price (High to Low)</option>
@@ -146,10 +271,21 @@ const Packages = () => {
         <section className="py-16 bg-background">
           <div className="page-container">
             {loading ? (
-              <div className="text-center py-12 text-muted-foreground text-lg">Loading packages...</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <PackageCardSkeleton key={index} />
+                ))}
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <p className="text-destructive text-lg">{error}</p>
+                <button type="button" className="btn-outline mt-4" onClick={() => setReloadToken((prev) => prev + 1)}>
+                  Retry
+                </button>
+              </div>
             ) : packages.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground text-lg">
-                No packages found. Try changing search, category, or sort.
+                No packages found. Try changing the filters.
               </div>
             ) : (
               <>

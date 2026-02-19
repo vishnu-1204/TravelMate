@@ -12,6 +12,7 @@ export default function PackageDetails() {
   const navigate = useNavigate();
   const [packageData, setPackageData] = useState<TravelPackage | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     let active = true;
@@ -24,10 +25,18 @@ export default function PackageDetails() {
       }
 
       setLoading(true);
-      const pkg = await getPackageById(id);
-      if (!active) return;
-      setPackageData(pkg || null);
-      setLoading(false);
+      setError('');
+      try {
+        const pkg = await getPackageById(id);
+        if (!active) return;
+        setPackageData(pkg || null);
+      } catch (err) {
+        if (!active) return;
+        setPackageData(null);
+        setError(err instanceof Error ? err.message : 'Failed to load package details');
+      } finally {
+        if (active) setLoading(false);
+      }
     };
 
     void loadPackage();
@@ -56,6 +65,7 @@ export default function PackageDetails() {
           <div className="min-h-[60vh] flex items-center justify-center">
             <div className="text-center">
               <h1 className="text-2xl font-bold text-foreground mb-4">Package Not Found</h1>
+              {error ? <p className="text-destructive mb-4">{error}</p> : null}
               <Link to="/packages" className="btn-primary">
                 View All Packages
               </Link>
@@ -197,6 +207,9 @@ export default function PackageDetails() {
           <img
             src={packageData.image}
             alt={packageData.title}
+            onError={(event) => {
+              event.currentTarget.src = '/placeholder.svg';
+            }}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />

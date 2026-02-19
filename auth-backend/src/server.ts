@@ -1,10 +1,12 @@
 import express from "express";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 import { config } from "./config/env";
 import { initDatabase } from "./db";
 import authRoutes from "./routes/auth";
 import bookingRoutes from "./routes/booking";
 import packagesRoutes from "./routes/packages";
+import { refreshPackageCache } from "./modules/packages/service/packageService";
 
 const app = express();
 
@@ -12,10 +14,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const packageRateLimiter = rateLimit({
+  windowMs: config.packageRateLimitWindowMs,
+  max: config.packageRateLimitMaxRequests,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many package API requests. Please retry shortly." },
+});
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/booking", bookingRoutes);
-app.use("/api/packages", packagesRoutes);
+app.use("/api/packages", packageRateLimiter, packagesRoutes);
 
 // Health check
 app.get("/", (req, res) => {
@@ -37,6 +47,15 @@ initDatabase()
       console.log(`  GET  /api/packages/:id\n`);
       console.log(`  POST /api/booking/confirmation-email\n`);
     });
+
+    if (config.packageRefreshIntervalMinutes > 0) {
+      const intervalMs = config.packageRefreshIntervalMinutes * 60_000;
+      setInterval(() => {
+        refreshPackageCache().catch((error) => {
+          console.error("Scheduled package refresh failed:", error);
+        });
+      }, intervalMs);
+    }
   })
   .catch((err) => {
     console.error("Failed to initialize database:", err);

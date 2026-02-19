@@ -1,12 +1,17 @@
 import { Router, Request, Response } from "express";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
 import db from "../db";
 import { config } from "../config/env";
 import { validateRegister, validateLogin } from "../middleware/validate";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
 
 const router = Router();
+
+const jwtSecret: Secret = config.jwtSecret;
+const jwtSignOptions: SignOptions = {
+  expiresIn: config.jwtExpiresIn as SignOptions["expiresIn"],
+};
 
 // ==================== REGISTER ====================
 router.post("/register", validateRegister, async (req: Request, res: Response) => {
@@ -40,8 +45,8 @@ router.post("/register", validateRegister, async (req: Request, res: Response) =
 
             const token = jwt.sign(
               { id: this.lastID, email },
-              config.jwtSecret,
-              { expiresIn: config.jwtExpiresIn }
+              jwtSecret,
+              jwtSignOptions
             );
 
             res.status(201).json({
@@ -83,8 +88,8 @@ router.post("/login", validateLogin, (req: Request, res: Response) => {
 
       const token = jwt.sign(
         { id: user.id, email: user.email },
-        config.jwtSecret,
-        { expiresIn: config.jwtExpiresIn }
+        jwtSecret,
+        jwtSignOptions
       );
 
       res.json({

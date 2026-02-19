@@ -1,14 +1,21 @@
-import localPackagesData from '@/data/packages.json';
-
 export type PackageItinerary = {
   days: { day: number; title: string; activities: string[] }[];
   nights: { night: number; accommodation: string; meals: string }[];
 };
 
+export type PackageCategory =
+  | 'international'
+  | 'domestic'
+  | 'honeymoon'
+  | 'group'
+  | 'educational'
+  | 'adventure';
+
 export type TravelPackage = {
   id: string;
   packageId: string;
-  category: string;
+  source: 'amadeus';
+  category: PackageCategory;
   categoryLabel: string;
   title: string;
   destination: string;
@@ -30,16 +37,23 @@ export type TravelPackage = {
   included: string[];
   excluded: string[];
   itinerary?: PackageItinerary;
+  trendingScore: number;
+  budgetFriendly: boolean;
+  lastUpdatedAt: string;
 };
 
 export type PackageQuery = {
   category?: string;
   search?: string;
+  destination?: string;
   minPrice?: number;
   maxPrice?: number;
+  minDuration?: number;
+  maxDuration?: number;
+  minRating?: number;
   limit?: number;
   offset?: number;
-  sortBy?: 'price' | 'rating' | 'duration';
+  sortBy?: 'price' | 'rating' | 'duration' | 'trending';
   sortOrder?: 'asc' | 'desc';
 };
 
@@ -48,9 +62,11 @@ export type PackagesPage = {
   count: number;
   total: number;
   offset: number;
-  limit: number | null;
-  sortBy: string;
+  limit: number;
+  sortBy: 'price' | 'rating' | 'duration' | 'trending';
   sortOrder: 'asc' | 'desc';
+  source: 'cache' | 'external';
+  refreshedAt: string;
 };
 
 const BACKEND_BASE_URL = (import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000').replace(
@@ -58,112 +74,50 @@ const BACKEND_BASE_URL = (import.meta.env.VITE_AUTH_BACKEND_URL || 'http://local
   ''
 );
 
-const fallbackPackages = localPackagesData as TravelPackage[];
-
-const applyLocalFilters = (packages: TravelPackage[], query: PackageQuery) => {
-  const normalizedCategory = query.category?.trim().toLowerCase();
-  const normalizedSearch = query.search?.trim().toLowerCase();
-
-  let filtered = [...packages];
-
-  if (normalizedCategory) {
-    filtered = filtered.filter((pkg) => pkg.category.toLowerCase() === normalizedCategory);
-  }
-
-  if (normalizedSearch) {
-    filtered = filtered.filter(
-      (pkg) =>
-        pkg.title.toLowerCase().includes(normalizedSearch) ||
-        pkg.destination.toLowerCase().includes(normalizedSearch) ||
-        pkg.location.toLowerCase().includes(normalizedSearch) ||
-        pkg.category.toLowerCase().includes(normalizedSearch)
-    );
-  }
-
-  if (typeof query.minPrice === 'number') {
-    const minPrice = query.minPrice;
-    filtered = filtered.filter((pkg) => pkg.price >= minPrice);
-  }
-
-  if (typeof query.maxPrice === 'number') {
-    const maxPrice = query.maxPrice;
-    filtered = filtered.filter((pkg) => pkg.price <= maxPrice);
-  }
-
-  const direction = query.sortOrder === 'asc' ? 1 : -1;
-  const sortBy = query.sortBy || 'rating';
-  filtered.sort((a, b) => {
-    if (sortBy === 'price') {
-      return (a.price - b.price) * direction;
-    }
-    if (sortBy === 'duration') {
-      return (a.durationDays - b.durationDays) * direction;
-    }
-    return (a.rating - b.rating) * direction;
-  });
-
-  if (typeof query.limit === 'number' && query.limit > 0) {
-    const offset = query.offset && query.offset > 0 ? query.offset : 0;
-    filtered = filtered.slice(offset, offset + query.limit);
-  }
-
-  return filtered;
+const normalizeCategory = (category?: string) => {
+  if (!category) return undefined;
+  if (category === 'indian') return 'domestic';
+  return category;
 };
 
 export const getPackagesPage = async (query: PackageQuery = {}): Promise<PackagesPage> => {
-  try {
-    const url = new URL(`${BACKEND_BASE_URL}/api/packages`);
-    if (query.category) url.searchParams.set('category', query.category);
-    if (query.search) url.searchParams.set('q', query.search);
-    if (typeof query.minPrice === 'number') url.searchParams.set('minPrice', String(query.minPrice));
-    if (typeof query.maxPrice === 'number') url.searchParams.set('maxPrice', String(query.maxPrice));
-    if (typeof query.limit === 'number') url.searchParams.set('limit', String(query.limit));
-    if (typeof query.offset === 'number') url.searchParams.set('offset', String(query.offset));
-    if (query.sortBy) url.searchParams.set('sortBy', query.sortBy);
-    if (query.sortOrder) url.searchParams.set('sortOrder', query.sortOrder);
+  const url = new URL(`${BACKEND_BASE_URL}/api/packages`);
+  const normalizedCategory = normalizeCategory(query.category);
 
-    const response = await fetch(url.toString());
-    if (!response.ok) {
-      throw new Error(`Package fetch failed: ${response.status}`);
-    }
+  if (normalizedCategory) url.searchParams.set('category', normalizedCategory);
+  if (query.search) url.searchParams.set('q', query.search);
+  if (query.destination) url.searchParams.set('destination', query.destination);
+  if (typeof query.minPrice === 'number') url.searchParams.set('minPrice', String(query.minPrice));
+  if (typeof query.maxPrice === 'number') url.searchParams.set('maxPrice', String(query.maxPrice));
+  if (typeof query.minDuration === 'number') url.searchParams.set('minDuration', String(query.minDuration));
+  if (typeof query.maxDuration === 'number') url.searchParams.set('maxDuration', String(query.maxDuration));
+  if (typeof query.minRating === 'number') url.searchParams.set('minRating', String(query.minRating));
+  if (typeof query.limit === 'number') url.searchParams.set('limit', String(query.limit));
+  if (typeof query.offset === 'number') url.searchParams.set('offset', String(query.offset));
+  if (query.sortBy) url.searchParams.set('sortBy', query.sortBy);
+  if (query.sortOrder) url.searchParams.set('sortOrder', query.sortOrder);
 
-    const payload = (await response.json()) as Partial<PackagesPage>;
-    if (!Array.isArray(payload.packages) || typeof payload.total !== 'number') {
-      throw new Error('Invalid package payload');
-    }
-
-    return {
-      packages: payload.packages,
-      count: typeof payload.count === 'number' ? payload.count : payload.packages.length,
-      total: payload.total,
-      offset: typeof payload.offset === 'number' ? payload.offset : query.offset || 0,
-      limit:
-        typeof payload.limit === 'number'
-          ? payload.limit
-          : typeof query.limit === 'number'
-          ? query.limit
-          : null,
-      sortBy: payload.sortBy || query.sortBy || 'rating',
-      sortOrder: (payload.sortOrder as 'asc' | 'desc') || query.sortOrder || 'desc',
-    };
-  } catch {
-    const filtered = applyLocalFilters(fallbackPackages, query);
-    const total = applyLocalFilters(fallbackPackages, {
-      ...query,
-      limit: undefined,
-      offset: undefined,
-    }).length;
-
-    return {
-      packages: filtered,
-      count: filtered.length,
-      total,
-      offset: query.offset || 0,
-      limit: query.limit ?? null,
-      sortBy: query.sortBy || 'rating',
-      sortOrder: query.sortOrder || 'desc',
-    };
+  const response = await fetch(url.toString());
+  if (!response.ok) {
+    throw new Error(`Package fetch failed: ${response.status}`);
   }
+
+  const payload = (await response.json()) as Partial<PackagesPage>;
+  if (!Array.isArray(payload.packages) || typeof payload.total !== 'number') {
+    throw new Error('Invalid package payload');
+  }
+
+  return {
+    packages: payload.packages,
+    count: typeof payload.count === 'number' ? payload.count : payload.packages.length,
+    total: payload.total,
+    offset: typeof payload.offset === 'number' ? payload.offset : query.offset || 0,
+    limit: typeof payload.limit === 'number' ? payload.limit : query.limit || 12,
+    sortBy: payload.sortBy || query.sortBy || 'trending',
+    sortOrder: payload.sortOrder || query.sortOrder || 'desc',
+    source: payload.source || 'cache',
+    refreshedAt: payload.refreshedAt || new Date().toISOString(),
+  };
 };
 
 export const getPackages = async (query: PackageQuery = {}): Promise<TravelPackage[]> => {
@@ -172,22 +126,12 @@ export const getPackages = async (query: PackageQuery = {}): Promise<TravelPacka
 };
 
 export const getPackageById = async (id: string): Promise<TravelPackage | undefined> => {
-  try {
-    const response = await fetch(`${BACKEND_BASE_URL}/api/packages/${id}`);
-    if (response.status === 404) {
-      return undefined;
-    }
-    if (!response.ok) {
-      throw new Error(`Package fetch failed: ${response.status}`);
-    }
-
-    const payload = (await response.json()) as { package?: TravelPackage };
-    if (!payload.package) {
-      throw new Error('Invalid package payload');
-    }
-
-    return payload.package;
-  } catch {
-    return fallbackPackages.find((pkg) => pkg.id === id);
+  const response = await fetch(`${BACKEND_BASE_URL}/api/packages/${id}`);
+  if (response.status === 404) return undefined;
+  if (!response.ok) {
+    throw new Error(`Package fetch failed: ${response.status}`);
   }
+  const payload = (await response.json()) as { package?: TravelPackage };
+  return payload.package;
 };
+

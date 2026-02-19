@@ -11,9 +11,14 @@ const FeaturedPackages = () => {
     let active = true;
 
     const loadPackages = async () => {
-      const items = await getPackages();
-      if (!active) return;
-      setPackages(items);
+      try {
+        const items = await getPackages({ limit: 100, sortBy: 'trending', sortOrder: 'desc' });
+        if (!active) return;
+        setPackages(items);
+      } catch {
+        if (!active) return;
+        setPackages([]);
+      }
     };
 
     void loadPackages();
@@ -34,9 +39,9 @@ const FeaturedPackages = () => {
   const featuredCategories = useMemo(
     () => [
       {
-        id: 'indian',
-        title: 'Indian Tour Packages',
-        image: packageCategories.find((category) => category.id === 'indian')?.image || '',
+        id: 'domestic',
+        title: 'Domestic Tour Packages',
+        image: packageCategories.find((category) => category.id === 'domestic')?.image || '',
       },
       {
         id: 'international',
@@ -54,13 +59,13 @@ const FeaturedPackages = () => {
         image: packageCategories.find((category) => category.id === 'group')?.image || '',
       },
       {
-        id: 'solo',
-        title: 'Solo Trips',
+        id: 'adventure',
+        title: 'Adventure Trips',
         image: 'https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=1200',
       },
       {
-        id: 'european',
-        title: 'European Packages',
+        id: 'honeymoon',
+        title: 'Honeymoon Escapes',
         image: 'https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=1200',
       },
     ],

@@ -77,6 +77,7 @@ const Payment = () => {
 
   const [packageData, setPackageData] = useState<TravelPackage | null>(null);
   const [packageLoading, setPackageLoading] = useState(true);
+  const [packageError, setPackageError] = useState('');
   const backendBaseUrl = import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000';
   const storageKey = useMemo(() => `travelmate-booking-draft-${id || 'unknown'}`, [id]);
 
@@ -104,11 +105,18 @@ const Payment = () => {
       }
 
       setPackageLoading(true);
-      const pkg = await getPackageById(id);
-      if (!active) return;
-
-      setPackageData(pkg || null);
-      setPackageLoading(false);
+      setPackageError('');
+      try {
+        const pkg = await getPackageById(id);
+        if (!active) return;
+        setPackageData(pkg || null);
+      } catch (err) {
+        if (!active) return;
+        setPackageData(null);
+        setPackageError(err instanceof Error ? err.message : 'Failed to load package');
+      } finally {
+        if (active) setPackageLoading(false);
+      }
     };
 
     void loadPackage();
@@ -165,6 +173,7 @@ const Payment = () => {
           <div className="min-h-[60vh] flex items-center justify-center">
             <div className="text-center">
               <h1 className="text-2xl font-bold text-foreground mb-4">Package Not Found</h1>
+              {packageError ? <p className="text-destructive mb-4">{packageError}</p> : null}
               <Link to="/packages" className="btn-primary">
                 View All Packages
               </Link>

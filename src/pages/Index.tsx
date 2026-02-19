@@ -26,9 +26,14 @@ const Index = () => {
     let active = true;
 
     const loadPackages = async () => {
-      const packages = await getPackages();
-      if (!active) return;
-      setAllPackages(packages);
+      try {
+        const packages = await getPackages({ limit: 100, sortBy: 'trending', sortOrder: 'desc' });
+        if (!active) return;
+        setAllPackages(packages);
+      } catch {
+        if (!active) return;
+        setAllPackages([]);
+      }
     };
 
     void loadPackages();

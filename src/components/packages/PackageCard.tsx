@@ -34,6 +34,9 @@ const PackageCard = ({
         <img
           src={imageUrl}
           alt={title}
+          onError={(event) => {
+            event.currentTarget.src = '/placeholder.svg';
+          }}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         {discount > 0 ? (
