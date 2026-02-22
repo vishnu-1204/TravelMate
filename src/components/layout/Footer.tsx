@@ -74,7 +74,7 @@ const Footer = () => {
         <div className="border-t border-background/20 mt-8 pt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-background/70">
           <div className="flex items-center gap-2">
             <Phone className="h-4 w-4" />
-            <span>Call Us: +91 9940882200</span>
+            <span>Call Us: +91 9342180670</span>
           </div>
           <div className="flex items-center gap-2">
             <Mail className="h-4 w-4" />

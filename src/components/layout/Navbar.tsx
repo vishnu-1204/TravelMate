@@ -31,7 +31,7 @@ function Navbar() {
     { name: 'Group Tours', path: '/packages' },
     { name: 'Packages', path: '/packages' },
     { name: 'India', path: '/packages' },
-    { name: 'Honeymoon', path: '/packages' },
+    { name: 'Honeymoon', path: '/packages/honeymoon' },
     { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' },
     { name: 'About', path: '/about' },

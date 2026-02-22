@@ -12,12 +12,12 @@ export const packageCategories: PackageCategory[] = [
   },
   {
     id: 'domestic',
-    title: 'Domestic (India)',
+    title: 'Indian Packages',
     image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200&auto=format&fit=crop',
   },
   {
     id: 'nearby',
-    title: 'Nearby / Weekend',
+    title: 'Solo Trips',
     image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&auto=format&fit=crop',
   },
   {

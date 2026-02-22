@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 
 interface PackageCardProps {
   id: string;
+  detailsPath?: string;
   title: string;
   destination: string;
   duration: string;
@@ -48,6 +49,7 @@ const highlightText = (value: string, query?: string): ReactNode => {
 
 export const PackageCard = ({
   id,
+  detailsPath,
   title,
   destination,
   duration,
@@ -71,7 +73,7 @@ export const PackageCard = ({
   const savings = dynamicPricing.savingsPerPerson || Math.max(price - finalPrice, 0);
 
   return (
-    <Link to={`/package/${id}`} className="card-travel group overflow-hidden">
+    <Link to={detailsPath || `/package/${id}`} className="card-travel group overflow-hidden">
       <div className="relative h-56 overflow-hidden">
         <PackageImage
           src={imageUrl}

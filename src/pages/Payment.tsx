@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { User, Calendar, Lock, ArrowLeft, Check, Loader2, Plus, Trash2, CreditCard } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Layout from '@/components/layout/Layout';
@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { jsPDF } from 'jspdf';
 import { getPackageById, type TravelPackage } from '@/lib/packagesApi';
 import { computeDynamicPricing } from '@/lib/packagePricing';
+import { buildGroupTourFormUrl, hasGroupTourFormUrl, saveGroupTourFormUrl, trackGroupTourBookingEvent } from '@/lib/groupTourBooking';
 
 declare global {
   interface Window {
@@ -73,6 +74,7 @@ const createTraveler = (index: number, defaultEmail = ''): Traveler => ({
 
 const Payment = () => {
   const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -94,6 +96,11 @@ const Payment = () => {
   const [success, setSuccess] = useState(false);
   const [bookingRef, setBookingRef] = useState('');
   const [formError, setFormError] = useState('');
+  const [emailNotice, setEmailNotice] = useState('');
+  const [groupFormOpened, setGroupFormOpened] = useState(false);
+  const [groupFormUrlInput, setGroupFormUrlInput] = useState('');
+  const [groupFormReady, setGroupFormReady] = useState(hasGroupTourFormUrl());
+  const [groupRedirectNote, setGroupRedirectNote] = useState('');
 
   useEffect(() => {
     let active = true;
@@ -155,6 +162,11 @@ const Payment = () => {
     localStorage.setItem(storageKey, JSON.stringify(draft));
   }, [extras, roomType, storageKey, travelDate, travelers]);
 
+  useEffect(() => {
+    if (!packageData) return;
+    setGroupFormReady(Boolean(packageData.groupFormLink) || hasGroupTourFormUrl());
+  }, [packageData]);
+
   if (packageLoading) {
     return (
       <Layout>
@@ -186,6 +198,8 @@ const Payment = () => {
   }
 
   const totalPassengers = travelers.length;
+  const groupFlowRequested = new URLSearchParams(location.search).get('group') === '1';
+  const isGroupTour = packageData.category === 'group' || groupFlowRequested;
   const dynamicPricing = computeDynamicPricing(packageData, {
     travelers: totalPassengers,
     selectedDate: travelDate || undefined,
@@ -380,7 +394,69 @@ const Payment = () => {
     return null;
   };
 
+  const isEmailAlreadySent = (terms: unknown) => {
+    if (!terms || typeof terms !== 'object') return false;
+    const emailInfo = (terms as { email?: { sent?: boolean } }).email;
+    return Boolean(emailInfo?.sent);
+  };
+
+  const formatTravelDate = (value: string) => {
+    if (!value) return 'Flexible Date';
+    const parsed = new Date(value);
+    if (!Number.isFinite(parsed.getTime())) return value;
+    return parsed.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  };
+
+  const handleGroupFormSave = () => {
+    const ok = saveGroupTourFormUrl(groupFormUrlInput);
+    if (!ok) {
+      toast.error('Please enter a valid Google Form URL.');
+      return;
+    }
+    setGroupFormReady(true);
+    setGroupFormUrlInput('');
+    toast.success('Google Form URL saved.');
+  };
+
+  const openGroupTourForm = async () => {
+    const selectedDate = travelDate || packageData.availableDates[0] || new Date().toISOString().slice(0, 10);
+    const formUrl = buildGroupTourFormUrl({
+      tourName: packageData.title,
+      destination: packageData.destination,
+      travelDate: formatTravelDate(selectedDate),
+      price: grandTotal,
+    }, {
+      packageId: packageData.id,
+      packageTitle: packageData.title,
+      explicitFormUrl: packageData.groupFormLink,
+    });
+
+    if (!formUrl) {
+      toast.error('Google Form URL missing. Add it below or set VITE_GROUP_TOUR_FORM_URL.');
+      return;
+    }
+
+    setLoading(true);
+    setGroupRedirectNote('You will be redirected to secure registration form.');
+    await delay(550);
+
+    trackGroupTourBookingEvent('group_tour_form_opened_payment_page', {
+      packageId: packageData.id,
+      tourName: packageData.title,
+      destination: packageData.destination,
+      travelDate: selectedDate,
+      price: grandTotal,
+    });
+    window.open(formUrl, '_blank', 'noopener,noreferrer');
+    setLoading(false);
+    setGroupFormOpened(true);
+  };
+
   const handleCardPayment = async () => {
+    if (isGroupTour) {
+      await openGroupTourForm();
+      return;
+    }
     const validationError = validateBooking();
     if (validationError) {
       setFormError(validationError);
@@ -397,8 +473,10 @@ const Payment = () => {
     }
 
     const ref = `TM-${Date.now().toString().slice(-8)}`;
+    const paymentId = `sim_${Date.now()}`;
     const primaryTraveler = travelers[0];
     const normalizedPrimaryMobile = primaryTraveler.mobile.replace(/\D/g, '').slice(-10);
+    const registeredEmail = user.email?.trim().toLowerCase() || primaryTraveler.email.trim().toLowerCase();
     const [firstName, ...lastNameParts] = primaryTraveler.fullName.trim().split(/\s+/);
     const lastName = lastNameParts.join(' ') || '-';
     const bookingTerms = {
@@ -408,6 +486,11 @@ const Payment = () => {
       termsVersion: 'v1',
       lockedNotice: 'This package is locked after booking.',
       acceptedAt: new Date().toISOString(),
+      email: {
+        sent: false,
+        status: 'pending',
+        sentAt: null,
+      },
     };
 
     const bookingInsertPayload = {
@@ -417,12 +500,12 @@ const Payment = () => {
       travelers: totalPassengers,
       first_name: firstName || 'Guest',
       last_name: lastName,
-      email: primaryTraveler.email.trim(),
+      email: registeredEmail,
       phone: normalizedPrimaryMobile,
       total_amount: grandTotal,
       payment_status: 'paid',
       payment_verified: true,
-      payment_id: `sim_${Date.now()}`,
+      payment_id: paymentId,
       booking_reference: ref,
       locked_price_per_person: pricePerPerson,
       locked_total_amount: grandTotal,
@@ -446,12 +529,12 @@ const Payment = () => {
         travelers: totalPassengers,
         first_name: firstName || 'Guest',
         last_name: lastName,
-        email: primaryTraveler.email.trim(),
+        email: registeredEmail,
         phone: normalizedPrimaryMobile,
         total_amount: grandTotal,
         payment_status: 'paid',
         payment_verified: true,
-        payment_id: `sim_${Date.now()}`,
+        payment_id: paymentId,
         booking_reference: ref,
       };
 
@@ -465,23 +548,107 @@ const Payment = () => {
       return;
     }
 
+    let shouldSendEmail = true;
     try {
-      await fetch(`${backendBaseUrl}/api/booking/confirmation-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: primaryTraveler.email.trim(),
-          fullName: primaryTraveler.fullName.trim(),
-          bookingReference: ref,
-          packageTitle: packageData.title,
-          destination: packageData.location,
-          travelDate,
-          passengers: totalPassengers,
-          totalAmount: grandTotal,
-        }),
-      });
+      const { data: existingBooking } = await supabase
+        .from('bookings')
+        .select('booking_terms,payment_status,payment_verified')
+        .eq('user_id', user.id)
+        .eq('booking_reference', ref)
+        .single();
+      const paid = existingBooking?.payment_status === 'paid' && existingBooking?.payment_verified;
+      const alreadySent = isEmailAlreadySent(existingBooking?.booking_terms);
+      shouldSendEmail = paid && !alreadySent;
     } catch {
-      toast.info('Booking confirmed. Email could not be sent right now.');
+      shouldSendEmail = true;
+    }
+
+    try {
+      if (shouldSendEmail) {
+        const response = await fetch(`${backendBaseUrl}/api/booking/confirmation-email`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: registeredEmail,
+            fullName: primaryTraveler.fullName.trim(),
+            phone: normalizedPrimaryMobile,
+            bookingReference: ref,
+            bookingId: ref,
+            paymentId,
+            packageTitle: packageData.title,
+            destination: packageData.location,
+            travelDate,
+            passengers: totalPassengers,
+            totalAmount: grandTotal,
+            travelCategory: packageData.category,
+            itineraryDays: packageData.itinerary?.days || [],
+            itineraryNights: packageData.itinerary?.nights || [],
+            transportDetails: packageData.transportMode,
+            activities: packageData.highlights,
+            checkIn: travelDate || '-',
+            checkOut: '-',
+            emergencyContact: '+91 9342180670',
+            travelGuidelines: [
+              'Arrive at the pickup point at least 45 minutes before departure.',
+              'Keep emergency contacts active during your trip.',
+              'Follow local regulations and guide instructions at all times.',
+            ],
+            documentsToCarry: ['Government ID proof', 'Booking confirmation email', 'Any required permits/visa documents'],
+            importantNotes: [
+              'Hotel check-in/check-out times depend on property policy.',
+              'Itinerary timings can shift due to weather or operational needs.',
+            ],
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Confirmation email API failed');
+        }
+
+        try {
+          await supabase
+            .from('bookings')
+            .update({
+              booking_terms: {
+                ...bookingTerms,
+                email: {
+                  sent: true,
+                  status: 'sent',
+                  sentAt: new Date().toISOString(),
+                },
+              },
+            })
+            .eq('user_id', user.id)
+            .eq('booking_reference', ref);
+        } catch {
+          // Non-blocking status update.
+        }
+        setEmailNotice(`Confirmation email sent to ${registeredEmail}.`);
+      } else {
+        setEmailNotice(`Booking already confirmed for ${registeredEmail}.`);
+      }
+    } catch {
+      setEmailNotice('Booking confirmed. Confirmation email will be sent shortly.');
+      toast.info('Booking confirmed. Confirmation email will be sent shortly.');
+      try {
+        await supabase
+          .from('bookings')
+          .update({
+            booking_terms: {
+              ...bookingTerms,
+              email: {
+                sent: false,
+                status: 'failed',
+                sentAt: null,
+                lastErrorAt: new Date().toISOString(),
+              },
+            },
+          })
+          .eq('user_id', user.id)
+          .eq('booking_reference', ref);
+      } catch {
+        // no-op
+      }
     }
 
     setBookingRef(ref);
@@ -511,6 +678,7 @@ const Payment = () => {
                 Thank you for booking {packageData.title}. Your booking for {totalPassengers}{' '}
                 {totalPassengers === 1 ? 'traveler' : 'travelers'} is confirmed.
               </p>
+              {emailNotice ? <p className="text-sm text-muted-foreground mb-4 text-center">{emailNotice}</p> : null}
 
               <div className="border-2 border-dashed border-primary/40 rounded-xl p-5 mb-6 bg-primary/5">
                 <p className="text-xs uppercase tracking-wide text-muted-foreground">Travel Ticket</p>
@@ -616,105 +784,114 @@ const Payment = () => {
                       </ul>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-3 pb-4 mb-4 border-b border-border/60">
-                    <div className="flex items-center gap-2">
-                      <User className="h-5 w-5 text-primary" />
-                      <h2 className="text-lg font-bold text-foreground">Traveler Details</h2>
-                    </div>
-                    <div className="flex items-center">
-                      <button
-                        type="button"
-                        onClick={addTraveler}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium shadow-sm hover:opacity-90 transition"
-                      >
-                        <Plus className="h-4 w-4" />
-                        Add Traveler
-                      </button>
-                    </div>
-                  </div>
+                  {!isGroupTour ? (
+                    <>
+                      <div className="flex flex-col gap-3 pb-4 mb-4 border-b border-border/60">
+                        <div className="flex items-center gap-2">
+                          <User className="h-5 w-5 text-primary" />
+                          <h2 className="text-lg font-bold text-foreground">Traveler Details</h2>
+                        </div>
+                        <div className="flex items-center">
+                          <button
+                            type="button"
+                            onClick={addTraveler}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium shadow-sm hover:opacity-90 transition"
+                          >
+                            <Plus className="h-4 w-4" />
+                            Add Traveler
+                          </button>
+                        </div>
+                      </div>
 
-                  {formError ? (
-                    <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-600">
-                      {formError}
-                    </div>
-                  ) : null}
+                      {formError ? (
+                        <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-600">
+                          {formError}
+                        </div>
+                      ) : null}
 
-                  <AnimatePresence initial={false}>
-                    <div className="space-y-4">
-                      {travelers.map((traveler, index) => (
-                        <motion.div
-                          key={traveler.id}
-                          layout
-                          initial={{ opacity: 0, y: 12 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -12 }}
-                          className="border border-border/70 rounded-xl p-5 bg-muted/20 shadow-sm"
-                        >
-                          <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-semibold text-foreground">Traveler {index + 1}</h3>
-                            {travelers.length > 1 && (
-                              <button
-                                type="button"
-                                onClick={() => removeTraveler(traveler.id)}
-                                className="text-red-500 hover:text-red-600 inline-flex items-center gap-1 text-sm"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                                Remove
-                              </button>
-                            )}
-                          </div>
+                      <AnimatePresence initial={false}>
+                        <div className="space-y-4">
+                          {travelers.map((traveler, index) => (
+                            <motion.div
+                              key={traveler.id}
+                              layout
+                              initial={{ opacity: 0, y: 12 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -12 }}
+                              className="border border-border/70 rounded-xl p-5 bg-muted/20 shadow-sm"
+                            >
+                              <div className="flex items-center justify-between mb-3">
+                                <h3 className="font-semibold text-foreground">Traveler {index + 1}</h3>
+                                {travelers.length > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={() => removeTraveler(traveler.id)}
+                                    className="text-red-500 hover:text-red-600 inline-flex items-center gap-1 text-sm"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                    Remove
+                                  </button>
+                                )}
+                              </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <FormInput
-                              label="Full Name"
-                              value={traveler.fullName}
-                              onChange={(v) => updateTraveler(traveler.id, 'fullName', v)}
-                              required
-                            />
-                            <FormInput
-                              label="Age"
-                              type="number"
-                              value={traveler.age}
-                              onChange={(v) => updateTraveler(traveler.id, 'age', v)}
-                              required
-                            />
-                            <FormSelect
-                              label="Gender"
-                              value={traveler.gender}
-                              onChange={(v) => updateTraveler(traveler.id, 'gender', v as Gender)}
-                              options={['Male', 'Female', 'Other']}
-                            />
-                            <FormInput
-                              label="Mobile Number"
-                              value={traveler.mobile}
-                              onChange={(v) => updateTraveler(traveler.id, 'mobile', v)}
-                              required
-                            />
-                            <FormInput
-                              label="Email"
-                              type="email"
-                              value={traveler.email}
-                              onChange={(v) => updateTraveler(traveler.id, 'email', v)}
-                              required
-                            />
-                            <FormInput
-                              label="Aadhaar Number"
-                              value={traveler.aadhaar}
-                              onChange={(v) => updateTraveler(traveler.id, 'aadhaar', v)}
-                              required
-                            />
-                            <FormInput
-                              label="Passport Number (Optional)"
-                              value={traveler.passport}
-                              onChange={(v) => updateTraveler(traveler.id, 'passport', v)}
-                            />
-                          </div>
-                        </motion.div>
-                      ))}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <FormInput
+                                  label="Full Name"
+                                  value={traveler.fullName}
+                                  onChange={(v) => updateTraveler(traveler.id, 'fullName', v)}
+                                  required
+                                />
+                                <FormInput
+                                  label="Age"
+                                  type="number"
+                                  value={traveler.age}
+                                  onChange={(v) => updateTraveler(traveler.id, 'age', v)}
+                                  required
+                                />
+                                <FormSelect
+                                  label="Gender"
+                                  value={traveler.gender}
+                                  onChange={(v) => updateTraveler(traveler.id, 'gender', v as Gender)}
+                                  options={['Male', 'Female', 'Other']}
+                                />
+                                <FormInput
+                                  label="Mobile Number"
+                                  value={traveler.mobile}
+                                  onChange={(v) => updateTraveler(traveler.id, 'mobile', v)}
+                                  required
+                                />
+                                <FormInput
+                                  label="Email"
+                                  type="email"
+                                  value={traveler.email}
+                                  onChange={(v) => updateTraveler(traveler.id, 'email', v)}
+                                  required
+                                />
+                                <FormInput
+                                  label="Aadhaar Number"
+                                  value={traveler.aadhaar}
+                                  onChange={(v) => updateTraveler(traveler.id, 'aadhaar', v)}
+                                  required
+                                />
+                                <FormInput
+                                  label="Passport Number (Optional)"
+                                  value={traveler.passport}
+                                  onChange={(v) => updateTraveler(traveler.id, 'passport', v)}
+                                />
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </AnimatePresence>
+                    </>
+                  ) : (
+                    <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
+                      Group tour bookings are handled via Google Form.
                     </div>
-                  </AnimatePresence>
+                  )}
                 </div>
 
+                {!isGroupTour ? (
                 <div className="bg-card rounded-xl p-6 shadow-card">
                   <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
                     <Calendar className="h-5 w-5 text-primary" />
@@ -768,19 +945,56 @@ const Payment = () => {
                     />
                   </div>
                 </div>
+                ) : null}
 
                 <div className="bg-card rounded-xl p-6 shadow-card" id="payment-section">
                   <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
                     <CreditCard className="h-5 w-5 text-primary" />
-                    Card Payment
+                    {isGroupTour ? 'Group Tour Booking Form' : 'Card Payment'}
                   </h2>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Click Book Now to pay by debit/credit card and generate your ticket.
-                  </p>
-                  <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
-                    <Lock className="h-4 w-4" />
-                    <span>Secure payment flow. Final amount: ₹{grandTotal.toLocaleString()}</span>
-                  </div>
+                  {isGroupTour ? (
+                    <div className="space-y-3">
+                      <p className="text-sm text-muted-foreground">
+                        Group Tours use Google Form booking only in this payment section. No online payment is required now.
+                      </p>
+                      {!groupFormReady ? (
+                        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
+                          <p className="text-xs font-semibold text-amber-900 mb-2">Add Google Form URL (one-time setup)</p>
+                          <div className="flex flex-col sm:flex-row gap-2">
+                            <input
+                              type="url"
+                              value={groupFormUrlInput}
+                              onChange={(event) => setGroupFormUrlInput(event.target.value)}
+                              placeholder="https://docs.google.com/forms/d/e/.../viewform"
+                              className="flex-1 rounded-md border border-amber-300 bg-white px-3 py-2 text-sm"
+                            />
+                            <button type="button" onClick={handleGroupFormSave} className="btn-outline whitespace-nowrap">
+                              Save Link
+                            </button>
+                          </div>
+                        </div>
+                      ) : null}
+                      <button type="button" onClick={openGroupTourForm} disabled={loading} className="btn-primary w-full">
+                        {loading ? 'Redirecting...' : 'Open Group Tour Form'}
+                      </button>
+                      {groupRedirectNote ? <p className="text-xs text-muted-foreground">{groupRedirectNote}</p> : null}
+                      {groupFormOpened ? (
+                        <Link to="/group-tour/thank-you" className="btn-outline w-full text-center block">
+                          Continue
+                        </Link>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Click Book Now to pay by debit/credit card and generate your ticket.
+                      </p>
+                      <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+                        <Lock className="h-4 w-4" />
+                        <span>Secure payment flow. Final amount: ₹{grandTotal.toLocaleString()}</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -829,7 +1043,7 @@ const Payment = () => {
                     className="btn-primary w-full mt-6 flex items-center justify-center gap-2"
                   >
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                    Book Now - Pay ₹{grandTotal.toLocaleString()}
+                    {isGroupTour ? 'Open Group Tour Form' : `Book Now - Pay ₹${grandTotal.toLocaleString()}`}
                   </button>
                 </div>
               </div>
@@ -934,3 +1148,4 @@ const PriceRow = ({ label, value }: { label: string; value: number }) => (
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default Payment;
+

@@ -13,7 +13,7 @@ import {
 } from '@/lib/packagePricing';
 
 export type PackageItinerary = {
-  days: { day: number; title: string; activities: string[] }[];
+  days: { day: number; title: string; activities: string[]; narrative?: string }[];
   nights: { night: number; accommodation: string; meals: string }[];
 };
 
@@ -85,6 +85,7 @@ export type TravelPackage = {
   badges: PackageBadges;
   popularityScore: number;
   nearbyAlternatives: string[];
+  groupFormLink?: string;
 };
 
 export type PackageQuery = {
@@ -191,6 +192,7 @@ export type PackageVersionHistory = {
 const BACKEND_BASE_URL = import.meta.env.VITE_AUTH_BACKEND_URL?.replace(/\/+$/, '');
 const DEFAULT_REFRESHED_AT = new Date().toISOString();
 const PAGE_CACHE_TTL_MS = 45_000;
+const MIN_PACKAGE_DURATION_DAYS = 3;
 const packagesPageCache = new Map<string, { expiresAt: number; value: PackagesPage }>();
 const inflightPages = new Map<string, Promise<PackagesPage>>();
 
@@ -270,6 +272,33 @@ const splitPlaces = (value: string) =>
     .split(/\s*,\s*|\s+and\s+/i)
     .map((item) => item.trim())
     .filter(Boolean);
+
+const parseDurationDays = (value?: string) => {
+  if (!value) return 0;
+  const match = value.match(/(\d+)\s*day/i);
+  if (!match) return 0;
+  return Number(match[1] || 0);
+};
+
+const inferDurationDaysFromPrice = (price: number) => {
+  if (!Number.isFinite(price) || price <= 0) return MIN_PACKAGE_DURATION_DAYS;
+  if (price <= 7000) return 3;
+  if (price <= 12000) return 4;
+  if (price <= 20000) return 5;
+  if (price <= 35000) return 6;
+  if (price <= 50000) return 7;
+  return 8;
+};
+
+const normalizeDurationDays = (pkg: RawPackage) => {
+  const numeric = Number(pkg.durationDays || 0);
+  const fromText = parseDurationDays(String(pkg.duration || ''));
+  const fromPrice = inferDurationDaysFromPrice(Number(pkg.price || 0));
+  const best = Number.isFinite(numeric) && numeric > 0 ? numeric : fromText || fromPrice;
+  return Math.max(MIN_PACKAGE_DURATION_DAYS, best || MIN_PACKAGE_DURATION_DAYS);
+};
+
+const buildDurationLabel = (days: number) => `${days} Days / ${Math.max(days - 1, 1)} Nights`;
 
 const toTitleCase = (value: string) =>
   value
@@ -364,6 +393,14 @@ const DESTINATION_ACTIVITY_DB: Record<string, string[]> = {
 
 const normalizeActivityKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
 const cleanActivityText = (value: string) => value.replace(/\s+/g, ' ').trim();
+const sentenceCase = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+const listToSentence = (items: string[]) => {
+  const clean = items.map((item) => item.trim()).filter(Boolean);
+  if (!clean.length) return '';
+  if (clean.length === 1) return clean[0];
+  if (clean.length === 2) return `${clean[0]} and ${clean[1]}`;
+  return `${clean.slice(0, -1).join(', ')}, and ${clean[clean.length - 1]}`;
+};
 
 const getDestinationSpecificActivities = (destinationLabel: string, locationLabel: string) => {
   const merged = normalizeActivityKey(`${destinationLabel} ${locationLabel}`);
@@ -397,7 +434,7 @@ const buildUniqueItinerary = (pkg: {
   budgetType: BudgetType;
   transportMode: TransportMode;
 }): PackageItinerary => {
-  const totalDays = Math.max(2, Math.min(pkg.durationDays || 4, 9));
+  const totalDays = Math.max(MIN_PACKAGE_DURATION_DAYS, Math.min(pkg.durationDays || 4, 9));
   const used = new Set<string>();
   const pool = [...getDestinationSpecificActivities(pkg.destination, pkg.location), ...buildBaseActivityPool(pkg.destination)]
     .map(cleanActivityText)
@@ -466,13 +503,43 @@ const buildUniqueItinerary = (pkg: {
     meals: 'Breakfast',
   }));
 
-  return { days, nights };
+  const daysWithNarrative = days.map((day, index) => {
+    const night = nights.find((item) => item.night === day.day);
+    const activityText = listToSentence(day.activities.slice(0, 3));
+    const hotelText = night?.accommodation || 'comfort hotel stay';
+    const mealsText = night?.meals || 'breakfast';
+    const isArrivalDay = index === 0;
+    const isDepartureDay = index === days.length - 1;
+
+    let narrative = '';
+    if (isArrivalDay) {
+      narrative =
+        `Upon arrival in ${pkg.destination}, you will be welcomed and transferred for hotel check-in and time to relax. ` +
+        `In the afternoon, begin your first local exploration with ${sentenceCase(activityText || `a guided introduction around ${pkg.destination}`)}. ` +
+        `In the evening, unwind at your own pace and settle into your ${hotelText} with ${mealsText} included.`;
+    } else if (isDepartureDay) {
+      narrative =
+        `In the morning, enjoy a relaxed start and complete checkout formalities from your ${hotelText}. ` +
+        `In the afternoon, cover your final experiences including ${sentenceCase(activityText || 'a short local visit and souvenir stop')} before your onward transfer. ` +
+        `In the evening, depart with memorable moments from ${pkg.destination} and your trip concludes comfortably.`;
+    } else {
+      narrative =
+        `In the morning, continue your journey through ${pkg.destination} with ${sentenceCase(day.activities[0] || 'a curated sightseeing experience')}. ` +
+        `In the afternoon, enjoy ${day.activities[1] || 'local cultural exploration'} and discover the destination at a comfortable pace. ` +
+        `In the evening, wrap up with ${day.activities[2] || 'a scenic leisure experience'}, followed by dinner/rest and an overnight stay at your ${hotelText}.`;
+    }
+
+    return { ...day, narrative };
+  });
+
+  return { days: daysWithNarrative, nights };
 };
 
 type RawPackage = Partial<TravelPackage> & Record<string, unknown>;
 
 const normalizePackage = (pkg: RawPackage): TravelPackage => {
   const normalizedCategory = ((normalizeCategory(String(pkg.category || 'international')) || 'international') as PackageCategory);
+  const normalizedDurationDays = normalizeDurationDays(pkg);
   const normalized = {
     id: String(pkg.id || ''),
     packageId: String(pkg.packageId || pkg.id || ''),
@@ -484,8 +551,8 @@ const normalizePackage = (pkg: RawPackage): TravelPackage => {
     title: buildReliableTitle(pkg, normalizedCategory),
     destination: String(pkg.destination || pkg.location || ''),
     location: String(pkg.location || pkg.destination || ''),
-    duration: String(pkg.duration || `${Number(pkg.durationDays || 5)} Days / ${Math.max(Number(pkg.durationDays || 5) - 1, 1)} Nights`),
-    durationDays: Number(pkg.durationDays || 5),
+    duration: buildDurationLabel(normalizedDurationDays),
+    durationDays: normalizedDurationDays,
     price: Number(pkg.price || 0),
     discount: Number(pkg.discount || 0),
     rating: Number(pkg.rating || 4.0),
@@ -508,7 +575,7 @@ const normalizePackage = (pkg: RawPackage): TravelPackage => {
     itinerary: buildUniqueItinerary({
       destination: String(pkg.destination || pkg.location || ''),
       location: String(pkg.location || pkg.destination || ''),
-      durationDays: Number(pkg.durationDays || 4),
+      durationDays: normalizedDurationDays,
       category: ((normalizeCategory(String(pkg.category || 'international')) || 'international') as PackageCategory),
       budgetType:
         pkg.budgetType === 'low' || pkg.budgetType === 'medium' || pkg.budgetType === 'premium'
@@ -588,6 +655,7 @@ const normalizePackage = (pkg: RawPackage): TravelPackage => {
     badges,
     popularityScore,
     nearbyAlternatives: Array.isArray(pkg.nearbyAlternatives) ? (pkg.nearbyAlternatives as string[]) : [],
+    groupFormLink: String(pkg.groupFormLink || pkg.group_form_link || ''),
   };
 };
 

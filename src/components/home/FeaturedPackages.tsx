@@ -32,7 +32,7 @@ const FeaturedPackages = () => {
     () => [
       {
         id: 'domestic',
-        title: 'Domestic (India)',
+        title: 'Indian Packages',
         image: packageCategories.find((category) => category.id === 'domestic')?.image || '',
       },
       {
@@ -42,18 +42,13 @@ const FeaturedPackages = () => {
       },
       {
         id: 'nearby',
-        title: 'Nearby / Weekend',
+        title: 'Solo Trips',
         image: packageCategories.find((category) => category.id === 'nearby')?.image || '',
       },
       {
         id: 'budget',
         title: 'Budget Travel',
         image: packageCategories.find((category) => category.id === 'budget')?.image || '',
-      },
-      {
-        id: 'honeymoon',
-        title: 'Honeymoon',
-        image: packageCategories.find((category) => category.id === 'honeymoon')?.image || '',
       },
       {
         id: 'group',

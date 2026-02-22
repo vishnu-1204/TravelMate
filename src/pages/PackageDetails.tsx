@@ -1,5 +1,5 @@
-﻿import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Plane, Hotel, Utensils, Camera } from 'lucide-react';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
+import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Hotel, Utensils, ChevronDown, ChevronUp } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import {
@@ -11,12 +11,12 @@ import {
   type TravelPackage,
 } from '@/lib/packagesApi';
 import { jsPDF } from 'jspdf';
-import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import PackageImage from '@/components/common/PackageImage';
 
 export default function PackageDetails() {
   const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const [packageData, setPackageData] = useState<TravelPackage | null>(null);
   const [loading, setLoading] = useState(true);
@@ -26,6 +26,8 @@ export default function PackageDetails() {
   const [adminImageAlt, setAdminImageAlt] = useState('');
   const [versionHistory, setVersionHistory] = useState<PackageVersionHistory[]>([]);
   const [adminSaving, setAdminSaving] = useState(false);
+  const [openItineraryDay, setOpenItineraryDay] = useState<number>(1);
+  const [itineraryView, setItineraryView] = useState<'story' | 'bullet'>('story');
   const adminToken = import.meta.env.VITE_PACKAGE_ADMIN_TOKEN as string | undefined;
 
   useEffect(() => {
@@ -115,6 +117,8 @@ export default function PackageDetails() {
   const discountedPrice = packageData.dynamicPricing.finalPricePerPerson;
   const basePrice = packageData.dynamicPricing.basePricePerPerson;
   const savingsPerPerson = packageData.dynamicPricing.savingsPerPerson;
+  const groupFlowRequested = new URLSearchParams(location.search).get('group') === '1';
+  const isGroupTour = packageData.category === 'group' || groupFlowRequested;
   const itineraryDays =
     packageData.itinerary?.days && packageData.itinerary.days.length > 0
       ? packageData.itinerary.days
@@ -145,6 +149,25 @@ export default function PackageDetails() {
             meals: 'Breakfast',
           })
         );
+
+
+  const buildFallbackNarrative = (day: { day: number; title: string; activities: string[] }, index: number) => {
+    const night = itineraryNights.find((item) => item.night === day.day);
+    const morning = day.activities[0] || `Explore ${packageData.destination}`;
+    const afternoon = day.activities[1] || 'Enjoy local experiences and sightseeing';
+    const evening = day.activities[2] || 'Relax and absorb the destination vibe';
+    const stay = night?.accommodation || 'comfort hotel stay';
+    const meals = night?.meals || 'breakfast';
+    const isDeparture = index === itineraryDays.length - 1;
+
+    if (index === 0) {
+      return `Upon arrival, you will be welcomed and transferred for hotel check-in and rest. In the morning/early day, begin with ${morning.toLowerCase()}. In the afternoon, continue with ${afternoon.toLowerCase()} and connect with local culture. In the evening, enjoy ${evening.toLowerCase()} before an overnight stay at ${stay} with ${meals} included.`;
+    }
+    if (isDeparture) {
+      return `In the morning, enjoy a relaxed start and complete checkout from ${stay}. In the afternoon, cover your final experiences including ${morning.toLowerCase()} and ${afternoon.toLowerCase()}. In the evening, depart with memorable experiences and conclude your journey comfortably.`;
+    }
+    return `In the morning, continue your journey with ${morning.toLowerCase()}. In the afternoon, explore more through ${afternoon.toLowerCase()}. In the evening, unwind with ${evening.toLowerCase()} before returning to ${stay} for an overnight rest with ${meals} included.`;
+  };
 
   const downloadItinerary = () => {
     const doc = new jsPDF();
@@ -407,94 +430,97 @@ export default function PackageDetails() {
                   </div>
                 </div>
 
-                {/* Day-by-Day Itinerary */}
+                {/* Itinerary */}
                 {itineraryDays.length > 0 && (
                   <div className="bg-card rounded-xl p-6 shadow-card">
-                    <div className="flex items-center gap-3 mb-8">
-                      <div className="p-3 bg-primary/10 rounded-xl">
-                        <Camera className="h-6 w-6 text-primary" />
-                      </div>
-                      <div>
-                        <h2 className="text-2xl font-bold text-foreground">Day-by-Day Itinerary</h2>
-                        <p className="text-sm text-muted-foreground">Your complete travel journey</p>
-                      </div>
+                    <div className="mb-6">
+                      <h2 className="text-2xl font-bold text-foreground mb-3">Itinerary</h2>
+                      <p className="text-muted-foreground leading-relaxed">
+                        If this journey is on your bucket list, explore our{' '}
+                        <span className="font-semibold text-foreground">{packageData.title}</span> package.
+                        We can customise this itinerary to match your expectations.
+                      </p>
                     </div>
 
-                    <div className="relative">
-                      {/* Timeline line */}
-                      <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20 hidden md:block" />
+                    <div className="flex items-center gap-2 mb-4">
+                      <button
+                        type="button"
+                        onClick={() => setItineraryView('story')}
+                        className={`px-3 py-1.5 rounded-md text-sm border ${
+                          itineraryView === 'story'
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'bg-background text-foreground border-border'
+                        }`}
+                      >
+                        Story View
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setItineraryView('bullet')}
+                        className={`px-3 py-1.5 rounded-md text-sm border ${
+                          itineraryView === 'bullet'
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'bg-background text-foreground border-border'
+                        }`}
+                      >
+                        Bullet View
+                      </button>
+                    </div>
 
-                      <div className="space-y-6">
-                        {itineraryDays.map((day, index) => {
-                          const night = itineraryNights.find((n) => n.night === day.day);
+                    <div className="space-y-3">
+                      {itineraryDays.map((day, index) => {
+                        const night = itineraryNights.find((n) => n.night === day.day);
+                        const isOpen = openItineraryDay === day.day;
+                        const narrativeText = day.narrative || buildFallbackNarrative(day, index);
 
-                          return (
-                            <motion.div
-                              key={day.day}
-                              initial={{ opacity: 0, x: -20 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: index * 0.1 }}
-                              className="relative"
+                        return (
+                          <div key={day.day} className="rounded-md border border-border overflow-hidden bg-card">
+                            <button
+                              type="button"
+                              onClick={() => setOpenItineraryDay(isOpen ? -1 : day.day)}
+                              className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-secondary/20 transition-colors"
                             >
-                              {/* Day marker */}
-                              <div className="flex items-start gap-4">
-                                <div className="relative z-10 flex-shrink-0">
-                                  <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg">
-                                    <span className="text-primary-foreground font-bold text-lg">{day.day}</span>
-                                  </div>
-                                </div>
+                              <h3 className="text-lg font-semibold text-foreground">Day {day.day}: {day.title}</h3>
+                              {isOpen ? (
+                                <ChevronUp className="h-5 w-5 text-primary" />
+                              ) : (
+                                <ChevronDown className="h-5 w-5 text-primary" />
+                              )}
+                            </button>
 
-                                <div className="flex-1 bg-secondary/30 rounded-xl p-5 border border-border/50 hover:border-primary/30 transition-colors">
-                                  {/* Day header */}
-                                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
-                                    <div>
-                                      <span className="text-xs font-medium text-primary uppercase tracking-wider">Day {day.day}</span>
-                                      <h3 className="text-lg font-semibold text-foreground">{day.title}</h3>
-                                    </div>
-                                    {index === 0 && (
-                                      <span className="inline-flex items-center gap-1 text-xs bg-green-500/10 text-green-600 px-3 py-1 rounded-full w-fit">
-                                        <Plane className="h-3 w-3" />
-                                        Arrival Day
-                                      </span>
-                                    )}
-                                    {index === itineraryDays.length - 1 && (
-                                      <span className="inline-flex items-center gap-1 text-xs bg-amber-500/10 text-amber-600 px-3 py-1 rounded-full w-fit">
-                                        <Plane className="h-3 w-3" />
-                                        Departure Day
-                                      </span>
-                                    )}
-                                  </div>
-
-                                  {/* Activities */}
-                                  <div className="space-y-2 mb-4">
+                            {isOpen ? (
+                              <div className="px-4 pb-5 pt-2 border-t border-border/70">
+                                {itineraryView === 'story' ? (
+                                  <p className="text-muted-foreground leading-8">
+                                    {narrativeText}
+                                  </p>
+                                ) : (
+                                  <div className="space-y-3">
                                     {day.activities.map((activity, actIndex) => (
-                                      <div key={actIndex} className="flex items-start gap-3">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                                        <span className="text-sm text-muted-foreground">{activity}</span>
-                                      </div>
+                                      <p key={actIndex} className="text-muted-foreground leading-relaxed">
+                                        {activity}
+                                      </p>
                                     ))}
                                   </div>
+                                )}
 
-                                  {/* Accommodation info */}
-                                  {night && (
-                                    <div className="flex flex-wrap gap-4 pt-4 border-t border-border/50">
-                                      <div className="flex items-center gap-2 text-sm">
-                                        <Hotel className="h-4 w-4 text-primary" />
-                                        <span className="text-foreground font-medium">{night.accommodation}</span>
-                                      </div>
-                                      <div className="flex items-center gap-2 text-sm">
-                                        <Utensils className="h-4 w-4 text-primary" />
-                                        <span className="text-muted-foreground">{night.meals}</span>
-                                      </div>
+                                {night ? (
+                                  <div className="flex flex-wrap gap-4 mt-5 pt-4 border-t border-border/60">
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <Hotel className="h-4 w-4 text-primary" />
+                                      <span className="text-foreground">{night.accommodation}</span>
                                     </div>
-                                  )}
-                                </div>
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <Utensils className="h-4 w-4 text-primary" />
+                                      <span className="text-muted-foreground">{night.meals}</span>
+                                    </div>
+                                  </div>
+                                ) : null}
                               </div>
-                            </motion.div>
-                          );
-                        })}
-                      </div>
+                            ) : null}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -507,13 +533,13 @@ export default function PackageDetails() {
                     <p className="text-muted-foreground text-sm">Starting from</p>
                     {basePrice > discountedPrice ? (
                       <p className="text-sm text-muted-foreground line-through">
-                        ₹{basePrice.toLocaleString('en-IN')}
+                        ?{basePrice.toLocaleString('en-IN')}
                       </p>
                     ) : null}
-                    <p className="text-4xl font-bold text-primary">₹{discountedPrice.toLocaleString('en-IN')}</p>
+                    <p className="text-4xl font-bold text-primary">?{discountedPrice.toLocaleString('en-IN')}</p>
                     {savingsPerPerson > 0 ? (
                       <p className="text-xs text-emerald-600 font-medium mt-1">
-                        Save ₹{savingsPerPerson.toLocaleString('en-IN')} per traveler
+                        Save ?{savingsPerPerson.toLocaleString('en-IN')} per traveler
                       </p>
                     ) : null}
                     <p className="text-xs text-muted-foreground mt-1">
@@ -530,11 +556,11 @@ export default function PackageDetails() {
 
                   <div className="rounded-lg border border-border p-3 mb-4 text-sm">
                     <p className="font-semibold text-foreground mb-2">Price Breakdown</p>
-                    <p className="text-muted-foreground flex justify-between"><span>Hotel</span><span>₹{packageData.dynamicPricing.breakdown.hotel.toLocaleString('en-IN')}</span></p>
-                    <p className="text-muted-foreground flex justify-between"><span>Transport</span><span>₹{packageData.dynamicPricing.breakdown.transport.toLocaleString('en-IN')}</span></p>
-                    <p className="text-muted-foreground flex justify-between"><span>Food</span><span>₹{packageData.dynamicPricing.breakdown.food.toLocaleString('en-IN')}</span></p>
-                    <p className="text-muted-foreground flex justify-between"><span>Activities</span><span>₹{packageData.dynamicPricing.breakdown.activities.toLocaleString('en-IN')}</span></p>
-                    <p className="text-muted-foreground flex justify-between"><span>Taxes</span><span>₹{packageData.dynamicPricing.breakdown.taxes.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Hotel</span><span>?{packageData.dynamicPricing.breakdown.hotel.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Transport</span><span>?{packageData.dynamicPricing.breakdown.transport.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Food</span><span>?{packageData.dynamicPricing.breakdown.food.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Activities</span><span>?{packageData.dynamicPricing.breakdown.activities.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Taxes</span><span>?{packageData.dynamicPricing.breakdown.taxes.toLocaleString('en-IN')}</span></p>
                   </div>
 
                   {packageData.dynamicPricing.discounts.length > 0 ? (
@@ -553,7 +579,7 @@ export default function PackageDetails() {
                     <p className="font-semibold text-foreground mb-2">Payment Options</p>
                     {packageData.dynamicPricing.paymentPlans.map((plan) => (
                       <p key={plan.label} className="text-muted-foreground">
-                        {plan.months ? `${plan.label}: ₹${(plan.monthlyAmount || 0).toLocaleString('en-IN')}/month` : plan.label}
+                        {plan.months ? `${plan.label}: ?${(plan.monthlyAmount || 0).toLocaleString('en-IN')}/month` : plan.label}
                       </p>
                     ))}
                   </div>
@@ -564,14 +590,19 @@ export default function PackageDetails() {
                       {packageData.dynamicPricing.upgradeOptions.map((item) => (
                         <p key={item.id} className="text-muted-foreground flex justify-between">
                           <span>{item.label}</span>
-                          <span>+₹{item.pricePerPerson.toLocaleString('en-IN')}</span>
+                          <span>+?{item.pricePerPerson.toLocaleString('en-IN')}</span>
                         </p>
                       ))}
                     </div>
                   ) : null}
 
+                  {isGroupTour ? (
+                    <p className="text-xs text-muted-foreground mb-2 text-center">
+                      Group tour bookings are handled via Google Form.
+                    </p>
+                  ) : null}
                   <Link
-                    to={`/package/${packageData.id}/payment`}
+                    to={`/package/${packageData.id}/payment${isGroupTour ? '?group=1' : ''}`}
                     className="btn-primary w-full mb-4 flex items-center justify-center"
                   >
                     Book Now
@@ -593,7 +624,7 @@ export default function PackageDetails() {
                           type="text"
                           value={adminCategoriesInput}
                           onChange={(event) => setAdminCategoriesInput(event.target.value)}
-                          placeholder="domestic, honeymoon"
+                          placeholder="indian, honeymoon"
                           className="w-full text-sm px-3 py-2 rounded-md border border-border bg-background"
                         />
                         <button
@@ -632,7 +663,7 @@ export default function PackageDetails() {
                             <p className="text-xs uppercase text-muted-foreground mb-2">Package History</p>
                             {versionHistory.slice(0, 5).map((item) => (
                               <p key={item.id} className="text-xs text-muted-foreground">
-                                v{item.version_number} • {item.is_active ? 'Active' : 'Archived'} • {new Date(item.created_at).toLocaleDateString()}
+                                v{item.version_number} � {item.is_active ? 'Active' : 'Archived'} � {new Date(item.created_at).toLocaleDateString()}
                               </p>
                             ))}
                           </div>
@@ -643,7 +674,7 @@ export default function PackageDetails() {
                       Need help? Contact our travel experts
                     </p>
                     <p className="text-primary font-medium text-center mt-1">
-                      +91 93245 79945
+                      +91 9342180670
                     </p>
                   </div>
                 </div>
@@ -651,8 +682,15 @@ export default function PackageDetails() {
             </div>
           </div>
         </section>
+
       </PageTransition>
     </Layout>
   );
 }
+
+
+
+
+
+
 

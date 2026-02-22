@@ -5,7 +5,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { getPackagesPage, type TravelPackage } from '@/lib/packagesApi';
 import { Mic, Search, Sparkles, TrendingUp } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 type SpeechRecognitionCtor = new () => {
   lang: string;
@@ -16,9 +18,34 @@ type SpeechRecognitionCtor = new () => {
 
 const pageSize = 12;
 const recentSearchesKey = 'travelmate_recent_place_searches_v1';
+const GEO_CACHE_KEY = 'travelmate_geo_cache_v1';
+const LOCATION_RADIUS_KM = 500;
+const MAX_NEARBY_GEO_LOOKUPS = 120;
+
+type Coordinates = {
+  lat: number;
+  lon: number;
+};
+
+type NearbyMeta = {
+  distanceKm: number;
+  travelHours: number;
+};
+
+type LocationStatus = 'idle' | 'ready' | 'loading' | 'needs_profile' | 'error';
 
 const popularDestinations = ['Goa', 'Manali', 'Ooty', 'Bali', 'Maldives', 'Paris', 'Kerala', 'Dubai'];
 const trendingNearby = ['Pondicherry', 'Coorg', 'Munnar', 'Lonavala', 'Rishikesh', 'Alleppey'];
+const cityNearbyMap: Record<string, string[]> = {
+  chennai: ['Pondicherry', 'Mahabalipuram', 'Yercaud', 'Kodaikanal', 'Ooty'],
+  bengaluru: ['Coorg', 'Mysore', 'Ooty', 'Wayanad', 'Hampi'],
+  bangalore: ['Coorg', 'Mysore', 'Ooty', 'Wayanad', 'Hampi'],
+  mumbai: ['Lonavala', 'Alibaug', 'Goa', 'Mahabaleshwar', 'Nashik'],
+  delhi: ['Agra', 'Jaipur', 'Rishikesh', 'Nainital', 'Manali'],
+  hyderabad: ['Hampi', 'Coorg', 'Goa', 'Mysore', 'Ooty'],
+  kolkata: ['Darjeeling', 'Gangtok', 'Puri', 'Shillong', 'Kalimpong'],
+  pune: ['Lonavala', 'Mahabaleshwar', 'Goa', 'Nashik', 'Alibaug'],
+};
 const indianDestinationSet = new Set([
   'ahmedabad',
   'gandhinagar',
@@ -52,7 +79,7 @@ const categorySuggestionMap: Record<string, string[]> = {
   all: ['Goa', 'Manali', 'Kerala', 'Bali', 'Maldives', 'Paris', 'Dubai', 'Thailand'],
   domestic: ['Goa', 'Ooty', 'Manali', 'Munnar', 'Kashmir', 'Jaipur', 'Kerala', 'Andaman'],
   international: ['Bali', 'Maldives', 'Paris', 'Dubai', 'Singapore', 'Thailand', 'Switzerland', 'London'],
-  nearby: ['Pondicherry', 'Coorg', 'Lonavala', 'Rishikesh', 'Alleppey', 'Nainital', 'Kodaikanal', 'Udaipur'],
+  nearby: ['Rishikesh', 'Kasol', 'Hampi', 'Pondicherry', 'Coorg', 'Munnar', 'Udaipur', 'Goa'],
   budget: ['Goa', 'Pondicherry', 'Rishikesh', 'Jaipur', 'Kasol', 'Coorg', 'Mysore', 'Ooty'],
   honeymoon: ['Maldives', 'Bali', 'Paris', 'Santorini', 'Kerala', 'Manali', 'Kashmir', 'Mauritius'],
   group: ['Goa', 'Dubai', 'Thailand', 'Rishikesh', 'Kasol', 'Bali', 'Manali', 'Singapore'],
@@ -97,11 +124,122 @@ const isIndianDestination = (name: string) => {
   return indianDestinationKeywords.some((keyword) => normalized.includes(keyword));
 };
 
+const normalizePlaceKey = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9,\s-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const readGeoCache = (): Record<string, Coordinates> => {
+  try {
+    const raw = localStorage.getItem(GEO_CACHE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as Record<string, Coordinates>;
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+};
+
+const writeGeoCache = (cache: Record<string, Coordinates>) => {
+  try {
+    localStorage.setItem(GEO_CACHE_KEY, JSON.stringify(cache));
+  } catch {
+    // no-op
+  }
+};
+
+const geocodePlace = async (query: string): Promise<Coordinates | null> => {
+  const normalized = normalizePlaceKey(query);
+  if (!normalized) return null;
+  const cache = readGeoCache();
+  const hit = cache[normalized];
+  if (hit) return hit;
+
+  const response = await fetch(
+    `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(query)}`
+  );
+  if (!response.ok) return null;
+  const payload = (await response.json()) as Array<{ lat?: string; lon?: string }>;
+  const first = payload[0];
+  if (!first?.lat || !first?.lon) return null;
+
+  const value = { lat: Number(first.lat), lon: Number(first.lon) };
+  if (!Number.isFinite(value.lat) || !Number.isFinite(value.lon)) return null;
+  cache[normalized] = value;
+  writeGeoCache(cache);
+  return value;
+};
+
+const haversineKm = (a: Coordinates, b: Coordinates) => {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(b.lat - a.lat);
+  const dLon = toRad(b.lon - a.lon);
+  const lat1 = toRad(a.lat);
+  const lat2 = toRad(b.lat);
+  const x =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+  return 6371 * c;
+};
+
+const estimateTravelHours = (distanceKm: number) => Math.max(1, distanceKm / 45);
+
+const parseDestinationQuery = (pkg: TravelPackage) =>
+  [pkg.destination, pkg.location]
+    .flatMap((item) =>
+      String(item || '')
+        .split(',')
+        .map((part) => part.trim())
+        .filter(Boolean)
+    )
+    .slice(0, 2)
+    .join(', ');
+
+const getProfileAddress = (metadata: Record<string, unknown> | undefined) => {
+  const details = (metadata?.profile_details as Record<string, unknown> | undefined) || {};
+  const address = String(details.address || '').trim();
+  const city = String(details.city || '').trim();
+  const state = String(details.state || '').trim();
+  const country = String(details.country || '').trim();
+  const pincode = String(details.pincode || details.pin_code || details.zip || '').trim();
+  const locationLat = Number(details.location_lat ?? details.lat ?? 0);
+  const locationLon = Number(details.location_lon ?? details.lon ?? details.lng ?? 0);
+
+  const addressLine = [address, city, state, pincode, country].filter(Boolean).join(', ');
+  const complete = Boolean(city && state && country);
+  const storedCoords =
+    Number.isFinite(locationLat) &&
+    Number.isFinite(locationLon) &&
+    Math.abs(locationLat) > 0 &&
+    Math.abs(locationLon) > 0
+      ? { lat: locationLat, lon: locationLon }
+      : null;
+
+  return { addressLine, complete, storedCoords, details, city };
+};
+
+const getCityHints = (city?: string) => {
+  const key = (city || '').trim().toLowerCase();
+  if (!key) return [];
+  return cityNearbyMap[key] || [];
+};
+
 const Packages = () => {
   const { category } = useParams<{ category?: string }>();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const selectedCategory = category || 'all';
 
   const [packages, setPackages] = useState<TravelPackage[]>([]);
+  const [nearbyMetaById, setNearbyMetaById] = useState<Record<string, NearbyMeta>>({});
+  const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
+  const [locationNote, setLocationNote] = useState('');
+  const [profileCity, setProfileCity] = useState('');
+  const [userCoords, setUserCoords] = useState<Coordinates | null>(null);
+  const [askingGeo, setAskingGeo] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -137,21 +275,101 @@ const Packages = () => {
 
   useEffect(() => {
     let active = true;
+    const resolveUserLocation = async () => {
+      if (selectedCategory !== 'nearby') {
+        setLocationStatus('idle');
+        setLocationNote('');
+        setProfileCity('');
+        setUserCoords(null);
+        return;
+      }
+      if (!user) {
+        setLocationStatus('needs_profile');
+        setLocationNote('Sign in and save your address in profile for solo trip recommendations.');
+        setProfileCity('');
+        setUserCoords(null);
+        return;
+      }
+
+      setLocationStatus('loading');
+      const meta = getProfileAddress((user.user_metadata || {}) as Record<string, unknown>);
+      setProfileCity(meta.city || '');
+      if (meta.storedCoords) {
+        if (!active) return;
+        setUserCoords(meta.storedCoords);
+        setLocationStatus('ready');
+        setLocationNote('Showing solo trip picks from your saved profile location.');
+        return;
+      }
+      if (!meta.complete || !meta.addressLine) {
+        if (!active) return;
+        setUserCoords(null);
+        setLocationStatus('needs_profile');
+        setLocationNote(
+          meta.city
+            ? `Using your city (${meta.city}) for solo trip suggestions. Add full address for better accuracy.`
+            : 'Add city, state, and country in profile to get solo trip recommendations.'
+        );
+        return;
+      }
+
+      const coords = await geocodePlace(meta.addressLine);
+      if (!active) return;
+      if (!coords) {
+        setUserCoords(null);
+        setLocationStatus('error');
+        setLocationNote(
+          meta.city
+            ? `Could not geocode your address. Using city-based solo trip suggestions for ${meta.city}.`
+            : 'Could not read your saved address. Please update profile location details.'
+        );
+        return;
+      }
+
+      setUserCoords(coords);
+      setLocationStatus('ready');
+      setLocationNote('Showing solo trip picks from your saved profile location.');
+      try {
+        await supabase.auth.updateUser({
+          data: {
+            profile_details: {
+              ...meta.details,
+              location_lat: coords.lat,
+              location_lon: coords.lon,
+            },
+          },
+        });
+      } catch {
+        // Non-blocking: recommendations still work for this session.
+      }
+    };
+
+    void resolveUserLocation();
+    return () => {
+      active = false;
+    };
+  }, [selectedCategory, user]);
+
+  useEffect(() => {
+    let active = true;
     const loadPackages = async () => {
       setLoading(true);
       setError('');
       try {
+        const isNearbyCategory = selectedCategory === 'nearby';
+        const queryLimit = isNearbyCategory ? 220 : pageSize;
+        const queryOffset = isNearbyCategory ? 0 : (page - 1) * pageSize;
         const result = await getPackagesPage({
           category: selectedCategory === 'all' ? undefined : selectedCategory,
           destination: debouncedSearch || undefined,
           search: debouncedSearch || undefined,
           sortBy: 'trending',
           sortOrder: 'desc',
-          limit: pageSize,
-          offset: (page - 1) * pageSize,
+          limit: queryLimit,
+          offset: queryOffset,
         });
         if (!active) return;
-        const safetyFiltered = result.packages.filter((pkg) => {
+        let safetyFiltered = result.packages.filter((pkg) => {
           const looksIndianByText = isIndianDestination(`${pkg.destination} ${pkg.location} ${pkg.title}`);
           if (selectedCategory === 'international') {
             return pkg.category === 'international' && !isIndiaCountry(pkg.country) && !looksIndianByText;
@@ -161,8 +379,77 @@ const Packages = () => {
           }
           return true;
         });
-        setPackages(safetyFiltered);
-        if (selectedCategory === 'international' || selectedCategory === 'domestic') {
+
+        const nearbyMeta: Record<string, NearbyMeta> = {};
+        if (isNearbyCategory && userCoords) {
+          const queryToCoords = new Map<string, Coordinates | null>();
+          const candidatePackages = safetyFiltered.slice(0, MAX_NEARBY_GEO_LOOKUPS);
+          const withDistance = await Promise.all(
+            candidatePackages.map(async (pkg) => {
+              const destinationQuery = parseDestinationQuery(pkg);
+              if (!destinationQuery) return null;
+              const cacheHit = queryToCoords.get(destinationQuery);
+              const coords = cacheHit !== undefined ? cacheHit : await geocodePlace(destinationQuery);
+              if (!queryToCoords.has(destinationQuery)) queryToCoords.set(destinationQuery, coords);
+              if (!coords) return null;
+              const distanceKm = haversineKm(userCoords, coords);
+              const travelHours = estimateTravelHours(distanceKm);
+              nearbyMeta[pkg.id] = { distanceKm, travelHours };
+              return { pkg, distanceKm, travelHours };
+            })
+          );
+
+          const ranked = withDistance
+            .filter((row): row is { pkg: TravelPackage; distanceKm: number; travelHours: number } => Boolean(row))
+            .filter((row) => row.distanceKm <= LOCATION_RADIUS_KM)
+            .sort((a, b) => {
+              const budgetDelta = a.pkg.price - b.pkg.price;
+              const ratingDelta = b.pkg.rating - a.pkg.rating;
+              return a.distanceKm - b.distanceKm || budgetDelta || ratingDelta;
+            });
+
+          const weekendRanked = ranked
+            .map((row) => row.pkg)
+            .filter((pkg) => pkg.durationDays <= 5 || pkg.budgetType === 'low' || pkg.budgetType === 'medium');
+          safetyFiltered = weekendRanked.length > 0 ? weekendRanked : ranked.map((row) => row.pkg);
+        } else if (isNearbyCategory && profileCity) {
+          const cityHints = getCityHints(profileCity).map((item) => item.toLowerCase());
+          if (cityHints.length > 0) {
+            const hinted = safetyFiltered.filter((pkg) => {
+              const haystack = `${pkg.destination} ${pkg.location} ${pkg.title}`.toLowerCase();
+              return cityHints.some((hint) => haystack.includes(hint.toLowerCase()));
+            });
+            const ranked = (hinted.length > 0 ? hinted : safetyFiltered)
+              .filter((pkg) => pkg.durationDays <= 5 || pkg.budgetType === 'low' || pkg.budgetType === 'medium')
+              .sort((a, b) => a.price - b.price || b.rating - a.rating);
+            safetyFiltered = ranked;
+          }
+        }
+
+        const pagedPackages =
+          isNearbyCategory && safetyFiltered.length > pageSize
+            ? safetyFiltered.slice((page - 1) * pageSize, page * pageSize)
+            : safetyFiltered;
+
+        const withNearbyAnnotations = pagedPackages.map((pkg) => {
+          const meta = nearbyMeta[pkg.id];
+          if (!meta || selectedCategory !== 'nearby') return pkg;
+          const distanceLabel = `${Math.round(meta.distanceKm)} km away`;
+          const travelLabel = `~${Math.round(meta.travelHours)}h trip`;
+          const tags = [distanceLabel, travelLabel, ...pkg.specialTags].slice(0, 4);
+          return {
+            ...pkg,
+            specialTags: tags,
+            shortDescription: `${distanceLabel} | ${pkg.shortDescription}`,
+          };
+        });
+
+        setNearbyMetaById(nearbyMeta);
+        setPackages(withNearbyAnnotations);
+
+        if (isNearbyCategory) {
+          setTotal(safetyFiltered.length);
+        } else if (selectedCategory === 'international' || selectedCategory === 'domestic') {
           const removedOnPage = Math.max(result.packages.length - safetyFiltered.length, 0);
           setTotal(Math.max(result.total - removedOnPage, safetyFiltered.length));
         } else {
@@ -171,6 +458,7 @@ const Packages = () => {
       } catch (err) {
         if (!active) return;
         setPackages([]);
+        setNearbyMetaById({});
         setTotal(0);
         setError(err instanceof Error ? err.message : 'Failed to load packages');
       } finally {
@@ -182,10 +470,16 @@ const Packages = () => {
     return () => {
       active = false;
     };
-  }, [selectedCategory, debouncedSearch, page, reloadToken]);
+  }, [selectedCategory, debouncedSearch, page, reloadToken, userCoords, profileCity]);
 
-  const pageTitle = selectedCategory === 'all' ? 'Find Your Next Destination' : `${selectedCategory[0].toUpperCase()}${selectedCategory.slice(1)} Packages`;
+  const pageTitle =
+    selectedCategory === 'all'
+      ? 'Find Your Next Destination'
+      : selectedCategory === 'nearby'
+      ? 'Solo Trips'
+      : `${selectedCategory[0].toUpperCase()}${selectedCategory.slice(1)} Packages`;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const nearbyCityPlaces = useMemo(() => getCityHints(profileCity), [profileCity]);
 
   const liveSuggestions = useMemo(() => {
     const categoryKey = selectedCategory.toLowerCase();
@@ -266,6 +560,25 @@ const Packages = () => {
     recognition.start();
   };
 
+  const useCurrentLocation = () => {
+    if (!navigator.geolocation || askingGeo) return;
+    setAskingGeo(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserCoords({ lat: position.coords.latitude, lon: position.coords.longitude });
+        setLocationStatus('ready');
+        setLocationNote('Using your current browser location for solo trip recommendations.');
+        setAskingGeo(false);
+      },
+      () => {
+        setLocationStatus('error');
+        setLocationNote('Location permission denied. Add your address in profile to continue.');
+        setAskingGeo(false);
+      },
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 }
+    );
+  };
+
   return (
     <Layout>
       <PageTransition>
@@ -301,10 +614,7 @@ const Packages = () => {
                     disabled={voiceBusy}
                     title="Voice search"
                   >
-                    <span className="inline-flex items-center gap-1">
-                      <Mic className="h-3.5 w-3.5" />
-                      {voiceBusy ? 'Listening...' : 'Voice'}
-                    </span>
+                    <Mic className="h-3.5 w-3.5" />
                   </button>
                 </div>
 
@@ -334,6 +644,49 @@ const Packages = () => {
 
         <section className="py-16 bg-background">
           <div className="page-container">
+            {selectedCategory === 'nearby' ? (
+              <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+                <p className="text-sm font-medium text-slate-900">Solo Trip Recommendations</p>
+                <p className="text-sm text-slate-700 mt-1">{locationNote || 'Resolving your location preferences...'}</p>
+                {nearbyCityPlaces.length > 0 ? (
+                  <div className="mt-3">
+                    <p className="text-xs text-slate-600 mb-2">Suggested places from your city:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {nearbyCityPlaces.map((place) => (
+                        <button
+                          key={place}
+                          type="button"
+                          onMouseDown={() => applySearch(place)}
+                          className="rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-white"
+                        >
+                          {place}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+                {locationStatus === 'needs_profile' && !profileCity ? (
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      className="btn-outline text-sm"
+                      onClick={() => navigate('/profile')}
+                    >
+                      Update Profile Address
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-outline text-sm"
+                      onClick={useCurrentLocation}
+                      disabled={askingGeo}
+                    >
+                      {askingGeo ? 'Detecting...' : 'Use Current Location'}
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+
             {aiRecommendations.length > 0 ? (
               <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3">
                 <p className="text-sm font-medium text-blue-900 inline-flex items-center gap-2">
@@ -380,8 +733,13 @@ const Packages = () => {
                     <PackageCard
                       key={pkg.id}
                       id={pkg.id}
+                      detailsPath={selectedCategory === 'group' ? `/package/${pkg.id}?group=1` : `/package/${pkg.id}`}
                       title={pkg.title}
-                      destination={pkg.destination}
+                      destination={
+                        selectedCategory === 'nearby' && nearbyMetaById[pkg.id]
+                          ? `${pkg.destination} - ${Math.round(nearbyMetaById[pkg.id].distanceKm)} km`
+                          : pkg.destination
+                      }
                       duration={pkg.duration}
                       price={pkg.price}
                       discount={pkg.discount}
@@ -433,3 +791,4 @@ const Packages = () => {
 };
 
 export default Packages;
+

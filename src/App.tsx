@@ -20,6 +20,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
 import MyBookings from "./pages/MyBookings";
+import GroupTourThankYou from "./pages/GroupTourThankYou";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -69,6 +70,7 @@ const AnimatedRoutes = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/group-tour/thank-you" element={<GroupTourThankYou />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
