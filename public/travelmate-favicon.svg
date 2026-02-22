@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TravelMate favicon">
+  <defs>
+    <linearGradient id="tmGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b5bad" />
+      <stop offset="100%" stop-color="#16b77c" />
+    </linearGradient>
+  </defs>
+  <rect x="6.4" y="15.36" width="51.2" height="39.68" rx="8.96" fill="url(#tmGradient)" stroke="#062f50" stroke-opacity=".47" stroke-width="2.24"/>
+  <rect x="22.4" y="5.12" width="19.2" height="10.88" rx="4.48" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="3.2"/>
+  <g fill="none" stroke="#fff" stroke-opacity=".96" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.76">
+    <path d="M17.28 29.44h14.08"/>
+    <path d="M24.32 29.44v15.36"/>
+    <path d="M34.56 44.8V29.44"/>
+    <path d="M34.56 29.44l5.12 8.96"/>
+    <path d="M39.68 38.4l5.12-8.96"/>
+    <path d="M44.8 29.44V44.8"/>
+  </g>
+</svg>

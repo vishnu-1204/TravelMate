@@ -1,23 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
-import { getPackages, type TravelPackage } from '@/lib/packagesApi';
+import { getPackageCategoryCounts } from '@/lib/packagesApi';
 import { packageCategories } from '@/lib/packageCategories';
 
 const FeaturedPackages = () => {
   const navigate = useNavigate();
-  const [packages, setPackages] = useState<TravelPackage[]>([]);
+  const [countsByCategory, setCountsByCategory] = useState<Map<string, number>>(new Map());
 
   useEffect(() => {
     let active = true;
 
     const loadPackages = async () => {
       try {
-        const items = await getPackages({ limit: 100, sortBy: 'trending', sortOrder: 'desc' });
+        const counts = await getPackageCategoryCounts();
         if (!active) return;
-        setPackages(items);
+        setCountsByCategory(new Map(Object.entries(counts)));
       } catch {
         if (!active) return;
-        setPackages([]);
+        setCountsByCategory(new Map());
       }
     };
 
@@ -28,30 +28,32 @@ const FeaturedPackages = () => {
     };
   }, []);
 
-  const countsByCategory = useMemo(() => {
-    const countMap = new Map<string, number>();
-    packages.forEach((pkg) => {
-      countMap.set(pkg.category, (countMap.get(pkg.category) || 0) + 1);
-    });
-    return countMap;
-  }, [packages]);
-
   const featuredCategories = useMemo(
     () => [
       {
         id: 'domestic',
-        title: 'Indian Tour Packages',
+        title: 'Domestic (India)',
         image: packageCategories.find((category) => category.id === 'domestic')?.image || '',
       },
       {
         id: 'international',
-        title: 'International Tour Packages',
+        title: 'International',
         image: packageCategories.find((category) => category.id === 'international')?.image || '',
       },
       {
-        id: 'educational',
-        title: 'Educational Tour Packages',
-        image: packageCategories.find((category) => category.id === 'educational')?.image || '',
+        id: 'nearby',
+        title: 'Nearby / Weekend',
+        image: packageCategories.find((category) => category.id === 'nearby')?.image || '',
+      },
+      {
+        id: 'budget',
+        title: 'Budget Travel',
+        image: packageCategories.find((category) => category.id === 'budget')?.image || '',
+      },
+      {
+        id: 'honeymoon',
+        title: 'Honeymoon',
+        image: packageCategories.find((category) => category.id === 'honeymoon')?.image || '',
       },
       {
         id: 'group',
@@ -59,9 +61,9 @@ const FeaturedPackages = () => {
         image: packageCategories.find((category) => category.id === 'group')?.image || '',
       },
       {
-        id: 'adventure',
-        title: 'Solo Trips',
-        image: packageCategories.find((category) => category.id === 'adventure')?.image || '',
+        id: 'educational',
+        title: 'Educational Tours',
+        image: packageCategories.find((category) => category.id === 'educational')?.image || '',
       },
     ],
     []

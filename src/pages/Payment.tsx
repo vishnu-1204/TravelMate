@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { jsPDF } from 'jspdf';
 import { getPackageById, type TravelPackage } from '@/lib/packagesApi';
+import { computeDynamicPricing } from '@/lib/packagePricing';
 
 declare global {
   interface Window {
@@ -185,12 +186,17 @@ const Payment = () => {
   }
 
   const totalPassengers = travelers.length;
-  const basePrice = packageData.price * totalPassengers;
+  const dynamicPricing = computeDynamicPricing(packageData, {
+    travelers: totalPassengers,
+    selectedDate: travelDate || undefined,
+  });
+  const pricePerPerson = dynamicPricing.finalPricePerPerson;
+  const basePrice = dynamicPricing.basePricePerPerson * totalPassengers;
   const roomSurcharge = ROOM_SURCHARGE_PER_PERSON[roomType] * totalPassengers;
   const mealCost = extras.meals ? EXTRA_PRICING.mealsPerPerson * totalPassengers : 0;
   const insuranceCost = extras.travelInsurance ? EXTRA_PRICING.insurancePerPerson * totalPassengers : 0;
   const pickupCost = extras.airportPickup ? EXTRA_PRICING.airportPickupFlat : 0;
-  const subtotal = basePrice + roomSurcharge + mealCost + insuranceCost + pickupCost;
+  const subtotal = pricePerPerson * totalPassengers + roomSurcharge + mealCost + insuranceCost + pickupCost;
   const taxes = Math.round(subtotal * 0.1);
   const grandTotal = subtotal + taxes;
 
@@ -331,43 +337,53 @@ const Payment = () => {
     );
   };
 
-  const validateBooking = (): boolean => {
+  const validateBooking = (): string | null => {
     if (!travelDate) {
-      return false;
+      return 'Please select a travel date.';
     }
 
-    const selectedDate = new Date(travelDate);
+    const [year, month, day] = travelDate.split('-').map(Number);
+    const selectedDate = new Date(year, (month || 1) - 1, day || 1);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (selectedDate < today) {
-      return false;
+      return 'Travel date cannot be in the past.';
     }
 
     for (let i = 0; i < travelers.length; i += 1) {
       const traveler = travelers[i];
-      if (!traveler.fullName.trim()) return false;
+      const index = i + 1;
+      const fullName = traveler.fullName.trim();
+      const age = Number(traveler.age.trim());
+      const mobileDigits = traveler.mobile.replace(/\D/g, '');
+      const aadhaarDigits = traveler.aadhaar.replace(/\D/g, '');
+
+      if (!fullName) return `Traveler ${index}: full name is required.`;
       if (!traveler.age.trim() || Number(traveler.age) < 1 || Number(traveler.age) > 120) {
-        return false;
+        return `Traveler ${index}: enter a valid age (1-120).`;
       }
-      if (!traveler.gender) return false;
-      if (!/^[6-9]\d{9}$/.test(traveler.mobile.trim())) {
-        return false;
+      if (!Number.isFinite(age) || age < 1 || age > 120) {
+        return `Traveler ${index}: enter a valid age (1-120).`;
+      }
+      if (!traveler.gender) return `Traveler ${index}: gender is required.`;
+      if (!/^[6-9]\d{9}$/.test(mobileDigits.slice(-10))) {
+        return `Traveler ${index}: enter a valid mobile number.`;
       }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(traveler.email.trim())) {
-        return false;
+        return `Traveler ${index}: enter a valid email address.`;
       }
-      if (!/^\d{12}$/.test(traveler.aadhaar.trim())) {
-        return false;
+      if (!/^\d{12}$/.test(aadhaarDigits)) {
+        return `Traveler ${index}: Aadhaar must be 12 digits.`;
       }
     }
 
-    return true;
+    return null;
   };
 
   const handleCardPayment = async () => {
-    const isValid = validateBooking();
-    if (!isValid) {
-      setFormError('Please fill all required fields.');
+    const validationError = validateBooking();
+    if (validationError) {
+      setFormError(validationError);
       return;
     }
 
@@ -382,10 +398,19 @@ const Payment = () => {
 
     const ref = `TM-${Date.now().toString().slice(-8)}`;
     const primaryTraveler = travelers[0];
+    const normalizedPrimaryMobile = primaryTraveler.mobile.replace(/\D/g, '').slice(-10);
     const [firstName, ...lastNameParts] = primaryTraveler.fullName.trim().split(/\s+/);
     const lastName = lastNameParts.join(' ') || '-';
+    const bookingTerms = {
+      cancellationPolicy:
+        (packageData as unknown as { cancellationPolicy?: string }).cancellationPolicy ||
+        'Cancellation charges may apply based on departure date.',
+      termsVersion: 'v1',
+      lockedNotice: 'This package is locked after booking.',
+      acceptedAt: new Date().toISOString(),
+    };
 
-    const { error: bookingError } = await supabase.from('bookings').insert({
+    const bookingInsertPayload = {
       user_id: user.id,
       package_id: packageData.id,
       package_title: packageData.title,
@@ -393,13 +418,46 @@ const Payment = () => {
       first_name: firstName || 'Guest',
       last_name: lastName,
       email: primaryTraveler.email.trim(),
-      phone: primaryTraveler.mobile.trim(),
+      phone: normalizedPrimaryMobile,
       total_amount: grandTotal,
       payment_status: 'paid',
       payment_verified: true,
       payment_id: `sim_${Date.now()}`,
       booking_reference: ref,
-    });
+      locked_price_per_person: pricePerPerson,
+      locked_total_amount: grandTotal,
+      booking_terms: bookingTerms,
+      is_locked: true,
+    };
+
+    let { error: bookingError } = await supabase.from('bookings').insert(bookingInsertPayload);
+
+    // Backward compatibility when DB migration with lock/snapshot columns is not applied yet.
+    if (
+      bookingError &&
+      /booking_terms|locked_price_per_person|locked_total_amount|is_locked|schema cache/i.test(
+        bookingError.message
+      )
+    ) {
+      const legacyPayload = {
+        user_id: user.id,
+        package_id: packageData.id,
+        package_title: packageData.title,
+        travelers: totalPassengers,
+        first_name: firstName || 'Guest',
+        last_name: lastName,
+        email: primaryTraveler.email.trim(),
+        phone: normalizedPrimaryMobile,
+        total_amount: grandTotal,
+        payment_status: 'paid',
+        payment_verified: true,
+        payment_id: `sim_${Date.now()}`,
+        booking_reference: ref,
+      };
+
+      const retry = await supabase.from('bookings').insert(legacyPayload);
+      bookingError = retry.error;
+    }
 
     if (bookingError) {
       toast.error(bookingError.message || 'Payment succeeded but booking save failed.');
@@ -515,7 +573,7 @@ const Payment = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <DetailRow label="Package ID" value={packageData.id} />
                     <DetailRow label="Package Name" value={packageData.title} />
-                    <DetailRow label="Category" value={packageData.category} />
+                    <DetailRow label="Categories" value={packageData.categories.join(', ')} />
                     <DetailRow label="Destination" value={packageData.location} />
                     <DetailRow label="Duration" value={packageData.duration} />
                     <DetailRow label="Rating" value={`${packageData.rating}/5`} />
@@ -523,7 +581,7 @@ const Payment = () => {
                     <DetailRow label="Highlights" value={`${packageData.highlights.length}`} />
                     <DetailRow label="Included Items" value={`${packageData.included.length}`} />
                     <DetailRow label="Excluded Items" value={`${packageData.excluded.length}`} />
-                    <DetailRow label="Price per person" value={`₹${packageData.price.toLocaleString()}`} />
+                    <DetailRow label="Price per person" value={`₹${pricePerPerson.toLocaleString()}`} />
                   </div>
                 </div>
 

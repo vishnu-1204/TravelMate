@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { MapPin, Clock, Star, SearchX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import PackageImage from '@/components/common/PackageImage';
 
 interface Package {
   id: string;
@@ -73,10 +74,13 @@ const SearchResults = ({ results, hasSearched }: SearchResultsProps) => {
                 >
                   {/* Image */}
                   <div className="relative h-48 overflow-hidden">
-                    <img
+                    <PackageImage
                       src={pkg.image}
-                      alt={pkg.title}
+                      alt={`${pkg.title} in ${pkg.location}`}
+                      category={pkg.category}
+                      imageQuery={`${pkg.title} ${pkg.location}`}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, 25vw"
                     />
                     <div className="absolute top-3 right-3 bg-card/90 backdrop-blur-sm rounded-lg px-2.5 py-1 flex items-center gap-1">
                       <Star className="h-3.5 w-3.5 text-accent fill-accent" />

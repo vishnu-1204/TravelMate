@@ -55,7 +55,7 @@ const Index = () => {
         (pkg) =>
           pkg.title.toLowerCase().includes(query) ||
           pkg.location.toLowerCase().includes(query) ||
-          pkg.category.toLowerCase().includes(query)
+          pkg.categories.some((category) => category.toLowerCase().includes(query))
       );
     }
 

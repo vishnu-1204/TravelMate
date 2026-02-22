@@ -2,10 +2,18 @@
 import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Plane, Hotel, Utensils, Camera } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
-import { getPackageById, type TravelPackage } from '@/lib/packagesApi';
+import {
+  getPackageById,
+  getPackageHistory,
+  overridePackageCategories,
+  overridePackageImage,
+  type PackageVersionHistory,
+  type TravelPackage,
+} from '@/lib/packagesApi';
 import { jsPDF } from 'jspdf';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import PackageImage from '@/components/common/PackageImage';
 
 export default function PackageDetails() {
   const { id } = useParams();
@@ -13,6 +21,12 @@ export default function PackageDetails() {
   const [packageData, setPackageData] = useState<TravelPackage | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [adminCategoriesInput, setAdminCategoriesInput] = useState('');
+  const [adminImageUrl, setAdminImageUrl] = useState('');
+  const [adminImageAlt, setAdminImageAlt] = useState('');
+  const [versionHistory, setVersionHistory] = useState<PackageVersionHistory[]>([]);
+  const [adminSaving, setAdminSaving] = useState(false);
+  const adminToken = import.meta.env.VITE_PACKAGE_ADMIN_TOKEN as string | undefined;
 
   useEffect(() => {
     let active = true;
@@ -30,6 +44,9 @@ export default function PackageDetails() {
         const pkg = await getPackageById(id);
         if (!active) return;
         setPackageData(pkg || null);
+        setAdminCategoriesInput(pkg?.categories?.join(', ') || '');
+        setAdminImageUrl(pkg?.imageUrl || '');
+        setAdminImageAlt(pkg?.imageAlt || '');
       } catch (err) {
         if (!active) return;
         setPackageData(null);
@@ -45,6 +62,25 @@ export default function PackageDetails() {
       active = false;
     };
   }, [id]);
+
+  useEffect(() => {
+    let active = true;
+    const loadHistory = async () => {
+      if (!packageData?.id || !adminToken) return;
+      try {
+        const history = await getPackageHistory(packageData.id, adminToken);
+        if (!active) return;
+        setVersionHistory(history);
+      } catch {
+        if (!active) return;
+        setVersionHistory([]);
+      }
+    };
+    void loadHistory();
+    return () => {
+      active = false;
+    };
+  }, [packageData?.id, adminToken]);
 
   if (loading) {
     return (
@@ -76,10 +112,9 @@ export default function PackageDetails() {
     );
   }
 
-  const discountedPrice =
-    packageData.discount > 0
-      ? Math.round(packageData.price * (1 - packageData.discount / 100))
-      : packageData.price;
+  const discountedPrice = packageData.dynamicPricing.finalPricePerPerson;
+  const basePrice = packageData.dynamicPricing.basePricePerPerson;
+  const savingsPerPerson = packageData.dynamicPricing.savingsPerPerson;
   const itineraryDays =
     packageData.itinerary?.days && packageData.itinerary.days.length > 0
       ? packageData.itinerary.days
@@ -156,7 +191,7 @@ export default function PackageDetails() {
             doc.addPage();
             yPosition = 20;
           }
-          doc.text(`â€¢ ${activity}`, 25, yPosition);
+          doc.text(`- ${activity}`, 25, yPosition);
           yPosition += 6;
         });
         yPosition += 5;
@@ -190,7 +225,7 @@ export default function PackageDetails() {
     yPosition += 15;
     doc.setFontSize(14);
     doc.setTextColor(30, 64, 175);
-    doc.text(`Price: â‚¹${packageData.price} per person`, 20, yPosition);
+    doc.text(`Price: Rs ${discountedPrice.toLocaleString('en-IN')} per person`, 20, yPosition);
 
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
@@ -199,18 +234,60 @@ export default function PackageDetails() {
     doc.save(`${packageData.title.replace(/\s+/g, '-')}-Itinerary.pdf`);
   };
 
+  const handleAdminCategorySave = async () => {
+    if (!packageData || !adminToken) return;
+    const categories = adminCategoriesInput
+      .split(',')
+      .map((item) => item.trim().toLowerCase())
+      .filter(Boolean);
+
+    if (!categories.length) return;
+
+    setAdminSaving(true);
+    try {
+      const updated = await overridePackageCategories(packageData.id, categories, adminToken);
+      if (updated) {
+        setPackageData(updated);
+        setAdminCategoriesInput(updated.categories.join(', '));
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update categories');
+    } finally {
+      setAdminSaving(false);
+    }
+  };
+
+  const handleAdminImageSave = async () => {
+    if (!packageData || !adminToken || !adminImageUrl.trim()) return;
+    setAdminSaving(true);
+    try {
+      const updated = await overridePackageImage(packageData.id, adminImageUrl.trim(), adminImageAlt.trim(), adminToken);
+      if (updated) {
+        setPackageData(updated);
+        setAdminImageUrl(updated.imageUrl);
+        setAdminImageAlt(updated.imageAlt || '');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update image');
+    } finally {
+      setAdminSaving(false);
+    }
+  };
+
   return (
     <Layout>
       <PageTransition>
         {/* Hero Image */}
         <div className="relative h-[400px] md:h-[500px]">
-          <img
+          <PackageImage
             src={packageData.image}
-            alt={packageData.title}
-            onError={(event) => {
-              event.currentTarget.src = '/placeholder.svg';
-            }}
+            alt={packageData.imageAlt || `${packageData.title} in ${packageData.destination}`}
+            category={packageData.category}
+            imageQuery={`${packageData.title} ${packageData.destination}`}
             className="w-full h-full object-cover"
+            loading="eager"
+            priority
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
@@ -227,6 +304,15 @@ export default function PackageDetails() {
                 <span className="font-medium">{packageData.rating}</span>
                 <span className="text-white/80">({packageData.reviews} reviews)</span>
               </div>
+              {packageData.specialTags.length > 0 ? (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {packageData.specialTags.slice(0, 2).map((tag) => (
+                    <span key={tag} className="text-xs bg-emerald-500/90 text-white px-3 py-1 rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
               <h1 className="text-3xl md:text-5xl font-bold text-white mb-3 font-serif">
                 {packageData.title}
               </h1>
@@ -419,19 +505,70 @@ export default function PackageDetails() {
                 <div className="bg-card rounded-xl p-6 shadow-card sticky top-24">
                   <div className="text-center mb-6">
                     <p className="text-muted-foreground text-sm">Starting from</p>
-                    {packageData.discount > 0 ? (
+                    {basePrice > discountedPrice ? (
                       <p className="text-sm text-muted-foreground line-through">
-                        ₹{packageData.price.toLocaleString('en-IN')}
+                        ₹{basePrice.toLocaleString('en-IN')}
                       </p>
                     ) : null}
                     <p className="text-4xl font-bold text-primary">₹{discountedPrice.toLocaleString('en-IN')}</p>
-                    {packageData.discount > 0 ? (
+                    {savingsPerPerson > 0 ? (
                       <p className="text-xs text-emerald-600 font-medium mt-1">
-                        Save {packageData.discount}% on this departure
+                        Save ₹{savingsPerPerson.toLocaleString('en-IN')} per traveler
                       </p>
                     ) : null}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Typical market range: {packageData.priceRange} | Tier: {packageData.pricingTier}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Affordability score: {packageData.affordabilityScore}/100
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Popularity score: {packageData.popularityScore}
+                    </p>
                     <p className="text-muted-foreground text-sm">per person</p>
                   </div>
+
+                  <div className="rounded-lg border border-border p-3 mb-4 text-sm">
+                    <p className="font-semibold text-foreground mb-2">Price Breakdown</p>
+                    <p className="text-muted-foreground flex justify-between"><span>Hotel</span><span>₹{packageData.dynamicPricing.breakdown.hotel.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Transport</span><span>₹{packageData.dynamicPricing.breakdown.transport.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Food</span><span>₹{packageData.dynamicPricing.breakdown.food.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Activities</span><span>₹{packageData.dynamicPricing.breakdown.activities.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Taxes</span><span>₹{packageData.dynamicPricing.breakdown.taxes.toLocaleString('en-IN')}</span></p>
+                  </div>
+
+                  {packageData.dynamicPricing.discounts.length > 0 ? (
+                    <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 mb-4 text-sm">
+                      <p className="font-semibold text-emerald-900 mb-2">Applied Offers</p>
+                      {packageData.dynamicPricing.discounts.map((item) => (
+                        <p key={item.type} className="text-emerald-800 flex justify-between">
+                          <span>{item.label}</span>
+                          <span>-{item.percent}%</span>
+                        </p>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  <div className="rounded-lg border border-border p-3 mb-4 text-sm">
+                    <p className="font-semibold text-foreground mb-2">Payment Options</p>
+                    {packageData.dynamicPricing.paymentPlans.map((plan) => (
+                      <p key={plan.label} className="text-muted-foreground">
+                        {plan.months ? `${plan.label}: ₹${(plan.monthlyAmount || 0).toLocaleString('en-IN')}/month` : plan.label}
+                      </p>
+                    ))}
+                  </div>
+
+                  {packageData.dynamicPricing.upgradeOptions.length > 0 ? (
+                    <div className="rounded-lg border border-border p-3 mb-4 text-sm">
+                      <p className="font-semibold text-foreground mb-2">Optional Upgrades</p>
+                      {packageData.dynamicPricing.upgradeOptions.map((item) => (
+                        <p key={item.id} className="text-muted-foreground flex justify-between">
+                          <span>{item.label}</span>
+                          <span>+₹{item.pricePerPerson.toLocaleString('en-IN')}</span>
+                        </p>
+                      ))}
+                    </div>
+                  ) : null}
 
                   <Link
                     to={`/package/${packageData.id}/payment`}
@@ -449,6 +586,59 @@ export default function PackageDetails() {
                   </button>
 
                   <div className="mt-6 pt-6 border-t border-border">
+                    {adminToken ? (
+                      <div className="mb-4 text-left">
+                        <p className="text-xs uppercase text-muted-foreground mb-2">Admin Category Override</p>
+                        <input
+                          type="text"
+                          value={adminCategoriesInput}
+                          onChange={(event) => setAdminCategoriesInput(event.target.value)}
+                          placeholder="domestic, honeymoon"
+                          className="w-full text-sm px-3 py-2 rounded-md border border-border bg-background"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleAdminCategorySave}
+                          disabled={adminSaving}
+                          className="btn-outline mt-2 w-full disabled:opacity-60"
+                        >
+                          {adminSaving ? 'Saving...' : 'Save Categories'}
+                        </button>
+                        <p className="text-xs uppercase text-muted-foreground mt-4 mb-2">Admin Image Override</p>
+                        <input
+                          type="url"
+                          value={adminImageUrl}
+                          onChange={(event) => setAdminImageUrl(event.target.value)}
+                          placeholder="https://cdn.example.com/paris.jpg"
+                          className="w-full text-sm px-3 py-2 rounded-md border border-border bg-background"
+                        />
+                        <input
+                          type="text"
+                          value={adminImageAlt}
+                          onChange={(event) => setAdminImageAlt(event.target.value)}
+                          placeholder="Paris Eiffel Tower city view"
+                          className="w-full text-sm px-3 py-2 rounded-md border border-border bg-background mt-2"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleAdminImageSave}
+                          disabled={adminSaving || !adminImageUrl.trim()}
+                          className="btn-outline mt-2 w-full disabled:opacity-60"
+                        >
+                          {adminSaving ? 'Saving...' : 'Save Image'}
+                        </button>
+                        {versionHistory.length > 0 ? (
+                          <div className="mt-4 rounded-md border border-border p-2">
+                            <p className="text-xs uppercase text-muted-foreground mb-2">Package History</p>
+                            {versionHistory.slice(0, 5).map((item) => (
+                              <p key={item.id} className="text-xs text-muted-foreground">
+                                v{item.version_number} • {item.is_active ? 'Active' : 'Archived'} • {new Date(item.created_at).toLocaleDateString()}
+                              </p>
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
+                    ) : null}
                     <p className="text-sm text-muted-foreground text-center">
                       Need help? Contact our travel experts
                     </p>

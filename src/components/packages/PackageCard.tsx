@@ -1,5 +1,8 @@
-﻿import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Star, MapPin, Clock, ArrowRight } from 'lucide-react';
+import type { DynamicPricing, PricingTier, TravelerSegment } from '@/lib/packagePricing';
+import PackageImage from '@/components/common/PackageImage';
+import type { ReactNode } from 'react';
 
 interface PackageCardProps {
   id: string;
@@ -11,10 +14,39 @@ interface PackageCardProps {
   rating: number;
   reviews: number;
   imageUrl: string;
+  imageAlt: string;
+  category: string;
   shortDescription: string;
+  budgetType: 'low' | 'medium' | 'premium';
+  pricingTier: PricingTier;
+  travelerSegments: TravelerSegment[];
+  affordabilityScore: number;
+  dynamicPricing: DynamicPricing;
+  specialTags: string[];
+  badges: { bestValue: boolean; mostAffordable: boolean };
+  highlightQuery?: string;
 }
 
-const PackageCard = ({
+const highlightText = (value: string, query?: string): ReactNode => {
+  const trimmed = (query || '').trim();
+  if (!trimmed) return value;
+  const escaped = trimmed.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const matcher = new RegExp(`(${escaped})`, 'ig');
+  const pieces = value.split(matcher);
+  if (pieces.length <= 1) return value;
+
+  return pieces.map((piece, index) =>
+    piece.toLowerCase() === trimmed.toLowerCase() ? (
+      <mark key={`${piece}-${index}`} className="rounded bg-amber-100 px-0.5 text-foreground">
+        {piece}
+      </mark>
+    ) : (
+      <span key={`${piece}-${index}`}>{piece}</span>
+    )
+  );
+};
+
+export const PackageCard = ({
   id,
   title,
   destination,
@@ -24,26 +56,39 @@ const PackageCard = ({
   rating,
   reviews,
   imageUrl,
+  imageAlt,
+  category,
   shortDescription,
+  pricingTier,
+  travelerSegments,
+  affordabilityScore,
+  dynamicPricing,
+  specialTags,
+  badges,
+  highlightQuery,
 }: PackageCardProps) => {
-  const finalPrice = discount > 0 ? Math.round(price * (1 - discount / 100)) : price;
+  const finalPrice = dynamicPricing.finalPricePerPerson || (discount > 0 ? Math.round(price * (1 - discount / 100)) : price);
+  const savings = dynamicPricing.savingsPerPerson || Math.max(price - finalPrice, 0);
 
   return (
     <Link to={`/package/${id}`} className="card-travel group overflow-hidden">
       <div className="relative h-56 overflow-hidden">
-        <img
+        <PackageImage
           src={imageUrl}
-          alt={title}
-          onError={(event) => {
-            event.currentTarget.src = '/placeholder.svg';
-          }}
+          alt={imageAlt || `${title} in ${destination}`}
+          category={category}
+          imageQuery={`${title} ${destination}`}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {discount > 0 ? (
+        {dynamicPricing.totalDiscountPercent > 0 ? (
           <div className="absolute top-3 left-3 rounded-full bg-red-500 text-white text-xs font-semibold px-3 py-1">
-            {discount}% OFF
+            Save {dynamicPricing.totalDiscountPercent}%
           </div>
         ) : null}
+        <div className="absolute bottom-3 left-3 flex gap-2">
+          {badges.bestValue ? <span className="text-[10px] bg-amber-500 text-white px-2 py-1 rounded-full">Best Value</span> : null}
+        </div>
       </div>
       <div className="p-5 flex flex-col">
         <div className="flex items-center gap-1 text-amber-500 mb-2">
@@ -51,25 +96,29 @@ const PackageCard = ({
           <span className="text-sm font-medium">{rating}</span>
           <span className="text-muted-foreground text-sm">({reviews} reviews)</span>
         </div>
-        <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-1">{title}</h3>
+        <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-1">{highlightText(title, highlightQuery)}</h3>
         <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm mb-3">
           <div className="flex items-center gap-1">
             <MapPin className="h-4 w-4" />
-            <span>{destination}</span>
+            <span>{highlightText(destination, highlightQuery)}</span>
           </div>
           <div className="flex items-center gap-1">
             <Clock className="h-4 w-4" />
             <span>{duration}</span>
           </div>
         </div>
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-2 min-h-10">{shortDescription}</p>
+        <p className="text-muted-foreground text-sm mb-3 line-clamp-2 min-h-10">{shortDescription}</p>
+        <p className="text-xs text-muted-foreground mb-1">Tier: {pricingTier} | Segments: {travelerSegments.slice(0, 2).join(', ')}</p>
+        {specialTags.length > 0 ? <p className="text-xs text-emerald-700 mb-3 line-clamp-1">{specialTags[0]}</p> : null}
+        <p className="text-xs text-muted-foreground mb-3">Affordability score: {affordabilityScore}/100</p>
         <div className="flex items-end justify-between mt-auto">
           <div>
-            {discount > 0 ? (
-              <p className="text-xs text-muted-foreground line-through">₹{price.toLocaleString('en-IN')}</p>
+            {dynamicPricing.basePricePerPerson > finalPrice ? (
+              <p className="text-xs text-muted-foreground line-through">Rs {dynamicPricing.basePricePerPerson.toLocaleString('en-IN')}</p>
             ) : null}
-            <span className="text-2xl font-bold text-primary">₹{finalPrice.toLocaleString('en-IN')}</span>
+            <span className="text-2xl font-bold text-primary">Rs {finalPrice.toLocaleString('en-IN')}</span>
             <span className="text-muted-foreground text-sm"> / person</span>
+            {savings > 0 ? <p className="text-xs text-emerald-600">You save Rs {savings.toLocaleString('en-IN')}</p> : null}
           </div>
           <div className="flex items-center text-primary font-medium group-hover:gap-2 transition-all">
             View Details

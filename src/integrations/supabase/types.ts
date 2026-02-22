@@ -17,12 +17,17 @@ export type Database = {
       bookings: {
         Row: {
           booking_reference: string | null
+          booking_terms: Json | null
           created_at: string
           email: string
           first_name: string
           id: string
+          is_locked: boolean
           last_name: string
+          locked_price_per_person: number | null
+          locked_total_amount: number | null
           package_id: string
+          package_version_id: string | null
           package_title: string
           payment_id: string | null
           payment_order_id: string | null
@@ -36,12 +41,17 @@ export type Database = {
         }
         Insert: {
           booking_reference?: string | null
+          booking_terms?: Json | null
           created_at?: string
           email: string
           first_name: string
           id?: string
+          is_locked?: boolean
           last_name: string
+          locked_price_per_person?: number | null
+          locked_total_amount?: number | null
           package_id: string
+          package_version_id?: string | null
           package_title: string
           payment_id?: string | null
           payment_order_id?: string | null
@@ -55,12 +65,17 @@ export type Database = {
         }
         Update: {
           booking_reference?: string | null
+          booking_terms?: Json | null
           created_at?: string
           email?: string
           first_name?: string
           id?: string
+          is_locked?: boolean
           last_name?: string
+          locked_price_per_person?: number | null
+          locked_total_amount?: number | null
           package_id?: string
+          package_version_id?: string | null
           package_title?: string
           payment_id?: string | null
           payment_order_id?: string | null
@@ -71,6 +86,98 @@ export type Database = {
           travelers?: number
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      booking_snapshots: {
+        Row: {
+          availability_lock: Json | null
+          booking_id: string
+          created_at: string
+          id: string
+          locked_hotel: string | null
+          locked_price_per_person: number
+          locked_total_amount: number
+          locked_transport: string | null
+          package_id: string
+          package_version_id: string | null
+          snapshot: Json
+          terms_snapshot: Json | null
+        }
+        Insert: {
+          availability_lock?: Json | null
+          booking_id: string
+          created_at?: string
+          id?: string
+          locked_hotel?: string | null
+          locked_price_per_person: number
+          locked_total_amount: number
+          locked_transport?: string | null
+          package_id: string
+          package_version_id?: string | null
+          snapshot: Json
+          terms_snapshot?: Json | null
+        }
+        Update: {
+          availability_lock?: Json | null
+          booking_id?: string
+          created_at?: string
+          id?: string
+          locked_hotel?: string | null
+          locked_price_per_person?: number
+          locked_total_amount?: number
+          locked_transport?: string | null
+          package_id?: string
+          package_version_id?: string | null
+          snapshot?: Json
+          terms_snapshot?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_snapshots_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      package_versions: {
+        Row: {
+          created_at: string
+          created_by: string
+          duration_days: number | null
+          id: string
+          is_active: boolean
+          package_id: string
+          payload: Json
+          payload_hash: string
+          price: number | null
+          version_number: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          duration_days?: number | null
+          id?: string
+          is_active?: boolean
+          package_id: string
+          payload: Json
+          payload_hash: string
+          price?: number | null
+          version_number: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          duration_days?: number | null
+          id?: string
+          is_active?: boolean
+          package_id?: string
+          payload?: Json
+          payload_hash?: string
+          price?: number | null
+          version_number?: number
         }
         Relationships: []
       }
