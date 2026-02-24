@@ -851,9 +851,6 @@ export const getPackagesPage = async (query: PackageQuery = {}): Promise<Package
   if (typeof query.minPrice === 'number') url.searchParams.set('minPrice', String(query.minPrice));
   if (typeof query.maxPrice === 'number') url.searchParams.set('maxPrice', String(query.maxPrice));
   if (typeof query.minDuration === 'number') url.searchParams.set('minDuration', String(query.minDuration));
-  if (typeof query.maxDuration === 'number') url.searchParams.set('maxDuration', String(query.maxDuration));
-  if (typeof query.minRating === 'number') url.searchParams.set('minRating', String(query.minRating));
-  if (query.budgetType) url.searchParams.set('budgetType', query.budgetType);
   if (query.pricingTier) url.searchParams.set('pricingTier', query.pricingTier);
   if (query.travelerSegment) url.searchParams.set('travelerSegment', query.travelerSegment);
   if (typeof query.premiumUser === 'boolean') url.searchParams.set('premiumUser', String(query.premiumUser));
@@ -890,7 +887,17 @@ export const getPackagesPage = async (query: PackageQuery = {}): Promise<Package
           if (includesDomestic && !includesInternational) return isLikelyIndianPackage(pkg);
           return true;
         });
+
+      if (normalizedPackages.length === 0 && (query.search || query.destination)) {
+         // If backend returns nothing for search, we might want to check local too
+         // But for now, let's just stick to the main fallback in catch
+      }
+
       const dedupedPackages = deduplicatePackages(normalizedPackages);
+
+      if (dedupedPackages.length === 0 && !query.search && !query.destination) {
+        return getPackagesPageFromLocal(query);
+      }
 
       return {
         packages: dedupedPackages,
@@ -929,7 +936,10 @@ export const getPackageById = async (id: string): Promise<TravelPackage | undefi
 
   try {
     const response = await fetch(`${BACKEND_BASE_URL}/api/packages/${id}`);
-    if (response.status === 404) return undefined;
+    if (response.status === 404) {
+      const hit = localPackages.find((pkg) => pkg.id === id);
+      return hit ? withQueryPricing(hit, {}) : undefined;
+    }
     if (!response.ok) {
       throw new Error(`Package fetch failed: ${response.status}`);
     }
@@ -959,6 +969,9 @@ export const getPackageCategoryCounts = async (): Promise<Record<string, number>
     }
 
     const payload = (await response.json()) as { categories?: { id: string; count: number }[] };
+    if (!payload.categories || payload.categories.length === 0) {
+      throw new Error('Empty categories from backend, falling back to local');
+    }
     const counts: Record<string, number> = {};
     (payload.categories || []).forEach((item) => {
       counts[item.id] = item.count;

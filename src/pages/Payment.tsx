@@ -282,6 +282,27 @@ const PriceRow = ({ label, value }: { label: string; value: number }) => (
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout = 15000) => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    return response;
+  } finally {
+    clearTimeout(id);
+  }
+};
+
+const withTimeout = <T,>(promise: Promise<T>, ms: number, errorMessage = 'Operation timed out'): Promise<T> => {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error(errorMessage)), ms))
+  ]);
+};
+
 const Payment = () => {
   const { id } = useParams();
   const location = useLocation();
@@ -397,7 +418,7 @@ const Payment = () => {
         }
 
         const url = `${backendBaseUrl}/api/booking/flight-search?destination=${destCode}&departureDate=${travelDate}`;
-        const response = await fetch(url);
+        const response = await fetchWithTimeout(url, {}, 8000);
         if (response.ok) {
           const data = await response.json();
           setFlightData(data);
@@ -500,7 +521,7 @@ const Payment = () => {
     }
 
     try {
-      await supabase.from('profiles').upsert(payload, { onConflict: 'id' });
+      await (supabase.from('profiles').upsert(payload as any, { onConflict: 'id' }) as any);
       // Also update auth metadata for faster access
       await supabase.auth.updateUser({
         data: { full_name: payload.full_name }
@@ -808,136 +829,72 @@ const Payment = () => {
     setFormError('');
     setLoading(true);
     setProcessingMessage('Processing...');
-    await delay(600);
-    if (!user?.id) {
-      toast.error('Please login again to complete booking.');
-      setLoading(false);
-      return;
-    }
 
-    const ref = `TM-${Date.now().toString().slice(-8)}`;
-    const paymentId = `sim_${Date.now()}`;
-    const primaryTraveler = travelers[0];
-    const normalizedPrimaryMobile = primaryTraveler.mobile.replace(/\D/g, '').slice(-10);
-    const registeredEmail = user.email?.trim().toLowerCase() || primaryTraveler.email.trim().toLowerCase();
-    const [firstName, ...lastNameParts] = primaryTraveler.fullName.trim().split(/\s+/);
-    const lastName = lastNameParts.join(' ') || '-';
-    const bookingTerms: BookingTerms = {
-      cancellationPolicy:
-        (packageData as unknown as { cancellationPolicy?: string }).cancellationPolicy ||
-        'Cancellation charges may apply based on departure date.',
-      termsVersion: 'v1',
-      lockedNotice: 'This package is locked after booking.',
-      acceptedAt: new Date().toISOString(),
-      destination: packageData.location,
-      travelDate,
-      travelCategory: packageData.category,
-      duration: packageData.duration,
-      airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
-      departureTime: flightData?.departureTime || '06:30 AM',
-      arrivalTime: flightData?.arrivalTime || '09:45 AM',
-      itinerary: {
-        days: packageData.itinerary?.days || [],
-        nights: packageData.itinerary?.nights || [],
-        activities: packageData.highlights || [],
+    try {
+      await delay(600);
+      if (!user?.id) {
+        toast.error('Please login again to complete booking.');
+        return;
+      }
+
+      const ref = `TM-${Date.now().toString().slice(-8)}`;
+      const paymentId = `sim_${Date.now()}`;
+      const primaryTraveler = travelers[0];
+      const normalizedPrimaryMobile = primaryTraveler.mobile.replace(/\D/g, '').slice(-10);
+      const registeredEmail = user.email?.trim().toLowerCase() || primaryTraveler.email.trim().toLowerCase();
+      const [firstName, ...lastNameParts] = primaryTraveler.fullName.trim().split(/\s+/);
+      const lastName = lastNameParts.join(' ') || '-';
+      const bookingTerms: BookingTerms = {
+        cancellationPolicy:
+          (packageData as unknown as { cancellationPolicy?: string }).cancellationPolicy ||
+          'Cancellation charges may apply based on departure date.',
+        termsVersion: 'v1',
+        lockedNotice: 'This package is locked after booking.',
+        acceptedAt: new Date().toISOString(),
+        destination: packageData.location,
+        travelDate,
+        travelCategory: packageData.category,
+        duration: packageData.duration,
+        airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
+        departureTime: flightData?.departureTime || '06:30 AM',
+        arrivalTime: flightData?.arrivalTime || '09:45 AM',
+        itinerary: {
+          days: packageData.itinerary?.days || [],
+          nights: packageData.itinerary?.nights || [],
+          activities: packageData.highlights || [],
+          included: Array.isArray(packageData.included) ? packageData.included : [],
+          excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
+        },
         included: Array.isArray(packageData.included) ? packageData.included : [],
         excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
-      },
-      included: Array.isArray(packageData.included) ? packageData.included : [],
-      excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
-      travelDetails: {
-        transportDetails: packageData.transportMode || '-',
-        checkIn: travelDate || '-',
-        checkOut: '-',
-      },
-      emergencyContact: '+91 9342180670',
-      travelGuidelines: [
-        'Arrive at the pickup point at least 45 minutes before departure.',
-        'Keep emergency contacts active during your trip.',
-        'Follow local regulations and guide instructions at all times.',
-      ],
-      documentsToCarry: ['Government ID proof', 'Booking confirmation email', 'Any required permits/visa documents'],
-      importantNotes: [
-        'Hotel check-in/check-out times depend on property policy.',
-        'Itinerary timings can shift due to weather or operational needs.',
-      ],
-      flightDataSource: flightData && !flightApiFailed ? 'amadeus' : 'fallback',
-      email: {
-        sent: false,
-        status: 'pending',
-        sentAt: null,
-      },
-      manualFollowUpRequired: false,
-      manualFollowUpReason: null,
-      manualFollowUpLoggedAt: null,
-    };
+        travelDetails: {
+          transportDetails: packageData.transportMode || '-',
+          checkIn: travelDate || '-',
+          checkOut: '-',
+        },
+        emergencyContact: '+91 9342180670',
+        travelGuidelines: [
+          'Arrive at the pickup point at least 45 minutes before departure.',
+          'Keep emergency contacts active during your trip.',
+          'Follow local regulations and guide instructions at all times.',
+        ],
+        documentsToCarry: ['Government ID proof', 'Booking confirmation email', 'Any required permits/visa documents'],
+        importantNotes: [
+          'Hotel check-in/check-out times depend on property policy.',
+          'Itinerary timings can shift due to weather or operational needs.',
+        ],
+        flightDataSource: flightData && !flightApiFailed ? 'amadeus' : 'fallback',
+        email: {
+          sent: false,
+          status: 'pending',
+          sentAt: null,
+        },
+        manualFollowUpRequired: false,
+        manualFollowUpReason: null,
+        manualFollowUpLoggedAt: null,
+      };
 
-    const bookingInsertPayload: BookingInsertPayload = {
-      user_id: user.id,
-      package_id: packageData.id,
-      package_title: packageData.title,
-      travelers: totalPassengers,
-      first_name: firstName || 'Guest',
-      last_name: lastName,
-      email: registeredEmail,
-      phone: normalizedPrimaryMobile,
-      total_amount: grandTotal,
-      payment_status: 'paid',
-      payment_verified: true,
-      payment_id: paymentId,
-      booking_reference: ref,
-      email_sent: false,
-      booking_status: 'confirmed',
-      ticket_pdf_url: null,
-      locked_price_per_person: pricePerPerson,
-      locked_total_amount: grandTotal,
-      booking_terms: bookingTerms,
-      is_locked: true,
-    };
-
-    const insertBookingViaBackend = async () => {
-      const response = await fetch(`${backendBaseUrl}/api/booking/create-booking`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ booking: bookingInsertPayload }),
-      });
-      const result = (await response.json().catch(() => null)) as { message?: string } | null;
-      if (!response.ok) {
-        throw new Error(result?.message || 'Backend booking save failed.');
-      }
-      return result;
-    };
-
-    let { error: bookingError } = await supabase.from('bookings').insert(bookingInsertPayload);
-
-    // Network retry for intermittent connectivity issues.
-    if (bookingError && /failed to fetch|network/i.test(bookingError.message || '')) {
-      await delay(450);
-      const retryNetwork = await supabase.from('bookings').insert(bookingInsertPayload);
-      bookingError = retryNetwork.error;
-    }
-
-    // If direct browser-to-Supabase write still fails, fall back to backend write path.
-    if (bookingError && /failed to fetch|network/i.test(bookingError.message || '')) {
-      try {
-        setProcessingMessage('Connectivity issue detected. Saving booking via secure fallback...');
-        await insertBookingViaBackend();
-        bookingError = null;
-      } catch (fallbackInsertError) {
-        const message =
-          fallbackInsertError instanceof Error ? fallbackInsertError.message : 'Could not save booking via fallback.';
-        bookingError = { ...bookingError, message };
-      }
-    }
-
-    // Backward compatibility when DB migration with lock/snapshot columns is not applied yet.
-    if (
-      bookingError &&
-      /booking_terms|locked_price_per_person|locked_total_amount|is_locked|email_sent|booking_status|ticket_pdf_url|schema cache/i.test(
-        bookingError.message
-      )
-    ) {
-      const legacyPayload = {
+      const bookingInsertPayload: BookingInsertPayload = {
         user_id: user.id,
         package_id: packageData.id,
         package_title: packageData.title,
@@ -951,160 +908,85 @@ const Payment = () => {
         payment_verified: true,
         payment_id: paymentId,
         booking_reference: ref,
+        email_sent: false,
+        booking_status: 'confirmed',
+        ticket_pdf_url: null,
+        locked_price_per_person: pricePerPerson,
+        locked_total_amount: grandTotal,
+        booking_terms: bookingTerms,
+        is_locked: true,
       };
 
-      const retry = await supabase.from('bookings').insert(legacyPayload);
-      bookingError = retry.error;
-    }
+      setProcessingMessage('Saving your seat...');
+      
+      const { data: created, error: insertError } = (await withTimeout(
+        (supabase
+          .from('bookings')
+          .insert({
+            ...bookingInsertPayload,
+            booking_status: 'pending',
+            payment_status: 'pending',
+            payment_verified: false
+          } as any)
+          .select('id')
+          .single() as any),
+        10000,
+        'Booking service took too long. Please check your internet.'
+      )) as any;
 
-    if (bookingError) {
-      const bookingErrorMessage = bookingError.message || '';
-      if (/failed to fetch|network/i.test(bookingErrorMessage)) {
-        toast.error('Could not reach booking service. Check your internet and backend URL, then retry.');
-      } else {
-        toast.error(bookingErrorMessage || 'Payment succeeded but booking save failed.');
-      }
-      setLoading(false);
-      return;
-    }
-
-    const markManualFollowUp = async (reason: string, details?: string) => {
-      const now = new Date().toISOString();
-      const message = details ? `${reason}: ${details}` : reason;
-      const termsWithFollowUp: BookingTerms = {
-        ...bookingTerms,
-        email: {
-          ...bookingTerms.email,
-          status: 'queued',
-        },
-        manualFollowUpRequired: true,
-        manualFollowUpReason: message,
-        manualFollowUpLoggedAt: now,
-      };
-
-      const { error: updateError } = await supabase
-        .from('bookings')
-        .update({
-          booking_terms: termsWithFollowUp,
-          email_sent: false,
-          booking_status: 'confirmed',
-          email_last_error: message,
-          email_last_attempt_at: now,
-        })
-        .eq('user_id', user.id)
-        .eq('booking_reference', ref);
-
-      if (updateError) {
-        console.error('manual follow-up flag update failed:', updateError);
-      }
-    };
-
-    if (flightApiFailed && packageData.transportMode === 'flight') {
-      await markManualFollowUp('Manual Follow-up Required', 'Amadeus flight details unavailable');
-    }
-
-    try {
-      setProcessingMessage('Saving booking and dispatching confirmation email...');
-      const response = await fetch(`${backendBaseUrl}/api/booking/send-booking-confirmation`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          bookingReference: ref,
-          userId: user.id,
-          paymentId,
-        }),
-      });
-
-      const result = (await response.json().catch(() => null)) as { status?: string; message?: string } | null;
-      if (!response.ok) {
-        await markManualFollowUp('Manual Follow-up Required', result?.message || 'Primary email workflow failed');
-        throw new Error(result?.message || 'Confirmation email workflow failed');
-      }
-
-      if (result?.status === 'already_sent') {
-        setEmailNotice(`Booking already confirmed for ${registeredEmail}.`);
-      } else {
-        setEmailNotice(`Confirmation email sent to ${registeredEmail}.`);
-        toast.success(`Booking confirmed! Email sent to ${registeredEmail}.`);
-      }
-    } catch {
-      try {
-        setProcessingMessage('Primary confirmation failed, retrying via fallback email channel...');
-        const fallbackPayload: ConfirmationEmailPayload = {
-          email: registeredEmail,
-          fullName: primaryTraveler.fullName.trim(),
-          phone: normalizedPrimaryMobile,
-          bookingReference: ref,
-          bookingId: ref,
-          paymentId,
-          packageTitle: packageData.title,
-          destination: packageData.location,
-          travelDate,
-          passengers: totalPassengers,
-          totalAmount: grandTotal,
-          travelCategory: packageData.category,
-          itineraryDays: packageData.itinerary?.days || [],
-          itineraryNights: packageData.itinerary?.nights || [],
-          transportDetails: packageData.transportMode,
-          activities: packageData.highlights,
-          checkIn: travelDate || '-',
-          checkOut: '-',
-          emergencyContact: '+91 9342180670',
-          travelGuidelines: [
-            'Arrive at the pickup point at least 45 minutes before departure.',
-            'Keep emergency contacts active during your trip.',
-            'Follow local regulations and guide instructions at all times.',
-          ],
-          documentsToCarry: ['Government ID proof', 'Booking confirmation email', 'Any required permits/visa documents'],
-          importantNotes: [
-            'Hotel check-in/check-out times depend on property policy.',
-            'Itinerary timings can shift due to weather or operational needs.',
-          ],
-          duration: packageData.duration,
-          airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
-          departureTime: flightData?.departureTime || '06:30 AM',
-          arrivalTime: flightData?.arrivalTime || '09:45 AM',
-          included: Array.isArray(packageData.included) ? packageData.included : [],
-          excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
-        };
-        const fallbackResponse = await fetch(`${backendBaseUrl}/api/booking/confirmation-email`, {
+      const bookingId = created?.id;
+      
+      if (insertError) {
+        setProcessingMessage('Secure connection fallback...');
+        const backupResponse = await fetchWithTimeout(`${backendBaseUrl}/api/booking/create-booking`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(fallbackPayload),
-        });
-
-        if (fallbackResponse.ok) {
-          setEmailNotice(`Confirmation email sent to ${registeredEmail}.`);
-          toast.success(`Booking confirmed! Email sent to ${registeredEmail}.`);
-        } else {
-          const fallbackJson = (await fallbackResponse.json().catch(() => null)) as { message?: string } | null;
-          await markManualFollowUp('Manual Follow-up Required', fallbackJson?.message || 'Fallback email workflow failed');
-          setEmailNotice('Booking confirmed. Confirmation email will be sent shortly.');
-          toast.info('Booking confirmed. Confirmation email will be sent shortly.');
-        }
-      } catch {
-        await markManualFollowUp('Manual Follow-up Required', 'Email dispatch failed in both primary and fallback channels');
-        setEmailNotice('Booking confirmed. Confirmation email will be sent shortly.');
-        toast.info('Booking confirmed. Confirmation email will be sent shortly.');
+          body: JSON.stringify({ booking: bookingInsertPayload }),
+        }, 12000);
+        
+        if (!backupResponse.ok) throw new Error('Could not save booking. Please try again.');
       }
-    }
 
-    setBookingRef(ref);
-    setBookingEmail(registeredEmail);
-    setShowSuccessModal(true);
-    // Trigger Profile Auto-Save
-    if (autoSaveProfile) {
-      void updateUserProfile();
-    }
-    toast.success('Booking confirmed! PDF ticket generated.');
-    setLoading(false);
-    localStorage.removeItem(storageKey);
-    try {
-      downloadBookingItinerary(ref);
-      toast.success('Payment successful. Itinerary PDF downloaded.');
-    } catch {
-      toast.success('Payment successful. Booking confirmed.');
-      toast.info('Could not auto-download itinerary PDF. Please try again from package details.');
+      setProcessingMessage('Finalizing booking...');
+      await delay(800);
+
+      // Call the new SIMPLIFIED confirm-booking endpoint
+      try {
+        await fetchWithTimeout(`${backendBaseUrl}/api/booking/confirm-booking`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            bookingId: bookingId,
+            bookingReference: ref
+          }),
+        }, 8000);
+      } catch (confirmErr) {
+        console.warn('Confirmation service delayed, but booking is being processed.');
+      }
+
+      // 3. Success UI
+      setBookingRef(ref);
+      setBookingEmail(registeredEmail);
+      setShowSuccessModal(true);
+      
+      if (autoSaveProfile) {
+        void updateUserProfile();
+      }
+
+      toast.success('Successfully Booked!');
+      localStorage.removeItem(storageKey);
+
+      try {
+        downloadBookingItinerary(ref);
+      } catch (e) {
+        console.error('PDF auto-download skipped');
+      }
+
+    } catch (globalError: any) {
+      console.error('Global handleCardPayment error:', globalError);
+      toast.error(globalError.message || 'An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
   return (

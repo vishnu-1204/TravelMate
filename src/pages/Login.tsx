@@ -5,7 +5,6 @@ import { useAuth } from "@/hooks/useAuth";
 import PageTransition from "@/components/layout/PageTransition";
 import { z } from "zod";
 import { lovable } from "@/integrations/lovable";
-import { supabase } from "@/integrations/supabase/client";
 
 const loginSchema = z.object({
   email: z.string().trim().toLowerCase().email("Enter valid email"),
@@ -14,38 +13,26 @@ const loginSchema = z.object({
 
 const mapLoginError = (rawMessage: string) => {
   const message = rawMessage.toLowerCase();
-  if (message.includes("email not confirmed")) {
+  if (message.includes("verify your email") || message.includes("not confirmed")) {
     return {
-      userMessage: "Your email is not verified yet. Verify it first, then log in.",
+      userMessage: "Your email is not verified yet. Please check your inbox.",
       allowResend: true,
     };
   }
-  if (message.includes("invalid login credentials")) {
+  if (message.includes("invalid email or password") || message.includes("invalid login credentials")) {
     return {
       userMessage: "Email or password is incorrect. Use Forgot password if needed.",
       allowResend: false,
     };
   }
-  if (message.includes("failed to fetch") || message.includes("network")) {
+  if (message.includes("failed to fetch") || message.includes("network") || message.includes("fetch")) {
     return {
-      userMessage: "Unable to reach authentication service. Check internet and Supabase project settings.",
-      allowResend: false,
-    };
-  }
-  if (message.includes("jwt") || message.includes("api key") || message.includes("invalid api key")) {
-    return {
-      userMessage: "Supabase API key/config appears invalid. Check VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY.",
-      allowResend: false,
-    };
-  }
-  if (message.includes("rate limit") || message.includes("too many requests")) {
-    return {
-      userMessage: "Too many attempts. Please wait a minute and try again.",
+      userMessage: "Unable to reach authentication service. Make sure the backend is running.",
       allowResend: false,
     };
   }
   return {
-    userMessage: "Login failed. Please try again.",
+    userMessage: rawMessage || "Login failed. Please try again.",
     allowResend: false,
   };
 };
@@ -65,40 +52,17 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const signupMessage = (location.state as { message?: string } | null)?.message;
-  const hasSupabaseConfig = Boolean(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
 
   const handleGoogleLogin = async () => {
     setSocialLoading("google");
-    setError("");
-    try {
-      const { error } = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
-      });
-      if (error) {
-        setError("Failed to sign in with Google. Please try again.");
-      }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setSocialLoading(null);
-    }
+    setError("Social login is currently being migrated to the local backend.");
+    setSocialLoading(null);
   };
 
   const handleAppleLogin = async () => {
     setSocialLoading("apple");
-    setError("");
-    try {
-      const { error } = await lovable.auth.signInWithOAuth("apple", {
-        redirect_uri: window.location.origin,
-      });
-      if (error) {
-        setError("Failed to sign in with Apple. Please try again.");
-      }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setSocialLoading(null);
-    }
+    setError("Social login is currently being migrated to the local backend.");
+    setSocialLoading(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -110,10 +74,6 @@ const Login = () => {
     const validation = loginSchema.safeParse({ email, password });
     if (!validation.success) {
       setError(validation.error.errors[0].message);
-      return;
-    }
-    if (!hasSupabaseConfig) {
-      setError("Supabase config missing. Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY, then restart frontend.");
       return;
     }
 
@@ -131,34 +91,7 @@ const Login = () => {
   };
 
   const handleResendVerification = async () => {
-    setError("");
-    setInfo("");
-
-    const normalizedEmail = email.trim().toLowerCase();
-    if (!normalizedEmail) {
-      setError("Please enter your email address first.");
-      return;
-    }
-
-    setResendLoading(true);
-    try {
-      const { error } = await supabase.auth.resend({
-        type: "signup",
-        email: normalizedEmail,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-        },
-      });
-
-      if (error) {
-        setError(error.message || "Unable to resend verification email.");
-        return;
-      }
-
-      setInfo("Verification email sent. Check your inbox and spam folder.");
-    } finally {
-      setResendLoading(false);
-    }
+    setError("Resend verification is currently handled by the backend automatically on registration.");
   };
 
   return (

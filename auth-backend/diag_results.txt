@@ -1,0 +1,7 @@
+--- DIAGNOSTIC START ---
+Time: 2026-02-24T16:41:49.940Z
+Node Version: v24.13.0
+CWD: C:\Users\acer\OneDrive\Desktop\TravelMate\auth-backend
+Directory Listing: successful
+Port 3000 is FREE
+--- DIAGNOSTIC END ---

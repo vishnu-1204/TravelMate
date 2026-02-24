@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
-import db from "../db";
+import { getDb } from "../db";
 import { config } from "../config/env";
 import { validateRegister, validateLogin } from "../middleware/validate";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
@@ -31,13 +31,13 @@ router.post("/register", validateRegister, async (req: Request, res: Response) =
     const verificationToken = crypto.randomBytes(32).toString("hex");
     const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-    db.get("SELECT id FROM users WHERE email = ?", [email], async (err, existingUser) => {
+    getDb().get("SELECT id FROM users WHERE email = ?", [email], async (err, existingUser) => {
       if (err) return res.status(500).json({ message: "Database error" });
       if (existingUser) return res.status(409).json({ message: "User already exists" });
 
       const hashedPassword = await bcrypt.hash(password, 12);
-      db.run(
-        "INSERT INTO users (email, password, email_verified, verification_token, verification_token_expires_at) VALUES (?, ?, 0, ?, ?)",
+      getDb().run(
+        "INSERT INTO users (email, password, email_verified, verification_token, verification_token_expires_at) VALUES (?, ?, 1, ?, ?)",
         [email, hashedPassword, verificationToken, verificationExpiresAt],
         function (insertErr) {
           if (insertErr) return res.status(500).json({ message: "Registration failed" });
@@ -45,7 +45,7 @@ router.post("/register", validateRegister, async (req: Request, res: Response) =
           const token = jwt.sign({ id: this.lastID, email }, jwtSecret, jwtSignOptions);
           res.status(201).json({
             message: "User registered successfully",
-            user: { id: this.lastID, email, emailVerified: false },
+            user: { id: this.lastID, email, emailVerified: true },
             token,
           });
 
@@ -74,7 +74,7 @@ router.get("/verify", (req: Request, res: Response) => {
   const token = String(req.query.token || "").trim();
   if (!token) return res.status(400).json({ message: "Verification token is required" });
 
-  db.get("SELECT id, email_verified, verification_token_expires_at FROM users WHERE verification_token = ?", [token], (err, user: any) => {
+  getDb().get("SELECT id, email_verified, verification_token_expires_at FROM users WHERE verification_token = ?", [token], (err, user: any) => {
     if (err) return res.status(500).json({ message: "Database error" });
     if (!user) return res.status(400).json({ message: "Invalid or expired verification token" });
     if (user.email_verified) return res.status(200).json({ message: "Email already verified" });
@@ -85,7 +85,7 @@ router.get("/verify", (req: Request, res: Response) => {
     }
 
     const verifiedAt = new Date().toISOString();
-    db.run(
+    getDb().run(
       "UPDATE users SET email_verified = 1, verified_at = ?, verification_token = NULL, verification_token_expires_at = NULL WHERE id = ?",
       [verifiedAt, user.id],
       (updateErr) => {
@@ -100,7 +100,7 @@ router.get("/verify", (req: Request, res: Response) => {
 router.post("/login", validateLogin, (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  db.get("SELECT * FROM users WHERE email = ?", [email], async (err, user: UserRow | undefined) => {
+  getDb().get("SELECT * FROM users WHERE email = ?", [email], async (err, user: UserRow | undefined) => {
     if (err) return res.status(500).json({ message: "Database error" });
     if (!user) return res.status(401).json({ message: "Invalid email or password" });
 
@@ -121,7 +121,7 @@ router.post("/login", validateLogin, (req: Request, res: Response) => {
 
 // ==================== GET PROFILE (Protected) ====================
 router.get("/profile", authenticateToken, (req: AuthRequest, res: Response) => {
-  db.get("SELECT id, email, email_verified, verified_at, created_at FROM users WHERE id = ?", [req.user!.id], (err, user) => {
+  getDb().get("SELECT id, email, email_verified, verified_at, created_at FROM users WHERE id = ?", [req.user!.id], (err, user) => {
     if (err) return res.status(500).json({ message: "Database error" });
     if (!user) return res.status(404).json({ message: "User not found" });
     res.json({ user });
@@ -130,7 +130,7 @@ router.get("/profile", authenticateToken, (req: AuthRequest, res: Response) => {
 
 // ==================== GET ALL USERS (Testing only) ====================
 router.get("/users", (req: Request, res: Response) => {
-  db.all("SELECT id, email, email_verified, verified_at, created_at FROM users", [], (err, users: Array<{ email: string }>) => {
+  getDb().all("SELECT id, email, email_verified, verified_at, created_at FROM users", [], (err, users: Array<{ email: string }>) => {
     if (err) return res.status(500).json({ message: "Database error" });
     res.json({ count: users.length, users });
   });

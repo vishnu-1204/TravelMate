@@ -38,24 +38,15 @@ app.get("/", (req, res) => {
 });
 
 // Start server
-initDatabase()
-  .then(() => {
+const startServer = async () => {
+  console.log("Starting server initialization flow...");
+  try {
+    await initDatabase();
+    console.log("Database initialized successfully. Starting app.listen...");
     app.listen(config.port, () => {
       console.log(`\n🚀 Server running on http://localhost:${config.port}`);
       console.log(`📡 API Base: http://localhost:${config.port}/api/auth`);
-      console.log(`\nEndpoints:`);
-      console.log(`  POST /api/auth/register`);
-      console.log(`  POST /api/auth/login`);
-      console.log(`  GET  /api/auth/profile  (requires Bearer token)`);
-      console.log(`  GET  /api/auth/users    (testing only)\n`);
-      console.log(`  GET  /api/test-email?to=user@example.com\n`);
-      console.log(`  GET  /api/packages`);
-      console.log(`  GET  /api/packages/:id\n`);
-      console.log(`  POST /api/booking/confirmation-email\n`);
-      console.log(`  POST /api/booking/confirm-after-payment`);
-      console.log(`  POST /api/booking/send-booking-confirmation`);
-      console.log(`  POST /api/booking/resend-confirmation`);
-      console.log(`  POST /api/booking/razorpay-webhook\n`);
+      console.log(`\nEndpoints registered and ready.`);
     });
 
     if (config.packageRefreshIntervalMinutes > 0) {
@@ -66,8 +57,10 @@ initDatabase()
         });
       }, intervalMs);
     }
-  })
-  .catch((err) => {
-    console.error("Failed to initialize database:", err);
+  } catch (err) {
+    console.error("Failed to initialize system:", err);
     process.exit(1);
-  });
+  }
+};
+
+startServer();

@@ -329,6 +329,36 @@ const sendBookingConfirmationHandler = async (req: Request, res: Response) => {
 router.post("/confirm-after-payment", sendBookingConfirmationHandler);
 router.post("/send-booking-confirmation", sendBookingConfirmationHandler);
 
+router.post("/confirm-booking", async (req: Request, res: Response) => {
+  const { bookingId, bookingReference } = req.body as { bookingId?: string; bookingReference?: string };
+  if (!bookingId && !bookingReference) return res.status(400).json({ message: "bookingId or bookingReference is required" });
+
+  try {
+    const client = getSupabase();
+    if (!client) throw new Error("Supabase config missing");
+
+    let query = client.from("bookings").update({
+      payment_status: "paid",
+      payment_verified: true,
+      booking_status: "confirmed",
+    });
+
+    if (bookingId) {
+      query = query.eq("id", bookingId);
+    } else if (bookingReference) {
+      query = query.eq("booking_reference", bookingReference);
+    }
+
+    const { error } = await query;
+    if (error) throw error;
+
+    return res.json({ success: true });
+  } catch (error: any) {
+    console.error("confirm-booking failed:", error);
+    return res.status(500).json({ message: error.message || "Failed to confirm booking" });
+  }
+});
+
 router.post("/create-booking", async (req: Request, res: Response) => {
   const body = req.body as { booking?: Record<string, unknown> };
   if (!body.booking) return res.status(400).json({ message: "booking payload is required" });

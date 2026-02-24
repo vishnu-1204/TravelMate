@@ -61,6 +61,11 @@ const emptyForm: FormData = {
   bio: '',
 };
 
+const isUuid = (value: string) =>
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+
+const localProfileKey = (userId: string) => `travelmate-local-profile-${userId}`;
+
 const Profile = () => {
   const { user, signOut } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -72,13 +77,14 @@ const Profile = () => {
   const [formData, setFormData] = useState<FormData>(emptyForm);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const isSupabaseUser = !!user?.id && isUuid(user.id);
   const metadataDetails = useMemo(
-    () => getProfileDetailsFromUser(user?.user_metadata),
-    [user?.user_metadata]
+    () => getProfileDetailsFromUser((user as { user_metadata?: unknown } | null)?.user_metadata),
+    [(user as { user_metadata?: unknown } | null)?.user_metadata]
   );
 
-  const emailVerified = !!user?.email_confirmed_at;
-  const phoneVerified = !!user?.phone_confirmed_at;
+  const emailVerified = !!(user as { emailVerified?: boolean } | null)?.emailVerified;
+  const phoneVerified = false;
 
   const loadProfile = useCallback(
     async (userId: string) => {
@@ -86,6 +92,36 @@ const Profile = () => {
       setError('');
 
       try {
+        if (!isUuid(userId)) {
+          const local = localStorage.getItem(localProfileKey(userId));
+          const profileData = local
+            ? (JSON.parse(local) as ProfileRow)
+            : ({
+                id: userId,
+                full_name: null,
+                phone: null,
+                aadhaar_hash: null,
+                aadhaar_last4: null,
+                date_of_birth: null,
+                gender: null,
+                address: null,
+                city: null,
+                state: null,
+                country: null,
+                emergency_contact_name: null,
+                emergency_contact_phone: null,
+                alternate_email: null,
+                occupation: null,
+                bio: null,
+                avatar_path: null,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              } as ProfileRow);
+          setProfile(profileData);
+          setFormData(toForm(profileData, metadataDetails));
+          return;
+        }
+
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
@@ -98,7 +134,7 @@ const Profile = () => {
         if (!profileData) {
           const seed = {
             id: userId,
-            full_name: (user?.user_metadata?.full_name as string | undefined) || null,
+            full_name: ((user as { user_metadata?: { full_name?: string } } | null)?.user_metadata?.full_name as string | undefined) || null,
             phone: null,
           };
           const { data: inserted, error: insertError } = await supabase
@@ -120,7 +156,7 @@ const Profile = () => {
         setLoading(false);
       }
     },
-    [metadataDetails, user?.user_metadata?.full_name]
+    [metadataDetails, (user as { user_metadata?: { full_name?: string } } | null)?.user_metadata?.full_name]
   );
 
   useEffect(() => {
@@ -133,7 +169,10 @@ const Profile = () => {
     if (!last4) return '';
     return `XXXX-XXXX-${last4}`;
   }, [metadataDetails.aadhaar_last4, profile?.aadhaar_last4]);
-  const profileName = formData.full_name || (user?.user_metadata?.full_name as string | undefined) || 'User';
+  const profileName =
+    formData.full_name ||
+    ((user as { user_metadata?: { full_name?: string } } | null)?.user_metadata?.full_name as string | undefined) ||
+    'User';
   const profileInitial = profileName.trim().charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U';
 
   const onEdit = () => {
@@ -201,6 +240,21 @@ const Profile = () => {
         bio: toNullable(formData.bio),
         avatar_path: profile.avatar_path,
       };
+
+      if (!isSupabaseUser) {
+        const localUpdated = {
+          ...profile,
+          ...payload,
+          updated_at: new Date().toISOString(),
+        } as ProfileRow;
+        localStorage.setItem(localProfileKey(user.id), JSON.stringify(localUpdated));
+        setProfile(localUpdated);
+        setFormData(toForm(localUpdated, metadataDetails));
+        setClearAadhaar(false);
+        setEditing(false);
+        setSuccess('Profile updated successfully.');
+        return;
+      }
 
       const { data: updated, error: updateError } = await supabase
         .from('profiles')
@@ -277,6 +331,11 @@ const Profile = () => {
     setError('');
     setSuccess('');
 
+    if (!isSupabaseUser) {
+      setSuccess('Password reset is handled by backend auth flow. Please use the backend reset endpoint.');
+      return;
+    }
+
     const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
       redirectTo: `${window.location.origin}/login`,
     });
@@ -300,6 +359,13 @@ const Profile = () => {
     setSuccess('');
 
     try {
+      if (!isSupabaseUser) {
+        localStorage.removeItem(localProfileKey(user.id));
+        await signOut();
+        window.location.assign('/');
+        return;
+      }
+
       const { error } = await supabase.from('profiles').delete().eq('id', user.id);
       if (error) throw error;
 

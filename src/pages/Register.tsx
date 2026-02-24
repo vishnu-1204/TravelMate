@@ -4,7 +4,6 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import PageTransition from '@/components/layout/PageTransition';
 import { z } from 'zod';
-import { lovable } from "@/integrations/lovable";
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -31,35 +30,17 @@ const Register = () => {
   const handleGoogleSignup = async () => {
     setSocialLoading("google");
     setError("");
-    try {
-      const { error } = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
-      });
-      if (error) {
-        setError("Failed to sign up with Google. Please try again.");
-      }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setSocialLoading(null);
-    }
+    // External OAuth needs to be handled by the backend if switching fully.
+    // For now, we'll show a message or disable it.
+    setError("Social login is currently being migrated to the local backend.");
+    setSocialLoading(null);
   };
 
   const handleAppleSignup = async () => {
     setSocialLoading("apple");
     setError("");
-    try {
-      const { error } = await lovable.auth.signInWithOAuth("apple", {
-        redirect_uri: window.location.origin,
-      });
-      if (error) {
-        setError("Failed to sign up with Apple. Please try again.");
-      }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setSocialLoading(null);
-    }
+    setError("Social login is currently being migrated to the local backend.");
+    setSocialLoading(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,12 +59,7 @@ const Register = () => {
     try {
       const { error, needsEmailVerification } = await signUp(email, password);
       if (error) {
-        const rawMessage = error.message?.trim();
-        if (rawMessage?.toLowerCase().includes('user already registered')) {
-          setError('This email is already registered. Please log in instead.');
-        } else {
-          setError(rawMessage || 'Unable to create account. Please try again.');
-        }
+        setError(error.message || 'Unable to create account. Please try again.');
       } else {
         if (needsEmailVerification) {
           navigate('/login', {
@@ -293,7 +269,6 @@ const Register = () => {
     </div>
   </PageTransition>
 );
-
 };
 
 export default Register;
