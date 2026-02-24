@@ -17,8 +17,14 @@ export type Database = {
       bookings: {
         Row: {
           booking_reference: string | null
+          booking_status: string
           booking_terms: Json | null
           created_at: string
+          email_attempts: number
+          email_last_attempt_at: string | null
+          email_last_error: string | null
+          email_sent: boolean
+          email_sent_at: string | null
           email: string
           first_name: string
           id: string
@@ -34,6 +40,7 @@ export type Database = {
           payment_status: string
           payment_verified: boolean
           phone: string
+          ticket_pdf_url: string | null
           total_amount: number
           travelers: number
           updated_at: string
@@ -41,8 +48,14 @@ export type Database = {
         }
         Insert: {
           booking_reference?: string | null
+          booking_status?: string
           booking_terms?: Json | null
           created_at?: string
+          email_attempts?: number
+          email_last_attempt_at?: string | null
+          email_last_error?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
           email: string
           first_name: string
           id?: string
@@ -58,6 +71,7 @@ export type Database = {
           payment_status?: string
           payment_verified?: boolean
           phone: string
+          ticket_pdf_url?: string | null
           total_amount: number
           travelers: number
           updated_at?: string
@@ -65,8 +79,14 @@ export type Database = {
         }
         Update: {
           booking_reference?: string | null
+          booking_status?: string
           booking_terms?: Json | null
           created_at?: string
+          email_attempts?: number
+          email_last_attempt_at?: string | null
+          email_last_error?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
           email?: string
           first_name?: string
           id?: string
@@ -82,6 +102,7 @@ export type Database = {
           payment_status?: string
           payment_verified?: boolean
           phone?: string
+          ticket_pdf_url?: string | null
           total_amount?: number
           travelers?: number
           updated_at?: string

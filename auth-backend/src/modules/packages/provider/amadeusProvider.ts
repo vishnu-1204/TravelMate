@@ -26,6 +26,32 @@ type FlightDestinationsResponse = {
   data: FlightDestination[];
 };
 
+export type FlightOffer = {
+  airline: string;
+  departureTime: string;
+  arrivalTime: string;
+  price?: string;
+  currency?: string;
+};
+
+type AmadeusFlightOffer = {
+  itineraries: Array<{
+    segments: Array<{
+      departure: { iataCode: string; at: string };
+      arrival: { iataCode: string; at: string };
+      carrierCode: string;
+    }>;
+  }>;
+  price: { total: string; currency: string };
+};
+
+type FlightOffersSearchResponse = {
+  data: AmadeusFlightOffer[];
+  dictionaries?: {
+    carriers?: Record<string, string>;
+  };
+};
+
 type LocationResponse = {
   data?: Array<{
     name?: string;
@@ -1138,5 +1164,78 @@ export const fetchAmadeusPackages = async (): Promise<TravelPackage[]> => {
   });
 
   return ordered;
+};
+
+export const searchFlightOffers = async (
+  origin: string,
+  destination: string,
+  departureDate: string
+): Promise<FlightOffer | null> => {
+  if (!config.amadeusClientId || !config.amadeusClientSecret) {
+    return null;
+  }
+
+  // Resolve destination IATA code if a full name or city was passed
+  let resolvedDestination = destination;
+  if (destination.length !== 3) {
+    const normalizedDest = destination.toLowerCase();
+    const configMatch = TOURIST_STATE_CONFIG.find(c => 
+      c.state.toLowerCase() === normalizedDest || 
+      c.attractions.some(a => a.toLowerCase() === normalizedDest)
+    );
+    if (configMatch) {
+      resolvedDestination = configMatch.hubCode;
+    } else {
+      // Fuzzy matching for nested locations (e.g. "Munnar and Alleppey")
+      const words = normalizedDest.split(/\s+/);
+      const fuzzyMatch = TOURIST_STATE_CONFIG.find(c => 
+        words.some(word => c.attractions.some(a => a.toLowerCase().includes(word)))
+      );
+      if (fuzzyMatch) resolvedDestination = fuzzyMatch.hubCode;
+    }
+  }
+
+  try {
+    const token = await getAmadeusToken();
+    const url = new URL(`${config.amadeusBaseUrl}/v2/shopping/flight-offers`);
+    url.searchParams.set("originLocationCode", origin);
+    url.searchParams.set("destinationLocationCode", resolvedDestination);
+    url.searchParams.set("departureDate", departureDate);
+    url.searchParams.set("adults", "1");
+    url.searchParams.set("max", "1"); // We only need the first/best offer
+
+    const response = await fetch(url.toString(), {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      console.warn(`Amadeus flight search failed: ${response.status}`);
+      return null;
+    }
+
+    const payload = (await response.json()) as FlightOffersSearchResponse;
+    const offer = payload.data?.[0];
+    if (!offer || !offer.itineraries?.[0]?.segments?.[0]) return null;
+
+    const segment = offer.itineraries[0].segments[0];
+    const carrierCode = segment.carrierCode;
+    const carrierName = payload.dictionaries?.carriers?.[carrierCode] || carrierCode;
+
+    const formatTime = (iso: string) => {
+      const date = new Date(iso);
+      return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+    };
+
+    return {
+      airline: carrierName,
+      departureTime: formatTime(segment.departure.at),
+      arrivalTime: formatTime(segment.arrival.at),
+      price: offer.price.total,
+      currency: offer.price.currency,
+    };
+  } catch (error) {
+    console.error("searchFlightOffers failed:", error);
+    return null;
+  }
 };
 

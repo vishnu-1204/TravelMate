@@ -1,5 +1,5 @@
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Hotel, Utensils, ChevronDown, ChevronUp } from 'lucide-react';
+import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Hotel, Utensils, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import {
@@ -28,8 +28,9 @@ export default function PackageDetails() {
   const [adminSaving, setAdminSaving] = useState(false);
   const [openItineraryDay, setOpenItineraryDay] = useState<number>(1);
   const [itineraryView, setItineraryView] = useState<'story' | 'bullet'>('story');
-  const adminToken = import.meta.env.VITE_PACKAGE_ADMIN_TOKEN as string | undefined;
 
+  const backendUrl = import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000';
+  const adminToken = import.meta.env.VITE_PACKAGE_ADMIN_TOKEN as string | undefined;
   useEffect(() => {
     let active = true;
 
@@ -63,7 +64,7 @@ export default function PackageDetails() {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, backendUrl]);
 
   useEffect(() => {
     let active = true;
@@ -468,7 +469,7 @@ export default function PackageDetails() {
                     </div>
 
                     <div className="space-y-3">
-                      {itineraryDays.map((day, index) => {
+                      {itineraryDays.map((day: any, index) => {
                         const night = itineraryNights.find((n) => n.night === day.day);
                         const isOpen = openItineraryDay === day.day;
                         const narrativeText = day.narrative || buildFallbackNarrative(day, index);
@@ -524,6 +525,7 @@ export default function PackageDetails() {
                     </div>
                   </div>
                 )}
+
               </div>
 
               {/* Sidebar */}
@@ -533,13 +535,13 @@ export default function PackageDetails() {
                     <p className="text-muted-foreground text-sm">Starting from</p>
                     {basePrice > discountedPrice ? (
                       <p className="text-sm text-muted-foreground line-through">
-                        ?{basePrice.toLocaleString('en-IN')}
+                        ₹{basePrice.toLocaleString('en-IN')}
                       </p>
                     ) : null}
-                    <p className="text-4xl font-bold text-primary">?{discountedPrice.toLocaleString('en-IN')}</p>
+                    <p className="text-4xl font-bold text-primary">₹{discountedPrice.toLocaleString('en-IN')}</p>
                     {savingsPerPerson > 0 ? (
                       <p className="text-xs text-emerald-600 font-medium mt-1">
-                        Save ?{savingsPerPerson.toLocaleString('en-IN')} per traveler
+                        Save ₹{savingsPerPerson.toLocaleString('en-IN')} per traveler
                       </p>
                     ) : null}
                     <p className="text-xs text-muted-foreground mt-1">
@@ -556,11 +558,11 @@ export default function PackageDetails() {
 
                   <div className="rounded-lg border border-border p-3 mb-4 text-sm">
                     <p className="font-semibold text-foreground mb-2">Price Breakdown</p>
-                    <p className="text-muted-foreground flex justify-between"><span>Hotel</span><span>?{packageData.dynamicPricing.breakdown.hotel.toLocaleString('en-IN')}</span></p>
-                    <p className="text-muted-foreground flex justify-between"><span>Transport</span><span>?{packageData.dynamicPricing.breakdown.transport.toLocaleString('en-IN')}</span></p>
-                    <p className="text-muted-foreground flex justify-between"><span>Food</span><span>?{packageData.dynamicPricing.breakdown.food.toLocaleString('en-IN')}</span></p>
-                    <p className="text-muted-foreground flex justify-between"><span>Activities</span><span>?{packageData.dynamicPricing.breakdown.activities.toLocaleString('en-IN')}</span></p>
-                    <p className="text-muted-foreground flex justify-between"><span>Taxes</span><span>?{packageData.dynamicPricing.breakdown.taxes.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Hotel</span><span>₹{packageData.dynamicPricing.breakdown.hotel.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Transport</span><span>₹{packageData.dynamicPricing.breakdown.transport.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Food</span><span>₹{packageData.dynamicPricing.breakdown.food.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Activities</span><span>₹{packageData.dynamicPricing.breakdown.activities.toLocaleString('en-IN')}</span></p>
+                    <p className="text-muted-foreground flex justify-between"><span>Taxes</span><span>₹{packageData.dynamicPricing.breakdown.taxes.toLocaleString('en-IN')}</span></p>
                   </div>
 
                   {packageData.dynamicPricing.discounts.length > 0 ? (
@@ -579,7 +581,7 @@ export default function PackageDetails() {
                     <p className="font-semibold text-foreground mb-2">Payment Options</p>
                     {packageData.dynamicPricing.paymentPlans.map((plan) => (
                       <p key={plan.label} className="text-muted-foreground">
-                        {plan.months ? `${plan.label}: ?${(plan.monthlyAmount || 0).toLocaleString('en-IN')}/month` : plan.label}
+                        {plan.months ? `${plan.label}: ₹${(plan.monthlyAmount || 0).toLocaleString('en-IN')}/month` : plan.label}
                       </p>
                     ))}
                   </div>
@@ -590,7 +592,7 @@ export default function PackageDetails() {
                       {packageData.dynamicPricing.upgradeOptions.map((item) => (
                         <p key={item.id} className="text-muted-foreground flex justify-between">
                           <span>{item.label}</span>
-                          <span>+?{item.pricePerPerson.toLocaleString('en-IN')}</span>
+                          <span>+₹{item.pricePerPerson.toLocaleString('en-IN')}</span>
                         </p>
                       ))}
                     </div>

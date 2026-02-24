@@ -26,6 +26,8 @@ cp .env.example .env
 - `AMADEUS_CLIENT_ID`
 - `AMADEUS_CLIENT_SECRET`
 - `JWT_SECRET`
+- `RESEND_API_KEY=<your_resend_api_key>` (recommended)
+- `RESEND_FROM=TravelMate <onboarding@resend.dev>`
 
 4. Start server:
 ```bash
@@ -33,6 +35,11 @@ npm run dev
 ```
 
 ## Package API
+
+## Email Endpoints
+
+- `GET /api/test-email?to=you@example.com`
+- `GET /api/auth/verify?token=<token>`
 
 ### `GET /api/packages`
 
@@ -72,4 +79,3 @@ All `/api/packages/*` endpoints are rate-limited using:
 
 - `PACKAGE_RATE_LIMIT_WINDOW_MS`
 - `PACKAGE_RATE_LIMIT_MAX_REQUESTS`
-

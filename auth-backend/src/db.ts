@@ -5,14 +5,49 @@ const dbPath = path.resolve(__dirname, "../auth.db");
 
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error("❌ Database connection error:", err.message);
+    console.error("Database connection error:", err.message);
   } else {
-    console.log(`✅ SQLite connected at ${dbPath}`);
+    console.log(`SQLite connected at ${dbPath}`);
   }
 });
 
-// Enable WAL mode for better performance
+// Enable WAL mode for better performance.
 db.run("PRAGMA journal_mode=WAL");
+
+const run = (sql: string) =>
+  new Promise<void>((resolve, reject) => {
+    db.run(sql, (err) => {
+      if (err) return reject(err);
+      return resolve();
+    });
+  });
+
+const all = <T = unknown>(sql: string) =>
+  new Promise<T[]>((resolve, reject) => {
+    db.all(sql, (err, rows: T[]) => {
+      if (err) return reject(err);
+      return resolve(rows);
+    });
+  });
+
+const ensureUsersTableColumns = async () => {
+  const columns = await all<{ name: string }>("PRAGMA table_info(users)");
+  const existing = new Set(columns.map((column) => column.name));
+
+  const requiredColumns: Array<{ name: string; ddl: string }> = [
+    { name: "email_verified", ddl: "ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0" },
+    { name: "verification_token", ddl: "ALTER TABLE users ADD COLUMN verification_token TEXT" },
+    { name: "verification_token_expires_at", ddl: "ALTER TABLE users ADD COLUMN verification_token_expires_at DATETIME" },
+    { name: "verified_at", ddl: "ALTER TABLE users ADD COLUMN verified_at DATETIME" },
+  ];
+
+  for (const column of requiredColumns) {
+    if (!existing.has(column.name)) {
+      await run(column.ddl);
+      console.log(`Added users.${column.name}`);
+    }
+  }
+};
 
 export const initDatabase = (): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -21,15 +56,25 @@ export const initDatabase = (): Promise<void> => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
+        email_verified INTEGER NOT NULL DEFAULT 0,
+        verification_token TEXT,
+        verification_token_expires_at DATETIME,
+        verified_at DATETIME,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )`,
-      (err) => {
+      async (err) => {
         if (err) {
-          console.error("❌ Table creation error:", err.message);
+          console.error("Table creation error:", err.message);
           reject(err);
-        } else {
-          console.log("✅ Users table ready");
+          return;
+        }
+
+        try {
+          await ensureUsersTableColumns();
+          console.log("Users table ready");
           resolve();
+        } catch (migrationError) {
+          reject(migrationError);
         }
       }
     );

@@ -31,6 +31,7 @@ type BookingRow = {
   is_locked: boolean;
   locked_price_per_person: number | null;
   booking_snapshots: BookingSnapshot[] | null;
+  booking_terms: any | null;
   created_at: string;
 };
 
@@ -107,7 +108,7 @@ const MyBookings = () => {
       const withSnapshots = await supabase
         .from('bookings')
         .select(
-          'id, booking_reference, package_id, package_title, travelers, total_amount, payment_status, payment_verified, is_locked, locked_price_per_person, created_at, booking_snapshots(snapshot, locked_transport, locked_hotel)'
+          'id, booking_reference, package_id, package_title, travelers, total_amount, payment_status, payment_verified, is_locked, locked_price_per_person, booking_terms, created_at, booking_snapshots(snapshot, locked_transport, locked_hotel)'
         )
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
@@ -116,7 +117,7 @@ const MyBookings = () => {
         const fallback = await supabase
           .from('bookings')
           .select(
-            'id, booking_reference, package_id, package_title, travelers, total_amount, payment_status, payment_verified, created_at'
+            'id, booking_reference, package_id, package_title, travelers, total_amount, payment_status, payment_verified, booking_terms, created_at'
           )
           .eq('user_id', user.id)
           .order('created_at', { ascending: false });
@@ -132,13 +133,14 @@ const MyBookings = () => {
           is_locked: false,
           locked_price_per_person: null,
           booking_snapshots: null,
+          booking_terms: row.booking_terms,
         }));
         setBookings(normalized as BookingRow[]);
         setLoading(false);
         return;
       }
 
-      setBookings((withSnapshots.data || []) as BookingRow[]);
+      setBookings((withSnapshots.data as any) || []);
       setLoading(false);
     };
 
@@ -311,6 +313,33 @@ const MyBookings = () => {
                             <InfoItem icon={<Receipt className="h-4 w-4" />} label="Transport" value={normalized.transport} />
                           </div>
 
+                          {booking.booking_terms?.airline && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm mt-3 border-t border-border pt-3">
+                              <InfoItem 
+                                icon={<Receipt className="h-4 w-4" />} 
+                                label="Airline" 
+                                value={booking.booking_terms.airline} 
+                              />
+                              <InfoItem 
+                                icon={<Calendar className="h-4 w-4" />} 
+                                label="Flight Times" 
+                                value={`${booking.booking_terms.departureTime} - ${booking.booking_terms.arrivalTime}`} 
+                              />
+                              <InfoItem 
+                                icon={<Calendar className="h-4 w-4" />} 
+                                label="Duration" 
+                                value={booking.booking_terms.duration || '-'} 
+                              />
+                            </div>
+                          )}
+
+                          <div className="flex flex-wrap items-center gap-3 mt-3">
+                            <DownloadButton 
+                              bookingReference={booking.booking_reference || booking.id.slice(0, 8).toUpperCase()} 
+                              userId={user?.id}
+                            />
+                          </div>
+
                           <p className="text-xs text-muted-foreground mt-3">
                             Cancellation policy at booking time: {normalized.cancellationPolicy}
                           </p>
@@ -345,5 +374,45 @@ const InfoItem = ({
     </p>
   </div>
 );
+
+const DownloadButton = ({ bookingReference, userId }: { bookingReference: string; userId?: string }) => {
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    try {
+      const url = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'}/api/booking/download-ticket/${bookingReference}${userId ? `?userId=${userId}` : ''}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to download ticket');
+      
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.setAttribute('download', `Antigravity-Ticket-${bookingReference}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+      toast.success('Ticket downloaded successfully');
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download ticket. Please try again.');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleDownload}
+      disabled={downloading}
+      className="btn-outline text-xs px-3 py-1 flex items-center gap-1 mt-3"
+    >
+      {downloading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Receipt className="h-3 w-3" />}
+      {downloading ? 'Downloading...' : 'Download Ticket'}
+    </button>
+  );
+};
 
 export default MyBookings;

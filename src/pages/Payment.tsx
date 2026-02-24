@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { User, Calendar, Lock, ArrowLeft, Check, Loader2, Plus, Trash2, CreditCard } from 'lucide-react';
+import { User, Calendar, Lock, ArrowLeft, Check, Loader2, Plus, Trash2, CreditCard, Receipt, UserRound } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
@@ -41,6 +41,28 @@ type ExtraServices = {
   travelInsurance: boolean;
 };
 
+type ProfileRow = {
+  id: string;
+  full_name: string | null;
+  phone: string | null;
+  aadhaar_hash: string | null;
+  aadhaar_last4: string | null;
+  date_of_birth: string | null;
+  gender: string | null;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  country: string | null;
+  emergency_contact_name: string | null;
+  emergency_contact_phone: string | null;
+  alternate_email: string | null;
+  occupation: string | null;
+  bio: string | null;
+  avatar_path: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 type BookingDraft = {
   travelers: Traveler[];
   travelDate: string;
@@ -72,6 +94,138 @@ const createTraveler = (index: number, defaultEmail = ''): Traveler => ({
   passport: '',
 });
 
+const DetailRow = ({ label, value }: { label: string; value: string }) => (
+  <div>
+    <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
+    <p className="text-foreground font-medium">{value}</p>
+  </div>
+);
+
+const FormInput = ({
+  label,
+  value,
+  onChange,
+  type = 'text',
+  required = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  type?: string;
+  required?: boolean;
+}) => (
+  <div>
+    <label className="form-label">
+      {label}
+      {required ? ' *' : ''}
+    </label>
+    <input
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="input-field"
+      required={required}
+    />
+  </div>
+);
+
+const FormSelect = ({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: string[];
+}) => (
+  <div>
+    <label className="form-label">{label}</label>
+    <select value={value} onChange={(e) => onChange(e.target.value)} className="input-field">
+      {options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+const DownloadButton = ({ bookingReference, userId }: { bookingReference: string; userId?: string }) => {
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    try {
+      const url = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'}/api/booking/download-ticket/${bookingReference}${userId ? `?userId=${userId}` : ''}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to download ticket');
+      
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.setAttribute('download', `Antigravity-Ticket-${bookingReference}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+      toast.success('Ticket downloaded successfully');
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download ticket. Please try again.');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleDownload}
+      disabled={downloading}
+      className="btn-outline text-xs px-3 py-1 flex items-center gap-1 mt-3"
+    >
+      {downloading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Receipt className="h-3 w-3" />}
+      {downloading ? 'Downloading...' : 'Download Ticket'}
+    </button>
+  );
+};
+
+const CheckboxCard = ({
+  title,
+  subtitle,
+  checked,
+  onChange,
+}: {
+  title: string;
+  subtitle: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) => (
+  <label className="border border-border rounded-lg p-3 flex items-start gap-3 cursor-pointer hover:border-primary/40 transition-colors">
+    <input
+      type="checkbox"
+      checked={checked}
+      onChange={(e) => onChange(e.target.checked)}
+      className="mt-1 h-4 w-4"
+    />
+    <div>
+      <p className="font-medium text-foreground">{title}</p>
+      <p className="text-xs text-muted-foreground">{subtitle}</p>
+    </div>
+  </label>
+);
+
+const PriceRow = ({ label, value }: { label: string; value: number }) => (
+  <div className="flex justify-between text-sm">
+    <span className="text-muted-foreground">{label}</span>
+    <span className="text-foreground">₹{value.toLocaleString()}</span>
+  </div>
+);
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const Payment = () => {
   const { id } = useParams();
   const location = useLocation();
@@ -101,6 +255,10 @@ const Payment = () => {
   const [groupFormUrlInput, setGroupFormUrlInput] = useState('');
   const [groupFormReady, setGroupFormReady] = useState(hasGroupTourFormUrl());
   const [groupRedirectNote, setGroupRedirectNote] = useState('');
+  const [flightData, setFlightData] = useState<{ airline: string; departureTime: string; arrivalTime: string } | null>(null);
+  const [flightSearching, setFlightSearching] = useState(false);
+  const [autoSaveProfile, setAutoSaveProfile] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -161,6 +319,130 @@ const Payment = () => {
     const draft: BookingDraft = { travelers, travelDate, roomType, extras };
     localStorage.setItem(storageKey, JSON.stringify(draft));
   }, [extras, roomType, storageKey, travelDate, travelers]);
+
+  useEffect(() => {
+    if (!travelDate || !packageData) return;
+
+    const fetchFlight = async () => {
+      setFlightSearching(true);
+      setFlightData(null);
+      try {
+        let destCode = packageData.destination;
+        if (packageData.id.startsWith('amadeus-')) {
+          const parts = packageData.id.split('-');
+          if (parts.length >= 3) destCode = parts[2];
+        }
+
+        const url = `${backendBaseUrl}/api/booking/flight-search?destination=${destCode}&departureDate=${travelDate}`;
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          setFlightData(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch flight:', err);
+      } finally {
+        setFlightSearching(false);
+      }
+    };
+
+    void fetchFlight();
+  }, [travelDate, packageData, backendBaseUrl]);
+
+  const loadFromProfile = async () => {
+    if (!user?.id) {
+      toast.error('Please login to load profile details.');
+      return;
+    }
+
+    setProfileLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) {
+        toast.error('No saved profile found. Please update your profile first.');
+        return;
+      }
+
+      const profileData = data as unknown as ProfileRow;
+
+      const calculateAge = (dob: string | null) => {
+        if (!dob) return '';
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        return age.toString();
+      };
+
+      setTravelers((prev) => {
+        const updated = [...prev];
+        updated[0] = {
+          ...updated[0],
+          fullName: profileData.full_name || updated[0].fullName,
+          mobile: profileData.phone || updated[0].mobile,
+          email: user.email || profileData.alternate_email || updated[0].email,
+          gender: (profileData.gender ? profileData.gender.charAt(0).toUpperCase() + profileData.gender.slice(1).toLowerCase() : 'Male') as Gender,
+          age: calculateAge(profileData.date_of_birth) || updated[0].age,
+          aadhaar: profileData.aadhaar_last4 ? `XXXX-XXXX-${profileData.aadhaar_last4}` : updated[0].aadhaar,
+        };
+        return updated;
+      });
+
+      toast.success('Details loaded from your profile.');
+    } catch (err) {
+      console.error('Error loading profile:', err);
+      toast.error('Failed to load profile details.');
+    } finally {
+      setProfileLoading(false);
+    }
+  };
+
+  const updateUserProfile = async () => {
+    if (!user?.id || !autoSaveProfile) return;
+
+    const primary = travelers[0];
+    const normalizedAadhaar = primary.aadhaar.replace(/\D/g, '');
+    
+    // Create payload with available fields
+    const payload: any = {
+      id: user.id,
+      full_name: primary.fullName || null,
+      phone: primary.mobile || null,
+      gender: primary.gender.toLowerCase() || null,
+      updated_at: new Date().toISOString(),
+    };
+
+    // If a full Aadhaar was entered, update the hash and last 4
+    if (normalizedAadhaar.length === 12) {
+      const sha256 = async (str: string) => {
+        const data = new TextEncoder().encode(str);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+      };
+      payload.aadhaar_hash = await sha256(normalizedAadhaar);
+      payload.aadhaar_last4 = normalizedAadhaar.slice(-4);
+    }
+
+    try {
+      await supabase.from('profiles').upsert(payload, { onConflict: 'id' });
+      // Also update auth metadata for faster access
+      await supabase.auth.updateUser({
+        data: { full_name: payload.full_name }
+      });
+    } catch (err) {
+      console.error('Failed to auto-save profile:', err);
+    }
+  };
 
   useEffect(() => {
     if (!packageData) return;
@@ -394,12 +676,6 @@ const Payment = () => {
     return null;
   };
 
-  const isEmailAlreadySent = (terms: unknown) => {
-    if (!terms || typeof terms !== 'object') return false;
-    const emailInfo = (terms as { email?: { sent?: boolean } }).email;
-    return Boolean(emailInfo?.sent);
-  };
-
   const formatTravelDate = (value: string) => {
     if (!value) return 'Flexible Date';
     const parsed = new Date(value);
@@ -486,6 +762,38 @@ const Payment = () => {
       termsVersion: 'v1',
       lockedNotice: 'This package is locked after booking.',
       acceptedAt: new Date().toISOString(),
+      destination: packageData.location,
+      travelDate,
+      travelCategory: packageData.category,
+      duration: packageData.duration,
+      airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
+      departureTime: flightData?.departureTime || '06:30 AM',
+      arrivalTime: flightData?.arrivalTime || '09:45 AM',
+      itinerary: {
+        days: packageData.itinerary?.days || [],
+        nights: packageData.itinerary?.nights || [],
+        activities: packageData.highlights || [],
+        included: Array.isArray(packageData.included) ? packageData.included : [],
+        excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
+      },
+      included: Array.isArray(packageData.included) ? packageData.included : [],
+      excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
+      travelDetails: {
+        transportDetails: packageData.transportMode || '-',
+        checkIn: travelDate || '-',
+        checkOut: '-',
+      },
+      emergencyContact: '+91 9342180670',
+      travelGuidelines: [
+        'Arrive at the pickup point at least 45 minutes before departure.',
+        'Keep emergency contacts active during your trip.',
+        'Follow local regulations and guide instructions at all times.',
+      ],
+      documentsToCarry: ['Government ID proof', 'Booking confirmation email', 'Any required permits/visa documents'],
+      importantNotes: [
+        'Hotel check-in/check-out times depend on property policy.',
+        'Itinerary timings can shift due to weather or operational needs.',
+      ],
       email: {
         sent: false,
         status: 'pending',
@@ -507,6 +815,9 @@ const Payment = () => {
       payment_verified: true,
       payment_id: paymentId,
       booking_reference: ref,
+      email_sent: false,
+      booking_status: 'confirmed',
+      ticket_pdf_url: null,
       locked_price_per_person: pricePerPerson,
       locked_total_amount: grandTotal,
       booking_terms: bookingTerms,
@@ -518,7 +829,7 @@ const Payment = () => {
     // Backward compatibility when DB migration with lock/snapshot columns is not applied yet.
     if (
       bookingError &&
-      /booking_terms|locked_price_per_person|locked_total_amount|is_locked|schema cache/i.test(
+      /booking_terms|locked_price_per_person|locked_total_amount|is_locked|email_sent|booking_status|ticket_pdf_url|schema cache/i.test(
         bookingError.message
       )
     ) {
@@ -548,24 +859,31 @@ const Payment = () => {
       return;
     }
 
-    let shouldSendEmail = true;
     try {
-      const { data: existingBooking } = await supabase
-        .from('bookings')
-        .select('booking_terms,payment_status,payment_verified')
-        .eq('user_id', user.id)
-        .eq('booking_reference', ref)
-        .single();
-      const paid = existingBooking?.payment_status === 'paid' && existingBooking?.payment_verified;
-      const alreadySent = isEmailAlreadySent(existingBooking?.booking_terms);
-      shouldSendEmail = paid && !alreadySent;
-    } catch {
-      shouldSendEmail = true;
-    }
+      const response = await fetch(`${backendBaseUrl}/api/booking/send-booking-confirmation`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bookingReference: ref,
+          userId: user.id,
+          paymentId,
+        }),
+      });
 
-    try {
-      if (shouldSendEmail) {
-        const response = await fetch(`${backendBaseUrl}/api/booking/confirmation-email`, {
+      const result = (await response.json().catch(() => null)) as { status?: string; message?: string } | null;
+      if (!response.ok) {
+        throw new Error(result?.message || 'Confirmation email workflow failed');
+      }
+
+      if (result?.status === 'already_sent') {
+        setEmailNotice(`Booking already confirmed for ${registeredEmail}.`);
+      } else {
+        setEmailNotice(`Confirmation email sent to ${registeredEmail}.`);
+        toast.success(`Booking confirmed! Email sent to ${registeredEmail}.`);
+      }
+    } catch {
+      try {
+        const fallbackResponse = await fetch(`${backendBaseUrl}/api/booking/confirmation-email`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -598,61 +916,35 @@ const Payment = () => {
               'Hotel check-in/check-out times depend on property policy.',
               'Itinerary timings can shift due to weather or operational needs.',
             ],
+            duration: packageData.duration,
+            airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
+            departureTime: flightData?.departureTime || '06:30 AM',
+            arrivalTime: flightData?.arrivalTime || '09:45 AM',
+            included: Array.isArray(packageData.included) ? packageData.included : [],
+            excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
           }),
         });
 
-        if (!response.ok) {
-          throw new Error('Confirmation email API failed');
+        if (fallbackResponse.ok) {
+          setEmailNotice(`Confirmation email sent to ${registeredEmail}.`);
+          toast.success(`Booking confirmed! Email sent to ${registeredEmail}.`);
+        } else {
+          setEmailNotice('Booking confirmed. Confirmation email will be sent shortly.');
+          toast.info('Booking confirmed. Confirmation email will be sent shortly.');
         }
-
-        try {
-          await supabase
-            .from('bookings')
-            .update({
-              booking_terms: {
-                ...bookingTerms,
-                email: {
-                  sent: true,
-                  status: 'sent',
-                  sentAt: new Date().toISOString(),
-                },
-              },
-            })
-            .eq('user_id', user.id)
-            .eq('booking_reference', ref);
-        } catch {
-          // Non-blocking status update.
-        }
-        setEmailNotice(`Confirmation email sent to ${registeredEmail}.`);
-      } else {
-        setEmailNotice(`Booking already confirmed for ${registeredEmail}.`);
-      }
-    } catch {
-      setEmailNotice('Booking confirmed. Confirmation email will be sent shortly.');
-      toast.info('Booking confirmed. Confirmation email will be sent shortly.');
-      try {
-        await supabase
-          .from('bookings')
-          .update({
-            booking_terms: {
-              ...bookingTerms,
-              email: {
-                sent: false,
-                status: 'failed',
-                sentAt: null,
-                lastErrorAt: new Date().toISOString(),
-              },
-            },
-          })
-          .eq('user_id', user.id)
-          .eq('booking_reference', ref);
       } catch {
-        // no-op
+        setEmailNotice('Booking confirmed. Confirmation email will be sent shortly.');
+        toast.info('Booking confirmed. Confirmation email will be sent shortly.');
       }
     }
 
     setBookingRef(ref);
     setSuccess(true);
+    // Trigger Profile Auto-Save
+    if (autoSaveProfile) {
+      void updateUserProfile();
+    }
+    toast.success('Booking confirmed! PDF ticket generated.');
     setLoading(false);
     localStorage.removeItem(storageKey);
     try {
@@ -681,7 +973,7 @@ const Payment = () => {
               {emailNotice ? <p className="text-sm text-muted-foreground mb-4 text-center">{emailNotice}</p> : null}
 
               <div className="border-2 border-dashed border-primary/40 rounded-xl p-5 mb-6 bg-primary/5">
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">Travel Ticket</p>
+                <p className="text-xs uppercase tracking-wide mb-1">Travel Ticket</p>
                 <p className="text-lg font-bold text-foreground mt-1">{packageData.title}</p>
                 <p className="text-sm text-muted-foreground">{packageData.location}</p>
                 <div className="grid grid-cols-2 gap-3 mt-4 text-sm">
@@ -791,7 +1083,7 @@ const Payment = () => {
                           <User className="h-5 w-5 text-primary" />
                           <h2 className="text-lg font-bold text-foreground">Traveler Details</h2>
                         </div>
-                        <div className="flex items-center">
+                        <div className="flex items-center gap-3">
                           <button
                             type="button"
                             onClick={addTraveler}
@@ -799,6 +1091,15 @@ const Payment = () => {
                           >
                             <Plus className="h-4 w-4" />
                             Add Traveler
+                          </button>
+                          <button
+                            type="button"
+                            onClick={loadFromProfile}
+                            disabled={profileLoading}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-700 border border-sky-200 text-sm font-medium shadow-sm hover:bg-sky-200 transition disabled:opacity-50"
+                          >
+                            {profileLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserRound className="h-4 w-4" />}
+                            Use My Profile
                           </button>
                         </div>
                       </div>
@@ -883,6 +1184,27 @@ const Payment = () => {
                           ))}
                         </div>
                       </AnimatePresence>
+
+                      <div className="mt-6 pt-6 border-t border-border">
+                        <label className="flex items-start gap-3 cursor-pointer group">
+                          <div className="flex items-center h-5">
+                            <input
+                              type="checkbox"
+                              checked={autoSaveProfile}
+                              onChange={(e) => setAutoSaveProfile(e.target.checked)}
+                              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                            />
+                          </div>
+                          <div className="text-sm">
+                            <span className="font-medium text-foreground group-hover:text-primary transition-colors">
+                              Update my permanent profile with these details
+                            </span>
+                            <p className="text-muted-foreground text-xs mt-0.5">
+                              This will keep your traveler information up to date for future bookings.
+                            </p>
+                          </div>
+                        </label>
+                      </div>
                     </>
                   ) : (
                     <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
@@ -1009,7 +1331,28 @@ const Payment = () => {
                     <p className="text-muted-foreground">
                       Travel Date: {travelDate || 'Not selected'}
                     </p>
-                    <p className="text-muted-foreground">Room: {roomType}</p>
+                     <p className="text-muted-foreground">Room: {roomType}</p>
+                    
+                    <div className="pt-2 border-t border-border mt-2">
+                       <p className="text-xs uppercase font-bold text-primary mb-1">Flight Information</p>
+                       {flightSearching ? (
+                         <div className="flex items-center gap-2 text-muted-foreground animate-pulse">
+                           <Loader2 className="h-3 w-3 animate-spin" />
+                           <span>Finding best flights...</span>
+                         </div>
+                       ) : flightData ? (
+                         <div className="space-y-1">
+                           <p className="text-foreground font-medium">{flightData.airline}</p>
+                           <p className="text-xs text-muted-foreground">
+                             {flightData.departureTime} → {flightData.arrivalTime}
+                           </p>
+                         </div>
+                       ) : (
+                         <p className="text-xs text-muted-foreground italic">
+                           {travelDate ? 'Updating flight schedules...' : 'Select date to see flights'}
+                         </p>
+                       )}
+                     </div>
                   </div>
 
                   <div className="border-t border-border pt-4 space-y-2 mb-4">
@@ -1055,97 +1398,6 @@ const Payment = () => {
   );
 };
 
-const DetailRow = ({ label, value }: { label: string; value: string }) => (
-  <div>
-    <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
-    <p className="text-foreground font-medium">{value}</p>
-  </div>
-);
-
-const FormInput = ({
-  label,
-  value,
-  onChange,
-  type = 'text',
-  required = false,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  type?: string;
-  required?: boolean;
-}) => (
-  <div>
-    <label className="form-label">
-      {label}
-      {required ? ' *' : ''}
-    </label>
-    <input
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="input-field"
-      required={required}
-    />
-  </div>
-);
-
-const FormSelect = ({
-  label,
-  value,
-  onChange,
-  options,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: string[];
-}) => (
-  <div>
-    <label className="form-label">{label}</label>
-    <select value={value} onChange={(e) => onChange(e.target.value)} className="input-field">
-      {options.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  </div>
-);
-
-const CheckboxCard = ({
-  title,
-  subtitle,
-  checked,
-  onChange,
-}: {
-  title: string;
-  subtitle: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}) => (
-  <label className="border border-border rounded-lg p-3 flex items-start gap-3 cursor-pointer hover:border-primary/40 transition-colors">
-    <input
-      type="checkbox"
-      checked={checked}
-      onChange={(e) => onChange(e.target.checked)}
-      className="mt-1 h-4 w-4"
-    />
-    <div>
-      <p className="font-medium text-foreground">{title}</p>
-      <p className="text-xs text-muted-foreground">{subtitle}</p>
-    </div>
-  </label>
-);
-
-const PriceRow = ({ label, value }: { label: string; value: number }) => (
-  <div className="flex justify-between text-sm">
-    <span className="text-muted-foreground">{label}</span>
-    <span className="text-foreground">₹{value.toLocaleString()}</span>
-  </div>
-);
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default Payment;
 

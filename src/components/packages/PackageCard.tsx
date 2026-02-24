@@ -66,7 +66,6 @@ export const PackageCard = ({
   affordabilityScore,
   dynamicPricing,
   specialTags,
-  badges,
   highlightQuery,
 }: PackageCardProps) => {
   const finalPrice = dynamicPricing.finalPricePerPerson || (discount > 0 ? Math.round(price * (1 - discount / 100)) : price);
@@ -88,9 +87,6 @@ export const PackageCard = ({
             Save {dynamicPricing.totalDiscountPercent}%
           </div>
         ) : null}
-        <div className="absolute bottom-3 left-3 flex gap-2">
-          {badges.bestValue ? <span className="text-[10px] bg-amber-500 text-white px-2 py-1 rounded-full">Best Value</span> : null}
-        </div>
       </div>
       <div className="p-5 flex flex-col">
         <div className="flex items-center gap-1 text-amber-500 mb-2">

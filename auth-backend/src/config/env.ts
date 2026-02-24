@@ -11,8 +11,10 @@ const toBoolean = (value: string | undefined, fallback: boolean) => {
   return value === "true";
 };
 
+const port = toNumber(process.env.PORT, 3000);
+
 export const config = {
-  port: toNumber(process.env.PORT, 3000),
+  port,
   jwtSecret: process.env.JWT_SECRET || "fallback_secret_change_me",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1h",
   smtpHost: process.env.SMTP_HOST || "",
@@ -20,6 +22,15 @@ export const config = {
   smtpUser: process.env.SMTP_USER || "",
   smtpPass: process.env.SMTP_PASS || "",
   smtpFrom: process.env.SMTP_FROM || "",
+  resendApiKey: process.env.RESEND_API_KEY || "",
+  resendFrom: process.env.RESEND_FROM || "",
+  backendUrl: process.env.BACKEND_URL || `http://localhost:${port}`,
+  supportEmail: process.env.SUPPORT_EMAIL || "mail@travelmate.in",
+  supportPhone: process.env.SUPPORT_PHONE || "+91 9342180670",
+  socialLinksLabel: process.env.SOCIAL_LINKS_LABEL || "Instagram | YouTube | LinkedIn",
+  brandLogoUrl: process.env.BRAND_LOGO_URL || "",
+  bookingTicketsBucket: process.env.SUPABASE_BOOKING_TICKETS_BUCKET || "booking-tickets",
+  razorpayWebhookSecret: process.env.RAZORPAY_WEBHOOK_SECRET || "",
   frontendUrl: process.env.FRONTEND_URL || "http://localhost:8080",
   supabaseUrl: process.env.SUPABASE_URL || "",
   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || "",
