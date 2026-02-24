@@ -12,6 +12,44 @@ const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+const mapLoginError = (rawMessage: string) => {
+  const message = rawMessage.toLowerCase();
+  if (message.includes("email not confirmed")) {
+    return {
+      userMessage: "Your email is not verified yet. Verify it first, then log in.",
+      allowResend: true,
+    };
+  }
+  if (message.includes("invalid login credentials")) {
+    return {
+      userMessage: "Email or password is incorrect. Use Forgot password if needed.",
+      allowResend: false,
+    };
+  }
+  if (message.includes("failed to fetch") || message.includes("network")) {
+    return {
+      userMessage: "Unable to reach authentication service. Check internet and Supabase project settings.",
+      allowResend: false,
+    };
+  }
+  if (message.includes("jwt") || message.includes("api key") || message.includes("invalid api key")) {
+    return {
+      userMessage: "Supabase API key/config appears invalid. Check VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY.",
+      allowResend: false,
+    };
+  }
+  if (message.includes("rate limit") || message.includes("too many requests")) {
+    return {
+      userMessage: "Too many attempts. Please wait a minute and try again.",
+      allowResend: false,
+    };
+  }
+  return {
+    userMessage: "Login failed. Please try again.",
+    allowResend: false,
+  };
+};
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +65,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const signupMessage = (location.state as { message?: string } | null)?.message;
+  const hasSupabaseConfig = Boolean(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
 
   const handleGoogleLogin = async () => {
     setSocialLoading("google");
@@ -73,18 +112,18 @@ const Login = () => {
       setError(validation.error.errors[0].message);
       return;
     }
+    if (!hasSupabaseConfig) {
+      setError("Supabase config missing. Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY, then restart frontend.");
+      return;
+    }
 
     setLoading(true);
     try {
       const { error } = await signIn(email, password);
       if (error) {
-        const message = error.message?.toLowerCase() || "";
-        if (message.includes("email not confirmed")) {
-          setError("Please verify your email first, then try to log in.");
-          setShowResendVerification(true);
-        } else {
-          setError("Invalid login credentials");
-        }
+        const mapped = mapLoginError(error.message || "");
+        setError(mapped.userMessage);
+        setShowResendVerification(mapped.allowResend);
       } else navigate("/");
     } finally {
       setLoading(false);

@@ -19,6 +19,13 @@ type BookingSnapshot = {
   locked_hotel: string | null;
 };
 
+type BookingTerms = {
+  airline?: string;
+  departureTime?: string;
+  arrivalTime?: string;
+  duration?: string;
+};
+
 type BookingRow = {
   id: string;
   booking_reference: string | null;
@@ -31,7 +38,7 @@ type BookingRow = {
   is_locked: boolean;
   locked_price_per_person: number | null;
   booking_snapshots: BookingSnapshot[] | null;
-  booking_terms: any | null;
+  booking_terms: BookingTerms | null;
   created_at: string;
 };
 
@@ -140,7 +147,7 @@ const MyBookings = () => {
         return;
       }
 
-      setBookings((withSnapshots.data as any) || []);
+      setBookings((withSnapshots.data as BookingRow[]) || []);
       setLoading(false);
     };
 
@@ -303,7 +310,7 @@ const MyBookings = () => {
                             <InfoItem
                               icon={<MapPin className="h-4 w-4" />}
                               label="Total"
-                              value={`Rs ${Number(booking.total_amount).toLocaleString()}`}
+                              value={`₹${Number(booking.total_amount).toLocaleString('en-IN')}`}
                             />
                           </div>
 
@@ -381,19 +388,25 @@ const DownloadButton = ({ bookingReference, userId }: { bookingReference: string
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      const url = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'}/api/booking/download-ticket/${bookingReference}${userId ? `?userId=${userId}` : ''}`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Failed to download ticket');
-      
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.setAttribute('download', `Antigravity-Ticket-${bookingReference}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode?.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
+      const backendBaseUrl =
+        import.meta.env.VITE_AUTH_BACKEND_URL ||
+        import.meta.env.VITE_BACKEND_URL ||
+        'http://localhost:3000';
+      const url = `${backendBaseUrl}/api/booking/download-ticket/${bookingReference}${userId ? `?userId=${userId}` : ''}`;
+      const opened = window.open(url, '_blank', 'noopener,noreferrer');
+      if (!opened) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to download ticket');
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', `TravelMate-Ticket-${bookingReference}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode?.removeChild(link);
+        window.URL.revokeObjectURL(downloadUrl);
+      }
       toast.success('Ticket downloaded successfully');
     } catch (error) {
       console.error('Download error:', error);

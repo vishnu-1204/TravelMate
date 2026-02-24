@@ -11,7 +11,10 @@ const GROUP_TOUR_EMAIL_SENT_CACHE_KEY = 'travelmate_group_tour_email_sent_v1';
 const GroupTourThankYou = () => {
   const { user } = useAuth();
   const [emailStatus, setEmailStatus] = useState<'idle' | 'sending' | 'sent' | 'failed' | 'missing_user'>('idle');
-  const backendBaseUrl = import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000';
+  const backendBaseUrl =
+    import.meta.env.VITE_AUTH_BACKEND_URL ||
+    import.meta.env.VITE_BACKEND_URL ||
+    'http://localhost:3000';
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     'Hi, I submitted my group tour booking request. Please help me with the next steps.'
   )}`;

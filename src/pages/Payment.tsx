@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { User, Calendar, Lock, ArrowLeft, Check, Loader2, Plus, Trash2, CreditCard, Receipt, UserRound } from 'lucide-react';
+import { User, Calendar, Lock, ArrowLeft, Check, Loader2, Plus, Trash2, CreditCard, UserRound } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -69,6 +70,101 @@ type BookingDraft = {
   roomType: RoomType;
   extras: ExtraServices;
 };
+
+interface BookingTerms {
+  cancellationPolicy: string;
+  termsVersion: string;
+  lockedNotice: string;
+  acceptedAt: string;
+  destination: string;
+  travelDate: string;
+  travelCategory: string;
+  duration: string;
+  airline: string;
+  departureTime: string;
+  arrivalTime: string;
+  itinerary: {
+    days: unknown[];
+    nights: unknown[];
+    activities: string[];
+    included: string[];
+    excluded: string[];
+  };
+  included: string[];
+  excluded: string[];
+  travelDetails: {
+    transportDetails: string;
+    checkIn: string;
+    checkOut: string;
+  };
+  emergencyContact: string;
+  travelGuidelines: string[];
+  documentsToCarry: string[];
+  importantNotes: string[];
+  flightDataSource: 'amadeus' | 'fallback';
+  email: {
+    sent: boolean;
+    status: 'pending' | 'sending' | 'sent' | 'queued' | 'failed';
+    sentAt: string | null;
+  };
+  manualFollowUpRequired: boolean;
+  manualFollowUpReason: string | null;
+  manualFollowUpLoggedAt: string | null;
+}
+
+interface BookingInsertPayload {
+  user_id: string;
+  package_id: string;
+  package_title: string;
+  travelers: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  total_amount: number;
+  payment_status: 'paid';
+  payment_verified: boolean;
+  payment_id: string;
+  booking_reference: string;
+  email_sent: boolean;
+  booking_status: 'confirmed';
+  ticket_pdf_url: null;
+  locked_price_per_person: number;
+  locked_total_amount: number;
+  booking_terms: BookingTerms;
+  is_locked: boolean;
+}
+
+interface ConfirmationEmailPayload {
+  email: string;
+  fullName: string;
+  phone: string;
+  bookingReference: string;
+  bookingId: string;
+  paymentId: string;
+  packageTitle: string;
+  destination: string;
+  travelDate: string;
+  passengers: number;
+  totalAmount: number;
+  travelCategory: string;
+  itineraryDays: unknown[];
+  itineraryNights: unknown[];
+  transportDetails: string;
+  activities: string[];
+  checkIn: string;
+  checkOut: string;
+  emergencyContact: string;
+  travelGuidelines: string[];
+  documentsToCarry: string[];
+  importantNotes: string[];
+  duration: string;
+  airline: string;
+  departureTime: string;
+  arrivalTime: string;
+  included: string[];
+  excluded: string[];
+}
 
 const ROOM_SURCHARGE_PER_PERSON: Record<RoomType, number> = {
   Single: 1200,
@@ -152,46 +248,6 @@ const FormSelect = ({
   </div>
 );
 
-const DownloadButton = ({ bookingReference, userId }: { bookingReference: string; userId?: string }) => {
-  const [downloading, setDownloading] = useState(false);
-
-  const handleDownload = async () => {
-    setDownloading(true);
-    try {
-      const url = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'}/api/booking/download-ticket/${bookingReference}${userId ? `?userId=${userId}` : ''}`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Failed to download ticket');
-      
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.setAttribute('download', `Antigravity-Ticket-${bookingReference}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode?.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
-      toast.success('Ticket downloaded successfully');
-    } catch (error) {
-      console.error('Download error:', error);
-      toast.error('Failed to download ticket. Please try again.');
-    } finally {
-      setDownloading(false);
-    }
-  };
-
-  return (
-    <button
-      onClick={handleDownload}
-      disabled={downloading}
-      className="btn-outline text-xs px-3 py-1 flex items-center gap-1 mt-3"
-    >
-      {downloading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Receipt className="h-3 w-3" />}
-      {downloading ? 'Downloading...' : 'Download Ticket'}
-    </button>
-  );
-};
-
 const CheckboxCard = ({
   title,
   subtitle,
@@ -220,7 +276,7 @@ const CheckboxCard = ({
 const PriceRow = ({ label, value }: { label: string; value: number }) => (
   <div className="flex justify-between text-sm">
     <span className="text-muted-foreground">{label}</span>
-    <span className="text-foreground">₹{value.toLocaleString()}</span>
+    <span className="text-foreground">₹{value.toLocaleString('en-IN')}</span>
   </div>
 );
 
@@ -235,7 +291,10 @@ const Payment = () => {
   const [packageData, setPackageData] = useState<TravelPackage | null>(null);
   const [packageLoading, setPackageLoading] = useState(true);
   const [packageError, setPackageError] = useState('');
-  const backendBaseUrl = import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000';
+  const backendBaseUrl =
+    import.meta.env.VITE_AUTH_BACKEND_URL ||
+    import.meta.env.VITE_BACKEND_URL ||
+    'http://localhost:3000';
   const storageKey = useMemo(() => `travelmate-booking-draft-${id || 'unknown'}`, [id]);
 
   const [travelers, setTravelers] = useState<Traveler[]>([createTraveler(1, user?.email || '')]);
@@ -247,16 +306,19 @@ const Payment = () => {
     travelInsurance: false,
   });
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [bookingRef, setBookingRef] = useState('');
+  const [bookingEmail, setBookingEmail] = useState('');
   const [formError, setFormError] = useState('');
   const [emailNotice, setEmailNotice] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [processingMessage, setProcessingMessage] = useState('Processing...');
   const [groupFormOpened, setGroupFormOpened] = useState(false);
   const [groupFormUrlInput, setGroupFormUrlInput] = useState('');
   const [groupFormReady, setGroupFormReady] = useState(hasGroupTourFormUrl());
   const [groupRedirectNote, setGroupRedirectNote] = useState('');
   const [flightData, setFlightData] = useState<{ airline: string; departureTime: string; arrivalTime: string } | null>(null);
   const [flightSearching, setFlightSearching] = useState(false);
+  const [flightApiFailed, setFlightApiFailed] = useState(false);
   const [autoSaveProfile, setAutoSaveProfile] = useState(true);
   const [profileLoading, setProfileLoading] = useState(false);
 
@@ -326,6 +388,7 @@ const Payment = () => {
     const fetchFlight = async () => {
       setFlightSearching(true);
       setFlightData(null);
+      setFlightApiFailed(false);
       try {
         let destCode = packageData.destination;
         if (packageData.id.startsWith('amadeus-')) {
@@ -338,8 +401,11 @@ const Payment = () => {
         if (response.ok) {
           const data = await response.json();
           setFlightData(data);
+        } else {
+          setFlightApiFailed(true);
         }
       } catch (err) {
+        setFlightApiFailed(true);
         console.error('Failed to fetch flight:', err);
       } finally {
         setFlightSearching(false);
@@ -413,7 +479,7 @@ const Payment = () => {
     const normalizedAadhaar = primary.aadhaar.replace(/\D/g, '');
     
     // Create payload with available fields
-    const payload: any = {
+    const payload: Record<string, string | null> = {
       id: user.id,
       full_name: primary.fullName || null,
       phone: primary.mobile || null,
@@ -525,7 +591,7 @@ const Payment = () => {
     y += 6;
     doc.text(`Passengers: ${totalPassengers}`, 16, y);
     y += 6;
-    doc.text(`Amount Paid: Rs ${grandTotal.toLocaleString()}`, 16, y);
+    doc.text(`Amount Paid: ₹${grandTotal.toLocaleString('en-IN')}`, 16, y);
     y += 10;
 
     if (packageData.itinerary?.days?.length) {
@@ -741,6 +807,7 @@ const Payment = () => {
 
     setFormError('');
     setLoading(true);
+    setProcessingMessage('Processing...');
     await delay(600);
     if (!user?.id) {
       toast.error('Please login again to complete booking.');
@@ -755,7 +822,7 @@ const Payment = () => {
     const registeredEmail = user.email?.trim().toLowerCase() || primaryTraveler.email.trim().toLowerCase();
     const [firstName, ...lastNameParts] = primaryTraveler.fullName.trim().split(/\s+/);
     const lastName = lastNameParts.join(' ') || '-';
-    const bookingTerms = {
+    const bookingTerms: BookingTerms = {
       cancellationPolicy:
         (packageData as unknown as { cancellationPolicy?: string }).cancellationPolicy ||
         'Cancellation charges may apply based on departure date.',
@@ -794,14 +861,18 @@ const Payment = () => {
         'Hotel check-in/check-out times depend on property policy.',
         'Itinerary timings can shift due to weather or operational needs.',
       ],
+      flightDataSource: flightData && !flightApiFailed ? 'amadeus' : 'fallback',
       email: {
         sent: false,
         status: 'pending',
         sentAt: null,
       },
+      manualFollowUpRequired: false,
+      manualFollowUpReason: null,
+      manualFollowUpLoggedAt: null,
     };
 
-    const bookingInsertPayload = {
+    const bookingInsertPayload: BookingInsertPayload = {
       user_id: user.id,
       package_id: packageData.id,
       package_title: packageData.title,
@@ -824,7 +895,40 @@ const Payment = () => {
       is_locked: true,
     };
 
+    const insertBookingViaBackend = async () => {
+      const response = await fetch(`${backendBaseUrl}/api/booking/create-booking`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking: bookingInsertPayload }),
+      });
+      const result = (await response.json().catch(() => null)) as { message?: string } | null;
+      if (!response.ok) {
+        throw new Error(result?.message || 'Backend booking save failed.');
+      }
+      return result;
+    };
+
     let { error: bookingError } = await supabase.from('bookings').insert(bookingInsertPayload);
+
+    // Network retry for intermittent connectivity issues.
+    if (bookingError && /failed to fetch|network/i.test(bookingError.message || '')) {
+      await delay(450);
+      const retryNetwork = await supabase.from('bookings').insert(bookingInsertPayload);
+      bookingError = retryNetwork.error;
+    }
+
+    // If direct browser-to-Supabase write still fails, fall back to backend write path.
+    if (bookingError && /failed to fetch|network/i.test(bookingError.message || '')) {
+      try {
+        setProcessingMessage('Connectivity issue detected. Saving booking via secure fallback...');
+        await insertBookingViaBackend();
+        bookingError = null;
+      } catch (fallbackInsertError) {
+        const message =
+          fallbackInsertError instanceof Error ? fallbackInsertError.message : 'Could not save booking via fallback.';
+        bookingError = { ...bookingError, message };
+      }
+    }
 
     // Backward compatibility when DB migration with lock/snapshot columns is not applied yet.
     if (
@@ -854,12 +958,53 @@ const Payment = () => {
     }
 
     if (bookingError) {
-      toast.error(bookingError.message || 'Payment succeeded but booking save failed.');
+      const bookingErrorMessage = bookingError.message || '';
+      if (/failed to fetch|network/i.test(bookingErrorMessage)) {
+        toast.error('Could not reach booking service. Check your internet and backend URL, then retry.');
+      } else {
+        toast.error(bookingErrorMessage || 'Payment succeeded but booking save failed.');
+      }
       setLoading(false);
       return;
     }
 
+    const markManualFollowUp = async (reason: string, details?: string) => {
+      const now = new Date().toISOString();
+      const message = details ? `${reason}: ${details}` : reason;
+      const termsWithFollowUp: BookingTerms = {
+        ...bookingTerms,
+        email: {
+          ...bookingTerms.email,
+          status: 'queued',
+        },
+        manualFollowUpRequired: true,
+        manualFollowUpReason: message,
+        manualFollowUpLoggedAt: now,
+      };
+
+      const { error: updateError } = await supabase
+        .from('bookings')
+        .update({
+          booking_terms: termsWithFollowUp,
+          email_sent: false,
+          booking_status: 'confirmed',
+          email_last_error: message,
+          email_last_attempt_at: now,
+        })
+        .eq('user_id', user.id)
+        .eq('booking_reference', ref);
+
+      if (updateError) {
+        console.error('manual follow-up flag update failed:', updateError);
+      }
+    };
+
+    if (flightApiFailed && packageData.transportMode === 'flight') {
+      await markManualFollowUp('Manual Follow-up Required', 'Amadeus flight details unavailable');
+    }
+
     try {
+      setProcessingMessage('Saving booking and dispatching confirmation email...');
       const response = await fetch(`${backendBaseUrl}/api/booking/send-booking-confirmation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -872,6 +1017,7 @@ const Payment = () => {
 
       const result = (await response.json().catch(() => null)) as { status?: string; message?: string } | null;
       if (!response.ok) {
+        await markManualFollowUp('Manual Follow-up Required', result?.message || 'Primary email workflow failed');
         throw new Error(result?.message || 'Confirmation email workflow failed');
       }
 
@@ -883,63 +1029,69 @@ const Payment = () => {
       }
     } catch {
       try {
+        setProcessingMessage('Primary confirmation failed, retrying via fallback email channel...');
+        const fallbackPayload: ConfirmationEmailPayload = {
+          email: registeredEmail,
+          fullName: primaryTraveler.fullName.trim(),
+          phone: normalizedPrimaryMobile,
+          bookingReference: ref,
+          bookingId: ref,
+          paymentId,
+          packageTitle: packageData.title,
+          destination: packageData.location,
+          travelDate,
+          passengers: totalPassengers,
+          totalAmount: grandTotal,
+          travelCategory: packageData.category,
+          itineraryDays: packageData.itinerary?.days || [],
+          itineraryNights: packageData.itinerary?.nights || [],
+          transportDetails: packageData.transportMode,
+          activities: packageData.highlights,
+          checkIn: travelDate || '-',
+          checkOut: '-',
+          emergencyContact: '+91 9342180670',
+          travelGuidelines: [
+            'Arrive at the pickup point at least 45 minutes before departure.',
+            'Keep emergency contacts active during your trip.',
+            'Follow local regulations and guide instructions at all times.',
+          ],
+          documentsToCarry: ['Government ID proof', 'Booking confirmation email', 'Any required permits/visa documents'],
+          importantNotes: [
+            'Hotel check-in/check-out times depend on property policy.',
+            'Itinerary timings can shift due to weather or operational needs.',
+          ],
+          duration: packageData.duration,
+          airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
+          departureTime: flightData?.departureTime || '06:30 AM',
+          arrivalTime: flightData?.arrivalTime || '09:45 AM',
+          included: Array.isArray(packageData.included) ? packageData.included : [],
+          excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
+        };
         const fallbackResponse = await fetch(`${backendBaseUrl}/api/booking/confirmation-email`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: registeredEmail,
-            fullName: primaryTraveler.fullName.trim(),
-            phone: normalizedPrimaryMobile,
-            bookingReference: ref,
-            bookingId: ref,
-            paymentId,
-            packageTitle: packageData.title,
-            destination: packageData.location,
-            travelDate,
-            passengers: totalPassengers,
-            totalAmount: grandTotal,
-            travelCategory: packageData.category,
-            itineraryDays: packageData.itinerary?.days || [],
-            itineraryNights: packageData.itinerary?.nights || [],
-            transportDetails: packageData.transportMode,
-            activities: packageData.highlights,
-            checkIn: travelDate || '-',
-            checkOut: '-',
-            emergencyContact: '+91 9342180670',
-            travelGuidelines: [
-              'Arrive at the pickup point at least 45 minutes before departure.',
-              'Keep emergency contacts active during your trip.',
-              'Follow local regulations and guide instructions at all times.',
-            ],
-            documentsToCarry: ['Government ID proof', 'Booking confirmation email', 'Any required permits/visa documents'],
-            importantNotes: [
-              'Hotel check-in/check-out times depend on property policy.',
-              'Itinerary timings can shift due to weather or operational needs.',
-            ],
-            duration: packageData.duration,
-            airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
-            departureTime: flightData?.departureTime || '06:30 AM',
-            arrivalTime: flightData?.arrivalTime || '09:45 AM',
-            included: Array.isArray(packageData.included) ? packageData.included : [],
-            excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
-          }),
+          body: JSON.stringify(fallbackPayload),
         });
 
         if (fallbackResponse.ok) {
           setEmailNotice(`Confirmation email sent to ${registeredEmail}.`);
           toast.success(`Booking confirmed! Email sent to ${registeredEmail}.`);
         } else {
+          const fallbackJson = (await fallbackResponse.json().catch(() => null)) as { message?: string } | null;
+          await markManualFollowUp('Manual Follow-up Required', fallbackJson?.message || 'Fallback email workflow failed');
           setEmailNotice('Booking confirmed. Confirmation email will be sent shortly.');
           toast.info('Booking confirmed. Confirmation email will be sent shortly.');
         }
       } catch {
+        await markManualFollowUp('Manual Follow-up Required', 'Email dispatch failed in both primary and fallback channels');
         setEmailNotice('Booking confirmed. Confirmation email will be sent shortly.');
         toast.info('Booking confirmed. Confirmation email will be sent shortly.');
       }
     }
 
     setBookingRef(ref);
-    setSuccess(true);
+    setBookingEmail(registeredEmail);
+    setShowSuccessModal(true);
     // Trigger Profile Auto-Save
     if (autoSaveProfile) {
       void updateUserProfile();
@@ -955,62 +1107,6 @@ const Payment = () => {
       toast.info('Could not auto-download itinerary PDF. Please try again from package details.');
     }
   };
-
-  if (success) {
-    return (
-      <Layout>
-        <PageTransition>
-          <div className="min-h-[60vh] flex items-center justify-center py-12">
-            <div className="bg-card rounded-2xl shadow-card p-8 max-w-xl w-full">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Check className="h-8 w-8 text-green-600" />
-              </div>
-              <h1 className="text-2xl font-bold text-foreground mb-2 text-center">Booking Confirmed!</h1>
-              <p className="text-muted-foreground mb-6 text-center">
-                Thank you for booking {packageData.title}. Your booking for {totalPassengers}{' '}
-                {totalPassengers === 1 ? 'traveler' : 'travelers'} is confirmed.
-              </p>
-              {emailNotice ? <p className="text-sm text-muted-foreground mb-4 text-center">{emailNotice}</p> : null}
-
-              <div className="border-2 border-dashed border-primary/40 rounded-xl p-5 mb-6 bg-primary/5">
-                <p className="text-xs uppercase tracking-wide mb-1">Travel Ticket</p>
-                <p className="text-lg font-bold text-foreground mt-1">{packageData.title}</p>
-                <p className="text-sm text-muted-foreground">{packageData.location}</p>
-                <div className="grid grid-cols-2 gap-3 mt-4 text-sm">
-                  <div>
-                    <p className="text-muted-foreground">Reference</p>
-                    <p className="font-semibold text-primary">{bookingRef}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Travel Date</p>
-                    <p className="font-semibold text-foreground">{travelDate}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Passengers</p>
-                    <p className="font-semibold text-foreground">{totalPassengers}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Amount Paid</p>
-                    <p className="font-semibold text-foreground">₹{grandTotal.toLocaleString()}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <Link to="/my-bookings" className="btn-primary w-full text-center">
-                  View My Bookings
-                </Link>
-                <Link to="/" className="btn-outline w-full text-center">
-                  Return to Home
-                </Link>
-              </div>
-            </div>
-          </div>
-        </PageTransition>
-      </Layout>
-    );
-  }
-
   return (
     <Layout>
       <PageTransition>
@@ -1041,7 +1137,7 @@ const Payment = () => {
                     <DetailRow label="Highlights" value={`${packageData.highlights.length}`} />
                     <DetailRow label="Included Items" value={`${packageData.included.length}`} />
                     <DetailRow label="Excluded Items" value={`${packageData.excluded.length}`} />
-                    <DetailRow label="Price per person" value={`₹${pricePerPerson.toLocaleString()}`} />
+                    <DetailRow label="Price per person" value={`₹${pricePerPerson.toLocaleString('en-IN')}`} />
                   </div>
                 </div>
 
@@ -1245,13 +1341,13 @@ const Payment = () => {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <CheckboxCard
                       title="Meals"
-                      subtitle={`+₹${EXTRA_PRICING.mealsPerPerson} / person`}
+                      subtitle={`+₹${EXTRA_PRICING.mealsPerPerson.toLocaleString('en-IN')} / person`}
                       checked={extras.meals}
                       onChange={(checked) => setExtras((prev) => ({ ...prev, meals: checked }))}
                     />
                     <CheckboxCard
                       title="Airport Pickup"
-                      subtitle={`+₹${EXTRA_PRICING.airportPickupFlat} flat`}
+                      subtitle={`+₹${EXTRA_PRICING.airportPickupFlat.toLocaleString('en-IN')} flat`}
                       checked={extras.airportPickup}
                       onChange={(checked) =>
                         setExtras((prev) => ({ ...prev, airportPickup: checked }))
@@ -1259,7 +1355,7 @@ const Payment = () => {
                     />
                     <CheckboxCard
                       title="Travel Insurance"
-                      subtitle={`+₹${EXTRA_PRICING.insurancePerPerson} / person`}
+                      subtitle={`+₹${EXTRA_PRICING.insurancePerPerson.toLocaleString('en-IN')} / person`}
                       checked={extras.travelInsurance}
                       onChange={(checked) =>
                         setExtras((prev) => ({ ...prev, travelInsurance: checked }))
@@ -1313,7 +1409,7 @@ const Payment = () => {
                       </p>
                       <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
                         <Lock className="h-4 w-4" />
-                        <span>Secure payment flow. Final amount: ₹{grandTotal.toLocaleString()}</span>
+                        <span>Secure payment flow. Final amount: ₹{grandTotal.toLocaleString('en-IN')}</span>
                       </div>
                     </>
                   )}
@@ -1372,7 +1468,7 @@ const Payment = () => {
                     <PriceRow label="Taxes & Fees" value={taxes} />
                     <div className="flex justify-between font-bold text-lg pt-3 border-t border-border">
                       <span className="text-foreground">Total</span>
-                      <span className="text-primary">₹{grandTotal.toLocaleString()}</span>
+                      <span className="text-primary">₹{grandTotal.toLocaleString('en-IN')}</span>
                     </div>
                     <div className="text-sm text-muted-foreground">
                       Total Passengers: <span className="font-medium text-foreground">{totalPassengers}</span>
@@ -1386,13 +1482,50 @@ const Payment = () => {
                     className="btn-primary w-full mt-6 flex items-center justify-center gap-2"
                   >
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                    {isGroupTour ? 'Open Group Tour Form' : `Book Now - Pay ₹${grandTotal.toLocaleString()}`}
+                    {isGroupTour
+                      ? 'Open Group Tour Form'
+                      : loading
+                        ? processingMessage
+                        : `Book Now - Pay ₹${grandTotal.toLocaleString('en-IN')}`}
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+          <DialogContent className="max-w-xl border-slate-700/70 bg-slate-950 text-slate-100">
+            <DialogHeader className="space-y-3">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/20 ring-1 ring-emerald-400/40">
+                <Check className="h-7 w-7 text-emerald-300" />
+              </div>
+              <DialogTitle className="text-center text-2xl font-semibold text-white">Booking Confirmed</DialogTitle>
+              <DialogDescription className="text-center text-slate-300">
+                Check your email ({bookingEmail}) for your ticket.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="rounded-xl border border-slate-700/80 bg-slate-900/70 p-4">
+              <p className="text-xs uppercase tracking-wide text-slate-400">Reference ID</p>
+              <p className="mt-1 font-mono text-lg text-cyan-300">{bookingRef}</p>
+              {emailNotice ? <p className="mt-3 text-sm text-slate-300">{emailNotice}</p> : null}
+            </div>
+            <DialogFooter className="gap-3 sm:justify-center">
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => {
+                  setShowSuccessModal(false);
+                  navigate('/my-bookings');
+                }}
+              >
+                View My Bookings
+              </button>
+              <button type="button" className="btn-outline" onClick={() => setShowSuccessModal(false)}>
+                Continue Browsing
+              </button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </PageTransition>
     </Layout>
   );

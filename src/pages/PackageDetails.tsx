@@ -29,7 +29,10 @@ export default function PackageDetails() {
   const [openItineraryDay, setOpenItineraryDay] = useState<number>(1);
   const [itineraryView, setItineraryView] = useState<'story' | 'bullet'>('story');
 
-  const backendUrl = import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000';
+  const backendUrl =
+    import.meta.env.VITE_AUTH_BACKEND_URL ||
+    import.meta.env.VITE_BACKEND_URL ||
+    'http://localhost:3000';
   const adminToken = import.meta.env.VITE_PACKAGE_ADMIN_TOKEN as string | undefined;
   useEffect(() => {
     let active = true;

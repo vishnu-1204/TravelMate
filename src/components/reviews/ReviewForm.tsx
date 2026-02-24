@@ -15,7 +15,10 @@ export default function ReviewForm({ packageId, onReviewSubmitted }: ReviewFormP
   const [submitting, setSubmitting] = useState(false);
   const [hoveredRating, setHoveredRating] = useState(0);
 
-  const backendUrl = import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3000';
+  const backendUrl =
+    import.meta.env.VITE_AUTH_BACKEND_URL ||
+    import.meta.env.VITE_BACKEND_URL ||
+    'http://localhost:3000';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

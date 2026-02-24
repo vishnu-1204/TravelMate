@@ -20,6 +20,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
 import MyBookings from "./pages/MyBookings";
+import AdminBookingMonitor from "./pages/AdminBookingMonitor";
 import GroupTourThankYou from "./pages/GroupTourThankYou";
 import NotFound from "./pages/NotFound";
 
@@ -67,6 +68,14 @@ const AnimatedRoutes = () => {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/bookings"
+          element={
+            <ProtectedRoute>
+              <AdminBookingMonitor />
             </ProtectedRoute>
           }
         />

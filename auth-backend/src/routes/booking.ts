@@ -62,6 +62,14 @@ type BookingRecord = {
   booking_status: string | null;
 };
 
+type AdminBookingRow = {
+  booking_reference: string | null;
+  email: string;
+  total_amount: number;
+  email_sent: boolean | null;
+  created_at: string;
+};
+
 type EmailPayload = {
   fullName: string;
   email: string;
@@ -100,6 +108,10 @@ const validEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.tr
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const toList = (value: unknown, fallback: string[] = []) =>
   Array.isArray(value) ? value.map((v) => String(v || "").trim()).filter(Boolean) : fallback;
+const isAdminRequest = (req: Request) => {
+  if (!config.packageAdminToken) return false;
+  return req.header("x-admin-token") === config.packageAdminToken;
+};
 
 const toItinerarySummary = (payload: EmailPayload) => {
   if (!payload.itineraryDays.length) return ["Detailed itinerary will be shared shortly."];
@@ -264,7 +276,13 @@ const processStoredBooking = async (booking: BookingRecord, force = false) => {
   const sent = await sendWithRetry(payload, pdf);
   if (!sent.ok) {
     await safeUpdate(booking.id, {
-      booking_terms: { ...(booking.booking_terms || {}), email: { sent: false, status: "failed", attempts: sent.attempts, lastAttemptAt: new Date().toISOString() } },
+      booking_terms: {
+        ...(booking.booking_terms || {}),
+        email: { sent: false, status: "failed", attempts: sent.attempts, lastAttemptAt: new Date().toISOString() },
+        manualFollowUpRequired: true,
+        manualFollowUpReason: "Manual Follow-up Required: Email dispatch failed",
+        manualFollowUpLoggedAt: new Date().toISOString(),
+      },
       email_sent: false,
       email_attempts: sent.attempts,
       email_last_error: sent.error,
@@ -311,6 +329,44 @@ const sendBookingConfirmationHandler = async (req: Request, res: Response) => {
 router.post("/confirm-after-payment", sendBookingConfirmationHandler);
 router.post("/send-booking-confirmation", sendBookingConfirmationHandler);
 
+router.post("/create-booking", async (req: Request, res: Response) => {
+  const body = req.body as { booking?: Record<string, unknown> };
+  if (!body.booking) return res.status(400).json({ message: "booking payload is required" });
+
+  const client = getSupabase();
+  if (!client) return res.status(500).json({ message: "Supabase service role config missing" });
+
+  let { error } = await client.from("bookings").insert(body.booking);
+
+  if (
+    error &&
+    /booking_terms|locked_price_per_person|locked_total_amount|is_locked|email_sent|booking_status|ticket_pdf_url|schema cache/i.test(
+      error.message
+    )
+  ) {
+    const legacyPayload = {
+      user_id: body.booking.user_id as string,
+      package_id: body.booking.package_id as string,
+      package_title: body.booking.package_title as string,
+      travelers: body.booking.travelers as number,
+      first_name: body.booking.first_name as string,
+      last_name: body.booking.last_name as string,
+      email: body.booking.email as string,
+      phone: body.booking.phone as string,
+      total_amount: body.booking.total_amount as number,
+      payment_status: body.booking.payment_status as string,
+      payment_verified: body.booking.payment_verified as boolean,
+      payment_id: body.booking.payment_id as string,
+      booking_reference: body.booking.booking_reference as string,
+    };
+    const retry = await client.from("bookings").insert(legacyPayload);
+    error = retry.error;
+  }
+
+  if (error) return res.status(500).json({ message: error.message });
+  return res.status(201).json({ message: "Booking saved" });
+});
+
 router.post("/resend-confirmation", async (req: Request, res: Response) => {
   const { bookingReference, userId } = req.body as { bookingReference?: string; userId?: string };
   if (!bookingReference) return res.status(400).json({ message: "bookingReference is required" });
@@ -324,6 +380,22 @@ router.post("/resend-confirmation", async (req: Request, res: Response) => {
     console.error("resend-confirmation failed:", error);
     return res.status(500).json({ message: "Failed to resend confirmation email" });
   }
+});
+
+router.get("/admin/recent-bookings", async (req: Request, res: Response) => {
+  if (!isAdminRequest(req)) return res.status(401).json({ message: "Unauthorized admin request" });
+  const client = getSupabase();
+  if (!client) return res.status(500).json({ message: "Supabase service role config missing" });
+
+  const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
+  const { data, error } = await client
+    .from("bookings")
+    .select("booking_reference,email,total_amount,email_sent,created_at")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) return res.status(500).json({ message: error.message });
+  return res.status(200).json({ bookings: (data || []) as AdminBookingRow[] });
 });
 
 router.post("/razorpay-webhook", async (req: Request, res: Response) => {
