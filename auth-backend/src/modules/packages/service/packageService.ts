@@ -11,6 +11,7 @@ import {
   getPackageByIdFromCache,
   getPackagesFromCache,
   pruneExpiredRows,
+  updatePackageGroupBookings,
   upsertPackages,
 } from '../repository/supabasePackageRepository';
 import {
@@ -309,4 +310,8 @@ export const setPackageImage = async (packageId: string, imageUrl: string, image
 
 export const getPackageHistory = async (packageId: string) => {
   return getPackageVersionHistory(packageId);
+};
+
+export const updateGroupBookings = async (packageId: string, travelDate: string, travelers: number) => {
+  return updatePackageGroupBookings(packageId, travelDate, travelers);
 };

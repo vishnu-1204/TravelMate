@@ -71,7 +71,10 @@ const Login = () => {
     setInfo("");
     setShowResendVerification(false);
 
-    const validation = loginSchema.safeParse({ email, password });
+    // Normalize email: trim and lowercase
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const validation = loginSchema.safeParse({ email: normalizedEmail, password });
     if (!validation.success) {
       setError(validation.error.errors[0].message);
       return;
@@ -79,12 +82,21 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const { error } = await signIn(email, password);
+      console.log(`[Login] Attempting sign-in for: ${normalizedEmail}`);
+      const { error } = await signIn(normalizedEmail, password);
+      
       if (error) {
+        console.warn(`[Login] Sign-in failed: ${error.message}`);
         const mapped = mapLoginError(error.message || "");
         setError(mapped.userMessage);
         setShowResendVerification(mapped.allowResend);
-      } else navigate("/");
+      } else {
+        console.log(`[Login] Sign-in successful for: ${normalizedEmail}`);
+        navigate("/");
+      }
+    } catch (err: any) {
+      console.error(`[Login] Unexpected error:`, err);
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }

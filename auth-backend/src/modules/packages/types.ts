@@ -10,6 +10,12 @@ export const PACKAGE_CATEGORIES = [
 
 export type PackageCategory = (typeof PACKAGE_CATEGORIES)[number];
 
+export type GroupDeparture = {
+  date: string;
+  maxCapacity: number;
+  currentBookings: number;
+};
+
 export type PackageItinerary = {
   days: { day: number; title: string; activities: string[] }[];
   nights: { night: number; accommodation: string; meals: string }[];
@@ -105,6 +111,8 @@ export type TravelPackage = {
   badges: { bestValue: boolean; mostAffordable: boolean };
   popularityScore: number;
   nearbyAlternatives: string[];
+  isGroupTour?: boolean;
+  groupDepartures?: GroupDeparture[];
 };
 
 export type PackageListQuery = {

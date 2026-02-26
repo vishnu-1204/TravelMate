@@ -4,8 +4,11 @@ import PDFDocument from "pdfkit";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { config } from "../config/env";
 import { getDb } from "../db";
+import { authenticateToken, AuthRequest } from "../middleware/auth";
+import { Resend } from "resend";
 import { sendBookingConfirmation } from "../services/email.service";
 import { searchFlightOffers } from "../modules/packages/provider/amadeusProvider";
+import { getPackageById } from "../modules/packages/service/packageService";
 import { logger } from "../server";
 
 const router = Router();
@@ -15,34 +18,48 @@ type ItineraryDay = { day: number; title: string; activities: string[]; narrativ
 type ItineraryNight = { night: number; accommodation: string; meals: string };
 
 type BookingEmailBody = {
+  // Common Fields
   email?: string;
-  fullName?: string;
+  travelerName?: string;
+  fullName?: string; // For compatibility
   phone?: string;
   bookingReference?: string;
   bookingId?: string;
   paymentId?: string;
+  userId?: string;
+  
+  // Package/Trip Info
+  packageId?: string;
   packageTitle?: string;
   destination?: string;
   travelDate?: string;
-  passengers?: number;
   totalAmount?: number;
-  travelCategory?: string;
-  itineraryDays?: ItineraryDay[];
-  itineraryNights?: ItineraryNight[];
-  transportDetails?: string;
-  activities?: string[];
-  checkIn?: string;
-  checkOut?: string;
-  emergencyContact?: string;
-  travelGuidelines?: string[];
-  documentsToCarry?: string[];
-  importantNotes?: string[];
+  travelers?: number;
+  passengers?: number; // For compatibility
+  travelCategory?: string; // For compatibility
   duration?: string;
+  roomType?: string;
+  
+  // Transport
   airline?: string;
   departureTime?: string;
   arrivalTime?: string;
+  transportType?: 'flight' | 'bus' | 'train' | 'other';
+  transportDetails?: string; // For compatibility
+  
+  // Detailed Content
+  itinerary?: ItineraryDay[];
+  itineraryDays?: ItineraryDay[]; // For compatibility
+  itineraryNights?: ItineraryNight[]; // For compatibility
+  activities?: string[]; // For compatibility
   included?: string[];
   excluded?: string[];
+  checkIn?: string;
+  checkOut?: string;
+  emergencyContact?: string;
+  travelGuidelines?: string[]; // For compatibility
+  documentsToCarry?: string[]; // For compatibility
+  importantNotes?: string[]; // For compatibility
 };
 
 type BookingRecord = {
@@ -118,8 +135,7 @@ const isAdminRequest = (req: Request) => {
 const toItinerarySummary = (payload: EmailPayload) => {
   if (!payload.itineraryDays.length) return ["Detailed itinerary will be shared shortly."];
   return payload.itineraryDays.map((day) => {
-    const detail = day.activities?.length ? day.activities.join(", ") : day.narrative || "";
-    return `Day ${day.day}: ${day.title}${detail ? ` - ${detail}` : ""}`;
+    return `Day ${day.day}: ${day.title} - ${day.activities?.join(", ") || day.narrative || ""}`;
   });
 };
 
@@ -230,7 +246,11 @@ const sendWithRetry = async (payload: EmailPayload, pdf: Buffer) => {
           destination: payload.destination,
           travelDate: payload.travelDate,
           totalAmount: payload.totalAmount,
-          itinerarySummary: toItinerarySummary(payload),
+          itinerarySummary: payload.itineraryDays.map(it => ({
+            day: it.day,
+            title: it.title,
+            description: it.activities?.join(", ") || it.narrative || ""
+          })),
           supportEmail: config.supportEmail,
           supportPhone: config.supportPhone,
           duration: payload.duration,
@@ -249,8 +269,8 @@ const sendWithRetry = async (payload: EmailPayload, pdf: Buffer) => {
         }
       );
       return { ok: true, attempts: attempt };
-    } catch (error) {
-      lastError = error as Error;
+    } catch (err: any) {
+      lastError = err as Error;
       if (attempt < EMAIL_RETRY_LIMIT) await sleep(attempt * 700);
     }
   }
@@ -404,12 +424,13 @@ router.get("/user-bookings", async (req: Request, res: Response) => {
   if (!userId) return res.status(400).json({ message: "userId is required" });
 
   try {
+    const { getDb } = require("../db");
     const db = getDb();
     const rows = await new Promise<any[]>((resolve, reject) => {
       db.all(
         `SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC`,
         [userId],
-        (err, rows) => {
+        (err: Error | null, rows: any[]) => {
           if (err) reject(err);
           else resolve(rows);
         }
@@ -476,10 +497,10 @@ router.get("/admin/recent-bookings", async (req: Request, res: Response) => {
     // 1. Fetch from SQLite
     const db = getDb();
     const localRows = await new Promise<any[]>((resolve, reject) => {
-      db.all(
+      db.all<any[]>(
         `SELECT booking_reference, email, total_amount, email_sent, created_at FROM bookings ORDER BY created_at DESC LIMIT ?`,
         [limit],
-        (err, rows) => {
+        (err: Error | null, rows: any[]) => {
           if (err) reject(err);
           else resolve(rows || []);
         }
@@ -739,18 +760,30 @@ function generateTicketPdf(data: EmailPayload) {
     doc.fontSize(14).fillColor("#0f172a").text("Trip Itinerary Overview", 50, yPos);
     doc.moveDown(0.5);
     
-    doc.fontSize(10).fillColor("#334155");
     if (data.itineraryDays.length === 0) {
-      doc.text("- Detailed itinerary will be shared via email.");
+      doc.fontSize(10).fillColor("#64748b").text("- Detailed itinerary will be shared via email and app.");
     } else {
-      data.itineraryDays.slice(0, 8).forEach((day) => { // Limit to fit page or handle page breaks
-        doc.fillColor("#3b82f6").text(`Day ${day.day}: `, { continued: true });
+      data.itineraryDays.forEach((day) => {
+        // Check if we need a new page
+        if (doc.y > doc.page.height - 100) {
+          doc.addPage();
+          // Re-render header or simple title on new page
+          doc.fontSize(14).fillColor("#0f172a").text("Itinerary Continued...", 50, 50);
+          doc.moveDown(0.5);
+        }
+
+        const currentY = doc.y;
+        doc.circle(55, currentY + 5, 3).fill("#3b82f6");
+        
+        doc.fontSize(10).fillColor("#3b82f6").text(`Day ${day.day}: `, 65, currentY, { continued: true });
         doc.fillColor("#0f172a").text(day.title);
         
-        if (day.narrative) {
-          doc.fontSize(9).fillColor("#64748b").text(day.narrative.slice(0, 150) + "...", { indent: 15 });
+        doc.fontSize(9).fillColor("#475569");
+        const details = day.activities?.length ? day.activities.join(", ") : day.narrative || "";
+        if (details) {
+          doc.text(details, 65, doc.y, { width: 480 });
         }
-        doc.moveDown(0.3);
+        doc.moveDown(0.5);
       });
     }
 
@@ -766,47 +799,72 @@ function generateTicketPdf(data: EmailPayload) {
   });
 }
 
-// ─── SQLite-based booking endpoint (no Supabase dependency) ───
-router.post("/book", async (req: Request, res: Response) => {
-  const body = req.body as {
-    bookingReference?: string;
-    packageTitle?: string;
-    destination?: string;
-    duration?: string;
-    travelDate?: string;
-    travelers?: number;
-    travelerName?: string;
-    roomType?: string;
-    email?: string;
-    phone?: string;
-    totalAmount?: number;
-    airline?: string;
-    departureTime?: string;
-    userId?: string;
-  };
-
-  // Validate required fields
-  if (!body.email || !body.packageTitle || !body.totalAmount || !body.bookingReference) {
-    return res.status(400).json({ message: "Missing required fields: email, packageTitle, totalAmount, bookingReference" });
-  }
-  if (!validEmail(body.email)) {
-    return res.status(400).json({ message: "Invalid email address" });
-  }
+// ─── SQLite-based booking endpoint with JWT protection ───
+router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) => {
+  const body = req.body as BookingEmailBody;
+  const authUser = req.user!;
 
   try {
     const db = getDb();
 
-    // Insert into local SQLite bookings table
+    // 1. Fetch the user's latest name and email from SQLite to ensure accuracy
+    // In our users table, we track 'email' and potentially other fields.
+    // Let's assume the user's name is either provided in the registration or we use a fallback.
+    const user = await new Promise<any>((resolve, reject) => {
+      db.get("SELECT email FROM users WHERE id = ?", [authUser.id], (err: Error | null, row: any) => {
+        if (err) reject(err);
+        else resolve(row);
+      });
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Authenticated user not found in database." });
+    }
+
+    // Validate essential booking fields
+    if (!body.packageTitle || !body.totalAmount || !body.bookingReference) {
+      return res.status(400).json({ message: "Missing required fields: packageTitle, totalAmount, bookingReference" });
+    }
+
+    // 2. Fetch package details for Group Tour validation
+    if (body.packageId) {
+      const pkg = await getPackageById(body.packageId);
+      if (pkg && pkg.isGroupTour) {
+        if (!body.travelDate) {
+          return res.status(400).json({ message: "Travel date is required for group tours." });
+        }
+
+        const departure = pkg.groupDepartures?.find(d => d.date === body.travelDate);
+        if (!departure) {
+          return res.status(400).json({ message: `No group departure available for the selected date: ${body.travelDate}` });
+        }
+
+        const requestedTravelers = body.travelers || 1;
+        const remainingSpots = departure.maxCapacity - departure.currentBookings;
+        if (requestedTravelers > remainingSpots) {
+          return res.status(400).json({ 
+            message: `Not enough spots remaining. Only ${remainingSpots} spots available for this departure.`,
+            remainingSpots
+          });
+        }
+        
+        // Note: In a real app, we'd update currentBookings here or in a transaction.
+        // For this MVP, we'll proceed as if it's reserved and update later or manually.
+      }
+    }
+
+    // Insert into local SQLite bookings table linked to authUser.id
     await new Promise<void>((resolve, reject) => {
       db.run(
         `INSERT INTO bookings
-          (user_id, booking_reference, package_title, destination, duration,
+          (user_id, booking_reference, package_id, package_title, destination, duration,
            travel_date, travelers, traveler_name, room_type, email, phone,
            total_amount, airline, departure_time, payment_status, booking_status)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'paid', 'confirmed')`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'paid', 'confirmed')`,
         [
-          body.userId || "guest",
+          String(authUser.id),
           body.bookingReference,
+          body.packageId || null,
           body.packageTitle,
           body.destination || null,
           body.duration || null,
@@ -814,7 +872,7 @@ router.post("/book", async (req: Request, res: Response) => {
           body.travelers || 1,
           body.travelerName || null,
           body.roomType || null,
-          body.email,
+          user.email, // Use registered email
           body.phone || null,
           body.totalAmount,
           body.airline || null,
@@ -829,14 +887,50 @@ router.post("/book", async (req: Request, res: Response) => {
 
     logger(`[booking/book] Saved booking ${body.bookingReference} to SQLite`);
 
+    // 3. Update Group Tour capacity if applicable
+    if (body.packageId && body.travelDate) {
+      const { updateGroupBookings } = require("../modules/packages/service/packageService");
+      try {
+        await updateGroupBookings(body.packageId, body.travelDate, body.travelers || 1);
+        logger(`[booking/book] Updated capacity for ${body.packageId} on ${body.travelDate}`);
+      } catch (updateErr: any) {
+        logger(`[booking/book] Warning: Failed to update group capacity:`, updateErr.message);
+        // We don't fail the whole booking if just the capacity cache update fails, 
+        // but we log it as a warning since the main booking is already saved in SQLite.
+      }
+    }
+
     // Send confirmation email asynchronously (don't block response)
     if (config.resendApiKey && config.resendFrom) {
       setImmediate(async () => {
         try {
-          // Construct full payload for PDF and Template
+          const { getDb } = require("../db");
+          const db = getDb();
+          
+          // 1. Fetch Detailed Itinerary from SQLite
+          let detailedItinerary: { day: number; title: string; description: string }[] = [];
+          if (body.packageId) {
+            try {
+              detailedItinerary = await new Promise<any[]>((resolve, reject) => {
+                db.all(
+                  "SELECT day_number as day, activity_title as title, description FROM itineraries WHERE package_id = ? ORDER BY day_number ASC",
+                  [body.packageId],
+                  (err: Error | null, rows: any[]) => {
+                    if (err) reject(err);
+                    else resolve(rows || []);
+                  }
+                );
+              });
+              logger(`[booking/book] Fetched ${detailedItinerary.length} itinerary items for ${body.packageId}`);
+            } catch (dbErr: any) {
+              logger(`[booking/book] Failed to fetch itinerary:`, dbErr.message);
+            }
+          }
+
+          // 2. Construct full payload for PDF
           const payload: EmailPayload = {
             fullName: body.travelerName || "Traveler",
-            email: body.email!,
+            email: user.email,
             phone: body.phone || "-",
             bookingReference: body.bookingReference!,
             bookingId: body.bookingReference!, 
@@ -847,7 +941,11 @@ router.post("/book", async (req: Request, res: Response) => {
             passengers: body.travelers || 1,
             totalAmount: body.totalAmount!,
             travelCategory: "General",
-            itineraryDays: [],
+            itineraryDays: detailedItinerary.map(it => ({
+               day: it.day,
+               title: it.title,
+               activities: [it.description]
+            })),
             itineraryNights: [],
             transportDetails: body.airline ? `Flight: ${body.airline}` : "-",
             activities: [],
@@ -861,14 +959,20 @@ router.post("/book", async (req: Request, res: Response) => {
             airline: body.airline || "-",
             departureTime: body.departureTime || "-",
             arrivalTime: "-",
-            included: [],
-            excluded: [],
+            included: body.included || [],
+            excluded: body.excluded || [],
           };
 
           const pdf = await generateTicketPdf(payload);
 
+          const durationDays = parseInt(body.duration || "0") || 0;
+          const travelDate = body.travelDate ? new Date(body.travelDate) : new Date();
+          const checkOutDate = new Date(travelDate);
+          checkOutDate.setDate(checkOutDate.getDate() + (durationDays > 0 ? durationDays - 1 : 0));
+
+          // 3. Send Comprehensive Confirmation Email
           await sendBookingConfirmation(
-            { email: body.email!, name: body.travelerName || "Traveler" },
+            { email: user.email, name: body.travelerName || "Traveler" },
             {
               bookingReference: body.bookingReference!,
               packageTitle: body.packageTitle!,
@@ -878,12 +982,19 @@ router.post("/book", async (req: Request, res: Response) => {
               duration: body.duration,
               airline: body.airline,
               departureTime: body.departureTime,
+              arrivalTime: body.arrivalTime,
+              checkIn: body.travelDate,
+              checkOut: body.checkOut || checkOutDate.toISOString().split('T')[0],
+              transportType: body.airline?.toLowerCase().includes('coach') ? 'bus' : 'flight',
               supportEmail: config.supportEmail,
               supportPhone: config.supportPhone,
+              itinerarySummary: detailedItinerary,
+              included: body.included,
+              excluded: body.excluded
             },
             {
               attachment: {
-                filename: `TravelMate-Ticket-${body.bookingReference}.pdf`,
+                filename: `TravelMate-Ticket-${payload.bookingReference}.pdf`,
                 content: pdf,
                 contentType: "application/pdf",
               },
@@ -891,14 +1002,17 @@ router.post("/book", async (req: Request, res: Response) => {
           );
 
           // Mark email as sent in SQLite
-          db.run(
-            `UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`,
-            [body.bookingReference],
-            (err) => {
-              if (err) logger("[booking/book] Failed to update email_sent flag:", err.message);
-              else logger(`[booking/book] Confirmation email successfully dispatched for ${body.bookingReference}`);
-            }
-          );
+          await new Promise<void>((resolve, reject) => {
+            db.run(
+              `UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`,
+              [body.bookingReference],
+              (err: Error | null) => {
+                if (err) reject(err);
+                else resolve();
+              }
+            );
+          });
+          logger(`[booking/book] Consolidated confirmation email successfully dispatched for ${body.bookingReference}`);
         } catch (emailErr: any) {
           logger(`[booking/book] Email delivery FAILED for ${body.bookingReference}:`, emailErr.message);
         }

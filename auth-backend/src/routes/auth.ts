@@ -27,7 +27,8 @@ type UserRow = {
 // ==================== REGISTER ====================
 router.post("/register", validateRegister, async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body as { email: string; password: string };
+    const email = (req.body.email || "").toLowerCase().trim();
+    const { password } = req.body;
     const verificationToken = crypto.randomBytes(32).toString("hex");
     const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
@@ -38,7 +39,7 @@ router.post("/register", validateRegister, async (req: Request, res: Response) =
       const hashedPassword = await bcrypt.hash(password, 12);
       getDb().run(
         "INSERT INTO users (email, password, email_verified, verification_token, verification_token_expires_at) VALUES (?, ?, 1, ?, ?)",
-        [email, hashedPassword, verificationToken, verificationExpiresAt],
+        [email.toLowerCase(), hashedPassword, verificationToken, verificationExpiresAt],
         function (insertErr) {
           if (insertErr) return res.status(500).json({ message: "Registration failed" });
 
@@ -98,19 +99,36 @@ router.get("/verify", (req: Request, res: Response) => {
 
 // ==================== LOGIN ====================
 router.post("/login", validateLogin, (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const email = (req.body.email || "").toLowerCase().trim();
+  const { password } = req.body;
+
+  console.log(`[auth/login] Attempt: ${email}`);
 
   getDb().get("SELECT * FROM users WHERE email = ?", [email], async (err, user: UserRow | undefined) => {
-    if (err) return res.status(500).json({ message: "Database error" });
-    if (!user) return res.status(401).json({ message: "Invalid email or password" });
+    if (err) {
+      console.error("[auth/login] DB Error:", err.message);
+      return res.status(500).json({ message: "Database error" });
+    }
+    
+    if (!user) {
+      console.warn(`[auth/login] Failed: User not found for ${email}`);
+      return res.status(401).json({ message: "User not registered" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: "Invalid email or password" });
+    if (!isMatch) {
+      console.warn(`[auth/login] Failed: Incorrect password for ${email}`);
+      return res.status(401).json({ message: "Incorrect password" });
+    }
+
     if (!user.email_verified) {
+      console.warn(`[auth/login] Failed: Email not verified for ${email}`);
       return res.status(403).json({ message: "Please verify your email before logging in." });
     }
 
     const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, jwtSignOptions);
+    console.log(`[auth/login] Success: ${email}`);
+    
     res.json({
       message: "Login successful",
       user: { id: user.id, email: user.email, emailVerified: Boolean(user.email_verified) },

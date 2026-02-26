@@ -96,6 +96,7 @@ export const initDatabase = (): Promise<void> => {
                   id INTEGER PRIMARY KEY AUTOINCREMENT,
                   user_id TEXT NOT NULL,
                   booking_reference TEXT UNIQUE NOT NULL,
+                  package_id TEXT,
                   package_title TEXT NOT NULL,
                   destination TEXT,
                   duration TEXT,
@@ -115,6 +116,74 @@ export const initDatabase = (): Promise<void> => {
                 )`;
                 await run(bookingsTable);
                 logger("Bookings table ready");
+
+                // Ensure package_id exists in bookings (multi-step migration for existing DB)
+                const bookingCols = await all<{ name: string }>("PRAGMA table_info(bookings)");
+                if (!bookingCols.find(c => c.name === 'package_id')) {
+                  await run("ALTER TABLE bookings ADD COLUMN package_id TEXT");
+                  logger("Added bookings.package_id");
+                }
+
+                const ensurePackagesTableColumns = async () => {
+                  logger("Checking packages table columns...");
+                  const columns = await all<{ name: string }>("PRAGMA table_info(packages)");
+                  const existing = new Set(columns.map((column) => column.name));
+                  
+                  if (!existing.has("is_group_tour")) {
+                    await run("ALTER TABLE packages ADD COLUMN is_group_tour INTEGER DEFAULT 0");
+                    logger("Added packages.is_group_tour");
+                  }
+                  if (!existing.has("group_departures_json")) {
+                    await run("ALTER TABLE packages ADD COLUMN group_departures_json TEXT");
+                    logger("Added packages.group_departures_json");
+                  }
+                };
+
+                // Create packages table
+                const packagesTable = `CREATE TABLE IF NOT EXISTS packages (
+                  id TEXT PRIMARY KEY,
+                  title TEXT NOT NULL,
+                  destination TEXT NOT NULL,
+                  description TEXT,
+                  price REAL,
+                  duration TEXT,
+                  is_group_tour INTEGER DEFAULT 0,
+                  group_departures_json TEXT
+                )`;
+                await run(packagesTable);
+                await ensurePackagesTableColumns();
+                logger("Packages table ready");
+
+                // Create itineraries table
+                const itinerariesTable = `CREATE TABLE IF NOT EXISTS itineraries (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  package_id TEXT NOT NULL,
+                  day_number INTEGER NOT NULL,
+                  activity_title TEXT NOT NULL,
+                  description TEXT,
+                  FOREIGN KEY(package_id) REFERENCES packages(id)
+                )`;
+                await run(itinerariesTable);
+                logger("Itineraries table ready");
+
+                // Seed data if empty
+                const pkgCount = await all<{ count: number }>("SELECT COUNT(*) as count FROM packages");
+                if (pkgCount[0].count === 0) {
+                  logger("Seeding sample packages and itineraries...");
+                  await run(`INSERT INTO packages (id, title, destination, description, price, duration) VALUES 
+                    ('pkg-kasol-01', 'High Altitude Kasol Expedition', 'Kasol', 'A thrilling journey into the heart of Parvati Valley.', 15000, '3 Days / 2 Nights'),
+                    ('pkg-kerala-01', 'Kerala Backwaters Luxury', 'Kerala', 'Serene houseboat stays and lush tropical landscapes.', 25000, '4 Days / 3 Nights')`);
+                  
+                  await run(`INSERT INTO itineraries (package_id, day_number, activity_title, description) VALUES 
+                    ('pkg-kasol-01', 1, 'Arrival in Kasol', 'Check-in to your riverside camp and enjoy a local cafe crawl.'),
+                    ('pkg-kasol-01', 2, 'KheerGanga Trek', 'A 12km trek to the natural hot springs with breathtaking views.'),
+                    ('pkg-kasol-01', 3, 'Manikaran Visit & Departure', 'Visit the holy hot springs at Manikaran and board your return bus.'),
+                    ('pkg-kerala-01', 1, 'Kochi Arrival', 'Pickup from Kochi airport and transfer to Munnar tea gardens.'),
+                    ('pkg-kerala-01', 2, 'Munnar Sightseeing', 'Visit Eravikulam National Park and Mattupetty Dam.'),
+                    ('pkg-kerala-01', 3, 'Alleppey Houseboat', 'A day of cruising the backwaters on a private luxury houseboat.'),
+                    ('pkg-kerala-01', 4, 'Departure from Kochi', 'Final shopping and transfer to Kochi airport for departure.')`);
+                  logger("Seed data inserted successfully.");
+                }
 
                 resolve();
               } catch (migrationError: any) {

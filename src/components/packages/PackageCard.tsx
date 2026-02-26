@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Star, MapPin, Clock, ArrowRight } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowRight, TrendingUp } from 'lucide-react';
 import type { DynamicPricing, PricingTier, TravelerSegment } from '@/lib/packagePricing';
 import PackageImage from '@/components/common/PackageImage';
 import type { ReactNode } from 'react';
@@ -25,6 +25,8 @@ interface PackageCardProps {
   dynamicPricing: DynamicPricing;
   specialTags: string[];
   badges: { bestValue: boolean; mostAffordable: boolean };
+  isGroupTour?: boolean;
+  groupDepartures?: Array<{ date: string; maxCapacity: number; currentBookings: number }>;
   highlightQuery?: string;
 }
 
@@ -66,6 +68,8 @@ export const PackageCard = ({
   affordabilityScore,
   dynamicPricing,
   specialTags,
+  isGroupTour,
+  groupDepartures,
   highlightQuery,
 }: PackageCardProps) => {
   const finalPrice = dynamicPricing.finalPricePerPerson || (discount > 0 ? Math.round(price * (1 - discount / 100)) : price);
@@ -87,6 +91,12 @@ export const PackageCard = ({
             Save {dynamicPricing.totalDiscountPercent}%
           </div>
         ) : null}
+        {isGroupTour && (
+          <div className="absolute top-3 right-3 rounded-full bg-blue-600 text-white text-xs font-bold px-3 py-1 shadow-lg flex items-center gap-1">
+            <TrendingUp className="h-3 w-3" />
+            Group Tour
+          </div>
+        )}
       </div>
       <div className="p-5 flex flex-col">
         <div className="flex items-center gap-1 text-amber-500 mb-2">
@@ -108,6 +118,21 @@ export const PackageCard = ({
         <p className="text-muted-foreground text-sm mb-3 line-clamp-2 min-h-10">{shortDescription}</p>
         <p className="text-xs text-muted-foreground mb-1">Tier: {pricingTier} | Segments: {travelerSegments.slice(0, 2).join(', ')}</p>
         {specialTags.length > 0 ? <p className="text-xs text-emerald-700 mb-3 line-clamp-1">{specialTags[0]}</p> : null}
+        
+        {isGroupTour && groupDepartures && groupDepartures.length > 0 && (
+          <div className="mb-3">
+            {groupDepartures[0].maxCapacity - groupDepartures[0].currentBookings <= 5 ? (
+              <p className="text-xs font-semibold text-rose-600 animate-pulse">
+                Hurry! Only {groupDepartures[0].maxCapacity - groupDepartures[0].currentBookings} spots left for {new Date(groupDepartures[0].date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}
+              </p>
+            ) : (
+              <p className="text-xs font-medium text-emerald-600">
+                {groupDepartures[0].maxCapacity - groupDepartures[0].currentBookings} spots available for next departure
+              </p>
+            )}
+          </div>
+        )}
+
         <p className="text-xs text-muted-foreground mb-3">Affordability score: {affordabilityScore}/100</p>
         <div className="flex items-end justify-between mt-auto">
           <div>

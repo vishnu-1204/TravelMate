@@ -399,6 +399,14 @@ const Payment = () => {
   }, [storageKey]);
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const dateParam = params.get('date');
+    if (dateParam) {
+      setTravelDate(dateParam);
+    }
+  }, [location.search]);
+
+  useEffect(() => {
     const draft: BookingDraft = { travelers, travelDate, roomType, extras };
     localStorage.setItem(storageKey, JSON.stringify(draft));
   }, [extras, roomType, storageKey, travelDate, travelers]);
@@ -921,11 +929,16 @@ const Payment = () => {
 
       // Save booking to backend SQLite + trigger confirmation email
       try {
+        const token = localStorage.getItem('auth_token');
         await fetch(`${backendBaseUrl}/api/booking/book`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify({
             bookingReference: ref,
+            packageId: packageData.id,
             packageTitle: packageData.title,
             destination: packageData.location,
             duration: packageData.duration,
@@ -933,12 +946,10 @@ const Payment = () => {
             travelers: totalPassengers,
             travelerName: primaryTraveler.fullName,
             roomType,
-            email: registeredEmail,
-            phone: primaryTraveler.mobile,
+            phone: normalizedPrimaryMobile,
             totalAmount: grandTotal,
             airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
             departureTime: flightData?.departureTime || '06:30 AM',
-            userId: user?.id || 'guest',
           }),
         });
       } catch (saveErr) {

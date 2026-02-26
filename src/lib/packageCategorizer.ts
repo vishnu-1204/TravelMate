@@ -76,13 +76,13 @@ const inferDomesticVsInternational = (input: string, country?: string): PackageC
 };
 
 const categoryPriority: PackageCategory[] = [
+  'group',
+  'honeymoon',
+  'educational',
   'domestic',
   'international',
   'nearby',
   'budget',
-  'honeymoon',
-  'group',
-  'educational',
 ];
 
 export const classifyPackageCategories = (

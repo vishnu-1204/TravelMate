@@ -19,6 +19,7 @@ interface User {
   id: string;
   email: string;
   emailVerified?: boolean;
+  user_metadata?: Record<string, unknown>;
 }
 
 interface AuthContextType {

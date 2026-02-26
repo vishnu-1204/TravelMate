@@ -79,6 +79,8 @@ export type TravelPackage = {
   specialTags: string[];
   isLuxury: boolean;
   lastUpdatedAt: string;
+  isGroupTour?: boolean;
+  groupDepartures?: Array<{ date: string; maxCapacity: number; currentBookings: number }>;
   pricingTier: PricingTier;
   travelerSegments: TravelerSegment[];
   dynamicPricing: DynamicPricing;
@@ -620,6 +622,8 @@ const normalizePackage = (pkg: RawPackage): TravelPackage => {
     specialTags: Array.isArray(pkg.specialTags) ? (pkg.specialTags as string[]) : [],
     isLuxury: Boolean(pkg.isLuxury),
     lastUpdatedAt: String(pkg.lastUpdatedAt || DEFAULT_REFRESHED_AT),
+    isGroupTour: Boolean(pkg.isGroupTour),
+    groupDepartures: Array.isArray(pkg.groupDepartures) ? pkg.groupDepartures : [],
   };
 
   const categorized = applyCategorization(normalized);

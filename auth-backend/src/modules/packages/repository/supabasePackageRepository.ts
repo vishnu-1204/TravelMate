@@ -17,6 +17,8 @@ type CacheRow = {
   unique_image_id: string;
   affordability_score: number;
   is_luxury: boolean;
+  is_group_tour: boolean;
+  group_departures: string; // JSON string
   duration_days: number;
   price: number;
   rating: number;
@@ -230,6 +232,8 @@ export const upsertPackages = async (packages: TravelPackage[]) => {
         unique_image_id: payload.uniqueImageId,
         affordability_score: payload.affordabilityScore,
         is_luxury: payload.isLuxury,
+        is_group_tour: pkg.isGroupTour || false,
+        group_departures: JSON.stringify(pkg.groupDepartures || []),
         duration_days: payload.durationDays,
         price: payload.price,
         rating: payload.rating,
@@ -278,6 +282,8 @@ export const getPackagesFromCache = async (query: CacheQuery) => {
       payload: {
         ...row.payload,
         country: row.payload.country || row.country || inferCountryFromRow(row),
+        isGroupTour: row.is_group_tour,
+        groupDepartures: row.group_departures ? JSON.parse(row.group_departures) : [],
       },
     }));
     if (query.category) rows = rows.filter((row) => row.category === query.category);
@@ -406,6 +412,8 @@ export const getPackagesFromCache = async (query: CacheQuery) => {
       return {
         ...row.payload,
         country,
+        isGroupTour: row.is_group_tour,
+        groupDepartures: row.group_departures ? JSON.parse(row.group_departures) : [],
       };
     }),
     total: count || 0,
@@ -415,20 +423,27 @@ export const getPackagesFromCache = async (query: CacheQuery) => {
 export const getPackageByIdFromCache = async (packageId: string): Promise<TravelPackage | null> => {
   const client = getClient();
   if (!client) {
-    const hit = inMemoryCache.find((row) => row.package_id === packageId);
-    return hit ? hit.payload : null;
+    const row = inMemoryCache.find((row) => row.package_id === packageId);
+    return row ? {
+      ...row.payload,
+      isGroupTour: row.is_group_tour,
+      groupDepartures: row.group_departures ? JSON.parse(row.group_departures) : [],
+    } : null;
   }
   const { data, error } = await client
     .from(CACHE_TABLE)
-    .select("payload")
+    .select("*")
     .eq("package_id", packageId)
     .maybeSingle();
 
-  if (error) {
-    throw new Error(`Failed to fetch package by id: ${error.message}`);
-  }
+  const row = (data as unknown as CacheRow);
+  if (!row?.payload) return null;
 
-  return (data?.payload as TravelPackage | undefined) || null;
+  return {
+    ...row.payload,
+    isGroupTour: row.is_group_tour,
+    groupDepartures: row.group_departures ? JSON.parse(row.group_departures) : [],
+  };
 };
 
 export const getCategoryCountsFromCache = async () => {
@@ -674,4 +689,64 @@ export const getPackageVersionHistory = async (packageId: string) => {
     price: number | null;
     duration_days: number | null;
   }>;
+};
+
+export const updatePackageGroupBookings = async (packageId: string, travelDate: string, travelers: number) => {
+  const client = getClient();
+  if (!client) {
+    const index = inMemoryCache.findIndex((row) => row.package_id === packageId);
+    if (index < 0) return null;
+
+    const row = inMemoryCache[index];
+    const departures = row.group_departures ? JSON.parse(row.group_departures) : [];
+    const departure = departures.find((d: any) => d.date === travelDate);
+    if (!departure) return null;
+
+    departure.currentBookings += travelers;
+    const updatedDepartures = JSON.stringify(departures);
+    
+    const updatedPayload = {
+      ...row.payload,
+      groupDepartures: departures
+    };
+
+    inMemoryCache[index] = {
+      ...row,
+      group_departures: updatedDepartures,
+      payload: updatedPayload,
+      updated_at: new Date().toISOString()
+    };
+
+    return updatedPayload;
+  }
+
+  const { data: hit, error: fetchError } = await client
+    .from(CACHE_TABLE)
+    .select("group_departures, payload")
+    .eq("package_id", packageId)
+    .maybeSingle();
+
+  if (fetchError || !hit) return null;
+
+  const departures = hit.group_departures ? JSON.parse(hit.group_departures) : [];
+  const departure = departures.find((d: any) => d.date === travelDate);
+  if (!departure) return null;
+
+  departure.currentBookings += travelers;
+  const updatedPayload = {
+    ...hit.payload,
+    groupDepartures: departures
+  };
+
+  const { error } = await client
+    .from(CACHE_TABLE)
+    .update({
+      group_departures: JSON.stringify(departures),
+      payload: updatedPayload,
+      updated_at: new Date().toISOString()
+    })
+    .eq("package_id", packageId);
+
+  if (error) throw new Error(`Failed to update group bookings: ${error.message}`);
+  return updatedPayload;
 };

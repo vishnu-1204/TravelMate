@@ -28,12 +28,11 @@ function Navbar() {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Group Tours', path: '/packages' },
-    { name: 'Packages', path: '/packages' },
-    { name: 'India', path: '/packages' },
+    { name: 'Group Tours', path: '/packages/group' },
+    { name: 'India', path: '/packages/domestic' },
     { name: 'Honeymoon', path: '/packages/honeymoon' },
+    { name: 'Packages', path: '/packages' },
     { name: 'Blog', path: '/blog' },
-    { name: 'Contact', path: '/contact' },
     { name: 'About', path: '/about' },
   ];
 
@@ -59,9 +58,7 @@ function Navbar() {
               key={link.name}
               to={link.path}
               className={`text-sm font-medium transition-colors ${
-                user
-                  ? 'text-white/90 hover:text-[hsl(var(--cyan-accent))]'
-                  : 'text-white/80 hover:text-white'
+                user ? 'text-white/90 hover:text-[hsl(var(--cyan-accent))]' : 'text-white/80 hover:text-white'
               }`}
             >
               {link.name}
@@ -85,8 +82,8 @@ function Navbar() {
                   <div className="px-4 py-3 border-b border-white/10">
                     <p className="text-xs text-gray-400">Signed in as</p>
                     <p className="text-sm text-white truncate">{user.email}</p>
-                    {user.user_metadata?.full_name && (
-                      <p className="text-xs text-gray-400 truncate mt-1">{user.user_metadata.full_name}</p>
+                    {fullName && (
+                      <p className="text-xs text-gray-400 truncate mt-1">{fullName}</p>
                     )}
                   </div>
                   <button
@@ -121,18 +118,18 @@ function Navbar() {
             </div>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="bg-sky-500 text-white px-6 py-2 rounded-full font-medium text-sm hover:bg-sky-400 transition-colors"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="border border-white/50 text-white px-6 py-2 rounded-full font-medium text-sm hover:border-white hover:bg-white/10 transition-colors"
-              >
-                Sign Up
-              </Link>
+            <Link
+              to="/login"
+              className="bg-sky-500 text-white px-6 py-2 rounded-full font-medium text-sm hover:bg-sky-400 transition-colors"
+            >
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className="border border-white/50 text-white px-6 py-2 rounded-full font-medium text-sm hover:border-white hover:bg-white/10 transition-colors"
+            >
+              Sign Up
+            </Link>
             </>
           )}
         </div>

@@ -2,6 +2,7 @@ import { config } from "../../../config/env";
 import { CATEGORY_LABELS, DEFAULT_EXCLUSIONS, DEFAULT_INCLUSIONS } from "../constants";
 import type {
   BudgetType,
+  GroupDeparture,
   HotelType,
   PackageCategory,
   SeasonType,
@@ -832,6 +833,25 @@ export const primeImageCacheSeeds = (
   });
 };
 
+const generateRandomGroupDepartures = (seed: number) => {
+  const departures: GroupDeparture[] = [];
+  const count = 3 + (seed % 3); // 3 to 5 departures
+  const now = new Date();
+  
+  for (let i = 0; i < count; i++) {
+    const daysOut = 10 + (i * 15) + (seed % 7);
+    const date = new Date(now.getTime() + daysOut * DAY_MS);
+    const dateStr = date.toISOString().slice(0, 10);
+    
+    departures.push({
+      date: dateStr,
+      maxCapacity: 10 + (seed % 10),
+      currentBookings: Math.floor((seed % 5) * (i / 2))
+    });
+  }
+  return departures;
+};
+
 const createSmartPackage = async ({
   destination,
   destinationLabel,
@@ -938,6 +958,8 @@ const createSmartPackage = async ({
     season,
     specialTags,
     isLuxury,
+    isGroupTour: category === "group",
+    groupDepartures: category === "group" ? generateRandomGroupDepartures(variantSeed) : [],
     lastUpdatedAt: new Date().toISOString(),
     pricingTier: price <= 16000 ? "budget" : "standard",
     travelerSegments:
@@ -1033,7 +1055,7 @@ const isAllowedStrongTourismDomestic = (pkg: TravelPackage) => {
 
 const generateStateBasedDomesticPackages = async (baseDate: Date): Promise<TravelPackage[]> => {
   const packages: TravelPackage[] = [];
-  const preferredCategories: PackageCategory[] = ["domestic", "nearby", "group", "educational", "honeymoon", "budget"];
+  const preferredCategories: PackageCategory[] = ["domestic", "group", "group", "educational", "honeymoon", "budget"];
 
   for (let stateIndex = 0; stateIndex < TOURIST_STATE_CONFIG.length; stateIndex += 1) {
     const stateConfig = TOURIST_STATE_CONFIG[stateIndex];
@@ -1131,8 +1153,16 @@ export const fetchAmadeusPackages = async (): Promise<TravelPackage[]> => {
 
   const payload = (await response.json()) as FlightDestinationsResponse;
   const sliced = (payload.data || []).slice(0, Math.max(config.packageFetchLimit, 80));
+  const categories: (PackageCategory | undefined)[] = ["group", "honeymoon", "educational", undefined, undefined, undefined];
   const generated = await Promise.all(
-    sliced.map((item, index) => createPackageFromDestination(token, item, undefined, (index % 3) + 1))
+    sliced.map((item, index) => 
+      createPackageFromDestination(
+        token, 
+        item, 
+        categories[index % categories.length], 
+        (index % 3) + 1
+      )
+    )
   );
   const validPackages = generated.filter((pkg): pkg is TravelPackage => Boolean(pkg));
 

@@ -98,47 +98,57 @@ const startServer = async () => {
   try {
     await initDatabase();
     
-    let isActuallyListening = false;
+    let currentPort = config.port;
+    let attempts = 0;
+    const maxAttempts = 5;
+
     const tryListen = () => {
-      if (isActuallyListening) return;
+      if (attempts >= maxAttempts) {
+        logger(`❌ [PID ${process.pid}] Failed to find an available port after ${maxAttempts} attempts.`);
+        process.exit(1);
+      }
 
-      setTimeout(() => {
-        const net = require('net');
-        const probe = net.createServer()
-          .once('error', (err: any) => {
-            if (err.code === 'EADDRINUSE') {
-              logger(`⚠️ [PID ${process.pid}] Port ${config.port} probe: BUSY. Retrying in 2s...`);
-              setTimeout(tryListen, 2000);
-            } else {
-              logger(`❌ [PID ${process.pid}] Port probe error:`, err);
-            }
-          })
-          .once('listening', () => {
-            probe.close(() => {
-              logger(`✅ [PID ${process.pid}] Port ${config.port} probe: FREE. Binding Express...`);
-              
-              const server = app.listen(config.port, () => {
-                isActuallyListening = true;
-                logger(`🚀 [PID ${process.pid}] Server SUCCESS on http://localhost:${config.port}`);
-              });
-
-              server.on('error', (sErr: any) => {
-                if (isActuallyListening) {
-                  logger(`ℹ️ [PID ${process.pid}] Ignored transient error after success:`, sErr.code);
-                  return;
-                }
-                logger(`❌ [PID ${process.pid}] Server error during bind:`, sErr.code);
-                if (sErr.code === 'EADDRINUSE') {
-                  setTimeout(tryListen, 2000);
-                }
-              });
+      const net = require('net');
+      const probe = net.createServer()
+        .once('error', (err: any) => {
+          if (err.code === 'EADDRINUSE') {
+            logger(`⚠️ [PID ${process.pid}] Port ${currentPort} is BUSY. Trying next port...`);
+            currentPort++;
+            attempts++;
+            tryListen();
+          } else {
+            logger(`❌ [PID ${process.pid}] Port probe error:`, err);
+          }
+        })
+        .once('listening', () => {
+          probe.close(() => {
+            logger(`✅ [PID ${process.pid}] Port ${currentPort} is FREE. Binding Express...`);
+            
+            const server = app.listen(currentPort, () => {
+              logger(`🚀 [PID ${process.pid}] Server SUCCESS on http://localhost:${currentPort}`);
+              // Update config if port changed so other parts of the app know the active port
+              (config as any).activePort = currentPort;
             });
-          })
-          .listen(config.port);
-      }, 500);
+
+            server.on('error', (sErr: any) => {
+              logger(`❌ [PID ${process.pid}] Server error during bind:`, sErr.code);
+              if (sErr.code === 'EADDRINUSE') {
+                currentPort++;
+                attempts++;
+                tryListen();
+              }
+            });
+          });
+        })
+        .listen(currentPort);
     };
 
     tryListen();
+
+    // Trigger initial package cache refresh
+    refreshPackageCache().catch((error) => {
+      logger(`Initial package refresh failed [PID ${process.pid}]:`, error);
+    });
 
     if (config.packageRefreshIntervalMinutes > 0) {
       const intervalMs = config.packageRefreshIntervalMinutes * 60_000;

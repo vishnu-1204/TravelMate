@@ -47,8 +47,11 @@ const Register = () => {
     e.preventDefault();
     setError('');
 
+    // Normalize email
+    const normalizedEmail = email.trim().toLowerCase();
+
     // Validate input
-    const validation = registerSchema.safeParse({ name, email, password, confirmPassword });
+    const validation = registerSchema.safeParse({ name, email: normalizedEmail, password, confirmPassword });
     if (!validation.success) {
       setError(validation.error.errors[0].message);
       return;
@@ -57,14 +60,18 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const { error, needsEmailVerification } = await signUp(email, password);
+      console.log(`[Register] Attempting signup for: ${normalizedEmail}`);
+      const { error, needsEmailVerification } = await signUp(normalizedEmail, password);
+      
       if (error) {
+        console.warn(`[Register] Signup failed: ${error.message}`);
         setError(error.message || 'Unable to create account. Please try again.');
       } else {
+        console.log(`[Register] Signup successful for: ${normalizedEmail}`);
         if (needsEmailVerification) {
           navigate('/login', {
             state: {
-              message: `Account created for ${email.trim().toLowerCase()}. Please verify your email before logging in.`,
+              message: `Account created for ${normalizedEmail}. Please verify your email before logging in.`,
             },
           });
         } else {
@@ -72,6 +79,7 @@ const Register = () => {
         }
       }
     } catch (err) {
+      console.error(`[Register] Unexpected error:`, err);
       const message = err instanceof Error ? err.message : 'Unable to create account. Please try again later.';
       setError(message);
     } finally {

@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { getPackagesPage, type TravelPackage } from '@/lib/packagesApi';
 import { Mic, Search, Sparkles, TrendingUp } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -718,9 +718,22 @@ const Packages = () => {
                 </button>
               </div>
             ) : packages.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground text-lg">No results found for "{debouncedSearch || 'your search'}".</p>
-                <p className="text-sm text-muted-foreground mt-2">Try: {popularDestinations.slice(0, 5).join(', ')}</p>
+              <div className="text-center py-20 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                <div className="max-w-md mx-auto">
+                  <p className="text-slate-900 text-xl font-bold mb-2">
+                    {selectedCategory === 'group' ? 'New Group Tours Coming Soon' : `No ${selectedCategory} destinations found`}
+                  </p>
+                  <p className="text-muted-foreground">
+                    {selectedCategory === 'group' 
+                      ? 'We are currently preparing exciting new group departure dates. Check back soon or explore our popular domestic packages.' 
+                      : `We couldn't find any packages matching your search criteria. Try a different destination or category.`}
+                  </p>
+                  {selectedCategory === 'group' && (
+                    <Link to="/packages/domestic" className="btn-primary mt-6 inline-block">
+                      Explore Domestic Packages
+                    </Link>
+                  )}
+                </div>
               </div>
             ) : (
               <>
@@ -756,6 +769,8 @@ const Packages = () => {
                       dynamicPricing={pkg.dynamicPricing}
                       specialTags={pkg.specialTags}
                       badges={pkg.badges}
+                      isGroupTour={pkg.isGroupTour}
+                      groupDepartures={pkg.groupDepartures}
                       highlightQuery={debouncedSearch}
                     />
                   ))}

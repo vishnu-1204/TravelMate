@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import nodemailer from "nodemailer";
 import { config } from "../config/env";
 import { getBookingConfirmationTemplate, type BookingEmailDetails as TemplateDetails } from "../templates/bookingConfirmation";
+import { getDb } from "../db";
 
 export type EmailUser = {
   email: string;
@@ -14,7 +15,7 @@ export type BookingEmailDetails = {
   destination?: string;
   travelDate: string;
   totalAmount: number;
-  itinerarySummary?: string[];
+  itinerarySummary?: { day: number; title: string; description: string }[];
   supportEmail?: string;
   supportPhone?: string;
   duration?: string;
@@ -23,6 +24,9 @@ export type BookingEmailDetails = {
   arrivalTime?: string;
   included?: string[];
   excluded?: string[];
+  checkIn?: string;
+  checkOut?: string;
+  transportType?: 'flight' | 'bus' | 'train' | 'other';
 };
 
 export type Attachment = {
@@ -123,6 +127,16 @@ export const sendVerificationEmail = async (user: EmailUser, token: string) => {
   }
 };
 
+const getHeroImage = (dest: string) => {
+  const d = dest.toLowerCase();
+  if (d.includes('himachal') || d.includes('kasol')) return 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80';
+  if (d.includes('dharamshala')) return 'https://images.unsplash.com/photo-1591181165239-01f114170e5c?auto=format&fit=crop&w=800&q=80';
+  if (d.includes('manali')) return 'https://images.unsplash.com/photo-1593134257782-e89567b7718a?auto=format&fit=crop&w=800&q=80';
+  if (d.includes('kerala')) return 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80';
+  if (d.includes('goa') || d.includes('beach')) return 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80';
+  return 'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=800&q=80';
+};
+
 export const sendBookingConfirmation = async (
   user: EmailUser,
   booking: BookingEmailDetails,
@@ -138,13 +152,14 @@ export const sendBookingConfirmation = async (
     airline: booking.airline || "TBA",
     departureTime: booking.departureTime || "TBA",
     arrivalTime: booking.arrivalTime || "TBA",
-    itinerary: (booking.itinerarySummary || []).map((desc, idx) => ({
-      day: idx + 1,
-      title: desc.split(":")[0] || `Day ${idx + 1}`,
-      description: desc.split(":")[1]?.trim() || desc
-    })),
+    itinerary: booking.itinerarySummary || [],
     included: booking.included || [],
-    excluded: booking.excluded || []
+    excluded: booking.excluded || [],
+    checkIn: booking.checkIn,
+    checkOut: booking.checkOut,
+    transportType: booking.transportType || (booking.airline?.toLowerCase().includes('coach') ? 'bus' : 'flight'),
+    heroImage: getHeroImage(booking.destination || booking.packageTitle),
+    emergencyContact: config.supportPhone
   };
 
   const html = getBookingConfirmationTemplate(templateDetails);
