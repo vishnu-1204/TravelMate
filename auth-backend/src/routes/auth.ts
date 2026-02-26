@@ -128,8 +128,8 @@ router.get("/profile", authenticateToken, (req: AuthRequest, res: Response) => {
   });
 });
 
-// ==================== GET ALL USERS (Testing only) ====================
-router.get("/users", (req: Request, res: Response) => {
+// ==================== GET ALL USERS (Protected) ====================
+router.get("/users", authenticateToken, (req: Request, res: Response) => {
   getDb().all("SELECT id, email, email_verified, verified_at, created_at FROM users", [], (err, users: Array<{ email: string }>) => {
     if (err) return res.status(500).json({ message: "Database error" });
     res.json({ count: users.length, users });

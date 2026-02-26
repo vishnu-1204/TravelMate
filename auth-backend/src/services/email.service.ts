@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import { config } from "../config/env";
 import { getBookingConfirmationTemplate, type BookingEmailDetails as TemplateDetails } from "../templates/bookingConfirmation";
 
@@ -17,7 +18,6 @@ export type BookingEmailDetails = {
   supportEmail?: string;
   supportPhone?: string;
   duration?: string;
-  // Flight details for Resend transition
   airline?: string;
   departureTime?: string;
   arrivalTime?: string;
@@ -31,10 +31,22 @@ export type Attachment = {
   contentType?: string;
 };
 
-const appTitle = "TravelMate"; // Branded title
+const appTitle = "TravelMate";
 const resend = new Resend(config.resendApiKey);
 
+// SMTP Transporter (Fallback)
+const transporter = nodemailer.createTransport({
+  host: config.smtpHost || "smtp.gmail.com",
+  port: config.smtpPort || 587,
+  secure: config.smtpPort === 465,
+  auth: {
+    user: config.smtpUser,
+    pass: config.smtpPass,
+  },
+});
+
 const hasResendConfig = () => Boolean(config.resendApiKey && config.resendFrom);
+const hasSmtpConfig = () => Boolean(config.smtpUser && config.smtpPass);
 
 /**
  * Escapes HTML characters to prevent XSS in email content.
@@ -48,7 +60,7 @@ const escapeHtml = (value: string) =>
     .replace(/'/g, "&#39;");
 
 /**
- * Standard layout for simple transactional emails (Welcome, Verification, Test).
+ * Standard layout for simple transactional emails.
  */
 const layout = (title: string, body: string) => `
 <div class="tm-wrap" style="margin:0;padding:24px;background:#f6f7fb;font-family:Arial,sans-serif;color:#111827;">
@@ -68,7 +80,6 @@ const layout = (title: string, body: string) => `
 const verifyUrl = (token: string) => `${config.backendUrl}/api/auth/verify?token=${encodeURIComponent(token)}`;
 
 export const sendWelcomeEmail = async (user: EmailUser) => {
-  if (!hasResendConfig()) throw new Error("Resend is not configured");
   const name = user.name?.trim() || "Traveler";
   const html = layout(
     "Welcome to TravelMate",
@@ -76,17 +87,19 @@ export const sendWelcomeEmail = async (user: EmailUser) => {
      <p style="margin:0 0 12px;color:#334155;">Your account is ready. You can now explore packages, book trips, and track your journeys in one place.</p>
      <p style="margin:0;color:#334155;">We are glad to have you with us.</p>`
   );
-  
-  await resend.emails.send({
-    from: config.resendFrom,
-    to: user.email,
-    subject: "Welcome to TravelMate",
-    html,
-  });
+
+  if (hasResendConfig()) {
+    try {
+      const { error } = await resend.emails.send({ from: config.resendFrom, to: user.email, subject: "Welcome to TravelMate", html });
+      if (!error) return;
+    } catch (e) {}
+  }
+  if (hasSmtpConfig()) {
+    await transporter.sendMail({ from: config.smtpFrom || config.smtpUser, to: user.email, subject: "Welcome to TravelMate", html });
+  }
 };
 
 export const sendVerificationEmail = async (user: EmailUser, token: string) => {
-  if (!hasResendConfig()) throw new Error("Resend is not configured");
   const name = user.name?.trim() || "Traveler";
   const link = verifyUrl(token);
   const html = layout(
@@ -99,12 +112,15 @@ export const sendVerificationEmail = async (user: EmailUser, token: string) => {
      <p style="margin:0;color:#64748b;font-size:12px;word-break:break-all;">If the button does not work, use this link: ${escapeHtml(link)}</p>`
   );
 
-  await resend.emails.send({
-    from: config.resendFrom,
-    to: user.email,
-    subject: "Verify your TravelMate account",
-    html,
-  });
+  if (hasResendConfig()) {
+    try {
+      const { error } = await resend.emails.send({ from: config.resendFrom, to: user.email, subject: "Verify your TravelMate account", html });
+      if (!error) return;
+    } catch (e) {}
+  }
+  if (hasSmtpConfig()) {
+    await transporter.sendMail({ from: config.smtpFrom || config.smtpUser, to: user.email, subject: "Verify your TravelMate account", html });
+  }
 };
 
 export const sendBookingConfirmation = async (
@@ -112,13 +128,11 @@ export const sendBookingConfirmation = async (
   booking: BookingEmailDetails,
   options?: { attachment?: Attachment }
 ) => {
-  if (!hasResendConfig()) throw new Error("Resend is not configured");
-  
   const templateDetails: TemplateDetails = {
     firstName: user.name?.split(' ')[0] || "Traveler",
     email: user.email,
     packageTitle: booking.packageTitle,
-    duration: booking.duration || "TBA", // Duration might need to be passed explicitly or inferred
+    duration: booking.duration || "TBA",
     price: `INR ${Number(booking.totalAmount).toLocaleString("en-IN")}`,
     bookingReference: booking.bookingReference,
     airline: booking.airline || "TBA",
@@ -135,27 +149,66 @@ export const sendBookingConfirmation = async (
 
   const html = getBookingConfirmationTemplate(templateDetails);
 
-  await resend.emails.send({
-    from: config.resendFrom,
-    to: user.email,
-    subject: `Your Adventure is Confirmed! - ${booking.bookingReference}`,
-    html,
-    attachments: options?.attachment ? [{ content: options.attachment.content, filename: options.attachment.filename }] : undefined,
-  });
+  if (hasResendConfig()) {
+    try {
+      const { data, error } = await resend.emails.send({
+        from: config.resendFrom,
+        to: user.email,
+        subject: `Your Adventure is Confirmed! - ${booking.bookingReference}`,
+        html,
+        attachments: options?.attachment ? [{ content: options.attachment.content, filename: options.attachment.filename }] : undefined,
+      });
+      if (!error) return data;
+      console.warn(`Resend failed, trying fallback: ${error.message}`);
+    } catch (err: any) {
+      console.warn(`Resend error, trying fallback: ${err.message}`);
+    }
+  }
+
+  if (hasSmtpConfig()) {
+    return await transporter.sendMail({
+      from: config.smtpFrom || config.smtpUser,
+      to: user.email,
+      subject: `Your Adventure is Confirmed! - ${booking.bookingReference}`,
+      html,
+      attachments: options?.attachment ? [{ content: options.attachment.content, filename: options.attachment.filename }] : undefined,
+    });
+  }
+
+  throw new Error("No email provider configured or all failed");
 };
 
 export const sendTestEmail = async (to: string) => {
-  if (!hasResendConfig()) throw new Error("Resend is not configured");
   const html = layout(
-    "Vanakam da mapla",
-    `<p style="margin:0 0 10px;color:#334155;">Vanakam da mapla</p>
-     <p style="margin:0;color:#334155;">Provider: Resend SDK</p>`
+    "TravelMate Email Diagnostic",
+    `<p style="margin:0 0 10px;color:#334155;">Hello,</p>
+     <p style="margin:0 0 10px;color:#334155;">This is a diagnostic email from your TravelMate backend to verify connectivity.</p>
+     <p style="margin:0;color:#334155;">Note: This may have been sent via SMTP fallback if Resend failed.</p>`
   );
-  
-  await resend.emails.send({
-    from: config.resendFrom,
-    to,
-    subject: "TravelMate Email Test",
-    html,
-  });
+
+  if (hasResendConfig()) {
+    try {
+      const { data, error } = await resend.emails.send({
+        from: config.resendFrom,
+        to,
+        subject: "TravelMate Diagnostic (Resend)",
+        html,
+      });
+      if (!error) return data;
+      console.warn(`Resend test failed: ${error.message}`);
+    } catch (err: any) {
+      console.warn(`Resend test error: ${err.message}`);
+    }
+  }
+
+  if (hasSmtpConfig()) {
+    return await transporter.sendMail({
+      from: config.smtpFrom || config.smtpUser,
+      to,
+      subject: "TravelMate Diagnostic (SMTP)",
+      html,
+    });
+  }
+
+  throw new Error("All email providers failed");
 };

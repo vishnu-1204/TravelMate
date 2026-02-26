@@ -1,0 +1,31 @@
+stdout: DEBUG: server.ts is starting...
+[dotenv@17.2.4] injecting env (10) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+Starting server initialization flow...
+Initalizing database...
+SQLite connected at C:\Users\acer\OneDrive\Desktop\TravelMate\auth-backend\auth.db
+WAL mode enabled
+Running CREATE TABLE IF NOT EXISTS users...
+Users table verified/created successfully.
+Checking users table columns...
+Existing columns: id, email, password, created_at, email_verified, verification_token, verification_token_expires_at, verified_at
+Users table ready
+Bookings table ready
+Database initialized successfully. Starting app.listen...
+
+🚀 Server running on http://localhost:3000
+📡 API Base: http://localhost:3000/api/auth
+
+Endpoints registered and ready.
+ERROR: Port 3000 is already in use.
+
+stderr: 
+⚠️  WARNING: JWT_SECRET is set to an insecure default!
+   Set a strong, random JWT_SECRET in your .env file before deploying.
+
+
+status: 1
+message: Command failed: node dist/server.js
+
+⚠️  WARNING: JWT_SECRET is set to an insecure default!
+   Set a strong, random JWT_SECRET in your .env file before deploying.
+

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import { AuthProvider } from "@/hooks/useAuth";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -22,6 +23,7 @@ import Profile from "./pages/Profile";
 import MyBookings from "./pages/MyBookings";
 import AdminBookingMonitor from "./pages/AdminBookingMonitor";
 import GroupTourThankYou from "./pages/GroupTourThankYou";
+import BookingConfirmed from "./pages/BookingConfirmed";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -79,6 +81,14 @@ const AnimatedRoutes = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/booking-confirmed"
+          element={
+            <ProtectedRoute>
+              <BookingConfirmed />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/group-tour/thank-you" element={<GroupTourThankYou />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -93,7 +103,9 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AnimatedRoutes />
+          <ErrorBoundary>
+            <AnimatedRoutes />
+          </ErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

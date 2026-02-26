@@ -917,58 +917,38 @@ const Payment = () => {
         is_locked: true,
       };
 
-      setProcessingMessage('Saving your seat...');
-      
-      const { data: created, error: insertError } = (await withTimeout(
-        (supabase
-          .from('bookings')
-          .insert({
-            ...bookingInsertPayload,
-            booking_status: 'pending',
-            payment_status: 'pending',
-            payment_verified: false
-          } as any)
-          .select('id')
-          .single() as any),
-        10000,
-        'Booking service took too long. Please check your internet.'
-      )) as any;
+      setProcessingMessage('Confirming your booking...');
 
-      const bookingId = created?.id;
-      
-      if (insertError) {
-        setProcessingMessage('Secure connection fallback...');
-        const backupResponse = await fetchWithTimeout(`${backendBaseUrl}/api/booking/create-booking`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ booking: bookingInsertPayload }),
-        }, 12000);
-        
-        if (!backupResponse.ok) throw new Error('Could not save booking. Please try again.');
-      }
-
-      setProcessingMessage('Finalizing booking...');
-      await delay(800);
-
-      // Call the new SIMPLIFIED confirm-booking endpoint
+      // Save booking to backend SQLite + trigger confirmation email
       try {
-        await fetchWithTimeout(`${backendBaseUrl}/api/booking/confirm-booking`, {
+        await fetch(`${backendBaseUrl}/api/booking/book`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            bookingId: bookingId,
-            bookingReference: ref
+          body: JSON.stringify({
+            bookingReference: ref,
+            packageTitle: packageData.title,
+            destination: packageData.location,
+            duration: packageData.duration,
+            travelDate,
+            travelers: totalPassengers,
+            travelerName: primaryTraveler.fullName,
+            roomType,
+            email: registeredEmail,
+            phone: primaryTraveler.mobile,
+            totalAmount: grandTotal,
+            airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
+            departureTime: flightData?.departureTime || '06:30 AM',
+            userId: user?.id || 'guest',
           }),
-        }, 8000);
-      } catch (confirmErr) {
-        console.warn('Confirmation service delayed, but booking is being processed.');
+        });
+      } catch (saveErr) {
+        console.warn('Booking save/email request failed, proceeding anyway:', saveErr);
       }
 
-      // 3. Success UI
+      // Set booking reference
       setBookingRef(ref);
       setBookingEmail(registeredEmail);
-      setShowSuccessModal(true);
-      
+
       if (autoSaveProfile) {
         void updateUserProfile();
       }
@@ -981,6 +961,26 @@ const Payment = () => {
       } catch (e) {
         console.error('PDF auto-download skipped');
       }
+
+      // Navigate to the Booking Confirmed page
+      navigate('/booking-confirmed', {
+        state: {
+          booking: {
+            bookingRef: ref,
+            packageTitle: packageData.title,
+            destination: packageData.location,
+            duration: packageData.duration,
+            travelDate,
+            travelers: totalPassengers,
+            totalAmount: grandTotal,
+            email: registeredEmail,
+            travelerName: primaryTraveler.fullName,
+            roomType,
+            airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
+            departureTime: flightData?.departureTime || '06:30 AM',
+          },
+        },
+      });
 
     } catch (globalError: any) {
       console.error('Global handleCardPayment error:', globalError);

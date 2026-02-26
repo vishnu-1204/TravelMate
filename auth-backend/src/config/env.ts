@@ -13,9 +13,17 @@ const toBoolean = (value: string | undefined, fallback: boolean) => {
 
 const port = toNumber(process.env.PORT, 3000);
 
+const resolvedJwtSecret = process.env.JWT_SECRET || "fallback_secret_change_me";
+if (resolvedJwtSecret === "fallback_secret_change_me" || resolvedJwtSecret === "temp_secret") {
+  console.warn(
+    "\n⚠️  WARNING: JWT_SECRET is set to an insecure default!\n" +
+    "   Set a strong, random JWT_SECRET in your .env file before deploying.\n"
+  );
+}
+
 export const config = {
   port,
-  jwtSecret: process.env.JWT_SECRET || "fallback_secret_change_me",
+  jwtSecret: resolvedJwtSecret,
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1h",
   smtpHost: process.env.SMTP_HOST || "",
   smtpPort: toNumber(process.env.SMTP_PORT, 587),

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "nodemon --watch src --ext ts,json --ignore auth.db* --ignore *.log --ignore dist --exec ts-node src/server.ts"
+    "dev": "nodemon --watch src --ext ts,json --ignore auth.db* --ignore \"*.log\" --ignore \"*.txt\" --ignore dist --ignore node_modules --exec ts-node src/server.ts"
   },
   "keywords": [],
   "author": "",

@@ -112,43 +112,49 @@ const MyBookings = () => {
       setLoading(true);
       setError('');
 
-      const withSnapshots = await supabase
-        .from('bookings')
-        .select(
-          'id, booking_reference, package_id, package_title, travelers, total_amount, payment_status, payment_verified, is_locked, locked_price_per_person, booking_terms, created_at, booking_snapshots(snapshot, locked_transport, locked_hotel)'
-        )
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
-      if (withSnapshots.error) {
-        const fallback = await supabase
+      try {
+        // 1. Fetch from Supabase
+        const { data: supabaseData, error: supabaseError } = await supabase
           .from('bookings')
           .select(
-            'id, booking_reference, package_id, package_title, travelers, total_amount, payment_status, payment_verified, booking_terms, created_at'
+            'id, booking_reference, package_id, package_title, travelers, total_amount, payment_status, payment_verified, is_locked, locked_price_per_person, booking_terms, created_at, booking_snapshots(snapshot, locked_transport, locked_hotel)'
           )
           .eq('user_id', user.id)
           .order('created_at', { ascending: false });
 
-        if (fallback.error) {
-          setError(fallback.error.message || 'Failed to load bookings.');
-          setLoading(false);
-          return;
+        let supabaseBookings: BookingRow[] = [];
+        if (!supabaseError && supabaseData) {
+          supabaseBookings = (supabaseData as unknown) as BookingRow[];
         }
 
-        const normalized = (fallback.data || []).map((row) => ({
-          ...(row as BookingRow),
-          is_locked: false,
-          locked_price_per_person: null,
-          booking_snapshots: null,
-          booking_terms: row.booking_terms,
-        }));
-        setBookings(normalized as BookingRow[]);
-        setLoading(false);
-        return;
-      }
+        // 2. Fetch from Backend (SQLite)
+        const backendBaseUrl =
+          import.meta.env.VITE_AUTH_BACKEND_URL ||
+          import.meta.env.VITE_BACKEND_URL ||
+          'http://localhost:3000';
+        
+        let localBookings: BookingRow[] = [];
+        try {
+          const response = await fetch(`${backendBaseUrl}/api/booking/user-bookings?userId=${user.id}`);
+          if (response.ok) {
+            const result = await response.json();
+            localBookings = result.bookings || [];
+          }
+        } catch (fetchErr) {
+          console.warn('Failed to fetch local bookings:', fetchErr);
+        }
 
-      setBookings((withSnapshots.data as BookingRow[]) || []);
-      setLoading(false);
+        // 3. Merge and Sort
+        const merged = [...localBookings, ...supabaseBookings].sort(
+          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+
+        setBookings(merged);
+      } catch (err: any) {
+        setError(err.message || 'Failed to load bookings.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     void loadBookings();

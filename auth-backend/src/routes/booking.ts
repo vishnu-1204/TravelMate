@@ -3,8 +3,10 @@ import crypto from "crypto";
 import PDFDocument from "pdfkit";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { config } from "../config/env";
+import { getDb } from "../db";
 import { sendBookingConfirmation } from "../services/email.service";
 import { searchFlightOffers } from "../modules/packages/provider/amadeusProvider";
+import { logger } from "../server";
 
 const router = Router();
 const EMAIL_RETRY_LIMIT = 3;
@@ -397,6 +399,59 @@ router.post("/create-booking", async (req: Request, res: Response) => {
   return res.status(201).json({ message: "Booking saved" });
 });
 
+router.get("/user-bookings", async (req: Request, res: Response) => {
+  const userId = req.query.userId as string;
+  if (!userId) return res.status(400).json({ message: "userId is required" });
+
+  try {
+    const db = getDb();
+    const rows = await new Promise<any[]>((resolve, reject) => {
+      db.all(
+        `SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC`,
+        [userId],
+        (err, rows) => {
+          if (err) reject(err);
+          else resolve(rows);
+        }
+      );
+    });
+
+    // Map local SQLite rows to match the expected frontend BookingRow format
+    const localBookings = rows.map((row) => ({
+      id: `local-${row.id}`,
+      booking_reference: row.booking_reference,
+      package_id: row.package_title, // Using title as fallback id for mapping
+      package_title: row.package_title,
+      travelers: row.travelers,
+      total_amount: row.total_amount,
+      payment_status: row.payment_status,
+      payment_verified: row.payment_status === "paid" || row.payment_status === "confirmed",
+      is_locked: true,
+      locked_price_per_person: row.total_amount / (row.travelers || 1),
+      booking_snapshots: [
+        {
+          snapshot: {
+            destination: row.destination,
+          },
+          locked_transport: row.airline,
+          locked_hotel: row.room_type,
+        },
+      ],
+      booking_terms: {
+        airline: row.airline,
+        departureTime: row.departure_time,
+        duration: row.duration,
+      },
+      created_at: row.created_at,
+    }));
+
+    return res.json({ bookings: localBookings });
+  } catch (error: any) {
+    console.error("[booking/user-bookings] Error:", error.message);
+    return res.status(500).json({ message: error.message || "Failed to fetch user bookings" });
+  }
+});
+
 router.post("/resend-confirmation", async (req: Request, res: Response) => {
   const { bookingReference, userId } = req.body as { bookingReference?: string; userId?: string };
   if (!bookingReference) return res.status(400).json({ message: "bookingReference is required" });
@@ -414,18 +469,56 @@ router.post("/resend-confirmation", async (req: Request, res: Response) => {
 
 router.get("/admin/recent-bookings", async (req: Request, res: Response) => {
   if (!isAdminRequest(req)) return res.status(401).json({ message: "Unauthorized admin request" });
-  const client = getSupabase();
-  if (!client) return res.status(500).json({ message: "Supabase service role config missing" });
-
+  
   const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
-  const { data, error } = await client
-    .from("bookings")
-    .select("booking_reference,email,total_amount,email_sent,created_at")
-    .order("created_at", { ascending: false })
-    .limit(limit);
 
-  if (error) return res.status(500).json({ message: error.message });
-  return res.status(200).json({ bookings: (data || []) as AdminBookingRow[] });
+  try {
+    // 1. Fetch from SQLite
+    const db = getDb();
+    const localRows = await new Promise<any[]>((resolve, reject) => {
+      db.all(
+        `SELECT booking_reference, email, total_amount, email_sent, created_at FROM bookings ORDER BY created_at DESC LIMIT ?`,
+        [limit],
+        (err, rows) => {
+          if (err) reject(err);
+          else resolve(rows || []);
+        }
+      );
+    });
+
+    const localAdminRows: AdminBookingRow[] = localRows.map(row => ({
+      booking_reference: row.booking_reference,
+      email: row.email,
+      total_amount: row.total_amount,
+      email_sent: row.email_sent === 1,
+      created_at: row.created_at
+    }));
+
+    // 2. Fetch from Supabase (if configured)
+    let supabaseAdminRows: AdminBookingRow[] = [];
+    const client = getSupabase();
+    if (client) {
+      const { data, error } = await client
+        .from("bookings")
+        .select("booking_reference,email,total_amount,email_sent,created_at")
+        .order("created_at", { ascending: false })
+        .limit(limit);
+      
+      if (!error && data) {
+        supabaseAdminRows = data as AdminBookingRow[];
+      }
+    }
+
+    // Combine and sort
+    const combined = [...localAdminRows, ...supabaseAdminRows]
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, limit);
+
+    return res.status(200).json({ bookings: combined });
+  } catch (error: any) {
+    console.error("[admin/recent-bookings] Failed:", error.message);
+    return res.status(500).json({ message: error.message || "Failed to fetch recent bookings" });
+  }
 });
 
 router.post("/razorpay-webhook", async (req: Request, res: Response) => {
@@ -672,5 +765,161 @@ function generateTicketPdf(data: EmailPayload) {
     doc.end();
   });
 }
+
+// ─── SQLite-based booking endpoint (no Supabase dependency) ───
+router.post("/book", async (req: Request, res: Response) => {
+  const body = req.body as {
+    bookingReference?: string;
+    packageTitle?: string;
+    destination?: string;
+    duration?: string;
+    travelDate?: string;
+    travelers?: number;
+    travelerName?: string;
+    roomType?: string;
+    email?: string;
+    phone?: string;
+    totalAmount?: number;
+    airline?: string;
+    departureTime?: string;
+    userId?: string;
+  };
+
+  // Validate required fields
+  if (!body.email || !body.packageTitle || !body.totalAmount || !body.bookingReference) {
+    return res.status(400).json({ message: "Missing required fields: email, packageTitle, totalAmount, bookingReference" });
+  }
+  if (!validEmail(body.email)) {
+    return res.status(400).json({ message: "Invalid email address" });
+  }
+
+  try {
+    const db = getDb();
+
+    // Insert into local SQLite bookings table
+    await new Promise<void>((resolve, reject) => {
+      db.run(
+        `INSERT INTO bookings
+          (user_id, booking_reference, package_title, destination, duration,
+           travel_date, travelers, traveler_name, room_type, email, phone,
+           total_amount, airline, departure_time, payment_status, booking_status)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'paid', 'confirmed')`,
+        [
+          body.userId || "guest",
+          body.bookingReference,
+          body.packageTitle,
+          body.destination || null,
+          body.duration || null,
+          body.travelDate || null,
+          body.travelers || 1,
+          body.travelerName || null,
+          body.roomType || null,
+          body.email,
+          body.phone || null,
+          body.totalAmount,
+          body.airline || null,
+          body.departureTime || null,
+        ],
+        function (err) {
+          if (err) reject(err);
+          else resolve();
+        }
+      );
+    });
+
+    logger(`[booking/book] Saved booking ${body.bookingReference} to SQLite`);
+
+    // Send confirmation email asynchronously (don't block response)
+    if (config.resendApiKey && config.resendFrom) {
+      setImmediate(async () => {
+        try {
+          // Construct full payload for PDF and Template
+          const payload: EmailPayload = {
+            fullName: body.travelerName || "Traveler",
+            email: body.email!,
+            phone: body.phone || "-",
+            bookingReference: body.bookingReference!,
+            bookingId: body.bookingReference!, 
+            paymentId: "PAID",
+            packageTitle: body.packageTitle!,
+            destination: body.destination || "-",
+            travelDate: body.travelDate || "TBA",
+            passengers: body.travelers || 1,
+            totalAmount: body.totalAmount!,
+            travelCategory: "General",
+            itineraryDays: [],
+            itineraryNights: [],
+            transportDetails: body.airline ? `Flight: ${body.airline}` : "-",
+            activities: [],
+            checkIn: body.travelDate || "-",
+            checkOut: "-",
+            emergencyContact: baseDefaults.emergencyContact,
+            travelGuidelines: baseDefaults.travelGuidelines,
+            documentsToCarry: baseDefaults.documentsToCarry,
+            importantNotes: baseDefaults.importantNotes,
+            duration: body.duration || "-",
+            airline: body.airline || "-",
+            departureTime: body.departureTime || "-",
+            arrivalTime: "-",
+            included: [],
+            excluded: [],
+          };
+
+          const pdf = await generateTicketPdf(payload);
+
+          await sendBookingConfirmation(
+            { email: body.email!, name: body.travelerName || "Traveler" },
+            {
+              bookingReference: body.bookingReference!,
+              packageTitle: body.packageTitle!,
+              destination: body.destination,
+              travelDate: body.travelDate || "TBA",
+              totalAmount: body.totalAmount!,
+              duration: body.duration,
+              airline: body.airline,
+              departureTime: body.departureTime,
+              supportEmail: config.supportEmail,
+              supportPhone: config.supportPhone,
+            },
+            {
+              attachment: {
+                filename: `TravelMate-Ticket-${body.bookingReference}.pdf`,
+                content: pdf,
+                contentType: "application/pdf",
+              },
+            }
+          );
+
+          // Mark email as sent in SQLite
+          db.run(
+            `UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`,
+            [body.bookingReference],
+            (err) => {
+              if (err) logger("[booking/book] Failed to update email_sent flag:", err.message);
+              else logger(`[booking/book] Confirmation email successfully dispatched for ${body.bookingReference}`);
+            }
+          );
+        } catch (emailErr: any) {
+          logger(`[booking/book] Email delivery FAILED for ${body.bookingReference}:`, emailErr.message);
+        }
+      });
+    } else {
+      logger("[booking/book] Resend not configured — skipping confirmation email");
+    }
+
+    return res.status(201).json({
+      success: true,
+      bookingReference: body.bookingReference,
+      message: "Booking saved. Confirmation email is being sent.",
+    });
+  } catch (error: any) {
+    logger("[booking/book] Error:", error.message);
+
+    if (/UNIQUE constraint/i.test(error.message)) {
+      return res.status(409).json({ message: "Booking reference already exists" });
+    }
+    return res.status(500).json({ message: error.message || "Failed to save booking" });
+  }
+});
 
 export default router;
