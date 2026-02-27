@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, ArrowLeft, Mail } from 'lucide-react';
 import PageTransition from '@/components/layout/PageTransition';
-import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+
 const emailSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
+  email: z.string().trim().toLowerCase().email('Please enter a valid email address'),
 });
 
 const ForgotPassword = () => {
@@ -19,7 +20,8 @@ const ForgotPassword = () => {
     e.preventDefault();
     setError('');
 
-    const validation = emailSchema.safeParse({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+    const validation = emailSchema.safeParse({ email: normalizedEmail });
     if (!validation.success) {
       setError(validation.error.errors[0].message);
       return;
@@ -27,16 +29,20 @@ const ForgotPassword = () => {
 
     setLoading(true);
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/login`,
+      const res = await fetch(`${BACKEND_URL}/api/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: normalizedEmail }),
       });
-      if (error) {
-        setError('Failed to send reset email. Please try again.');
+
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || 'Failed to send reset email. Please try again.');
       } else {
         setSuccess(true);
       }
     } catch {
-      setError('An unexpected error occurred. Please try again.');
+      setError('Unable to reach the server. Please make sure the backend is running.');
     } finally {
       setLoading(false);
     }
@@ -66,7 +72,17 @@ const ForgotPassword = () => {
                 <span className="font-medium">Check your email</span>
               </div>
               <p>
-                We've sent a password reset link to <strong>{email}</strong>. Please check your inbox and follow the instructions.
+                If an account exists for <strong>{email}</strong>, we've sent a password reset link. Please check your inbox and spam folder.
+              </p>
+              <p className="mt-3 text-gray-400 text-xs">
+                Didn't receive it? Check your spam folder or{' '}
+                <button
+                  type="button"
+                  className="text-sky-400 hover:underline"
+                  onClick={() => { setSuccess(false); setError(''); }}
+                >
+                  try again
+                </button>.
               </p>
             </div>
           ) : (

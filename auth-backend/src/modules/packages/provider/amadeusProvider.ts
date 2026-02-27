@@ -1055,7 +1055,7 @@ const isAllowedStrongTourismDomestic = (pkg: TravelPackage) => {
 
 const generateStateBasedDomesticPackages = async (baseDate: Date): Promise<TravelPackage[]> => {
   const packages: TravelPackage[] = [];
-  const preferredCategories: PackageCategory[] = ["domestic", "group", "group", "educational", "honeymoon", "budget"];
+  const preferredCategories: PackageCategory[] = ["domestic", "domestic", "educational", "honeymoon", "budget", "nearby"];
 
   for (let stateIndex = 0; stateIndex < TOURIST_STATE_CONFIG.length; stateIndex += 1) {
     const stateConfig = TOURIST_STATE_CONFIG[stateIndex];
@@ -1093,9 +1093,49 @@ const generateStateBasedDomesticPackages = async (baseDate: Date): Promise<Trave
   return packages;
 };
 
+// Dedicated group tour generation — separate from domestic packages
+const generateGroupTourPackages = async (baseDate: Date): Promise<TravelPackage[]> => {
+  const packages: TravelPackage[] = [];
+  // Pick a few popular states for group tours (every 3rd state to get variety)
+  const groupTourStates = TOURIST_STATE_CONFIG.filter((_, i) => i % 3 === 0).slice(0, 4);
+
+  for (let i = 0; i < groupTourStates.length; i++) {
+    const stateConfig = groupTourStates[i];
+    const combo = stateConfig.attractions.slice(0, 2);
+    const destinationLabel = joinAttractionsForTitle(combo);
+    const locationLabel = `${combo.join(", ")}, ${stateConfig.state}, India`;
+    const durationDays = 3 + (i % 3);
+    const departure = new Date(baseDate.getTime() + (7 + i * 10) * DAY_MS);
+    const arrival = new Date(departure.getTime() + (durationDays - 1) * DAY_MS);
+    const fareUsd = 70 + i * 15;
+
+    const synthetic: FlightDestination = {
+      origin: "DEL",
+      destination: `${stateConfig.hubCode}G${i + 1}`,
+      departureDate: departure.toISOString().slice(0, 10),
+      returnDate: arrival.toISOString().slice(0, 10),
+      price: { total: String(fareUsd) },
+    };
+
+    const created = await createSmartPackage({
+      destination: synthetic,
+      destinationLabel,
+      locationLabel,
+      country: "India",
+      countryCode: "IN",
+      preferredCategory: "group",
+      variantSeed: i + 100, // distinct seed to avoid collisions
+    });
+    if (created) packages.push(created);
+  }
+
+  return packages;
+};
+
 const generateFallbackPackages = async (): Promise<TravelPackage[]> => {
   const baseDate = new Date();
   const domestic = await generateStateBasedDomesticPackages(baseDate);
+  const groupTours = await generateGroupTourPackages(baseDate);
   const internationalGenerated: TravelPackage[] = [];
   for (let destinationIndex = 0; destinationIndex < limitedInternationalDestinations.length; destinationIndex += 1) {
     const entry = limitedInternationalDestinations[destinationIndex];
@@ -1124,7 +1164,7 @@ const generateFallbackPackages = async (): Promise<TravelPackage[]> => {
   }
 
   const international = internationalGenerated.slice(0, MAX_INTL_PACKAGES);
-  const ordered = [...domestic, ...international].sort((a, b) => b.trendingScore - a.trendingScore);
+  const ordered = [...domestic, ...groupTours, ...international].sort((a, b) => b.trendingScore - a.trendingScore);
   return ordered.slice(0, Math.max(config.packageFetchLimit, 80));
 };
 
@@ -1153,7 +1193,7 @@ export const fetchAmadeusPackages = async (): Promise<TravelPackage[]> => {
 
   const payload = (await response.json()) as FlightDestinationsResponse;
   const sliced = (payload.data || []).slice(0, Math.max(config.packageFetchLimit, 80));
-  const categories: (PackageCategory | undefined)[] = ["group", "honeymoon", "educational", undefined, undefined, undefined];
+  const categories: (PackageCategory | undefined)[] = ["honeymoon", "educational", undefined, undefined, undefined, undefined];
   const generated = await Promise.all(
     sliced.map((item, index) => 
       createPackageFromDestination(

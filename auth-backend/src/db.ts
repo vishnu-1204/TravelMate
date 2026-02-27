@@ -42,6 +42,8 @@ const ensureUsersTableColumns = async () => {
     { name: "verification_token", ddl: "ALTER TABLE users ADD COLUMN verification_token TEXT" },
     { name: "verification_token_expires_at", ddl: "ALTER TABLE users ADD COLUMN verification_token_expires_at DATETIME" },
     { name: "verified_at", ddl: "ALTER TABLE users ADD COLUMN verified_at DATETIME" },
+    { name: "reset_token", ddl: "ALTER TABLE users ADD COLUMN reset_token TEXT" },
+    { name: "reset_token_expires_at", ddl: "ALTER TABLE users ADD COLUMN reset_token_expires_at DATETIME" },
   ];
 
   for (const column of requiredColumns) {

@@ -15,6 +15,8 @@ export type BookingEmailDetails = {
   destination?: string;
   travelDate: string;
   totalAmount: number;
+  travelers?: number;
+  paymentStatus?: string;
   itinerarySummary?: { day: number; title: string; description: string }[];
   supportEmail?: string;
   supportPhone?: string;
@@ -127,6 +129,30 @@ export const sendVerificationEmail = async (user: EmailUser, token: string) => {
   }
 };
 
+export const sendPasswordResetEmail = async (user: EmailUser, resetLink: string) => {
+  const name = user.name?.trim() || "Traveler";
+  const html = layout(
+    "Reset Your Password",
+    `<p style="margin:0 0 12px;color:#334155;">Hi ${escapeHtml(name)},</p>
+     <p style="margin:0 0 16px;color:#334155;">We received a request to reset your TravelMate account password. Click the button below to create a new password.</p>
+     <p style="margin:0 0 18px;">
+       <a href="${escapeHtml(resetLink)}" style="display:inline-block;background:#0f172a;color:#ffffff;padding:12px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;">Reset Password</a>
+     </p>
+     <p style="margin:0 0 12px;color:#64748b;font-size:12px;">This link expires in 1 hour. If you didn't request this, you can safely ignore this email.</p>
+     <p style="margin:0;color:#64748b;font-size:12px;word-break:break-all;">If the button does not work, copy this link: ${escapeHtml(resetLink)}</p>`
+  );
+
+  if (hasResendConfig()) {
+    try {
+      const { error } = await resend.emails.send({ from: config.resendFrom, to: user.email, subject: "Reset your TravelMate password", html });
+      if (!error) return;
+    } catch (e) {}
+  }
+  if (hasSmtpConfig()) {
+    await transporter.sendMail({ from: config.smtpFrom || config.smtpUser, to: user.email, subject: "Reset your TravelMate password", html });
+  }
+};
+
 const getHeroImage = (dest: string) => {
   const d = dest.toLowerCase();
   if (d.includes('himachal') || d.includes('kasol')) return 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80';
@@ -146,9 +172,13 @@ export const sendBookingConfirmation = async (
     firstName: user.name?.split(' ')[0] || "Traveler",
     email: user.email,
     packageTitle: booking.packageTitle,
+    destination: booking.destination,
     duration: booking.duration || "TBA",
     price: `INR ${Number(booking.totalAmount).toLocaleString("en-IN")}`,
     bookingReference: booking.bookingReference,
+    travelDate: booking.travelDate || "TBA",
+    travelers: booking.travelers,
+    paymentStatus: booking.paymentStatus || "Paid",
     airline: booking.airline || "TBA",
     departureTime: booking.departureTime || "TBA",
     arrivalTime: booking.arrivalTime || "TBA",
@@ -159,7 +189,9 @@ export const sendBookingConfirmation = async (
     checkOut: booking.checkOut,
     transportType: booking.transportType || (booking.airline?.toLowerCase().includes('coach') ? 'bus' : 'flight'),
     heroImage: getHeroImage(booking.destination || booking.packageTitle),
-    emergencyContact: config.supportPhone
+    emergencyContact: config.supportPhone,
+    supportEmail: config.supportEmail,
+    supportPhone: config.supportPhone,
   };
 
   const html = getBookingConfirmationTemplate(templateDetails);
@@ -169,7 +201,7 @@ export const sendBookingConfirmation = async (
       const { data, error } = await resend.emails.send({
         from: config.resendFrom,
         to: user.email,
-        subject: `Your Adventure is Confirmed! - ${booking.bookingReference}`,
+        subject: `Booking Confirmation - ${booking.bookingReference}`,
         html,
         attachments: options?.attachment ? [{ content: options.attachment.content, filename: options.attachment.filename }] : undefined,
       });
@@ -184,7 +216,7 @@ export const sendBookingConfirmation = async (
     return await transporter.sendMail({
       from: config.smtpFrom || config.smtpUser,
       to: user.email,
-      subject: `Your Adventure is Confirmed! - ${booking.bookingReference}`,
+      subject: `Booking Confirmation - ${booking.bookingReference}`,
       html,
       attachments: options?.attachment ? [{ content: options.attachment.content, filename: options.attachment.filename }] : undefined,
     });

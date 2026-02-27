@@ -136,7 +136,7 @@ export const classifyPackageCategories = (input: ClassifyInput): PackageCategory
   return Array.from(categories);
 };
 
-const priority: PackageCategory[] = ['group', 'honeymoon', 'educational', 'domestic', 'international', 'nearby', 'budget'];
+const priority: PackageCategory[] = ['honeymoon', 'educational', 'domestic', 'international', 'nearby', 'budget', 'group'];
 
 export const pickPrimaryCategory = (categories: PackageCategory[]): PackageCategory => {
   for (const item of priority) {

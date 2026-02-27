@@ -33,7 +33,7 @@ export const config = {
   resendApiKey: process.env.RESEND_API_KEY || "",
   resendFrom: process.env.RESEND_FROM || "",
   backendUrl: process.env.BACKEND_URL || `http://localhost:${port}`,
-  supportEmail: process.env.SUPPORT_EMAIL || "mail@travelmate.in",
+  supportEmail: process.env.SUPPORT_EMAIL || "travelmate713@gmail.com",
   supportPhone: process.env.SUPPORT_PHONE || "+91 9342180670",
   socialLinksLabel: process.env.SOCIAL_LINKS_LABEL || "Instagram | YouTube | LinkedIn",
   brandLogoUrl: process.env.BRAND_LOGO_URL || "",

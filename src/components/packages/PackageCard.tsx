@@ -91,12 +91,7 @@ export const PackageCard = ({
             Save {dynamicPricing.totalDiscountPercent}%
           </div>
         ) : null}
-        {isGroupTour && (
-          <div className="absolute top-3 right-3 rounded-full bg-blue-600 text-white text-xs font-bold px-3 py-1 shadow-lg flex items-center gap-1">
-            <TrendingUp className="h-3 w-3" />
-            Group Tour
-          </div>
-        )}
+
       </div>
       <div className="p-5 flex flex-col">
         <div className="flex items-center gap-1 text-amber-500 mb-2">

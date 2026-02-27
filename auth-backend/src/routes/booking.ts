@@ -66,6 +66,7 @@ type BookingRecord = {
   id: string;
   user_id: string;
   booking_reference: string | null;
+  package_id: string | null;
   first_name: string;
   last_name: string;
   email: string;
@@ -592,6 +593,15 @@ router.get("/download-ticket/:bookingReference", async (req: Request, res: Respo
     if (!booking) return res.status(404).json({ message: "Booking not found" });
 
     const payload = fromBooking(booking);
+    
+    // Check if it's a group tour - if so, block PDF download as per isolation rules
+    if (booking.package_id) {
+      const pkg = await getPackageById(booking.package_id);
+      if (pkg?.isGroupTour) {
+        return res.status(403).json({ message: "Itinerary PDFs are not available for group tours via this endpoint." });
+      }
+    }
+
     const pdf = await generateTicketPdf(payload);
 
     res.setHeader("Content-Type", "application/pdf");
@@ -661,6 +671,15 @@ router.post("/confirmation-email", async (req: Request, res: Response) => {
       included: body.included || [],
       excluded: body.excluded || [],
     };
+
+    // Guard against group tours
+    if (body.packageId) {
+      const pkg = await getPackageById(body.packageId);
+      if (pkg?.isGroupTour) {
+        return res.status(403).json({ message: "Confirmation emails are not supported for group tours." });
+      }
+    }
+
     const pdf = await generateTicketPdf(payload);
     const sent = await sendWithRetry(payload, pdf);
     if (!sent.ok) return res.status(500).json({ message: "Failed to send confirmation email" });
@@ -679,119 +698,81 @@ function generateTicketPdf(data: EmailPayload) {
     doc.on("end", () => resolve(Buffer.concat(chunks)));
     doc.on("error", reject);
 
-    // Header Background
-    doc.rect(0, 0, doc.page.width, 120).fill("#0f172a");
+    const pageW = doc.page.width;
+    const leftM = 50;
+    const rightM = pageW - 50;
 
-    // Brand Title
-    doc.fontSize(24).fillColor("#ffffff").text("TRAVELMATE", 0, 45, { align: "center", lineGap: 5 });
-    doc.fontSize(10).fillColor("#94a3b8").text("YOUR JOURNEY BEGINS WITH US", { align: "center" });
+    // ────── HEADER ──────
+    doc.rect(0, 0, pageW, 110).fill("#0f172a");
+    doc.fontSize(26).fillColor("#ffffff").text("TRAVELMATE", 0, 35, { align: "center" });
+    doc.fontSize(9).fillColor("#94a3b8").text("Your Journey Begins With Us", { align: "center" });
+    doc.fontSize(8).fillColor("#64748b").text(
+      `${config.supportEmail || "support@travelmate.com"}  |  ${config.supportPhone || "+91 9342180670"}`,
+      0, 75, { align: "center" }
+    );
 
-    doc.fillColor("#000000"); // Reset color
-    let yPos = 150;
+    let y = 130;
 
-    // Main Ticket Section
-    doc.fontSize(18).fillColor("#0f172a").text("Travel Confirmation Ticket", 50, yPos);
-    doc.moveDown(0.5);
-    yPos = doc.y;
+    // ────── TITLE ──────
+    doc.fontSize(18).fillColor("#0f172a").text("Booking Ticket", leftM, y);
+    y += 25;
+    doc.moveTo(leftM, y).lineTo(rightM, y).strokeColor("#e2e8f0").lineWidth(1).stroke();
+    y += 15;
 
-    doc.moveTo(50, yPos).lineTo(545, yPos).strokeColor("#e2e8f0").stroke();
-    doc.moveDown(1);
-    yPos = doc.y;
+    // ────── TRAVELER DETAILS ──────
+    doc.fontSize(13).fillColor("#1e40af").text("Traveler Details", leftM, y);
+    y += 20;
 
-    // Passenger & Booking Info (2 columns)
-    const col1 = 50;
-    const col2 = 300;
+    const drawRow = (label: string, value: string, yPos: number) => {
+      doc.fontSize(9).fillColor("#64748b").text(label, leftM + 10, yPos);
+      doc.fontSize(10).fillColor("#0f172a").text(value || "-", leftM + 130, yPos);
+      return yPos + 18;
+    };
 
-    doc.fontSize(10).fillColor("#64748b");
-    doc.text("PASSENGER NAME", col1, yPos);
-    doc.text("BOOKING REFERENCE", col2, yPos);
-    doc.moveDown(0.2);
-    
-    doc.fontSize(12).fillColor("#0f172a");
-    doc.text(data.fullName.toUpperCase(), col1, doc.y);
-    doc.text(data.bookingReference, col2, doc.y - 15); // Adjust Y because of moveDown
-    doc.moveDown(1);
-    yPos = doc.y;
+    y = drawRow("Name", data.fullName, y);
+    y = drawRow("Email", data.email, y);
+    y = drawRow("Phone", data.phone, y);
+    y += 10;
 
-    doc.fontSize(10).fillColor("#64748b");
-    doc.text("PACKAGE", col1, yPos);
-    doc.text("TRAVEL DATE", col2, yPos);
-    doc.moveDown(0.2);
+    // ────── BOOKING DETAILS ──────
+    doc.fontSize(13).fillColor("#1e40af").text("Booking Details", leftM, y);
+    y += 20;
+    y = drawRow("Booking ID", data.bookingReference, y);
+    y = drawRow("Package", data.packageTitle, y);
+    y = drawRow("Destination", data.destination, y);
+    y = drawRow("Travel Date", data.travelDate, y);
+    y = drawRow("Duration", data.duration, y);
+    y = drawRow("Travelers", String(data.passengers), y);
+    y = drawRow("Total Amount", `INR ${Number(data.totalAmount).toLocaleString("en-IN")}`, y);
+    y = drawRow("Payment Status", "Paid", y);
+    y += 20;
 
-    doc.fontSize(12).fillColor("#0f172a");
-    doc.text(data.packageTitle, col1, doc.y);
-    doc.text(data.travelDate, col2, doc.y - 15);
-    doc.moveDown(1.5);
-    yPos = doc.y;
+    doc.moveTo(leftM, y).lineTo(rightM, y).strokeColor("#e2e8f0").lineWidth(0.5).stroke();
+    y += 15;
 
-    // Flight Details Box
-    doc.rect(50, yPos, 495, 80).fill("#f8fafc").strokeColor("#cbd5e1").stroke();
-    
-    doc.fontSize(11).fillColor("#0f172a").text("Flight Information", 65, yPos + 10);
-    doc.fontSize(9).fillColor("#64748b").text("AIRLINE", 65, yPos + 30);
-    doc.text("DEPARTURE", 200, yPos + 30);
-    doc.text("ARRIVAL", 350, yPos + 30);
-    doc.text("DURATION", 470, yPos + 30);
+    // ────── FOOTER NOTE ──────
+    doc.fontSize(10).fillColor("#475569").text(
+      "Please carry a valid government-issued photo ID (Aadhaar/Passport) during your trip. Reach the departure point at least 30 minutes before time.",
+      leftM, y, { width: rightM - leftM, align: "center" }
+    );
 
-    doc.fontSize(10).fillColor("#0f172a").text(data.airline, 65, yPos + 45);
-    doc.text(data.departureTime, 200, yPos + 45);
-    doc.text(data.arrivalTime, 350, yPos + 45);
-    doc.text(data.duration, 470, yPos + 45);
-
-    doc.moveDown(5);
-    yPos = doc.y;
-
-    // Inclusions & Exclusions
-    doc.fontSize(14).fillColor("#0f172a").text("Inclusions", 50, yPos);
-    doc.text("Exclusions", 300, yPos);
-    doc.moveDown(0.5);
-    
-    const incPos = doc.y;
-    doc.fontSize(9).fillColor("#334155");
-    data.included.slice(0, 6).forEach((item) => doc.text(`- ${item}`, 50));
-    
-    doc.y = incPos;
-    data.excluded.slice(0, 6).forEach((item) => doc.text(`- ${item}`, 300));
-
-    doc.moveDown(2);
-    yPos = doc.y;
-
-    // Itinerary Section
-    doc.fontSize(14).fillColor("#0f172a").text("Trip Itinerary Overview", 50, yPos);
-    doc.moveDown(0.5);
-    
-    if (data.itineraryDays.length === 0) {
-      doc.fontSize(10).fillColor("#64748b").text("- Detailed itinerary will be shared via email and app.");
-    } else {
-      data.itineraryDays.forEach((day) => {
-        // Check if we need a new page
-        if (doc.y > doc.page.height - 100) {
-          doc.addPage();
-          // Re-render header or simple title on new page
-          doc.fontSize(14).fillColor("#0f172a").text("Itinerary Continued...", 50, 50);
-          doc.moveDown(0.5);
-        }
-
-        const currentY = doc.y;
-        doc.circle(55, currentY + 5, 3).fill("#3b82f6");
-        
-        doc.fontSize(10).fillColor("#3b82f6").text(`Day ${day.day}: `, 65, currentY, { continued: true });
-        doc.fillColor("#0f172a").text(day.title);
-        
-        doc.fontSize(9).fillColor("#475569");
-        const details = day.activities?.length ? day.activities.join(", ") : day.narrative || "";
-        if (details) {
-          doc.text(details, 65, doc.y, { width: 480 });
-        }
-        doc.moveDown(0.5);
-      });
-    }
-
-    // Footer
-    doc.fontSize(8).fillColor("#94a3b8").text(
-      `Support: ${config.supportEmail} | ${config.supportPhone} | Generated on ${new Date().toLocaleDateString()}`,
-      50,
-      doc.page.height - 50,
+    // ────── FOOTER ──────
+    const footerY = doc.page.height - 60;
+    doc.rect(0, footerY - 10, pageW, 70).fill("#f8fafc");
+    doc.moveTo(0, footerY - 10).lineTo(pageW, footerY - 10).strokeColor("#e2e8f0").stroke();
+    doc.fontSize(10).fillColor("#0f172a").text(
+      "Thank you for choosing TravelMate!",
+      0, footerY,
+      { align: "center" }
+    );
+    doc.fontSize(8).fillColor("#64748b").text(
+      `TravelMate  |  ${config.supportEmail || "support@travelmate.com"}  |  ${config.supportPhone || "+91 9342180670"}`,
+      0, footerY + 16,
+      { align: "center" }
+    );
+    doc.fontSize(7).fillColor("#94a3b8").text(
+      `Generated on ${new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`,
+      0, footerY + 30,
       { align: "center" }
     );
 
@@ -827,14 +808,15 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
     }
 
     // 2. Fetch package details for Group Tour validation
+    let resolvedPkg: Awaited<ReturnType<typeof getPackageById>> = null;
     if (body.packageId) {
-      const pkg = await getPackageById(body.packageId);
-      if (pkg && pkg.isGroupTour) {
+      resolvedPkg = await getPackageById(body.packageId);
+      if (resolvedPkg && resolvedPkg.isGroupTour) {
         if (!body.travelDate) {
           return res.status(400).json({ message: "Travel date is required for group tours." });
         }
 
-        const departure = pkg.groupDepartures?.find(d => d.date === body.travelDate);
+        const departure = resolvedPkg.groupDepartures?.find(d => d.date === body.travelDate);
         if (!departure) {
           return res.status(400).json({ message: `No group departure available for the selected date: ${body.travelDate}` });
         }
@@ -887,12 +869,12 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
 
     logger(`[booking/book] Saved booking ${body.bookingReference} to SQLite`);
 
-    // 3. Update Group Tour capacity if applicable
-    if (body.packageId && body.travelDate) {
+    // 3. Update Group Tour capacity — ONLY for group tours
+    if (resolvedPkg?.isGroupTour && body.packageId && body.travelDate) {
       const { updateGroupBookings } = require("../modules/packages/service/packageService");
       try {
         await updateGroupBookings(body.packageId, body.travelDate, body.travelers || 1);
-        logger(`[booking/book] Updated capacity for ${body.packageId} on ${body.travelDate}`);
+        logger(`[booking/book] Updated group capacity for ${body.packageId} on ${body.travelDate}`);
       } catch (updateErr: any) {
         logger(`[booking/book] Warning: Failed to update group capacity:`, updateErr.message);
         // We don't fail the whole booking if just the capacity cache update fails, 
@@ -900,9 +882,11 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
       }
     }
 
-    // Send confirmation email asynchronously (don't block response)
-    if (config.resendApiKey && config.resendFrom) {
+    // Send confirmation email asynchronously (only for normal tours)
+    const hasEmailConfig = (config.resendApiKey && config.resendFrom) || (config.smtpUser && config.smtpPass);
+    if (hasEmailConfig && !resolvedPkg?.isGroupTour) {
       setImmediate(async () => {
+        logger(`[booking/book] Starting async email process for ${body.bookingReference}`);
         try {
           const { getDb } = require("../db");
           const db = getDb();
@@ -1017,8 +1001,10 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
           logger(`[booking/book] Email delivery FAILED for ${body.bookingReference}:`, emailErr.message);
         }
       });
+    } else if (resolvedPkg?.isGroupTour) {
+      logger(`[booking/book] Skipping automated confirmation email/PDF for Group Tour: ${body.bookingReference}`);
     } else {
-      logger("[booking/book] Resend not configured — skipping confirmation email");
+      logger(`[booking/book] Skipping confirmation email for ${body.bookingReference}: No valid email configuration (Resend/SMTP) found.`);
     }
 
     return res.status(201).json({
