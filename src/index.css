@@ -175,4 +175,20 @@
   @apply border border-white/20 rounded-xl py-3 hover:bg-transparent/5 transition;
 }
 
+/* Auth Redesign Styles */
+:root {
+  --auth-navy: #131326;
+  --auth-sky: #38bdf8; /* sky-400 */
+}
 
+.auth-input-container {
+  @apply relative w-full mb-4;
+}
+
+.auth-input {
+  @apply w-full bg-transparent border-2 border-[#38bdf8] rounded-full px-12 py-3 text-white placeholder:text-gray-400 focus:outline-none focus:ring-0 transition-all;
+}
+
+.auth-btn {
+  @apply w-full bg-[#38bdf8] text-white font-bold py-3 rounded-full hover:bg-[#7dd3fc] transition-all shadow-lg;
+}

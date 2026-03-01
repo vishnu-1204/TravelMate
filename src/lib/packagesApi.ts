@@ -24,7 +24,10 @@ export type PackageCategory =
   | 'budget'
   | 'honeymoon'
   | 'group'
-  | 'educational';
+  | 'educational'
+  | 'kerala'
+  | 'south-india'
+  | 'north-india';
 
 export type BudgetType = 'low' | 'medium' | 'premium';
 export type HotelType = 'budget' | 'comfort' | 'premium';
@@ -204,6 +207,9 @@ const normalizeCategory = (category?: string) => {
   if (category === 'indian') return 'domestic';
   if (category === 'weekend') return 'nearby';
   if (category === 'budget-travel') return 'budget';
+  if (category === 'kerala') return 'kerala';
+  if (category === 'south-india') return 'south-india';
+  if (category === 'north-india') return 'north-india';
   return category;
 };
 
@@ -483,6 +489,9 @@ const buildUniqueItinerary = (pkg: {
     honeymoon: [`Scenic couple photo stop in ${pkg.destination}`, `Romantic sunset viewpoint in ${pkg.destination}`],
     group: [`Group-friendly sightseeing circuit in ${pkg.destination}`, 'Team activity and local exploration'],
     educational: [`Museum and interpretation center tour in ${pkg.destination}`, 'Guided history and learning walk'],
+    kerala: [`Backwater boat ride in ${pkg.destination}`, `Tea garden walk and spice plantation visit`],
+    'south-india': [`Heritage temple tour in ${pkg.destination}`, `Coastal walk and traditional lunch`],
+    'north-india': [`Mountain viewpoint drive in ${pkg.destination}`, `Old town walk and local market visit`],
   };
 
   const days = Array.from({ length: totalDays }, (_, index) => {

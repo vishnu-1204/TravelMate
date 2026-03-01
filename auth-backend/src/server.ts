@@ -1,13 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-const logFile = path.resolve(__dirname, "../persistent_server.log");
-export const logger = (msg: string, ...args: any[]) => {
-  const formattedMsg = `[${new Date().toISOString()}] ${msg} ${args.map(a => JSON.stringify(a)).join(" ")}\n`;
-  fs.appendFileSync(logFile, formattedMsg);
-  console.log(msg, ...args);
-};
-
+import { logger } from "./utils/logger";
+// Remove internal logger definition
 logger("DEBUG: server.ts is starting...");
 
 // Global Error Handlers
@@ -32,6 +27,7 @@ import packagesRoutes from "./routes/packages";
 import testEmailRoutes from "./routes/testEmail";
 import reviewsRoutes from "./routes/reviews";
 import { refreshPackageCache } from "./modules/packages/service/packageService";
+import { startEmailRecoveryTask } from "./utils/emailRecovery";
 
 const app = express();
 
@@ -158,6 +154,9 @@ const startServer = async () => {
         });
       }, intervalMs);
     }
+
+    // Start background email recovery (every 15 mins)
+    startEmailRecoveryTask();
   } catch (err: any) {
     logger(`CRITICAL: [PID ${process.pid}] System failure:`, err.message);
     process.exit(1);

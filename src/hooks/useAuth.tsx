@@ -68,12 +68,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     void fetchProfile();
   }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, name?: string) => {
     try {
       const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, name }),
       });
 
       const data = (await response.json().catch(() => null)) as { message?: string; token?: string; user?: User } | null;

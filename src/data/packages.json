@@ -29590,5 +29590,2231 @@
     },
     "popularityScore": 65,
     "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-101",
+    "packageId": "pkg-new-102",
+    "source": "amadeus",
+    "category": "kerala",
+    "categories": [
+      "kerala",
+      "domestic"
+    ],
+    "categoryLabel": "Kerala",
+    "country": "India",
+    "title": "Munnar Tea Garden Escape",
+    "destination": "Munnar",
+    "location": "Munnar, Kerala",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 16708,
+    "discount": 14,
+    "rating": 4.5987309361182795,
+    "reviews": 143,
+    "shortDescription": "Experience the beauty of Munnar, Kerala with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Munnar Tea Garden Escape",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Munnar, Kerala for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 80,
+    "budgetFriendly": false,
+    "budgetType": "premium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-102",
+    "affordabilityScore": 17,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "luxury",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 16708,
+      "basePricePerPerson": 16708,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 6683,
+        "transport": 5012,
+        "food": 1670,
+        "activities": 1670,
+        "taxes": 1670,
+        "subtotal": 16708,
+        "totalDiscount": 0,
+        "total": 16708,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-102",
+    "packageId": "pkg-new-103",
+    "source": "amadeus",
+    "category": "kerala",
+    "categories": [
+      "kerala",
+      "domestic"
+    ],
+    "categoryLabel": "Kerala",
+    "country": "India",
+    "title": "Alleppey Houseboat Stay",
+    "destination": "Alleppey",
+    "location": "Alleppey, Kerala",
+    "duration": "2 Days / 1 Nights",
+    "durationDays": 2,
+    "price": 14340,
+    "discount": 22,
+    "rating": 4.653174854544384,
+    "reviews": 123,
+    "shortDescription": "Experience the beauty of Alleppey, Kerala with our specially curated 2-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Alleppey Houseboat Stay",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Alleppey, Kerala for a memorable 2-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 94,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-103",
+    "affordabilityScore": 29,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 14340,
+      "basePricePerPerson": 14340,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 5736,
+        "transport": 4302,
+        "food": 1434,
+        "activities": 1434,
+        "taxes": 1434,
+        "subtotal": 14340,
+        "totalDiscount": 0,
+        "total": 14340,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-103",
+    "packageId": "pkg-new-104",
+    "source": "amadeus",
+    "category": "kerala",
+    "categories": [
+      "kerala",
+      "domestic"
+    ],
+    "categoryLabel": "Kerala",
+    "country": "India",
+    "title": "Wayanad Nature Retreat",
+    "destination": "Wayanad",
+    "location": "Wayanad, Kerala",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 6945,
+    "discount": 23,
+    "rating": 4.254753075690299,
+    "reviews": 101,
+    "shortDescription": "Experience the beauty of Wayanad, Kerala with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Wayanad Nature Retreat",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Wayanad, Kerala for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 90,
+    "budgetFriendly": true,
+    "budgetType": "low",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-104",
+    "affordabilityScore": 66,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "budget",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 6945,
+      "basePricePerPerson": 6945,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 2778,
+        "transport": 2083,
+        "food": 694,
+        "activities": 694,
+        "taxes": 694,
+        "subtotal": 6945,
+        "totalDiscount": 0,
+        "total": 6945,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-104",
+    "packageId": "pkg-new-105",
+    "source": "amadeus",
+    "category": "kerala",
+    "categories": [
+      "kerala",
+      "domestic"
+    ],
+    "categoryLabel": "Kerala",
+    "country": "India",
+    "title": "Kochi Heritage Walk",
+    "destination": "Kochi",
+    "location": "Kochi, Kerala",
+    "duration": "2 Days / 1 Nights",
+    "durationDays": 2,
+    "price": 13189,
+    "discount": 18,
+    "rating": 4.774342870836449,
+    "reviews": 117,
+    "shortDescription": "Experience the beauty of Kochi, Kerala with our specially curated 2-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Kochi Heritage Walk",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Kochi, Kerala for a memorable 2-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 83,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-105",
+    "affordabilityScore": 35,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 13189,
+      "basePricePerPerson": 13189,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 5275,
+        "transport": 3956,
+        "food": 1318,
+        "activities": 1318,
+        "taxes": 1318,
+        "subtotal": 13189,
+        "totalDiscount": 0,
+        "total": 13189,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-105",
+    "packageId": "pkg-new-106",
+    "source": "amadeus",
+    "category": "kerala",
+    "categories": [
+      "kerala",
+      "domestic"
+    ],
+    "categoryLabel": "Kerala",
+    "country": "India",
+    "title": "Thekkady Wildlife Tour",
+    "destination": "Thekkady",
+    "location": "Thekkady, Kerala",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 17568,
+    "discount": 16,
+    "rating": 4.174884263350886,
+    "reviews": 67,
+    "shortDescription": "Experience the beauty of Thekkady, Kerala with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Thekkady Wildlife Tour",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Thekkady, Kerala for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 98,
+    "budgetFriendly": false,
+    "budgetType": "premium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-106",
+    "affordabilityScore": 13,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "luxury",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 17568,
+      "basePricePerPerson": 17568,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 7027,
+        "transport": 5270,
+        "food": 1756,
+        "activities": 1756,
+        "taxes": 1756,
+        "subtotal": 17568,
+        "totalDiscount": 0,
+        "total": 17568,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-106",
+    "packageId": "pkg-new-107",
+    "source": "amadeus",
+    "category": "south-india",
+    "categories": [
+      "south-india",
+      "domestic"
+    ],
+    "categoryLabel": "South india",
+    "country": "India",
+    "title": "Ooty Misty Peaks",
+    "destination": "Ooty",
+    "location": "Ooty, Tamil Nadu",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 12759,
+    "discount": 19,
+    "rating": 4.562997667407294,
+    "reviews": 152,
+    "shortDescription": "Experience the beauty of Ooty, Tamil Nadu with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Ooty Misty Peaks",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Ooty, Tamil Nadu for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 87,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-107",
+    "affordabilityScore": 37,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 12759,
+      "basePricePerPerson": 12759,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 5103,
+        "transport": 3827,
+        "food": 1275,
+        "activities": 1275,
+        "taxes": 1275,
+        "subtotal": 12759,
+        "totalDiscount": 0,
+        "total": 12759,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-107",
+    "packageId": "pkg-new-108",
+    "source": "amadeus",
+    "category": "south-india",
+    "categories": [
+      "south-india",
+      "domestic"
+    ],
+    "categoryLabel": "South india",
+    "country": "India",
+    "title": "Coorg Coffee Plantation",
+    "destination": "Coorg",
+    "location": "Coorg, Karnataka",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 5351,
+    "discount": 24,
+    "rating": 4.001030073456673,
+    "reviews": 138,
+    "shortDescription": "Experience the beauty of Coorg, Karnataka with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Coorg Coffee Plantation",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Coorg, Karnataka for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 88,
+    "budgetFriendly": true,
+    "budgetType": "low",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-108",
+    "affordabilityScore": 74,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "budget",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 5351,
+      "basePricePerPerson": 5351,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 2140,
+        "transport": 1605,
+        "food": 535,
+        "activities": 535,
+        "taxes": 535,
+        "subtotal": 5351,
+        "totalDiscount": 0,
+        "total": 5351,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": true
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-108",
+    "packageId": "pkg-new-109",
+    "source": "amadeus",
+    "category": "south-india",
+    "categories": [
+      "south-india",
+      "domestic"
+    ],
+    "categoryLabel": "South india",
+    "country": "India",
+    "title": "Pondicherry French Quarter",
+    "destination": "Pondicherry",
+    "location": "Pondicherry",
+    "duration": "2 Days / 1 Nights",
+    "durationDays": 2,
+    "price": 18149,
+    "discount": 15,
+    "rating": 4.835989039050017,
+    "reviews": 79,
+    "shortDescription": "Experience the beauty of Pondicherry with our specially curated 2-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Pondicherry French Quarter",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Pondicherry for a memorable 2-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 80,
+    "budgetFriendly": false,
+    "budgetType": "premium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-109",
+    "affordabilityScore": 10,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "luxury",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 18149,
+      "basePricePerPerson": 18149,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 7259,
+        "transport": 5444,
+        "food": 1814,
+        "activities": 1814,
+        "taxes": 1814,
+        "subtotal": 18149,
+        "totalDiscount": 0,
+        "total": 18149,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-109",
+    "packageId": "pkg-new-110",
+    "source": "amadeus",
+    "category": "south-india",
+    "categories": [
+      "south-india",
+      "domestic"
+    ],
+    "categoryLabel": "South india",
+    "country": "India",
+    "title": "Mysore Palace Heritage",
+    "destination": "Mysore",
+    "location": "Mysore, Karnataka",
+    "duration": "2 Days / 1 Nights",
+    "durationDays": 2,
+    "price": 17157,
+    "discount": 11,
+    "rating": 4.879931829748313,
+    "reviews": 55,
+    "shortDescription": "Experience the beauty of Mysore, Karnataka with our specially curated 2-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Mysore Palace Heritage",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Mysore, Karnataka for a memorable 2-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 99,
+    "budgetFriendly": false,
+    "budgetType": "premium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-110",
+    "affordabilityScore": 15,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "luxury",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 17157,
+      "basePricePerPerson": 17157,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 6862,
+        "transport": 5147,
+        "food": 1715,
+        "activities": 1715,
+        "taxes": 1715,
+        "subtotal": 17157,
+        "totalDiscount": 0,
+        "total": 17157,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-110",
+    "packageId": "pkg-new-111",
+    "source": "amadeus",
+    "category": "south-india",
+    "categories": [
+      "south-india",
+      "domestic"
+    ],
+    "categoryLabel": "South india",
+    "country": "India",
+    "title": "Kodaikanal Lake View",
+    "destination": "Kodaikanal",
+    "location": "Kodaikanal, Tamil Nadu",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 10477,
+    "discount": 12,
+    "rating": 4.047570269830452,
+    "reviews": 189,
+    "shortDescription": "Experience the beauty of Kodaikanal, Tamil Nadu with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Kodaikanal Lake View",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Kodaikanal, Tamil Nadu for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 98,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-111",
+    "affordabilityScore": 48,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 10477,
+      "basePricePerPerson": 10477,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 4190,
+        "transport": 3143,
+        "food": 1047,
+        "activities": 1047,
+        "taxes": 1047,
+        "subtotal": 10477,
+        "totalDiscount": 0,
+        "total": 10477,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-111",
+    "packageId": "pkg-new-112",
+    "source": "amadeus",
+    "category": "south-india",
+    "categories": [
+      "south-india",
+      "domestic"
+    ],
+    "categoryLabel": "South india",
+    "country": "India",
+    "title": "Hampi Ruins Exploration",
+    "destination": "Hampi",
+    "location": "Hampi, Karnataka",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 18741,
+    "discount": 18,
+    "rating": 4.124652444578649,
+    "reviews": 98,
+    "shortDescription": "Experience the beauty of Hampi, Karnataka with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Hampi Ruins Exploration",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Hampi, Karnataka for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 93,
+    "budgetFriendly": false,
+    "budgetType": "premium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-112",
+    "affordabilityScore": 7,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "luxury",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 18741,
+      "basePricePerPerson": 18741,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 7496,
+        "transport": 5622,
+        "food": 1874,
+        "activities": 1874,
+        "taxes": 1874,
+        "subtotal": 18741,
+        "totalDiscount": 0,
+        "total": 18741,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-112",
+    "packageId": "pkg-new-113",
+    "source": "amadeus",
+    "category": "south-india",
+    "categories": [
+      "south-india",
+      "domestic"
+    ],
+    "categoryLabel": "South india",
+    "country": "India",
+    "title": "Vizag Beach Getaway",
+    "destination": "Visakhapatnam",
+    "location": "Visakhapatnam, Andhra Pradesh",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 12447,
+    "discount": 12,
+    "rating": 4.97785214500032,
+    "reviews": 192,
+    "shortDescription": "Experience the beauty of Visakhapatnam, Andhra Pradesh with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Vizag Beach Getaway",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Visakhapatnam, Andhra Pradesh for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 84,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-113",
+    "affordabilityScore": 38,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 12447,
+      "basePricePerPerson": 12447,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 4978,
+        "transport": 3734,
+        "food": 1244,
+        "activities": 1244,
+        "taxes": 1244,
+        "subtotal": 12447,
+        "totalDiscount": 0,
+        "total": 12447,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-113",
+    "packageId": "pkg-new-114",
+    "source": "amadeus",
+    "category": "south-india",
+    "categories": [
+      "south-india",
+      "domestic"
+    ],
+    "categoryLabel": "South india",
+    "country": "India",
+    "title": "Tirupati Spiritual Journey",
+    "destination": "Tirupati",
+    "location": "Tirupati, Andhra Pradesh",
+    "duration": "2 Days / 1 Nights",
+    "durationDays": 2,
+    "price": 19079,
+    "discount": 21,
+    "rating": 4.280792052218225,
+    "reviews": 15,
+    "shortDescription": "Experience the beauty of Tirupati, Andhra Pradesh with our specially curated 2-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Tirupati Spiritual Journey",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1580210594130-14920409a47c?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Tirupati, Andhra Pradesh for a memorable 2-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 89,
+    "budgetFriendly": false,
+    "budgetType": "premium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-114",
+    "affordabilityScore": 5,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "luxury",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 19079,
+      "basePricePerPerson": 19079,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 7631,
+        "transport": 5723,
+        "food": 1907,
+        "activities": 1907,
+        "taxes": 1907,
+        "subtotal": 19079,
+        "totalDiscount": 0,
+        "total": 19079,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-114",
+    "packageId": "pkg-new-115",
+    "source": "amadeus",
+    "category": "north-india",
+    "categories": [
+      "north-india",
+      "domestic"
+    ],
+    "categoryLabel": "North india",
+    "country": "India",
+    "title": "Manali Adventure Trip",
+    "destination": "Manali",
+    "location": "Manali, Himachal Pradesh",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 8862,
+    "discount": 11,
+    "rating": 4.285406961482224,
+    "reviews": 175,
+    "shortDescription": "Experience the beauty of Manali, Himachal Pradesh with our specially curated 5-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Manali Adventure Trip",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Manali, Himachal Pradesh for a memorable 5-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 80,
+    "budgetFriendly": true,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-115",
+    "affordabilityScore": 56,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 8862,
+      "basePricePerPerson": 8862,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 3544,
+        "transport": 2658,
+        "food": 886,
+        "activities": 886,
+        "taxes": 886,
+        "subtotal": 8862,
+        "totalDiscount": 0,
+        "total": 8862,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-115",
+    "packageId": "pkg-new-116",
+    "source": "amadeus",
+    "category": "north-india",
+    "categories": [
+      "north-india",
+      "domestic"
+    ],
+    "categoryLabel": "North india",
+    "country": "India",
+    "title": "Shimla Queen of Hills",
+    "destination": "Shimla",
+    "location": "Shimla, Himachal Pradesh",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 16310,
+    "discount": 23,
+    "rating": 4.4649557282126064,
+    "reviews": 133,
+    "shortDescription": "Experience the beauty of Shimla, Himachal Pradesh with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Shimla Queen of Hills",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Shimla, Himachal Pradesh for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 99,
+    "budgetFriendly": false,
+    "budgetType": "premium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-116",
+    "affordabilityScore": 19,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "luxury",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 16310,
+      "basePricePerPerson": 16310,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 6524,
+        "transport": 4893,
+        "food": 1631,
+        "activities": 1631,
+        "taxes": 1631,
+        "subtotal": 16310,
+        "totalDiscount": 0,
+        "total": 16310,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-116",
+    "packageId": "pkg-new-117",
+    "source": "amadeus",
+    "category": "north-india",
+    "categories": [
+      "north-india",
+      "domestic"
+    ],
+    "categoryLabel": "North india",
+    "country": "India",
+    "title": "Kashmir Paradise Tour",
+    "destination": "Srinagar",
+    "location": "Srinagar, Kashmir",
+    "duration": "5 Days / 4 Nights",
+    "durationDays": 5,
+    "price": 16707,
+    "discount": 12,
+    "rating": 4.620822953809907,
+    "reviews": 150,
+    "shortDescription": "Experience the beauty of Srinagar, Kashmir with our specially curated 5-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Kashmir Paradise Tour",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Srinagar, Kashmir for a memorable 5-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 83,
+    "budgetFriendly": false,
+    "budgetType": "premium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-117",
+    "affordabilityScore": 17,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "luxury",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 16707,
+      "basePricePerPerson": 16707,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 6682,
+        "transport": 5012,
+        "food": 1670,
+        "activities": 1670,
+        "taxes": 1670,
+        "subtotal": 16707,
+        "totalDiscount": 0,
+        "total": 16707,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-117",
+    "packageId": "pkg-new-118",
+    "source": "amadeus",
+    "category": "north-india",
+    "categories": [
+      "north-india",
+      "domestic"
+    ],
+    "categoryLabel": "North india",
+    "country": "India",
+    "title": "Delhi City Highlights",
+    "destination": "Delhi",
+    "location": "Delhi",
+    "duration": "2 Days / 1 Nights",
+    "durationDays": 2,
+    "price": 12259,
+    "discount": 23,
+    "rating": 4.057536533238144,
+    "reviews": 99,
+    "shortDescription": "Experience the beauty of Delhi with our specially curated 2-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Delhi City Highlights",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Delhi for a memorable 2-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 99,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-118",
+    "affordabilityScore": 39,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 12259,
+      "basePricePerPerson": 12259,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 4903,
+        "transport": 3677,
+        "food": 1225,
+        "activities": 1225,
+        "taxes": 1225,
+        "subtotal": 12259,
+        "totalDiscount": 0,
+        "total": 12259,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-118",
+    "packageId": "pkg-new-119",
+    "source": "amadeus",
+    "category": "north-india",
+    "categories": [
+      "north-india",
+      "domestic"
+    ],
+    "categoryLabel": "North india",
+    "country": "India",
+    "title": "Agra Taj Mahal Special",
+    "destination": "Agra",
+    "location": "Agra, Uttar Pradesh",
+    "duration": "2 Days / 1 Nights",
+    "durationDays": 2,
+    "price": 12771,
+    "discount": 16,
+    "rating": 4.403876486104894,
+    "reviews": 102,
+    "shortDescription": "Experience the beauty of Agra, Uttar Pradesh with our specially curated 2-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Agra Taj Mahal Special",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Agra, Uttar Pradesh for a memorable 2-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 90,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-119",
+    "affordabilityScore": 37,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 12771,
+      "basePricePerPerson": 12771,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 5108,
+        "transport": 3831,
+        "food": 1277,
+        "activities": 1277,
+        "taxes": 1277,
+        "subtotal": 12771,
+        "totalDiscount": 0,
+        "total": 12771,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-119",
+    "packageId": "pkg-new-120",
+    "source": "amadeus",
+    "category": "north-india",
+    "categories": [
+      "north-india",
+      "domestic"
+    ],
+    "categoryLabel": "North india",
+    "country": "India",
+    "title": "Jaipur Pink City Tour",
+    "destination": "Jaipur",
+    "location": "Jaipur, Rajasthan",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 12361,
+    "discount": 14,
+    "rating": 4.217685446466704,
+    "reviews": 180,
+    "shortDescription": "Experience the beauty of Jaipur, Rajasthan with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Jaipur Pink City Tour",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Jaipur, Rajasthan for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 81,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-120",
+    "affordabilityScore": 39,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 12361,
+      "basePricePerPerson": 12361,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 4944,
+        "transport": 3708,
+        "food": 1236,
+        "activities": 1236,
+        "taxes": 1236,
+        "subtotal": 12361,
+        "totalDiscount": 0,
+        "total": 12361,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-120",
+    "packageId": "pkg-new-121",
+    "source": "amadeus",
+    "category": "north-india",
+    "categories": [
+      "north-india",
+      "domestic"
+    ],
+    "categoryLabel": "North india",
+    "country": "India",
+    "title": "Rishikesh Yoga & River",
+    "destination": "Rishikesh",
+    "location": "Rishikesh, Uttarakhand",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 12986,
+    "discount": 23,
+    "rating": 4.123243748115296,
+    "reviews": 47,
+    "shortDescription": "Experience the beauty of Rishikesh, Uttarakhand with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Rishikesh Yoga & River",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Rishikesh, Uttarakhand for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 93,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-121",
+    "affordabilityScore": 36,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 12986,
+      "basePricePerPerson": 12986,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 5194,
+        "transport": 3895,
+        "food": 1298,
+        "activities": 1298,
+        "taxes": 1298,
+        "subtotal": 12986,
+        "totalDiscount": 0,
+        "total": 12986,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
+  },
+  {
+    "id": "pkg-new-121",
+    "packageId": "pkg-new-122",
+    "source": "amadeus",
+    "category": "north-india",
+    "categories": [
+      "north-india",
+      "domestic"
+    ],
+    "categoryLabel": "North india",
+    "country": "India",
+    "title": "Nainital Lake Retreat",
+    "destination": "Nainital",
+    "location": "Nainital, Uttarakhand",
+    "duration": "3 Days / 2 Nights",
+    "durationDays": 3,
+    "price": 11019,
+    "discount": 21,
+    "rating": 4.722125411596487,
+    "reviews": 16,
+    "shortDescription": "Experience the beauty of Nainital, Uttarakhand with our specially curated 3-day package.",
+    "inclusions": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "exclusions": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "imageAlt": "Nainital Lake Retreat",
+    "imageSource": "unsplash",
+    "availableDates": [
+      "2026-04-15",
+      "2026-05-10"
+    ],
+    "image": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
+    "description": "Escape to Nainital, Uttarakhand for a memorable 3-day trip. This package includes comfortable stay, local sightseeing, and hassle-free transport.",
+    "highlights": [
+      "Traditional local food tasting",
+      "3-star comfortable stay",
+      "Full day sightseeing tour",
+      "Private/Shared AC transport"
+    ],
+    "included": [
+      "Breakfast",
+      "Hotel Stay",
+      "Sightseeing",
+      "Transport"
+    ],
+    "excluded": [
+      "Lunch",
+      "Dinner",
+      "Flight Tickets",
+      "Personal Expenses"
+    ],
+    "trendingScore": 82,
+    "budgetFriendly": false,
+    "budgetType": "medium",
+    "priceRange": "₹4,000 - ₹20,000",
+    "uniqueImageId": "img-new-122",
+    "affordabilityScore": 45,
+    "peopleCount": 2,
+    "hotelType": "comfort",
+    "transportMode": "shared",
+    "season": "shoulder",
+    "specialTags": [
+      "Popular",
+      "Family-friendly"
+    ],
+    "isLuxury": false,
+    "lastUpdatedAt": "2026-02-28T16:34:34.876Z",
+    "pricingTier": "standard",
+    "travelerSegments": [
+      "families",
+      "couples"
+    ],
+    "dynamicPricing": {
+      "finalPricePerPerson": 11019,
+      "basePricePerPerson": 11019,
+      "savingsPerPerson": 0,
+      "totalDiscountPercent": 10,
+      "discounts": [],
+      "breakdown": {
+        "hotel": 4407,
+        "transport": 3305,
+        "food": 1101,
+        "activities": 1101,
+        "taxes": 1101,
+        "subtotal": 11019,
+        "totalDiscount": 0,
+        "total": 11019,
+        "currency": "INR"
+      }
+    },
+    "badges": {
+      "bestValue": true,
+      "mostAffordable": false
+    },
+    "popularityScore": 85,
+    "nearbyAlternatives": []
   }
 ]

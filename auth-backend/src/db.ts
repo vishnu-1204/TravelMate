@@ -168,6 +168,21 @@ export const initDatabase = (): Promise<void> => {
                 await run(itinerariesTable);
                 logger("Itineraries table ready");
 
+                // Create booking_email_failures table
+                const failuresTable = `CREATE TABLE IF NOT EXISTS booking_email_failures (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  booking_reference TEXT NOT NULL,
+                  email TEXT NOT NULL,
+                  payload_json TEXT NOT NULL,
+                  attempts INTEGER DEFAULT 0,
+                  last_attempt DATETIME,
+                  error_message TEXT,
+                  status TEXT DEFAULT 'pending',
+                  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )`;
+                await run(failuresTable);
+                logger("Booking email failures table ready");
+
                 // Seed data if empty
                 const pkgCount = await all<{ count: number }>("SELECT COUNT(*) as count FROM packages");
                 if (pkgCount[0].count === 0) {

@@ -65,15 +65,18 @@ const ResetPassword = () => {
   if (!token) {
     return (
       <PageTransition>
-        <div className="min-h-screen bg-[#6b6678] flex items-center justify-center p-6">
-          <div className="w-full max-w-md bg-[#2b2836] rounded-3xl shadow-2xl p-12 text-white text-center">
-            <h1 className="text-2xl font-semibold mb-4">Invalid Reset Link</h1>
-            <p className="text-gray-400 mb-6">
+        <div className="min-h-screen bg-[#131326] flex items-center justify-center p-4 text-white text-center">
+          <div className="w-full max-md bg-transparent flex flex-col items-center">
+            <div className="w-16 h-16 bg-[#38bdf8]/10 border border-[#38bdf8]/30 rounded-full flex items-center justify-center mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h1 className="text-2xl font-bold mb-4">Invalid Reset Link</h1>
+            <p className="text-white/60 mb-10 leading-relaxed px-6">
               This password reset link is invalid or has expired. Please request a new one.
             </p>
             <Link
               to="/forgot-password"
-              className="inline-block px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-600 transition font-medium"
+              className="auth-btn px-10"
             >
               Request New Reset Link
             </Link>
@@ -85,33 +88,39 @@ const ResetPassword = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-[#6b6678] flex items-center justify-center p-6">
-        <div className="w-full max-w-md bg-[#2b2836] rounded-3xl shadow-2xl p-12 text-white">
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-white text-sm mb-8 transition-colors"
-          >
-            <ArrowLeft size={16} />
-            Back to Login
-          </Link>
-
-          <h1 className="text-3xl font-semibold mb-2">Create New Password</h1>
-          <p className="text-gray-400 mb-8">
-            Enter your new password below. Make sure it's at least 6 characters long.
-          </p>
+      <div className="min-h-screen bg-[#131326] flex items-center justify-center p-4 text-white">
+        <div className="w-full max-w-md bg-transparent flex flex-col">
+          
+          <div className="w-full text-left mb-10">
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm mb-6 transition-colors"
+            >
+              <ArrowLeft size={16} />
+              Back to Login
+            </Link>
+            <h1 className="text-4xl font-bold mb-2">New Password</h1>
+            {!success && (
+              <p className="text-white/60 text-sm mt-3 leading-relaxed">
+                Enter your new password below. Make sure it's at least 6 characters long.
+              </p>
+            )}
+          </div>
 
           {success ? (
-            <div className="bg-green-500/10 border border-green-500/30 text-green-400 px-4 py-4 rounded-lg text-sm">
-              <div className="flex items-center gap-3 mb-2">
-                <CheckCircle size={20} />
-                <span className="font-medium">Password Reset Successful</span>
+            <div className="w-full bg-[#38bdf8]/10 border border-[#38bdf8]/30 text-white px-6 py-8 rounded-3xl text-sm text-center">
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+                  <CheckCircle size={32} className="text-white" />
+                </div>
               </div>
-              <p className="mb-4">
+              <h2 className="text-xl font-bold mb-2">Password Reset!</h2>
+              <p className="text-white/70 leading-relaxed mb-8 px-4">
                 Your password has been updated. You can now log in with your new password.
               </p>
               <Link
                 to="/login"
-                className="inline-block px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 transition font-medium text-white text-sm"
+                className="auth-btn block"
               >
                 Go to Login
               </Link>
@@ -119,62 +128,64 @@ const ResetPassword = () => {
           ) : (
             <>
               {error && (
-                <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg mb-6 text-sm">
+                <div className="w-full bg-[#38bdf8]/10 border border-[#38bdf8]/30 text-[#38bdf8] px-4 py-3 rounded-2xl mb-6 text-sm text-center">
                   {error}
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="w-full space-y-5">
                 {/* New Password */}
-                <div className="relative">
+                <div className="auth-input-container">
+                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </span>
                   <input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="New password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="inputStyle pr-12"
+                    className="auth-input !pr-16"
                     required
                     minLength={6}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    className="absolute right-6 top-1/2 -translate-y-1/2 text-white/70 text-sm hover:text-white transition-colors underline decoration-[#38bdf8]/30 underline-offset-2"
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
 
                 {/* Confirm Password */}
-                <div className="relative">
+                <div className="auth-input-container">
+                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </span>
                   <input
                     type={showConfirm ? 'text' : 'password'}
                     placeholder="Confirm new password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="inputStyle pr-12"
+                    className="auth-input !pr-16"
                     required
                     minLength={6}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirm(!showConfirm)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    className="absolute right-6 top-1/2 -translate-y-1/2 text-white/70 text-sm hover:text-white transition-colors underline decoration-[#38bdf8]/30 underline-offset-2"
                   >
-                    {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showConfirm ? "Hide" : "Show"}
                   </button>
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-600 transition font-medium flex items-center justify-center gap-2"
-                >
+                <button type="submit" disabled={loading} className="auth-btn mt-4">
                   {loading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                    <div className="flex items-center justify-center gap-2">
+                      <Loader2 className="h-5 w-5 animate-spin" />
                       Resetting...
-                    </>
+                    </div>
                   ) : (
                     'Reset Password'
                   )}

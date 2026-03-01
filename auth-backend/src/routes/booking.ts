@@ -6,10 +6,10 @@ import { config } from "../config/env";
 import { getDb } from "../db";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
 import { Resend } from "resend";
-import { sendBookingConfirmation } from "../services/email.service";
+import { sendBookingConfirmation, recordEmailFailure } from "../services/email.service";
 import { searchFlightOffers } from "../modules/packages/provider/amadeusProvider";
 import { getPackageById } from "../modules/packages/service/packageService";
-import { logger } from "../server";
+import { logger } from "../utils/logger";
 
 const router = Router();
 const EMAIL_RETRY_LIMIT = 3;
@@ -854,7 +854,7 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
           body.travelers || 1,
           body.travelerName || null,
           body.roomType || null,
-          user.email, // Use registered email
+          user.email, // Use registered email confirmed in DB
           body.phone || null,
           body.totalAmount,
           body.airline || null,
@@ -954,51 +954,71 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
           const checkOutDate = new Date(travelDate);
           checkOutDate.setDate(checkOutDate.getDate() + (durationDays > 0 ? durationDays - 1 : 0));
 
-          // 3. Send Comprehensive Confirmation Email
-          await sendBookingConfirmation(
-            { email: user.email, name: body.travelerName || "Traveler" },
-            {
-              bookingReference: body.bookingReference!,
-              packageTitle: body.packageTitle!,
-              destination: body.destination,
-              travelDate: body.travelDate || "TBA",
-              totalAmount: body.totalAmount!,
-              duration: body.duration,
-              airline: body.airline,
-              departureTime: body.departureTime,
-              arrivalTime: body.arrivalTime,
-              checkIn: body.travelDate,
-              checkOut: body.checkOut || checkOutDate.toISOString().split('T')[0],
-              transportType: body.airline?.toLowerCase().includes('coach') ? 'bus' : 'flight',
-              supportEmail: config.supportEmail,
-              supportPhone: config.supportPhone,
-              itinerarySummary: detailedItinerary,
-              included: body.included,
-              excluded: body.excluded
-            },
-            {
-              attachment: {
-                filename: `TravelMate-Ticket-${payload.bookingReference}.pdf`,
-                content: pdf,
-                contentType: "application/pdf",
-              },
-            }
-          );
+          const emailUser = { email: user.email, name: body.travelerName || "Traveler" };
+          const emailData = {
+            bookingReference: body.bookingReference!,
+            packageTitle: body.packageTitle!,
+            destination: body.destination,
+            travelDate: body.travelDate || "TBA",
+            totalAmount: body.totalAmount!,
+            duration: body.duration,
+            airline: body.airline,
+            departureTime: body.departureTime,
+            arrivalTime: body.arrivalTime,
+            checkIn: body.travelDate,
+            checkOut: body.checkOut || checkOutDate.toISOString().split('T')[0],
+            transportType: (body.airline?.toLowerCase().includes('coach') ? 'bus' : 'flight') as 'flight' | 'bus' | 'train' | 'other',
+            supportEmail: config.supportEmail,
+            supportPhone: config.supportPhone,
+            itinerarySummary: detailedItinerary,
+            included: body.included,
+            excluded: body.excluded
+          };
 
-          // Mark email as sent in SQLite
-          await new Promise<void>((resolve, reject) => {
-            db.run(
-              `UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`,
-              [body.bookingReference],
-              (err: Error | null) => {
-                if (err) reject(err);
-                else resolve();
+          // 3. Send Comprehensive Confirmation Email
+          try {
+            await sendBookingConfirmation(
+              emailUser,
+              emailData,
+              {
+                attachment: {
+                  filename: `TravelMate-Ticket-${payload.bookingReference}.pdf`,
+                  content: pdf,
+                  contentType: "application/pdf",
+                },
               }
             );
-          });
-          logger(`[booking/book] Consolidated confirmation email successfully dispatched for ${body.bookingReference}`);
+
+            // Mark email as sent in SQLite
+            await new Promise<void>((resolve, reject) => {
+              db.run(
+                `UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`,
+                [body.bookingReference],
+                (err: Error | null) => (err ? reject(err) : resolve())
+              );
+            });
+            logger(`[booking/book] Consolidated confirmation email successfully dispatched for ${body.bookingReference}`);
+          } catch (sendErr: any) {
+            logger(`[booking/book] All email retries failed for ${body.bookingReference}. Recording failure in DB.`);
+            // Record failure for background recovery
+            // We store the PDF content as base64 in the payload_json
+            await recordEmailFailure(
+              body.bookingReference!,
+              user.email,
+              { 
+                user: emailUser, 
+                booking: emailData,
+                attachment: {
+                  filename: `TravelMate-Ticket-${payload.bookingReference}.pdf`,
+                  content: pdf.toString('base64'),
+                  contentType: "application/pdf"
+                }
+              },
+              sendErr.message
+            );
+          }
         } catch (emailErr: any) {
-          logger(`[booking/book] Email delivery FAILED for ${body.bookingReference}:`, emailErr.message);
+          logger(`[booking/book] Fatal error in async email process for ${body.bookingReference}:`, emailErr.message);
         }
       });
     } else if (resolvedPkg?.isGroupTour) {

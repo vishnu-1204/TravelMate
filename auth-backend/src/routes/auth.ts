@@ -4,6 +4,7 @@ import crypto from "crypto";
 import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
 import { getDb } from "../db";
 import { config } from "../config/env";
+import { logger } from "../utils/logger";
 import { validateRegister, validateLogin } from "../middleware/validate";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
 import { sendVerificationEmail, sendWelcomeEmail, sendPasswordResetEmail } from "../services/email.service";
@@ -38,7 +39,7 @@ router.post("/register", validateRegister, async (req: Request, res: Response) =
 
       const hashedPassword = await bcrypt.hash(password, 12);
       getDb().run(
-        "INSERT INTO users (email, password, email_verified, verification_token, verification_token_expires_at) VALUES (?, ?, 1, ?, ?)",
+        "INSERT INTO users (email, password, email_verified, verification_token, verification_token_expires_at) VALUES (?, ?, 0, ?, ?)",
         [email.toLowerCase(), hashedPassword, verificationToken, verificationExpiresAt],
         function (insertErr) {
           if (insertErr) return res.status(500).json({ message: "Registration failed" });
@@ -46,7 +47,7 @@ router.post("/register", validateRegister, async (req: Request, res: Response) =
           const token = jwt.sign({ id: this.lastID, email }, jwtSecret, jwtSignOptions);
           res.status(201).json({
             message: "User registered successfully",
-            user: { id: this.lastID, email, emailVerified: true },
+            user: { id: this.lastID, email, emailVerified: false },
             token,
           });
 
@@ -57,8 +58,8 @@ router.post("/register", validateRegister, async (req: Request, res: Response) =
                 sendWelcomeEmail({ email }),
                 sendVerificationEmail({ email }, verificationToken),
               ]);
-            } catch (mailError) {
-              console.error("Registration email dispatch failed:", mailError);
+            } catch (mailError: any) {
+              logger("Registration email dispatch failed:", mailError?.message || mailError);
             }
           })();
         }

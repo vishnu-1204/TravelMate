@@ -34,8 +34,8 @@ type NearbyMeta = {
 
 type LocationStatus = 'idle' | 'ready' | 'loading' | 'needs_profile' | 'error';
 
-const popularDestinations = ['Goa', 'Manali', 'Ooty', 'Bali', 'Maldives', 'Paris', 'Kerala', 'Dubai'];
-const trendingNearby = ['Pondicherry', 'Coorg', 'Munnar', 'Lonavala', 'Rishikesh', 'Alleppey'];
+const popularDestinations = ['Kerala', 'Manali', 'Shimla', 'Ooty', 'Coorg', 'Munnar', 'Kashmir', 'Goa', 'Delhi', 'Tamil Nadu'];
+const trendingNearby = ['Pondicherry', 'Wayand', 'Alleppey', 'Mysore', 'Hampi', 'Kodaikanal'];
 const cityNearbyMap: Record<string, string[]> = {
   chennai: ['Pondicherry', 'Mahabalipuram', 'Yercaud', 'Kodaikanal', 'Ooty'],
   bengaluru: ['Coorg', 'Mysore', 'Ooty', 'Wayanad', 'Hampi'],
@@ -84,6 +84,9 @@ const categorySuggestionMap: Record<string, string[]> = {
   honeymoon: ['Maldives', 'Bali', 'Paris', 'Santorini', 'Kerala', 'Manali', 'Kashmir', 'Mauritius'],
   group: ['Goa', 'Dubai', 'Thailand', 'Rishikesh', 'Kasol', 'Bali', 'Manali', 'Singapore'],
   educational: ['Delhi', 'Agra', 'Jaipur', 'Mysore', 'Hampi', 'Kolkata', 'London', 'Rome'],
+  kerala: ['Munnar', 'Alleppey', 'Wayanad', 'Kochi', 'Thekkady'],
+  'south-india': ['Ooty', 'Coorg', 'Pondicherry', 'Mysore', 'Kodaikanal', 'Hampi', 'Vizag', 'Tirupati'],
+  'north-india': ['Manali', 'Shimla', 'Kashmir', 'Delhi', 'Agra', 'Jaipur', 'Rishikesh', 'Nainital'],
 };
 
 const PackageCardSkeleton = () => (
@@ -638,6 +641,33 @@ const Packages = () => {
                   </div>
                 ) : null}
               </div>
+
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                {[
+                  { id: 'all', label: 'All' },
+                  { id: 'kerala', label: 'Kerala' },
+                  { id: 'south-india', label: 'South India' },
+                  { id: 'north-india', label: 'North India' },
+                  { id: 'domestic', label: 'Domestic' },
+                  { id: 'international', label: 'International' },
+                  { id: 'budget', label: 'Budget' },
+                  { id: 'honeymoon', label: 'Honeymoon' },
+                  { id: 'group', label: 'Group Tours' },
+                ].map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => navigate(cat.id === 'all' ? '/packages' : `/packages/${cat.id}`)}
+                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                      selectedCategory === cat.id
+                        ? 'bg-sky-400 text-white shadow-lg'
+                        : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+
             </div>
           </div>
         </section>

@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 import { config } from "../config/env";
 import { getBookingConfirmationTemplate, type BookingEmailDetails as TemplateDetails } from "../templates/bookingConfirmation";
 import { getDb } from "../db";
+import { logger } from "../utils/logger";
 
 export type EmailUser = {
   email: string;
@@ -85,6 +86,77 @@ const layout = (title: string, body: string) => `
 
 const verifyUrl = (token: string) => `${config.backendUrl}/api/auth/verify?token=${encodeURIComponent(token)}`;
 
+/**
+ * Helper to send email with retry logic and dual-provider fallback.
+ */
+async function sendWithRetry(
+  tag: string,
+  to: string,
+  subject: string,
+  html: string,
+  options?: { attachments?: any[] }
+) {
+  const maxRetries = 3;
+  let lastError: any = null;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      logger(`[${tag}] Attempt ${attempt}/${maxRetries} to ${to}`);
+
+      // Try Resend first
+      if (hasResendConfig()) {
+        try {
+          const { data, error } = await resend.emails.send({
+            from: config.resendFrom,
+            to,
+            subject,
+            html,
+            attachments: options?.attachments,
+          });
+          if (!error) {
+            logger(`[${tag}] SUCCESS via Resend on attempt ${attempt}`);
+            return data;
+          }
+          logger(`[${tag}] Resend failed (Attempt ${attempt}): ${error.message}`);
+          lastError = error;
+        } catch (resendErr: any) {
+          logger(`[${tag}] Resend error (Attempt ${attempt}): ${resendErr.message}`);
+          lastError = resendErr;
+        }
+      }
+
+      // Fallback to SMTP
+      if (hasSmtpConfig()) {
+        try {
+          const result = await transporter.sendMail({
+            from: config.smtpFrom || config.smtpUser,
+            to,
+            subject,
+            html,
+            attachments: options?.attachments,
+          });
+          logger(`[${tag}] SUCCESS via SMTP on attempt ${attempt}`);
+          return result;
+        } catch (smtpErr: any) {
+          logger(`[${tag}] SMTP failed (Attempt ${attempt}): ${smtpErr.message}`);
+          lastError = smtpErr;
+        }
+      }
+
+      if (attempt < maxRetries) {
+        const delay = Math.pow(2, attempt) * 1000;
+        logger(`[${tag}] Waiting ${delay}ms before next retry...`);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    } catch (outerErr: any) {
+      logger(`[${tag}] Unexpected attempt error (Attempt ${attempt}): ${outerErr.message}`);
+      lastError = outerErr;
+    }
+  }
+
+  throw lastError || new Error(`All attempts failed for ${tag}`);
+}
+
 export const sendWelcomeEmail = async (user: EmailUser) => {
   const name = user.name?.trim() || "Traveler";
   const html = layout(
@@ -93,16 +165,7 @@ export const sendWelcomeEmail = async (user: EmailUser) => {
      <p style="margin:0 0 12px;color:#334155;">Your account is ready. You can now explore packages, book trips, and track your journeys in one place.</p>
      <p style="margin:0;color:#334155;">We are glad to have you with us.</p>`
   );
-
-  if (hasResendConfig()) {
-    try {
-      const { error } = await resend.emails.send({ from: config.resendFrom, to: user.email, subject: "Welcome to TravelMate", html });
-      if (!error) return;
-    } catch (e) {}
-  }
-  if (hasSmtpConfig()) {
-    await transporter.sendMail({ from: config.smtpFrom || config.smtpUser, to: user.email, subject: "Welcome to TravelMate", html });
-  }
+  return sendWithRetry("email/welcome", user.email, "Welcome to TravelMate", html);
 };
 
 export const sendVerificationEmail = async (user: EmailUser, token: string) => {
@@ -117,16 +180,7 @@ export const sendVerificationEmail = async (user: EmailUser, token: string) => {
      </p>
      <p style="margin:0;color:#64748b;font-size:12px;word-break:break-all;">If the button does not work, use this link: ${escapeHtml(link)}</p>`
   );
-
-  if (hasResendConfig()) {
-    try {
-      const { error } = await resend.emails.send({ from: config.resendFrom, to: user.email, subject: "Verify your TravelMate account", html });
-      if (!error) return;
-    } catch (e) {}
-  }
-  if (hasSmtpConfig()) {
-    await transporter.sendMail({ from: config.smtpFrom || config.smtpUser, to: user.email, subject: "Verify your TravelMate account", html });
-  }
+  return sendWithRetry("email/verify", user.email, "Verify your TravelMate account", html);
 };
 
 export const sendPasswordResetEmail = async (user: EmailUser, resetLink: string) => {
@@ -141,16 +195,7 @@ export const sendPasswordResetEmail = async (user: EmailUser, resetLink: string)
      <p style="margin:0 0 12px;color:#64748b;font-size:12px;">This link expires in 1 hour. If you didn't request this, you can safely ignore this email.</p>
      <p style="margin:0;color:#64748b;font-size:12px;word-break:break-all;">If the button does not work, copy this link: ${escapeHtml(resetLink)}</p>`
   );
-
-  if (hasResendConfig()) {
-    try {
-      const { error } = await resend.emails.send({ from: config.resendFrom, to: user.email, subject: "Reset your TravelMate password", html });
-      if (!error) return;
-    } catch (e) {}
-  }
-  if (hasSmtpConfig()) {
-    await transporter.sendMail({ from: config.smtpFrom || config.smtpUser, to: user.email, subject: "Reset your TravelMate password", html });
-  }
+  return sendWithRetry("email/reset", user.email, "Reset your TravelMate password", html);
 };
 
 const getHeroImage = (dest: string) => {
@@ -196,33 +241,118 @@ export const sendBookingConfirmation = async (
 
   const html = getBookingConfirmationTemplate(templateDetails);
 
-  if (hasResendConfig()) {
-    try {
-      const { data, error } = await resend.emails.send({
-        from: config.resendFrom,
-        to: user.email,
-        subject: `Booking Confirmation - ${booking.bookingReference}`,
-        html,
-        attachments: options?.attachment ? [{ content: options.attachment.content, filename: options.attachment.filename }] : undefined,
+  return sendWithRetry(
+    "email/booking",
+    user.email,
+    `Booking Confirmation - ${booking.bookingReference}`,
+    html,
+    options?.attachment ? {
+      attachments: [{ content: options.attachment.content, filename: options.attachment.filename }]
+    } : undefined
+  );
+};
+
+/**
+ * Records a failed email attempt in the database for later recovery.
+ */
+export const recordEmailFailure = async (bookingRef: string, email: string, payload: any, errorMessage: string) => {
+  const db = getDb();
+  return new Promise<void>((resolve, reject) => {
+    db.run(
+      `INSERT INTO booking_email_failures (booking_reference, email, payload_json, error_message, last_attempt, attempts) 
+       VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, 1)`,
+      [bookingRef, email, JSON.stringify(payload), errorMessage],
+      (err) => {
+        if (err) {
+          logger(`[email/recovery] CRITICAL: Failed to record email failure in DB: ${err.message}`);
+          reject(err);
+        } else {
+          logger(`[email/recovery] Recorded failure for ${bookingRef} in DB.`);
+          resolve();
+        }
+      }
+    );
+  });
+};
+
+/**
+ * Retries all pending failed emails from the database.
+ */
+export const retryFailedEmailsList = async () => {
+  const db = getDb();
+  logger(`[email/recovery] Checking for failed emails to retry...`);
+  
+  try {
+    const failures = await new Promise<any[]>((resolve, reject) => {
+      db.all(`SELECT * FROM booking_email_failures WHERE status = 'pending' AND attempts < 5`, (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows || []);
       });
-      if (!error) return data;
-      console.warn(`Resend failed, trying fallback: ${error.message}`);
-    } catch (err: any) {
-      console.warn(`Resend error, trying fallback: ${err.message}`);
-    }
-  }
-
-  if (hasSmtpConfig()) {
-    return await transporter.sendMail({
-      from: config.smtpFrom || config.smtpUser,
-      to: user.email,
-      subject: `Booking Confirmation - ${booking.bookingReference}`,
-      html,
-      attachments: options?.attachment ? [{ content: options.attachment.content, filename: options.attachment.filename }] : undefined,
     });
-  }
 
-  throw new Error("No email provider configured or all failed");
+    if (failures.length === 0) {
+      logger(`[email/recovery] No pending failures found.`);
+      return;
+    }
+
+    logger(`[email/recovery] Found ${failures.length} pending failures. Processing...`);
+
+    for (const fail of failures) {
+      try {
+        const payload = JSON.parse(fail.payload_json);
+        // Extract attachment if it was stored (Note: we might need to store attachment if it's dynamic, 
+        // but usually we regenerate it or store only metadata. For now, assuming payload has enough for sendBookingConfirmation)
+        
+        // Re-generate PDF if it's missing from payload but needed? 
+        // In our current flow, booking.ts generates PDF and passes it. 
+        // To be truly robust, failure table should store enough to RE-GENERATE or the buffer itself.
+        // Storing Buffer as base64 in JSON is okay for small tickets.
+        
+        const attachment = payload.attachment ? {
+          filename: payload.attachment.filename,
+          content: Buffer.from(payload.attachment.content, 'base64'),
+          contentType: payload.attachment.contentType
+        } : undefined;
+
+        await sendBookingConfirmation(
+          { email: fail.email, name: payload.user.name },
+          payload.booking,
+          attachment ? { attachment } : undefined
+        );
+
+        // Success! Update status
+        await new Promise<void>((resolve, reject) => {
+          db.run(
+            `UPDATE booking_email_failures SET status = 'sent', attempts = attempts + 1, last_attempt = CURRENT_TIMESTAMP WHERE id = ?`,
+            [fail.id],
+            (err) => (err ? reject(err) : resolve())
+          );
+        });
+        
+        // Also update main bookings table
+        await new Promise<void>((resolve, reject) => {
+          db.run(
+            `UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`,
+            [fail.booking_reference],
+            (err) => (err ? reject(err) : resolve())
+          );
+        });
+
+        logger(`[email/recovery] Successfully recovered email for ${fail.booking_reference}`);
+      } catch (retryErr: any) {
+        logger(`[email/recovery] Retry failed for ${fail.booking_reference}: ${retryErr.message}`);
+        await new Promise<void>((resolve) => {
+          db.run(
+            `UPDATE booking_email_failures SET attempts = attempts + 1, last_attempt = CURRENT_TIMESTAMP, error_message = ? WHERE id = ?`,
+            [retryErr.message, fail.id],
+            () => resolve()
+          );
+        });
+      }
+    }
+  } catch (err: any) {
+    logger(`[email/recovery] Error during recovery process: ${err.message}`);
+  }
 };
 
 export const sendTestEmail = async (to: string) => {
@@ -232,30 +362,6 @@ export const sendTestEmail = async (to: string) => {
      <p style="margin:0 0 10px;color:#334155;">This is a diagnostic email from your TravelMate backend to verify connectivity.</p>
      <p style="margin:0;color:#334155;">Note: This may have been sent via SMTP fallback if Resend failed.</p>`
   );
-
-  if (hasResendConfig()) {
-    try {
-      const { data, error } = await resend.emails.send({
-        from: config.resendFrom,
-        to,
-        subject: "TravelMate Diagnostic (Resend)",
-        html,
-      });
-      if (!error) return data;
-      console.warn(`Resend test failed: ${error.message}`);
-    } catch (err: any) {
-      console.warn(`Resend test error: ${err.message}`);
-    }
-  }
-
-  if (hasSmtpConfig()) {
-    return await transporter.sendMail({
-      from: config.smtpFrom || config.smtpUser,
-      to,
-      subject: "TravelMate Diagnostic (SMTP)",
-      html,
-    });
-  }
-
-  throw new Error("All email providers failed");
+  return sendWithRetry("email/test", to, "TravelMate Email Diagnostic", html);
 };
+
