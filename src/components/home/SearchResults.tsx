@@ -84,7 +84,7 @@ const SearchResults = ({ results, hasSearched }: SearchResultsProps) => {
                     />
                     <div className="absolute top-3 right-3 bg-card/90 backdrop-blur-sm rounded-lg px-2.5 py-1 flex items-center gap-1">
                       <Star className="h-3.5 w-3.5 text-accent fill-accent" />
-                      <span className="text-xs font-semibold text-foreground">{pkg.rating}</span>
+                      <span className="text-xs font-semibold text-foreground">{Number(pkg.rating).toFixed(1)}</span>
                     </div>
                   </div>
 

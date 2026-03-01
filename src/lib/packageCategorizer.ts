@@ -59,6 +59,53 @@ const EDUCATIONAL_KEYWORDS = ['school', 'college', 'educational', 'study', 'indu
 const GROUP_KEYWORDS = ['group', 'friends', 'team', 'corporate', 'batch', 'club', 'reunion'];
 const BUDGET_KEYWORDS = ['budget', 'affordable', 'value', 'cheap', 'backpack'];
 const WEEKEND_KEYWORDS = ['weekend', '2 nights', '3 days', 'quick break', 'short getaway'];
+const SOUTH_INDIA_KEYWORDS = [
+  'kerala',
+  'tamil nadu',
+  'karnataka',
+  'andhra',
+  'telangana',
+  'ooty',
+  'kodaikanal',
+  'coorg',
+  'mysore',
+  'hampi',
+  'munnar',
+  'alleppey',
+  'wayanad',
+  'thekkady',
+  'kovalam',
+  'kochi',
+  'varkala',
+  'hyderabad',
+  'visakhapatnam',
+  'tirupati',
+  'pondicherry',
+  'mahabalipuram',
+];
+const NORTH_INDIA_KEYWORDS = [
+  'himachal',
+  'uttarakhand',
+  'rajasthan',
+  'kashmir',
+  'ladakh',
+  'manali',
+  'shimla',
+  'kasol',
+  'dharamshala',
+  'dalhousie',
+  'rishikesh',
+  'nainital',
+  'mussoorie',
+  'auli',
+  'haridwar',
+  'jaipur',
+  'udaipur',
+  'jodhpur',
+  'jaisalmer',
+  'agra',
+  'delhi',
+];
 
 const hasAnyKeyword = (value: string, keywords: string[]) => keywords.some((keyword) => value.includes(keyword));
 
@@ -78,11 +125,15 @@ const inferDomesticVsInternational = (input: string, country?: string): PackageC
 const categoryPriority: PackageCategory[] = [
   'honeymoon',
   'educational',
-  'domestic',
+  'solo',
+  'south-india',
+  'north-india',
   'international',
-  'nearby',
-  'budget',
   'group',
+  'budget',
+  'domestic',
+  'nearby',
+  'kerala',
 ];
 
 export const classifyPackageCategories = (
@@ -103,31 +154,32 @@ export const classifyPackageCategories = (
     .join(' ')
     .toLowerCase();
 
-  const categories = new Set<PackageCategory>();
-  categories.add(inferDomesticVsInternational(mergedText, pkg.country));
-
-  if (hasAnyKeyword(mergedText, HONEYMOON_KEYWORDS)) categories.add('honeymoon');
-  if (hasAnyKeyword(mergedText, EDUCATIONAL_KEYWORDS)) categories.add('educational');
-  if (hasAnyKeyword(mergedText, GROUP_KEYWORDS)) categories.add('group');
-  if (hasAnyKeyword(mergedText, BUDGET_KEYWORDS)) categories.add('budget');
-  if (hasAnyKeyword(mergedText, WEEKEND_KEYWORDS) || (pkg.durationDays || 0) <= 3) categories.add('nearby');
-  if ((pkg.durationDays || 0) <= 4) categories.add('budget');
-
-  (pkg.categories || []).forEach((item) => {
-    const normalized = item.toLowerCase() as PackageCategory;
-    if (categoryPriority.includes(normalized)) categories.add(normalized);
-  });
-
-  if (pkg.category) {
-    if (pkg.category === 'indian') {
-      categories.add('domestic');
-    } else {
-      const normalized = pkg.category.toLowerCase() as PackageCategory;
-      if (categoryPriority.includes(normalized)) categories.add(normalized);
-    }
+  const explicit = String(pkg.category || '').trim().toLowerCase();
+  if (explicit) {
+    if (explicit === 'indian') return ['north-india'];
+    if (explicit === 'nearby') return ['solo'];
+    if (categoryPriority.includes(explicit as PackageCategory)) return [explicit as PackageCategory];
   }
 
-  return Array.from(categories);
+  const fromCategories = (pkg.categories || [])
+    .map((item) => String(item || '').toLowerCase().trim())
+    .find((item) => categoryPriority.includes(item as PackageCategory));
+  if (fromCategories) {
+    if (fromCategories === 'nearby') return ['solo'];
+    return [fromCategories as PackageCategory];
+  }
+
+  if (hasAnyKeyword(mergedText, HONEYMOON_KEYWORDS)) return ['honeymoon'];
+  if (hasAnyKeyword(mergedText, EDUCATIONAL_KEYWORDS)) return ['educational'];
+  if (hasAnyKeyword(mergedText, GROUP_KEYWORDS)) return ['group'];
+  if (hasAnyKeyword(mergedText, WEEKEND_KEYWORDS) || (pkg.durationDays || 0) <= 4) return ['solo'];
+  if (hasAnyKeyword(mergedText, BUDGET_KEYWORDS)) return ['budget'];
+
+  const baseCategory = inferDomesticVsInternational(mergedText, pkg.country);
+  if (baseCategory === 'international') return ['international'];
+  if (hasAnyKeyword(mergedText, SOUTH_INDIA_KEYWORDS)) return ['south-india'];
+  if (hasAnyKeyword(mergedText, NORTH_INDIA_KEYWORDS)) return ['north-india'];
+  return ['north-india'];
 };
 
 export const pickPrimaryCategory = (categories: PackageCategory[]): PackageCategory => {
@@ -188,6 +240,6 @@ export const applyCategorization = (
     ...pkg,
     category: primaryCategory,
     categoryLabel: packageCategoryLabelById[primaryCategory] || pkg.categoryLabel,
-    categories,
+    categories: [primaryCategory],
   } as TravelPackage;
 };

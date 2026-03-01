@@ -112,13 +112,13 @@ export const computeDynamicPricing = (pkg: PackagePricingInput, context: Pricing
   const studentDiscount = context.travelerSegment === 'students' || pkg.categories.includes('educational') ? 8 : 0;
   const festivalDiscount = isFestivalSeason(travelDate) ? 5 : 0;
 
-  const discounts: AppliedDiscount[] = [
+  const discounts: AppliedDiscount[] = ([
     { type: 'seasonal', label: 'Seasonal Offer', percent: seasonalDiscount, amount: 0 },
     { type: 'early_booking', label: 'Early Booking', percent: earlyBookingDiscount, amount: 0 },
     { type: 'group_booking', label: 'Group Booking', percent: groupDiscount, amount: 0 },
     { type: 'student', label: 'Student Offer', percent: studentDiscount, amount: 0 },
     { type: 'festival', label: 'Festival Offer', percent: festivalDiscount, amount: 0 },
-  ].filter((item) => item.percent > 0);
+  ] as const).filter((item) => item.percent > 0) as AppliedDiscount[];
 
   const basePrice = Math.max(2000, pkg.price);
   const scaledBase = Math.round(basePrice * travelerMultiplier(travelers));
@@ -191,7 +191,7 @@ export const inferTravelerSegments = (pkg: PackagePricingInput): TravelerSegment
   if (pkg.categories.includes('educational')) segments.add('students');
   if (pkg.categories.includes('group')) segments.add('groups');
   if (pkg.categories.includes('honeymoon')) segments.add('couples');
-  if (pkg.categories.includes('domestic') || pkg.categories.includes('nearby')) segments.add('families');
+  if (pkg.categories.includes('domestic') || pkg.categories.includes('nearby') || pkg.categories.includes('south') || pkg.categories.includes('north')) segments.add('families');
 
   if (!segments.size) segments.add('solo');
   if (pkg.affordabilityScore >= 72 || pkg.budgetType === 'low') segments.add('students');
@@ -228,7 +228,7 @@ export const suggestAffordableAlternatives = <T extends { destination: string; c
   const alternatives = packages
     .filter((item) => item.destination.toLowerCase() !== normalized)
     .filter((item) => item.price <= thresholdPrice)
-    .filter((item) => item.categories.includes('nearby') || item.categories.includes('budget') || item.categories.includes('domestic'))
+    .filter((item) => item.categories.includes('nearby') || item.categories.includes('budget') || item.categories.includes('domestic') || item.categories.includes('south') || item.categories.includes('north'))
     .sort((a, b) => a.price - b.price)
     .slice(0, 3)
     .map((item) => item.destination);

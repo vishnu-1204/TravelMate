@@ -28,6 +28,8 @@ interface PackageCardProps {
   isGroupTour?: boolean;
   groupDepartures?: Array<{ date: string; maxCapacity: number; currentBookings: number }>;
   highlightQuery?: string;
+  imageLoading?: 'lazy' | 'eager';
+  imagePriority?: boolean;
 }
 
 const highlightText = (value: string, query?: string): ReactNode => {
@@ -71,6 +73,8 @@ export const PackageCard = ({
   isGroupTour,
   groupDepartures,
   highlightQuery,
+  imageLoading = 'lazy',
+  imagePriority = false,
 }: PackageCardProps) => {
   const finalPrice = dynamicPricing.finalPricePerPerson || (discount > 0 ? Math.round(price * (1 - discount / 100)) : price);
   const savings = dynamicPricing.savingsPerPerson || Math.max(price - finalPrice, 0);
@@ -83,6 +87,8 @@ export const PackageCard = ({
           alt={imageAlt || `${title} in ${destination}`}
           category={category}
           imageQuery={`${title} ${destination}`}
+          loading={imageLoading}
+          priority={imagePriority}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
@@ -96,7 +102,7 @@ export const PackageCard = ({
       <div className="p-5 flex flex-col">
         <div className="flex items-center gap-1 text-amber-500 mb-2">
           <Star className="h-4 w-4 fill-current" />
-          <span className="text-sm font-medium">{rating}</span>
+          <span className="text-sm font-medium">{Number(rating).toFixed(1)}</span>
           <span className="text-muted-foreground text-sm">({reviews} reviews)</span>
         </div>
         <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-1">{highlightText(title, highlightQuery)}</h3>
@@ -139,7 +145,7 @@ export const PackageCard = ({
             {savings > 0 ? <p className="text-xs text-emerald-600">You save Rs {savings.toLocaleString('en-IN')}</p> : null}
           </div>
           <div className="flex items-center text-primary font-medium group-hover:gap-2 transition-all">
-            View Details
+            Book Now
             <ArrowRight className="h-4 w-4 ml-1" />
           </div>
         </div>

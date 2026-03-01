@@ -11,7 +11,6 @@ import { toast } from 'sonner';
 import { jsPDF } from 'jspdf';
 import { getPackageById, type TravelPackage } from '@/lib/packagesApi';
 import { computeDynamicPricing } from '@/lib/packagePricing';
-import { buildGroupTourFormUrl, hasGroupTourFormUrl, saveGroupTourFormUrl, trackGroupTourBookingEvent } from '@/lib/groupTourBooking';
 
 declare global {
   interface Window {
@@ -333,10 +332,6 @@ const Payment = () => {
   const [emailNotice, setEmailNotice] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [processingMessage, setProcessingMessage] = useState('Processing...');
-  const [groupFormOpened, setGroupFormOpened] = useState(false);
-  const [groupFormUrlInput, setGroupFormUrlInput] = useState('');
-  const [groupFormReady, setGroupFormReady] = useState(hasGroupTourFormUrl());
-  const [groupRedirectNote, setGroupRedirectNote] = useState('');
   const [flightData, setFlightData] = useState<{ airline: string; departureTime: string; arrivalTime: string } | null>(null);
   const [flightSearching, setFlightSearching] = useState(false);
   const [flightApiFailed, setFlightApiFailed] = useState(false);
@@ -538,11 +533,6 @@ const Payment = () => {
       console.error('Failed to auto-save profile:', err);
     }
   };
-
-  useEffect(() => {
-    if (!packageData) return;
-    setGroupFormReady(Boolean(packageData.groupFormLink) || hasGroupTourFormUrl());
-  }, [packageData]);
 
   if (packageLoading) {
     return (
@@ -778,56 +768,7 @@ const Payment = () => {
     return parsed.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
   };
 
-  const handleGroupFormSave = () => {
-    const ok = saveGroupTourFormUrl(groupFormUrlInput);
-    if (!ok) {
-      toast.error('Please enter a valid Google Form URL.');
-      return;
-    }
-    setGroupFormReady(true);
-    setGroupFormUrlInput('');
-    toast.success('Google Form URL saved.');
-  };
-
-  const openGroupTourForm = async () => {
-    const selectedDate = travelDate || packageData.availableDates[0] || new Date().toISOString().slice(0, 10);
-    const formUrl = buildGroupTourFormUrl({
-      tourName: packageData.title,
-      destination: packageData.destination,
-      travelDate: formatTravelDate(selectedDate),
-      price: grandTotal,
-    }, {
-      packageId: packageData.id,
-      packageTitle: packageData.title,
-      explicitFormUrl: packageData.groupFormLink,
-    });
-
-    if (!formUrl) {
-      toast.error('Google Form URL missing. Add it below or set VITE_GROUP_TOUR_FORM_URL.');
-      return;
-    }
-
-    setLoading(true);
-    setGroupRedirectNote('You will be redirected to secure registration form.');
-    await delay(550);
-
-    trackGroupTourBookingEvent('group_tour_form_opened_payment_page', {
-      packageId: packageData.id,
-      tourName: packageData.title,
-      destination: packageData.destination,
-      travelDate: selectedDate,
-      price: grandTotal,
-    });
-    window.open(formUrl, '_blank', 'noopener,noreferrer');
-    setLoading(false);
-    setGroupFormOpened(true);
-  };
-
   const handleCardPayment = async () => {
-    if (isGroupTour) {
-      await openGroupTourForm();
-      return;
-    }
     const validationError = validateBooking();
     if (validationError) {
       setFormError(validationError);
@@ -849,7 +790,7 @@ const Payment = () => {
       const paymentId = `sim_${Date.now()}`;
       const primaryTraveler = travelers[0];
       const normalizedPrimaryMobile = primaryTraveler.mobile.replace(/\D/g, '').slice(-10);
-      const registeredEmail = user.email?.trim().toLowerCase() || primaryTraveler.email.trim().toLowerCase();
+      const registeredEmail = primaryTraveler.email.trim().toLowerCase() || user.email?.trim().toLowerCase();
       const [firstName, ...lastNameParts] = primaryTraveler.fullName.trim().split(/\s+/);
       const lastName = lastNameParts.join(' ') || '-';
       const bookingTerms: BookingTerms = {
@@ -945,6 +886,7 @@ const Payment = () => {
             travelDate,
             travelers: totalPassengers,
             travelerName: primaryTraveler.fullName,
+            email: primaryTraveler.email.trim().toLowerCase() || user.email,
             roomType,
             phone: normalizedPrimaryMobile,
             totalAmount: grandTotal,
@@ -1025,7 +967,7 @@ const Payment = () => {
                     <DetailRow label="Categories" value={packageData.categories.join(', ')} />
                     <DetailRow label="Destination" value={packageData.location} />
                     <DetailRow label="Duration" value={packageData.duration} />
-                    <DetailRow label="Rating" value={`${packageData.rating}/5`} />
+                    <DetailRow label="Rating" value={`${Number(packageData.rating).toFixed(1)}/5`} />
                     <DetailRow label="Reviews" value={`${packageData.reviews}`} />
                     <DetailRow label="Highlights" value={`${packageData.highlights.length}`} />
                     <DetailRow label="Included Items" value={`${packageData.included.length}`} />
@@ -1261,52 +1203,17 @@ const Payment = () => {
                 <div className="bg-card rounded-xl p-6 shadow-card" id="payment-section">
                   <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
                     <CreditCard className="h-5 w-5 text-primary" />
-                    {isGroupTour ? 'Group Tour Booking Form' : 'Card Payment'}
+                    Card Payment
                   </h2>
-                  {isGroupTour ? (
-                    <div className="space-y-3">
-                      <p className="text-sm text-muted-foreground">
-                        Group Tours use Google Form booking only in this payment section. No online payment is required now.
-                      </p>
-                      {!groupFormReady ? (
-                        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
-                          <p className="text-xs font-semibold text-amber-900 mb-2">Add Google Form URL (one-time setup)</p>
-                          <div className="flex flex-col sm:flex-row gap-2">
-                            <input
-                              type="url"
-                              value={groupFormUrlInput}
-                              onChange={(event) => setGroupFormUrlInput(event.target.value)}
-                              placeholder="https://docs.google.com/forms/d/e/.../viewform"
-                              className="flex-1 rounded-md border border-amber-300 bg-white px-3 py-2 text-sm"
-                            />
-                            <button type="button" onClick={handleGroupFormSave} className="btn-outline whitespace-nowrap">
-                              Save Link
-                            </button>
-                          </div>
-                        </div>
-                      ) : null}
-                      <button type="button" onClick={openGroupTourForm} disabled={loading} className="btn-primary w-full">
-                        {loading ? 'Redirecting...' : 'Open Group Tour Form'}
-                      </button>
-                      {groupRedirectNote ? <p className="text-xs text-muted-foreground">{groupRedirectNote}</p> : null}
-                      {groupFormOpened ? (
-                        <Link to="/group-tour/thank-you" className="btn-outline w-full text-center block">
-                          Continue
-                        </Link>
-                      ) : null}
-                    </div>
-                  ) : (
-                    <>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Click Book Now to pay by debit/credit card and generate your ticket.
-                      </p>
-                      <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
-                        <Lock className="h-4 w-4" />
-                        <span>Secure payment flow. Final amount: ₹{grandTotal.toLocaleString('en-IN')}</span>
-                      </div>
-                    </>
-                  )}
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Click Book Now to pay by debit/credit card and generate your ticket.
+                  </p>
+                  <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+                    <Lock className="h-4 w-4" />
+                    <span>Secure payment flow. Final amount: ₹{grandTotal.toLocaleString('en-IN')}</span>
+                  </div>
                 </div>
+
               </div>
 
               <div className="lg:col-span-1">
@@ -1375,11 +1282,9 @@ const Payment = () => {
                     className="btn-primary w-full mt-6 flex items-center justify-center gap-2"
                   >
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                    {isGroupTour
-                      ? 'Open Group Tour Form'
-                      : loading
-                        ? processingMessage
-                        : `Book Now - Pay ₹${grandTotal.toLocaleString('en-IN')}`}
+                    {loading
+                      ? processingMessage
+                      : `Book Now - Pay ₹${grandTotal.toLocaleString('en-IN')}`}
                   </button>
                 </div>
               </div>

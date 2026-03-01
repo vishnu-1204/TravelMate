@@ -16,7 +16,22 @@ export const packageCategories: PackageCategory[] = [
     image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200&auto=format&fit=crop',
   },
   {
+    id: 'south',
+    title: 'South Indian Packages',
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&auto=format&fit=crop',
+  },
+  {
+    id: 'north',
+    title: 'North Indian Packages',
+    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&auto=format&fit=crop',
+  },
+  {
     id: 'nearby',
+    title: 'Solo Trips',
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&auto=format&fit=crop',
+  },
+  {
+    id: 'solo',
     title: 'Solo Trips',
     image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&auto=format&fit=crop',
   },
@@ -37,9 +52,10 @@ export const packageCategories: PackageCategory[] = [
   },
   {
     id: 'educational',
-    title: 'Educational Tours',
+    title: 'Educational Packages',
     image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200&auto=format&fit=crop',
   },
+
   {
     id: 'trending',
     title: 'Trending Picks',

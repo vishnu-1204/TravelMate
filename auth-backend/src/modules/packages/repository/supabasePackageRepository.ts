@@ -477,6 +477,7 @@ export const getCategoryCountsFromCache = async () => {
 
 export const overridePackageCategories = async (packageId: string, categories: PackageCategory[]) => {
   const primaryCategory = pickPrimaryCategory(categories);
+  const singleCategory = [primaryCategory];
 
   const client = getClient();
   if (!client) {
@@ -487,7 +488,7 @@ export const overridePackageCategories = async (packageId: string, categories: P
     const payload: TravelPackage = {
       ...row.payload,
       category: primaryCategory,
-      categories,
+      categories: singleCategory,
       categoryLabel: CATEGORY_LABELS[primaryCategory],
       lastUpdatedAt: new Date().toISOString(),
     };
@@ -495,7 +496,7 @@ export const overridePackageCategories = async (packageId: string, categories: P
     inMemoryCache[index] = {
       ...row,
       category: primaryCategory,
-      categories,
+      categories: singleCategory,
       payload,
       updated_at: new Date().toISOString(),
     };
@@ -518,7 +519,7 @@ export const overridePackageCategories = async (packageId: string, categories: P
   const updatedPayload: TravelPackage = {
     ...payload,
     category: primaryCategory,
-    categories,
+    categories: singleCategory,
     categoryLabel: CATEGORY_LABELS[primaryCategory],
     lastUpdatedAt: new Date().toISOString(),
   };
@@ -527,7 +528,7 @@ export const overridePackageCategories = async (packageId: string, categories: P
     .from(CACHE_TABLE)
     .update({
       category: primaryCategory,
-      categories,
+      categories: singleCategory,
       payload: updatedPayload,
       updated_at: new Date().toISOString(),
     })
@@ -749,4 +750,23 @@ export const updatePackageGroupBookings = async (packageId: string, travelDate: 
 
   if (error) throw new Error(`Failed to update group bookings: ${error.message}`);
   return updatedPayload;
+};
+
+export const deletePackageFromCache = async (packageId: string) => {
+  const client = getClient();
+  if (!client) {
+    const before = inMemoryCache.length;
+    inMemoryCache = inMemoryCache.filter((row) => row.package_id !== packageId);
+    return inMemoryCache.length < before;
+  }
+
+  const { error, count } = await client
+    .from(CACHE_TABLE)
+    .delete({ count: "exact" })
+    .eq("package_id", packageId);
+
+  if (error) {
+    throw new Error(`Failed to delete package: ${error.message}`);
+  }
+  return (count || 0) > 0;
 };

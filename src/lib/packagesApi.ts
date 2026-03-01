@@ -20,14 +20,14 @@ export type PackageItinerary = {
 export type PackageCategory =
   | 'international'
   | 'domestic'
+  | 'south'
+  | 'north'
+  | 'solo'
   | 'nearby'
   | 'budget'
   | 'honeymoon'
   | 'group'
-  | 'educational'
-  | 'kerala'
-  | 'south-india'
-  | 'north-india';
+  | 'educational';
 
 export type BudgetType = 'low' | 'medium' | 'premium';
 export type HotelType = 'budget' | 'comfort' | 'premium';
@@ -202,15 +202,21 @@ const MIN_PACKAGE_DURATION_DAYS = 3;
 const packagesPageCache = new Map<string, { expiresAt: number; value: PackagesPage }>();
 const inflightPages = new Map<string, Promise<PackagesPage>>();
 
-const normalizeCategory = (category?: string) => {
+const normalizeCategory = (category?: string): PackageCategory | undefined => {
   if (!category) return undefined;
-  if (category === 'indian') return 'domestic';
-  if (category === 'weekend') return 'nearby';
-  if (category === 'budget-travel') return 'budget';
-  if (category === 'kerala') return 'kerala';
-  if (category === 'south-india') return 'south-india';
-  if (category === 'north-india') return 'north-india';
-  return category;
+  const lower = category.toLowerCase().trim();
+  if (lower === 'indian' || lower === 'domestic') return 'domestic';
+  if (lower === 'weekend' || lower === 'solo-trips') return 'solo';
+  if (lower === 'budget-travel') return 'budget';
+  if (lower === 'south-india' || lower === 'south') return 'south';
+  if (lower === 'north-india' || lower === 'north') return 'north';
+  if (lower === 'kerala') return 'south';
+  
+  const valid: PackageCategory[] = [
+    'international', 'domestic', 'south', 'north', 'solo', 'nearby', 'budget', 'honeymoon', 'group', 'educational'
+  ];
+  if (valid.includes(lower as PackageCategory)) return lower as PackageCategory;
+  return undefined;
 };
 
 const normalizeCountry = (country?: string) => (country || '').trim().toLowerCase();
@@ -251,6 +257,63 @@ const isLikelyIndianPackage = (pkg: Pick<TravelPackage, 'country' | 'destination
   hasIndianLocationKeyword(pkg.destination) ||
   hasIndianLocationKeyword(pkg.location) ||
   hasIndianLocationKeyword(pkg.title);
+const SOUTH_INDIA_KEYWORDS = [
+  'kerala',
+  'tamil nadu',
+  'karnataka',
+  'andhra',
+  'telangana',
+  'ooty',
+  'kodaikanal',
+  'coorg',
+  'mysore',
+  'hampi',
+  'munnar',
+  'alleppey',
+  'wayanad',
+  'thekkady',
+  'kovalam',
+  'kochi',
+  'varkala',
+  'hyderabad',
+  'visakhapatnam',
+  'tirupati',
+  'pondicherry',
+  'mahabalipuram',
+];
+const NORTH_INDIA_KEYWORDS = [
+  'himachal',
+  'uttarakhand',
+  'rajasthan',
+  'kashmir',
+  'ladakh',
+  'manali',
+  'shimla',
+  'kasol',
+  'dharamshala',
+  'dalhousie',
+  'rishikesh',
+  'nainital',
+  'mussoorie',
+  'auli',
+  'haridwar',
+  'jaipur',
+  'udaipur',
+  'jodhpur',
+  'jaisalmer',
+  'agra',
+  'delhi',
+];
+const hasRegionKeyword = (pkg: Pick<TravelPackage, 'title' | 'destination' | 'location'>, keywords: string[]) => {
+  const text = normalizeTerm(`${pkg.title} ${pkg.destination} ${pkg.location}`);
+  return keywords.some((keyword) => text.includes(keyword));
+};
+const isSouthIndianPackage = (pkg: Pick<TravelPackage, 'category' | 'country' | 'title' | 'destination' | 'location'>) =>
+  pkg.category === 'south' || (isLikelyIndianPackage(pkg) && hasRegionKeyword(pkg, SOUTH_INDIA_KEYWORDS));
+const isNorthIndianPackage = (pkg: Pick<TravelPackage, 'category' | 'country' | 'title' | 'destination' | 'location'>) =>
+  pkg.category === 'north' || (isLikelyIndianPackage(pkg) && (hasRegionKeyword(pkg, NORTH_INDIA_KEYWORDS) || !hasRegionKeyword(pkg, SOUTH_INDIA_KEYWORDS)));
+const isSoloTripPackage = (pkg: Pick<TravelPackage, 'category' | 'durationDays' | 'travelerSegments'>) =>
+  pkg.category === 'solo' || pkg.category === 'nearby' || pkg.durationDays <= 4 || pkg.travelerSegments.includes('solo');
 
 const inferCountry = (pkg: RawPackage) => {
   const looksIndianByText =
@@ -483,15 +546,15 @@ const buildUniqueItinerary = (pkg: {
 
   const categoryPreferred: Record<PackageCategory, string[]> = {
     domestic: [`${pkg.destination} heritage and local life trail`, `${pkg.destination} cultural neighborhood walk`],
+    solo: [`Self-paced walk around ${pkg.destination}`, `Solo-friendly hidden spots in ${pkg.destination}`],
     international: [`${pkg.destination} city landmark circuit`, `${pkg.destination} cultural district experience`],
     nearby: [`Short nature trail near ${pkg.destination}`, `${pkg.destination} cafe and promenade visit`],
     budget: [`Free-entry attraction circuit in ${pkg.destination}`, `${pkg.destination} budget transit experience`],
     honeymoon: [`Scenic couple photo stop in ${pkg.destination}`, `Romantic sunset viewpoint in ${pkg.destination}`],
     group: [`Group-friendly sightseeing circuit in ${pkg.destination}`, 'Team activity and local exploration'],
     educational: [`Museum and interpretation center tour in ${pkg.destination}`, 'Guided history and learning walk'],
-    kerala: [`Backwater boat ride in ${pkg.destination}`, `Tea garden walk and spice plantation visit`],
-    'south-india': [`Heritage temple tour in ${pkg.destination}`, `Coastal walk and traditional lunch`],
-    'north-india': [`Mountain viewpoint drive in ${pkg.destination}`, `Old town walk and local market visit`],
+    south: [`Heritage temple tour in ${pkg.destination}`, `Coastal walk and traditional lunch`],
+    north: [`Mountain viewpoint drive in ${pkg.destination}`, `Old town walk and local market visit`],
   };
 
   const days = Array.from({ length: totalDays }, (_, index) => {
@@ -749,7 +812,7 @@ const getPackagesPageFromLocal = (query: PackageQuery = {}): PackagesPage => {
   const normalizedCategory = normalizeCategory(query.category);
   const normalizedCategories = (query.categories || [])
     .map((item) => normalizeCategory(item))
-    .filter((item): item is string => Boolean(item));
+    .filter((item): item is PackageCategory => Boolean(item));
   const sortBy = query.sortBy || 'trending';
   const sortOrder = query.sortOrder || 'desc';
   const offset = query.offset || 0;
@@ -759,24 +822,25 @@ const getPackagesPageFromLocal = (query: PackageQuery = {}): PackagesPage => {
   let filtered = localPackages.map((pkg) => withQueryPricing(pkg, query));
 
   if (normalizedCategory) {
-    filtered = filtered.filter((pkg) => pkg.categories.includes(normalizedCategory as PackageCategory));
-    if (normalizedCategory === 'international') {
-      filtered = filtered.filter((pkg) => !isLikelyIndianPackage(pkg));
-    } else if (normalizedCategory === 'domestic') {
-      filtered = filtered.filter((pkg) => isLikelyIndianPackage(pkg));
+    if (normalizedCategory === 'south') {
+      filtered = filtered.filter((pkg) => isSouthIndianPackage(pkg));
+    } else if (normalizedCategory === 'north') {
+      filtered = filtered.filter((pkg) => isNorthIndianPackage(pkg));
+    } else if (normalizedCategory === 'solo') {
+      filtered = filtered.filter((pkg) => isSoloTripPackage(pkg));
+    } else {
+      filtered = filtered.filter((pkg) => pkg.category === (normalizedCategory as PackageCategory));
     }
   }
   if (normalizedCategories.length) {
     filtered = filtered.filter((pkg) =>
-      normalizedCategories.some((category) => pkg.categories.includes(category as PackageCategory))
+      normalizedCategories.some((category) => {
+        if (category === 'south') return isSouthIndianPackage(pkg);
+        if (category === 'north') return isNorthIndianPackage(pkg);
+        if (category === 'solo') return isSoloTripPackage(pkg);
+        return pkg.category === category;
+      })
     );
-    const includesInternational = normalizedCategories.includes('international');
-    const includesDomestic = normalizedCategories.includes('domestic');
-    if (includesInternational && !includesDomestic) {
-      filtered = filtered.filter((pkg) => !isLikelyIndianPackage(pkg));
-    } else if (includesDomestic && !includesInternational) {
-      filtered = filtered.filter((pkg) => isLikelyIndianPackage(pkg));
-    }
   }
   if (searchTerms.length) {
     filtered = filtered.filter((pkg) =>
@@ -889,15 +953,24 @@ export const getPackagesPage = async (query: PackageQuery = {}): Promise<Package
       const normalizedPackages = payload.packages
         .map((pkg) => withQueryPricing(normalizePackage(pkg as RawPackage), query))
         .filter((pkg) => {
-          if (normalizedCategory === 'international') return !isLikelyIndianPackage(pkg);
-          if (normalizedCategory === 'domestic') return isLikelyIndianPackage(pkg);
+          if (normalizedCategory === 'south') return isSouthIndianPackage(pkg);
+          if (normalizedCategory === 'north') return isNorthIndianPackage(pkg);
+          if (normalizedCategory === 'solo') return isSoloTripPackage(pkg);
+          if (normalizedCategory) return pkg.category === (normalizedCategory as PackageCategory);
           return true;
         })
         .filter((pkg) => {
-          const includesInternational = Boolean(query.categories?.includes('international'));
-          const includesDomestic = Boolean(query.categories?.includes('domestic'));
-          if (includesInternational && !includesDomestic) return !isLikelyIndianPackage(pkg);
-          if (includesDomestic && !includesInternational) return isLikelyIndianPackage(pkg);
+          const normalizedQueryCategories = (query.categories || [])
+            .map((item) => normalizeCategory(item))
+            .filter((item): item is PackageCategory => Boolean(item));
+          if (normalizedQueryCategories.length) {
+            return normalizedQueryCategories.some((category) => {
+              if (category === 'south') return isSouthIndianPackage(pkg);
+              if (category === 'north') return isNorthIndianPackage(pkg);
+              if (category === 'solo') return isSoloTripPackage(pkg);
+              return pkg.category === category;
+            });
+          }
           return true;
         });
 
@@ -965,40 +1038,30 @@ export const getPackageById = async (id: string): Promise<TravelPackage | undefi
 };
 
 export const getPackageCategoryCounts = async (): Promise<Record<string, number>> => {
+  const exactCategories: PackageCategory[] = [
+    'south',
+    'north',
+    'solo',
+    'honeymoon',
+    'educational',
+  ];
+
   if (!BACKEND_BASE_URL) {
     const counts: Record<string, number> = {};
-    localPackages.forEach((pkg) => {
-      pkg.categories.forEach((category) => {
-        counts[category] = (counts[category] || 0) + 1;
-      });
+    exactCategories.forEach((category) => {
+      counts[category] = localPackages.filter((pkg) => pkg.category === category).length;
     });
     return counts;
   }
 
-  try {
-    const response = await fetch(`${BACKEND_BASE_URL}/api/packages/categories`);
-    if (!response.ok) {
-      throw new Error(`Category counts fetch failed: ${response.status}`);
-    }
+  const totals = await Promise.all(
+    exactCategories.map(async (category) => {
+      const page = await getPackagesPage({ category, limit: 1, offset: 0 });
+      return [category, page.total] as const;
+    })
+  );
 
-    const payload = (await response.json()) as { categories?: { id: string; count: number }[] };
-    if (!payload.categories || payload.categories.length === 0) {
-      throw new Error('Empty categories from backend, falling back to local');
-    }
-    const counts: Record<string, number> = {};
-    (payload.categories || []).forEach((item) => {
-      counts[item.id] = item.count;
-    });
-    return counts;
-  } catch {
-    const counts: Record<string, number> = {};
-    localPackages.forEach((pkg) => {
-      pkg.categories.forEach((category) => {
-        counts[category] = (counts[category] || 0) + 1;
-      });
-    });
-    return counts;
-  }
+  return Object.fromEntries(totals);
 };
 
 export const overridePackageCategories = async (
@@ -1066,4 +1129,20 @@ export const getPackageHistory = async (
 
   const payload = (await response.json()) as { history?: PackageVersionHistory[] };
   return payload.history || [];
+};
+
+export const deletePackage = async (packageId: string, adminToken?: string): Promise<boolean> => {
+  if (!BACKEND_BASE_URL) return false;
+
+  const response = await fetch(`${BACKEND_BASE_URL}/api/packages/${packageId}`, {
+    method: 'DELETE',
+    headers: adminToken ? { 'x-admin-token': adminToken } : {},
+  });
+
+  if (response.status === 404) return false;
+  if (!response.ok) {
+    throw new Error(`Package delete failed: ${response.status}`);
+  }
+
+  return true;
 };

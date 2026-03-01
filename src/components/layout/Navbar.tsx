@@ -29,7 +29,7 @@ function Navbar() {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Group Tours', path: '/packages/group' },
-    { name: 'India', path: '/packages/domestic' },
+    { name: 'India', path: '/packages/indian' },
     { name: 'Honeymoon', path: '/packages/honeymoon' },
     { name: 'Packages', path: '/packages' },
     { name: 'Blog', path: '/blog' },

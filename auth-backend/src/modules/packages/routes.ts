@@ -2,6 +2,8 @@ import { Router, type Request, type Response } from "express";
 import { config } from "../../config/env";
 import {
   buildPackageListQuery,
+  createPackage,
+  deletePackage,
   getPackageById,
   getPackageCategoryCounts,
   getPackageHistory,
@@ -15,6 +17,12 @@ import { PACKAGE_CATEGORIES, type PackageCategory } from "./types";
 const router = Router();
 
 const validCategories = new Set<PackageCategory>(PACKAGE_CATEGORIES);
+const normalizeCategoryInput = (value: string): PackageCategory | undefined => {
+  const raw = value.toLowerCase().trim();
+  if (raw === "indian" || raw === "south-india" || raw === "north-india") return "domestic";
+  if (raw === "solo" || raw === "solo-trips") return "nearby";
+  return validCategories.has(raw as PackageCategory) ? (raw as PackageCategory) : undefined;
+};
 
 const isAdminRequest = (req: Request) => {
   if (!config.packageAdminToken) return true;
@@ -55,6 +63,25 @@ router.get("/refresh", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/", async (req: Request, res: Response) => {
+  try {
+    if (!isAdminRequest(req)) {
+      return res.status(401).json({ message: "Unauthorized admin request" });
+    }
+
+    const body = req.body as Record<string, unknown>;
+    const created = await createPackage(body as any);
+    return res.status(201).json({ package: created });
+  } catch (error) {
+    console.error("Failed to create package:", error);
+    const detail = error instanceof Error ? error.message : "Unknown error";
+    return res.status(500).json({
+      message: "Failed to create package",
+      detail: process.env.NODE_ENV === "production" ? undefined : detail,
+    });
+  }
+});
+
 router.get("/categories", async (req: Request, res: Response) => {
   try {
     const categories = await getPackageCategoryCounts();
@@ -84,8 +111,8 @@ router.patch("/:id/categories", async (req: Request, res: Response) => {
     const body = req.body as { categories?: string[] };
     const parsed =
       body.categories
-        ?.map((item) => item.toLowerCase().trim())
-        .filter((item): item is PackageCategory => validCategories.has(item as PackageCategory)) || [];
+        ?.map((item) => normalizeCategoryInput(item))
+        .filter((item): item is PackageCategory => Boolean(item)) || [];
 
     if (!parsed.length) {
       return res.status(400).json({ message: "Provide at least one valid category" });
@@ -135,6 +162,34 @@ router.patch("/:id/image", async (req: Request, res: Response) => {
     const detail = error instanceof Error ? error.message : "Unknown error";
     return res.status(500).json({
       message: "Failed to override package image",
+      detail: process.env.NODE_ENV === "production" ? undefined : detail,
+    });
+  }
+});
+
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    if (!isAdminRequest(req)) {
+      return res.status(401).json({ message: "Unauthorized admin request" });
+    }
+
+    const rawId = req.params.id;
+    const id = Array.isArray(rawId) ? rawId[0] : rawId;
+    if (!id) {
+      return res.status(400).json({ message: "Package id is required" });
+    }
+
+    const deleted = await deletePackage(id);
+    if (!deleted) {
+      return res.status(404).json({ message: "Package not found" });
+    }
+
+    return res.json({ deleted: true, id });
+  } catch (error) {
+    console.error("Failed to delete package:", error);
+    const detail = error instanceof Error ? error.message : "Unknown error";
+    return res.status(500).json({
+      message: "Failed to delete package",
       detail: process.env.NODE_ENV === "production" ? undefined : detail,
     });
   }

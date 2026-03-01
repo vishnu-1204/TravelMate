@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import nodemailer from "nodemailer";
 import { config } from "../config/env";
 import { getBookingConfirmationTemplate, type BookingEmailDetails as TemplateDetails } from "../templates/bookingConfirmation";
+import { getFlightTicketTemplate, type FlightTicketEmailDetails } from "../templates/flightTicket";
 import { getDb } from "../db";
 import { logger } from "../utils/logger";
 
@@ -245,6 +246,24 @@ export const sendBookingConfirmation = async (
     "email/booking",
     user.email,
     `Booking Confirmation - ${booking.bookingReference}`,
+    html,
+    options?.attachment ? {
+      attachments: [{ content: options.attachment.content, filename: options.attachment.filename }]
+    } : undefined
+  );
+};
+
+export const sendFlightTicketEmail = async (
+  user: EmailUser,
+  details: FlightTicketEmailDetails,
+  options?: { attachment?: Attachment }
+) => {
+  const html = getFlightTicketTemplate(details);
+
+  return sendWithRetry(
+    "email/flight-ticket",
+    user.email,
+    `Your Flight E-Ticket - ${details.pnr}`,
     html,
     options?.attachment ? {
       attachments: [{ content: options.attachment.content, filename: options.attachment.filename }]

@@ -79,15 +79,55 @@ const categorySuggestionMap: Record<string, string[]> = {
   all: ['Goa', 'Manali', 'Kerala', 'Bali', 'Maldives', 'Paris', 'Dubai', 'Thailand'],
   domestic: ['Goa', 'Ooty', 'Manali', 'Munnar', 'Kashmir', 'Jaipur', 'Kerala', 'Andaman'],
   international: ['Bali', 'Maldives', 'Paris', 'Dubai', 'Singapore', 'Thailand', 'Switzerland', 'London'],
-  nearby: ['Rishikesh', 'Kasol', 'Hampi', 'Pondicherry', 'Coorg', 'Munnar', 'Udaipur', 'Goa'],
+  solo: ['Rishikesh', 'Kasol', 'Hampi', 'Pondicherry', 'Coorg', 'Munnar', 'Udaipur', 'Goa'],
   budget: ['Goa', 'Pondicherry', 'Rishikesh', 'Jaipur', 'Kasol', 'Coorg', 'Mysore', 'Ooty'],
   honeymoon: ['Maldives', 'Bali', 'Paris', 'Santorini', 'Kerala', 'Manali', 'Kashmir', 'Mauritius'],
   group: ['Goa', 'Dubai', 'Thailand', 'Rishikesh', 'Kasol', 'Bali', 'Manali', 'Singapore'],
   educational: ['Delhi', 'Agra', 'Jaipur', 'Mysore', 'Hampi', 'Kolkata', 'London', 'Rome'],
-  kerala: ['Munnar', 'Alleppey', 'Wayanad', 'Kochi', 'Thekkady'],
-  'south-india': ['Ooty', 'Coorg', 'Pondicherry', 'Mysore', 'Kodaikanal', 'Hampi', 'Vizag', 'Tirupati'],
-  'north-india': ['Manali', 'Shimla', 'Kashmir', 'Delhi', 'Agra', 'Jaipur', 'Rishikesh', 'Nainital'],
+  south: ['Munnar', 'Alleppey', 'Wayanad', 'Kochi', 'Thekkady', 'Ooty', 'Coorg', 'Pondicherry', 'Mysore', 'Kodaikanal', 'Hampi', 'Vizag', 'Tirupati'],
+  north: ['Manali', 'Shimla', 'Kashmir', 'Delhi', 'Agra', 'Jaipur', 'Rishikesh', 'Nainital'],
 };
+const INDIAN_PACKAGES_FALLBACK_IMAGE =
+  'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75';
+const INDIAN_DESTINATION_IMAGE_RULES: Array<{ keywords: string[]; image: string }> = [
+  {
+    keywords: ['kerala', 'munnar', 'alleppey', 'wayanad', 'thekkady', 'kovalam', 'kochi', 'varkala'],
+    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75',
+  },
+  {
+    keywords: ['goa', 'baga', 'calangute', 'palolem'],
+    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75',
+  },
+  {
+    keywords: ['manali', 'shimla', 'kasol', 'himachal'],
+    image: 'https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75',
+  },
+  {
+    keywords: ['kashmir', 'gulmarg', 'pahalgam', 'srinagar'],
+    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75',
+  },
+  {
+    keywords: ['ooty', 'kodaikanal', 'coorg', 'mysore', 'hampi'],
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75',
+  },
+  {
+    keywords: ['rishikesh', 'nainital', 'mussoorie', 'uttarakhand'],
+    image: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75',
+  },
+  {
+    keywords: ['jaipur', 'udaipur', 'jodhpur', 'rajasthan'],
+    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75',
+  },
+  {
+    keywords: ['andaman', 'pondicherry', 'mahabalipuram'],
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75',
+  },
+];
+const GENERIC_INDIAN_IMAGE_MARKERS = [
+  'photo-1524492412937-b28074a5d7da',
+  'photo-1488646953014-85cb44e25828',
+  '/placeholder.svg',
+];
 
 const PackageCardSkeleton = () => (
   <div className="rounded-xl border border-border overflow-hidden bg-card">
@@ -125,6 +165,21 @@ const isIndianDestination = (name: string) => {
   const normalized = name.trim().toLowerCase();
   if (indianDestinationSet.has(normalized)) return true;
   return indianDestinationKeywords.some((keyword) => normalized.includes(keyword));
+};
+const isGenericIndianImage = (url?: string) => {
+  const normalized = String(url || '').trim().toLowerCase();
+  if (!normalized) return true;
+  if (normalized === INDIAN_PACKAGES_FALLBACK_IMAGE.toLowerCase()) return true;
+  return GENERIC_INDIAN_IMAGE_MARKERS.some((marker) => normalized.includes(marker));
+};
+
+const resolveIndianPackageImage = (pkg: TravelPackage) => {
+  const sourceImage = String(pkg.imageUrl || pkg.image || '').trim();
+  if (sourceImage && !isGenericIndianImage(sourceImage)) return sourceImage;
+
+  const haystack = normalizeSuggestion(`${pkg.title} ${pkg.destination} ${pkg.location}`);
+  const matched = INDIAN_DESTINATION_IMAGE_RULES.find((rule) => rule.keywords.some((keyword) => haystack.includes(keyword)));
+  return matched?.image || INDIAN_PACKAGES_FALLBACK_IMAGE;
 };
 
 const normalizePlaceKey = (value: string) =>
@@ -235,6 +290,8 @@ const Packages = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const selectedCategory = category || 'all';
+  const isSoloCategory = selectedCategory === 'solo' || selectedCategory === 'nearby';
+  const isIndianCategory = selectedCategory === 'domestic' || selectedCategory === 'indian' || selectedCategory === 'south' || selectedCategory === 'north';
 
   const [packages, setPackages] = useState<TravelPackage[]>([]);
   const [nearbyMetaById, setNearbyMetaById] = useState<Record<string, NearbyMeta>>({});
@@ -279,7 +336,7 @@ const Packages = () => {
   useEffect(() => {
     let active = true;
     const resolveUserLocation = async () => {
-      if (selectedCategory !== 'nearby') {
+      if (!isSoloCategory) {
         setLocationStatus('idle');
         setLocationNote('');
         setProfileCity('');
@@ -351,7 +408,7 @@ const Packages = () => {
     return () => {
       active = false;
     };
-  }, [selectedCategory, user]);
+  }, [selectedCategory, user, isSoloCategory]);
 
   useEffect(() => {
     let active = true;
@@ -359,7 +416,7 @@ const Packages = () => {
       setLoading(true);
       setError('');
       try {
-        const isNearbyCategory = selectedCategory === 'nearby';
+        const isNearbyCategory = isSoloCategory;
         const queryLimit = isNearbyCategory ? 220 : pageSize;
         const queryOffset = isNearbyCategory ? 0 : (page - 1) * pageSize;
         const result = await getPackagesPage({
@@ -377,7 +434,7 @@ const Packages = () => {
           if (selectedCategory === 'international') {
             return pkg.category === 'international' && !isIndiaCountry(pkg.country) && !looksIndianByText;
           }
-          if (selectedCategory === 'domestic') {
+          if (isIndianCategory) {
             return pkg.category === 'domestic' || isIndiaCountry(pkg.country) || looksIndianByText;
           }
           return true;
@@ -436,7 +493,7 @@ const Packages = () => {
 
         const withNearbyAnnotations = pagedPackages.map((pkg) => {
           const meta = nearbyMeta[pkg.id];
-          if (!meta || selectedCategory !== 'nearby') return pkg;
+          if (!meta || !isSoloCategory) return pkg;
           const distanceLabel = `${Math.round(meta.distanceKm)} km away`;
           const travelLabel = `~${Math.round(meta.travelHours)}h trip`;
           const tags = [distanceLabel, travelLabel, ...pkg.specialTags].slice(0, 4);
@@ -452,7 +509,7 @@ const Packages = () => {
 
         if (isNearbyCategory) {
           setTotal(safetyFiltered.length);
-        } else if (selectedCategory === 'international' || selectedCategory === 'domestic') {
+        } else if (selectedCategory === 'international' || isIndianCategory || isSoloCategory) {
           const removedOnPage = Math.max(result.packages.length - safetyFiltered.length, 0);
           setTotal(Math.max(result.total - removedOnPage, safetyFiltered.length));
         } else {
@@ -473,20 +530,26 @@ const Packages = () => {
     return () => {
       active = false;
     };
-  }, [selectedCategory, debouncedSearch, page, reloadToken, userCoords, profileCity]);
+  }, [selectedCategory, debouncedSearch, page, reloadToken, userCoords, profileCity, isSoloCategory, isIndianCategory]);
 
   const pageTitle =
     selectedCategory === 'all'
       ? 'Find Your Next Destination'
-      : selectedCategory === 'nearby'
+      : isSoloCategory
       ? 'Solo Trips'
+      : selectedCategory === 'south'
+      ? 'South Indian Packages'
+      : selectedCategory === 'north'
+      ? 'North Indian Packages'
       : `${selectedCategory[0].toUpperCase()}${selectedCategory.slice(1)} Packages`;
+  const isIndianPackagesView = isIndianCategory && !isSoloCategory;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const nearbyCityPlaces = useMemo(() => getCityHints(profileCity), [profileCity]);
 
   const liveSuggestions = useMemo(() => {
     const categoryKey = selectedCategory.toLowerCase();
-    const categorySpecific = categorySuggestionMap[categoryKey] || categorySuggestionMap.all;
+    const normalizedCategoryKey = categoryKey === 'indian' ? 'domestic' : categoryKey === 'nearby' ? 'solo' : categoryKey;
+    const categorySpecific = categorySuggestionMap[normalizedCategoryKey] || categorySuggestionMap.all;
     const fromPackages = packages
       .flatMap((pkg) => {
         const destination = pkg.destination?.trim() || '';
@@ -500,14 +563,14 @@ const Packages = () => {
     const recentRelevant = recentSearches.filter((item) => {
       if (categoryKey === 'international') return !isIndianDestination(item);
       if (categoryKey === 'all') return true;
-      if (categoryKey === 'domestic' || categoryKey === 'nearby' || categoryKey === 'educational') return isIndianDestination(item);
+      if (normalizedCategoryKey === 'domestic' || normalizedCategoryKey === 'solo' || normalizedCategoryKey === 'south' || normalizedCategoryKey === 'north' || normalizedCategoryKey === 'educational') return isIndianDestination(item);
       return true;
     });
 
     let unique = dedupeSuggestions([...categorySpecific, ...fromPackages, ...recentRelevant]);
     if (categoryKey === 'international') {
       unique = unique.filter((item) => !isIndianDestination(item));
-    } else if (categoryKey === 'domestic' || categoryKey === 'nearby' || categoryKey === 'educational') {
+    } else if (normalizedCategoryKey === 'domestic' || normalizedCategoryKey === 'solo' || normalizedCategoryKey === 'south' || normalizedCategoryKey === 'north' || normalizedCategoryKey === 'educational') {
       unique = unique.filter((item) => isIndianDestination(item));
     }
 
@@ -645,20 +708,17 @@ const Packages = () => {
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
                 {[
                   { id: 'all', label: 'All' },
-                  { id: 'kerala', label: 'Kerala' },
-                  { id: 'south-india', label: 'South India' },
-                  { id: 'north-india', label: 'North India' },
-                  { id: 'domestic', label: 'Domestic' },
-                  { id: 'international', label: 'International' },
-                  { id: 'budget', label: 'Budget' },
+                  { id: 'south', label: 'South India' },
+                  { id: 'north', label: 'North India' },
+                  { id: 'solo', label: 'Solo Trips' },
                   { id: 'honeymoon', label: 'Honeymoon' },
-                  { id: 'group', label: 'Group Tours' },
+                  { id: 'educational', label: 'Educational' },
                 ].map((cat) => (
                   <button
                     key={cat.id}
                     onClick={() => navigate(cat.id === 'all' ? '/packages' : `/packages/${cat.id}`)}
                     className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                      selectedCategory === cat.id
+                      selectedCategory === cat.id || (cat.id === 'solo' && selectedCategory === 'nearby')
                         ? 'bg-sky-400 text-white shadow-lg'
                         : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
                     }`}
@@ -674,7 +734,7 @@ const Packages = () => {
 
         <section className="py-16 bg-background">
           <div className="page-container">
-            {selectedCategory === 'nearby' ? (
+            {isSoloCategory ? (
               <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
                 <p className="text-sm font-medium text-slate-900">Solo Trip Recommendations</p>
                 <p className="text-sm text-slate-700 mt-1">{locationNote || 'Resolving your location preferences...'}</p>
@@ -755,12 +815,12 @@ const Packages = () => {
                   </p>
                   <p className="text-muted-foreground">
                     {selectedCategory === 'group' 
-                      ? 'We are currently preparing exciting new group departure dates. Check back soon or explore our popular domestic packages.' 
+                      ? 'We are currently preparing exciting new group departure dates. Check back soon or explore our popular Indian packages.' 
                       : `We couldn't find any packages matching your search criteria. Try a different destination or category.`}
                   </p>
                   {selectedCategory === 'group' && (
-                    <Link to="/packages/domestic" className="btn-primary mt-6 inline-block">
-                      Explore Domestic Packages
+                    <Link to="/packages/indian" className="btn-primary mt-6 inline-block">
+                      Explore Indian Packages
                     </Link>
                   )}
                 </div>
@@ -772,14 +832,16 @@ const Packages = () => {
                   Showing {(page - 1) * pageSize + 1}-{Math.min(page * pageSize, total)} of {total} destinations
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {packages.map((pkg) => (
+                  {packages.map((pkg, index) => {
+                    const cardImageUrl = isIndianPackagesView ? resolveIndianPackageImage(pkg) : pkg.imageUrl;
+                    return (
                     <PackageCard
                       key={pkg.id}
                       id={pkg.id}
                       detailsPath={selectedCategory === 'group' ? `/package/${pkg.id}?group=1` : `/package/${pkg.id}`}
                       title={pkg.title}
                       destination={
-                        selectedCategory === 'nearby' && nearbyMetaById[pkg.id]
+                        isSoloCategory && nearbyMetaById[pkg.id]
                           ? `${pkg.destination} - ${Math.round(nearbyMetaById[pkg.id].distanceKm)} km`
                           : pkg.destination
                       }
@@ -788,7 +850,7 @@ const Packages = () => {
                       discount={pkg.discount}
                       rating={pkg.rating}
                       reviews={pkg.reviews}
-                      imageUrl={pkg.imageUrl}
+                      imageUrl={cardImageUrl}
                       imageAlt={pkg.imageAlt}
                       category={pkg.category}
                       shortDescription={pkg.shortDescription}
@@ -802,8 +864,10 @@ const Packages = () => {
                       isGroupTour={pkg.isGroupTour}
                       groupDepartures={pkg.groupDepartures}
                       highlightQuery={debouncedSearch}
+                      imageLoading={index < 3 ? 'eager' : 'lazy'}
+                      imagePriority={index < 3}
                     />
-                  ))}
+                  )})}
                 </div>
                 <div className="flex items-center justify-center gap-3 mt-8">
                   <button
@@ -836,4 +900,3 @@ const Packages = () => {
 };
 
 export default Packages;
-

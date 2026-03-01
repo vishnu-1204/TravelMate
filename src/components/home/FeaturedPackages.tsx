@@ -31,33 +31,28 @@ const FeaturedPackages = () => {
   const featuredCategories = useMemo(
     () => [
       {
-        id: 'domestic',
-        title: 'Indian Packages',
-        image: packageCategories.find((category) => category.id === 'domestic')?.image || '',
+        id: 'south',
+        title: 'South Indian Packages',
+        image: packageCategories.find((category) => category.id === 'south')?.image || packageCategories.find((c) => c.id === 'south-india')?.image || '',
       },
       {
-        id: 'international',
-        title: 'International',
-        image: packageCategories.find((category) => category.id === 'international')?.image || '',
+        id: 'north',
+        title: 'North Indian Packages',
+        image: packageCategories.find((category) => category.id === 'north')?.image || packageCategories.find((c) => c.id === 'north-india')?.image || '',
       },
       {
-        id: 'nearby',
+        id: 'solo',
         title: 'Solo Trips',
-        image: packageCategories.find((category) => category.id === 'nearby')?.image || '',
+        image: packageCategories.find((category) => category.id === 'solo')?.image || '',
       },
       {
-        id: 'budget',
-        title: 'Budget Travel',
-        image: packageCategories.find((category) => category.id === 'budget')?.image || '',
-      },
-      {
-        id: 'group',
-        title: 'Group Tours',
-        image: packageCategories.find((category) => category.id === 'group')?.image || '',
+        id: 'honeymoon',
+        title: 'Honeymoon Packages',
+        image: packageCategories.find((category) => category.id === 'honeymoon')?.image || '',
       },
       {
         id: 'educational',
-        title: 'Educational Tours',
+        title: 'Educational Packages',
         image: packageCategories.find((category) => category.id === 'educational')?.image || '',
       },
     ],

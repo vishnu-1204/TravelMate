@@ -734,17 +734,60 @@ const getImageFromPexels = async (query: string, page: number) => {
   return null;
 };
 
-const getImageFromUnsplash = (query: string, salt: string) => {
-  const key = query.toLowerCase().replace(/\s+/g, "-");
-  const imageId = `unsplash-${key}-${salt}`;
-  if (usedImageIds.has(imageId)) {
-    return null;
+const DESTINATION_IMAGES: Record<string, string[]> = {
+  'kerala|munnar|alleppey|wayanad|thekkady|kovalam|kochi|varkala': [
+    'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944',
+    'https://images.unsplash.com/photo-1595815771614-ade501f4b7d8'
+  ],
+  'goa|baga|calangute|palolem|aguada': [
+    'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2',
+    'https://images.unsplash.com/photo-1537996194471-e657df975ab4'
+  ],
+  'rajasthan|jaipur|udaipur|jodhpur|jaisalmer|pushkar': [
+    'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1',
+    'https://images.unsplash.com/photo-1512453979798-5ea266f8880c'
+  ],
+  'himachal|manali|shimla|kasol|spiti|dharamshala|dalhousie|uttarakhand|rishikesh|nainital|mussoorie|auli|corbett|haridwar': [
+    'https://images.unsplash.com/photo-1521292270410-a8c4d716d518',
+    'https://images.unsplash.com/photo-1469474968028-56623f02e42e',
+    'https://images.unsplash.com/photo-1431274172761-fca41d930114'
+  ],
+  'karnataka|coorg|mysuru|mysore|hampi|gokarna|udupi|chikmagalur|tamil|ooty|kodaikanal|chennai|kanyakumari': [
+    'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
+    'https://images.unsplash.com/photo-1527631746610-bca00a040d60'
+  ],
+  'maharashtra|mumbai|pune|lonavala|mahabaleshwar|nashik|alibaug|gujarat|ahmedabad|kutch|gir|somnath|dwarka': [
+    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
+    'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86'
+  ],
+  'meghalaya|shillong|cherrapunji|dawki|sikkim|gangtok|pelling|lachung': [
+    'https://images.unsplash.com/photo-1525625293386-3f8f99389edd',
+    'https://images.unsplash.com/photo-1488646953014-85cb44e25828'
+  ],
+  'delhi|agra': [
+    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da'
+  ]
+};
+
+const getDestinationImage = (query: string, seed: number) => {
+  const normalized = query.toLowerCase();
+  for (const [key, urls] of Object.entries(DESTINATION_IMAGES)) {
+    const keywords = key.split('|');
+    if (keywords.some(k => normalized.includes(k))) {
+      return urls[seed % urls.length] + '?auto=format&fit=crop&w=1200&q=75';
+    }
   }
-  usedImageIds.add(imageId);
-  const imageUrl = normalizeAssetUrl(
-    `https://source.unsplash.com/1600x900/?${encodeURIComponent(query)}&sig=${encodeURIComponent(salt)}`
-  );
-  return { imageId, imageUrl, source: "unsplash" as const };
+  
+  const genericPool = [
+    'https://images.unsplash.com/photo-1488646953014-85cb44e25828',
+    'https://images.unsplash.com/photo-1469474968028-56623f02e42e',
+    'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
+    'https://images.unsplash.com/photo-1467269204594-9661b134dd2b',
+    'https://images.unsplash.com/photo-1512453979798-5ea266f8880c',
+    'https://images.unsplash.com/photo-1527631746610-bca00a040d60',
+    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac'
+  ];
+  return genericPool[seed % genericPool.length] + '?auto=format&fit=crop&w=1200&q=75';
 };
 
 const getFallbackImage = (destination: string, category: PackageCategory) => {
@@ -776,36 +819,25 @@ const getDynamicPackageImage = async ({
     return seeded;
   }
 
-  const keywords = buildImageKeywords(destination, category, budgetType);
-  for (let i = 0; i < keywords.length; i += 1) {
-    const pexelsImage = await getImageFromPexels(keywords[i], i + 1);
-    if (pexelsImage) {
-      const result: PackageImageAsset = {
-        url: pexelsImage.imageUrl,
-        imageId: pexelsImage.imageId,
-        fetchedAt: Date.now(),
-        source: pexelsImage.source,
-      };
-      imageCache.set(cacheKey, result);
-      imageSeedCache.set(signatureKey, result);
-      return result;
-    }
+  // Use reliable curated Unsplash images!
+  let seedNum = 0;
+  for (let i = 0; i < variantSeed.length; i++) {
+    seedNum += variantSeed.charCodeAt(i);
   }
+  
+  const imageUrl = getDestinationImage(destination, seedNum);
+  const imageId = `curated-${seedNum}`;
 
-  for (let i = 0; i < keywords.length; i += 1) {
-    const unsplashImage = getImageFromUnsplash(keywords[i], `${variantSeed}-${i + 1}`);
-    if (unsplashImage) {
-      const result: PackageImageAsset = {
-        url: unsplashImage.imageUrl,
-        imageId: unsplashImage.imageId,
-        fetchedAt: Date.now(),
-        source: unsplashImage.source,
-      };
-      imageCache.set(cacheKey, result);
-      imageSeedCache.set(signatureKey, result);
-      return result;
-    }
-  }
+  const result: PackageImageAsset = {
+    url: imageUrl,
+    imageId,
+    fetchedAt: Date.now(),
+    source: "unsplash"
+  };
+
+  imageCache.set(cacheKey, result);
+  imageSeedCache.set(signatureKey, result);
+  return result;
 
   const fallback = getFallbackImage(destination, category);
   return {

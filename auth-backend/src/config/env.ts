@@ -46,7 +46,7 @@ export const config = {
   amadeusBaseUrl: process.env.AMADEUS_BASE_URL || "https://test.api.amadeus.com",
   amadeusClientId: process.env.AMADEUS_CLIENT_ID || "",
   amadeusClientSecret: process.env.AMADEUS_CLIENT_SECRET || "",
-  packageOriginIata: process.env.PACKAGE_ORIGIN_IATA || "DEL",
+  packageOriginIata: process.env.PACKAGE_ORIGIN_IATA || "MAA",
   packageMaxPriceUsd: toNumber(process.env.PACKAGE_MAX_PRICE_USD, 2500),
   packageFetchLimit: toNumber(process.env.PACKAGE_FETCH_LIMIT, 40),
   packageCacheTtlMinutes: toNumber(process.env.PACKAGE_CACHE_TTL_MINUTES, 720),

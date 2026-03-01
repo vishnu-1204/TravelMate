@@ -3,6 +3,7 @@ import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Hotel, Utensils, Ch
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import {
+  deletePackage,
   getPackageById,
   getPackageHistory,
   overridePackageCategories,
@@ -68,7 +69,7 @@ export default function PackageDetails() {
         const pkg = await getPackageById(id);
         if (!active) return;
         setPackageData(pkg || null);
-        setAdminCategoriesInput(pkg?.categories?.join(', ') || '');
+        setAdminCategoriesInput(pkg?.category || '');
         setAdminImageUrl(pkg?.imageUrl || '');
         setAdminImageAlt(pkg?.imageAlt || '');
         if (pkg?.isGroupTour || pkg?.category === 'group') {
@@ -303,19 +304,19 @@ export default function PackageDetails() {
 
   const handleAdminCategorySave = async () => {
     if (!packageData || !adminToken) return;
-    const categories = adminCategoriesInput
-      .split(',')
-      .map((item) => item.trim().toLowerCase())
-      .filter(Boolean);
-
-    if (!categories.length) return;
+    const raw = adminCategoriesInput.trim().toLowerCase();
+    const allowed = ['south-india', 'north-india', 'solo', 'honeymoon', 'educational', 'domestic', 'nearby', 'international', 'budget', 'group'];
+    if (!raw || !allowed.includes(raw)) {
+      setError('Enter a valid category: south-india, north-india, solo, honeymoon, educational');
+      return;
+    }
 
     setAdminSaving(true);
     try {
-      const updated = await overridePackageCategories(packageData.id, categories, adminToken);
+      const updated = await overridePackageCategories(packageData.id, [raw], adminToken);
       if (updated) {
         setPackageData(updated);
-        setAdminCategoriesInput(updated.categories.join(', '));
+        setAdminCategoriesInput(updated.category);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update categories');
@@ -336,6 +337,25 @@ export default function PackageDetails() {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update image');
+    } finally {
+      setAdminSaving(false);
+    }
+  };
+
+  const handleAdminDelete = async () => {
+    if (!packageData || !adminToken) return;
+    const confirmed = window.confirm('Delete this package? This cannot be undone.');
+    if (!confirmed) return;
+    setAdminSaving(true);
+    try {
+      const deleted = await deletePackage(packageData.id, adminToken);
+      if (deleted) {
+        navigate('/packages');
+      } else {
+        setError('Package not found or already removed');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete package');
     } finally {
       setAdminSaving(false);
     }
@@ -368,7 +388,7 @@ export default function PackageDetails() {
               </button>
               <div className="flex items-center gap-1 text-amber-400 mb-3">
                 <Star className="h-5 w-5 fill-current" />
-                <span className="font-medium">{packageData.rating}</span>
+                <span className="font-medium">{Number(packageData.rating).toFixed(1)}</span>
                 <span className="text-white/80">({packageData.reviews} reviews)</span>
               </div>
               {packageData.specialTags.length > 0 ? (
@@ -744,7 +764,7 @@ export default function PackageDetails() {
                           type="text"
                           value={adminCategoriesInput}
                           onChange={(event) => setAdminCategoriesInput(event.target.value)}
-                          placeholder="indian, honeymoon"
+                          placeholder="south-india | north-india | solo | honeymoon | educational"
                           className="w-full text-sm px-3 py-2 rounded-md border border-border bg-background"
                         />
                         <button
@@ -777,6 +797,14 @@ export default function PackageDetails() {
                           className="btn-outline mt-2 w-full disabled:opacity-60"
                         >
                           {adminSaving ? 'Saving...' : 'Save Image'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleAdminDelete}
+                          disabled={adminSaving}
+                          className="btn-outline mt-2 w-full text-red-600 border-red-200 hover:bg-red-50 disabled:opacity-60"
+                        >
+                          {adminSaving ? 'Please wait...' : 'Delete Package'}
                         </button>
                         {versionHistory.length > 0 ? (
                           <div className="mt-4 rounded-md border border-border p-2">

@@ -121,6 +121,7 @@ export type PackageListQuery = {
   searchTerms?: string[];
   category?: PackageCategory;
   categories?: PackageCategory[];
+  virtualCategory?: 'south-india' | 'north-india' | 'solo';
   minPrice?: number;
   maxPrice?: number;
   minDuration?: number;

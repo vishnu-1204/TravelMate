@@ -6,7 +6,7 @@ import { config } from "../config/env";
 import { getDb } from "../db";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
 import { Resend } from "resend";
-import { sendBookingConfirmation, recordEmailFailure } from "../services/email.service";
+import { sendBookingConfirmation, sendFlightTicketEmail, recordEmailFailure } from "../services/email.service";
 import { searchFlightOffers } from "../modules/packages/provider/amadeusProvider";
 import { getPackageById } from "../modules/packages/service/packageService";
 import { logger } from "../utils/logger";
@@ -275,6 +275,78 @@ const sendWithRetry = async (payload: EmailPayload, pdf: Buffer) => {
       if (attempt < EMAIL_RETRY_LIMIT) await sleep(attempt * 700);
     }
   }
+      return { ok: false, attempts: EMAIL_RETRY_LIMIT, error: lastError?.message || "send failed" };
+};
+
+const DESTINATION_MAP: Record<string, { city: string; iata: string }> = {
+  "kerala": { city: "Kochi", iata: "COK" },
+  "goa": { city: "Goa", iata: "GOI" },
+  "manali": { city: "Kullu", iata: "KUU" },
+  "shimla": { city: "Chandigarh", iata: "IXC" },
+  "kashmir": { city: "Srinagar", iata: "SXR" },
+  "srinagar": { city: "Srinagar", iata: "SXR" },
+  "ooty": { city: "Coimbatore", iata: "CJB" },
+  "kodai": { city: "Madurai", iata: "IXM" },
+  "kanyakumari": { city: "Trivandrum", iata: "TRV" },
+  "jaipur": { city: "Jaipur", iata: "JAI" },
+  "udaipur": { city: "Udaipur", iata: "UDR" },
+  "jaisalmer": { city: "Jaisalmer", iata: "JSA" },
+  "mumbai": { city: "Mumbai", iata: "BOM" },
+  "delhi": { city: "New Delhi", iata: "DEL" },
+  "bangalore": { city: "Bengaluru", iata: "BLR" },
+  "dubai": { city: "Dubai", iata: "DXB" },
+  "singapore": { city: "Singapore", iata: "SIN" },
+  "bangkok": { city: "Bangkok", iata: "BKK" },
+  "maldives": { city: "Male", iata: "MLE" },
+  "bali": { city: "Denpasar", iata: "DPS" },
+};
+
+function getArrivalAirport(location: string) {
+  const normalized = location.toLowerCase();
+  for (const [key, info] of Object.entries(DESTINATION_MAP)) {
+    if (normalized.includes(key)) return info;
+  }
+  // Safe Fallback
+  return { 
+    city: location.split(',')[0].trim(), 
+    iata: location.substring(0, 3).toUpperCase() 
+  };
+}
+
+const sendFlightWithRetry = async (payload: EmailPayload, pdf: Buffer) => {
+  let lastError: Error | null = null;
+  const arrival = getArrivalAirport(payload.destination);
+  for (let attempt = 1; attempt <= EMAIL_RETRY_LIMIT; attempt += 1) {
+    try {
+      await sendFlightTicketEmail(
+        { email: payload.email, name: payload.fullName },
+        {
+          passengerName: payload.fullName,
+          flightNumber: payload.airline.includes('Air') ? `AI-${payload.bookingReference.slice(0, 4)}` : `6E-${payload.bookingReference.slice(0, 4)}`,
+          departureCity: "Chennai",
+          arrivalCity: arrival.city,
+          departureDateTime: `${payload.travelDate} ${payload.departureTime}`,
+          arrivalDateTime: `${payload.travelDate} ${payload.arrivalTime}`,
+          airline: payload.airline,
+          pnr: payload.bookingReference,
+          supportEmail: config.supportEmail,
+          supportPhone: config.supportPhone,
+          registeredEmail: payload.email,
+        },
+        {
+          attachment: {
+            filename: `TravelMate-FlightTicket-${payload.bookingReference}.pdf`,
+            content: pdf,
+            contentType: "application/pdf",
+          },
+        }
+      );
+      return { ok: true, attempts: attempt };
+    } catch (err: any) {
+      lastError = err as Error;
+      if (attempt < EMAIL_RETRY_LIMIT) await sleep(attempt * 700);
+    }
+  }
   return { ok: false, attempts: EMAIL_RETRY_LIMIT, error: lastError?.message || "send failed" };
 };
 
@@ -326,6 +398,16 @@ const processStoredBooking = async (booking: BookingRecord, force = false) => {
     booking_status: "confirmed",
     ...(ticketPdfUrl ? { ticket_pdf_url: ticketPdfUrl } : {}),
   });
+
+  // Secondary Step: Fire Off The Flight E-Ticket Automatically (Non-Blocking)
+  try {
+    const flightPdf = await generateFlightTicketPdf(payload);
+    await sendFlightWithRetry(payload, flightPdf);
+    console.log(`Flight ticket emailed successfully for booking ${payload.bookingReference}`);
+  } catch (flightErr) {
+    console.warn(`Soft fail: Could not send flight ticket for booking ${payload.bookingReference}:`, flightErr);
+  }
+
   return { ok: true, code: 200, message: "sent" };
 };
 
@@ -780,6 +862,114 @@ function generateTicketPdf(data: EmailPayload) {
   });
 }
 
+export function generateFlightTicketPdf(data: EmailPayload) {
+  return new Promise<Buffer>((resolve, reject) => {
+    const doc = new PDFDocument({ margin: 50, size: "A4", layout: "landscape" });
+    const chunks: Buffer[] = [];
+    doc.on("data", (chunk) => chunks.push(chunk));
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
+
+    // Landscape A4 dimensions: 841.89 x 595.28
+    const pageW = doc.page.width;
+    const pageH = doc.page.height;
+    
+    // Background
+    doc.rect(0, 0, pageW, pageH).fill("#f8fafc");
+
+    // Main Ticket Card
+    const cardM = 40;
+    const cardW = pageW - cardM * 2;
+    const cardH = pageH - cardM * 2;
+    
+    doc.rect(cardM, cardM, cardW, cardH).fill("#ffffff").lineWidth(1).strokeColor("#e2e8f0").stroke();
+
+    // Airline Header Strip
+    doc.rect(cardM, cardM, cardW, 60).fill("#1e40af");
+    doc.rect(cardM + cardW - 180, cardM, 180, 60).fill("#1e3a8a"); // Stub header
+
+    // Brand
+    doc.fontSize(22).fillColor("#ffffff").text("TRAVELMATE", cardM + 20, cardM + 18);
+    doc.fontSize(10).fillColor("#bfdbfe").text("BOARDING PASS / E-TICKET", cardM + 200, cardM + 25);
+    
+    // Stub Brand
+    doc.fontSize(14).fillColor("#ffffff").text("E-TICKET", cardM + cardW - 160, cardM + 22);
+
+    // ─── MAIN TICKET BODY ───
+    const bodyY = cardM + 80;
+    const arrival = getArrivalAirport(data.destination);
+    
+    // Passenger Row
+    doc.fontSize(9).fillColor("#64748b").text("NAME OF PASSENGER", cardM + 20, bodyY);
+    doc.fontSize(14).fillColor("#0f172a").text(data.fullName.toUpperCase(), cardM + 20, bodyY + 12);
+
+    doc.fontSize(9).fillColor("#64748b").text("CARRIER", cardM + 300, bodyY);
+    doc.fontSize(14).fillColor("#0f172a").text(data.airline.toUpperCase(), cardM + 300, bodyY + 12);
+
+    // Flight Info Row
+    const row2Y = bodyY + 45;
+    doc.fontSize(9).fillColor("#64748b").text("FROM", cardM + 20, row2Y);
+    doc.fontSize(16).fillColor("#0f172a").text("MAA", cardM + 20, row2Y + 12);
+    doc.fontSize(10).fillColor("#475569").text("Chennai", cardM + 20, row2Y + 30);
+
+    doc.fontSize(18).fillColor("#94a3b8").text("✈", cardM + 120, row2Y + 12);
+
+    doc.fontSize(9).fillColor("#64748b").text("TO", cardM + 180, row2Y);
+    doc.fontSize(16).fillColor("#0f172a").text(arrival.iata, cardM + 180, row2Y + 12);
+    doc.fontSize(10).fillColor("#475569").text(arrival.city, cardM + 180, row2Y + 30);
+
+    doc.fontSize(9).fillColor("#64748b").text("DATE", cardM + 300, row2Y);
+    doc.fontSize(12).fillColor("#0f172a").text(data.travelDate, cardM + 300, row2Y + 12);
+
+    doc.fontSize(9).fillColor("#64748b").text("TIME", cardM + 420, row2Y);
+    doc.fontSize(12).fillColor("#0f172a").text(data.departureTime, cardM + 420, row2Y + 12);
+
+    // Book/PNR Row
+    const row3Y = row2Y + 65;
+    doc.fontSize(9).fillColor("#64748b").text("PNR / BOOKING REF", cardM + 20, row3Y);
+    doc.fontSize(14).fillColor("#1e40af").text(data.bookingReference, cardM + 20, row3Y + 12);
+
+    doc.fontSize(9).fillColor("#64748b").text("TRAVELERS", cardM + 180, row3Y);
+    doc.fontSize(12).fillColor("#0f172a").text(String(data.passengers), cardM + 180, row3Y + 12);
+    
+    // Perforation Line
+    const stubX = cardM + cardW - 180;
+    doc.moveTo(stubX, cardM + 60)
+       .lineTo(stubX, cardM + cardH)
+       .dash(5, { space: 5 })
+       .strokeColor("#cbd5e1")
+       .stroke();
+    doc.undash();
+
+    // ─── STUB (Right Side) ───
+    const stubY = cardM + 80;
+    const stubL = stubX + 15;
+    
+    doc.fontSize(7).fillColor("#64748b").text("NAME", stubL, stubY);
+    doc.fontSize(10).fillColor("#0f172a").text(data.fullName.toUpperCase(), stubL, stubY + 10);
+
+    doc.fontSize(7).fillColor("#64748b").text("FROM", stubL, stubY + 35);
+    doc.fontSize(10).fillColor("#0f172a").text("MAA", stubL, stubY + 45);
+
+    doc.fontSize(7).fillColor("#64748b").text("TO", stubL + 60, stubY + 35);
+    doc.fontSize(10).fillColor("#0f172a").text(arrival.iata, stubL + 60, stubY + 45);
+
+    doc.fontSize(7).fillColor("#64748b").text("DATE", stubL, stubY + 70);
+    doc.fontSize(10).fillColor("#0f172a").text(data.travelDate, stubL, stubY + 80);
+
+    doc.fontSize(7).fillColor("#64748b").text("TIME", stubL + 60, stubY + 70);
+    doc.fontSize(10).fillColor("#0f172a").text(data.departureTime, stubL + 60, stubY + 80);
+
+    doc.fontSize(7).fillColor("#64748b").text("PNR", stubL, stubY + 105);
+    doc.fontSize(12).fillColor("#1e40af").text(data.bookingReference, stubL, stubY + 115);
+
+    doc.fontSize(7).fillColor("#64748b").text("CARRIER", stubL, stubY + 140);
+    doc.fontSize(9).fillColor("#0f172a").text(data.airline.toUpperCase(), stubL, stubY + 150);
+
+    doc.end();
+  });
+}
+
 // ─── SQLite-based booking endpoint with JWT protection ───
 router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) => {
   const body = req.body as BookingEmailBody;
@@ -854,7 +1044,7 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
           body.travelers || 1,
           body.travelerName || null,
           body.roomType || null,
-          user.email, // Use registered email confirmed in DB
+          body.email || user.email, // Prioritize the traveler's provided email, fallback to registered
           body.phone || null,
           body.totalAmount,
           body.airline || null,
@@ -882,9 +1072,9 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
       }
     }
 
-    // Send confirmation email asynchronously (only for normal tours)
+    // Send confirmation email asynchronously
     const hasEmailConfig = (config.resendApiKey && config.resendFrom) || (config.smtpUser && config.smtpPass);
-    if (hasEmailConfig && !resolvedPkg?.isGroupTour) {
+    if (hasEmailConfig) {
       setImmediate(async () => {
         logger(`[booking/book] Starting async email process for ${body.bookingReference}`);
         try {
@@ -954,7 +1144,7 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
           const checkOutDate = new Date(travelDate);
           checkOutDate.setDate(checkOutDate.getDate() + (durationDays > 0 ? durationDays - 1 : 0));
 
-          const emailUser = { email: user.email, name: body.travelerName || "Traveler" };
+          const emailUser = { email: body.email || user.email, name: body.travelerName || "Traveler" };
           const emailData = {
             bookingReference: body.bookingReference!,
             packageTitle: body.packageTitle!,
@@ -1021,8 +1211,6 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
           logger(`[booking/book] Fatal error in async email process for ${body.bookingReference}:`, emailErr.message);
         }
       });
-    } else if (resolvedPkg?.isGroupTour) {
-      logger(`[booking/book] Skipping automated confirmation email/PDF for Group Tour: ${body.bookingReference}`);
     } else {
       logger(`[booking/book] Skipping confirmation email for ${body.bookingReference}: No valid email configuration (Resend/SMTP) found.`);
     }

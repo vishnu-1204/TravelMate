@@ -66,6 +66,53 @@ const EDUCATIONAL_KEYWORDS = ['school', 'college', 'educational', 'study', 'indu
 const GROUP_KEYWORDS = ['group', 'friends', 'team', 'corporate', 'batch', 'club', 'reunion'];
 const BUDGET_KEYWORDS = ['budget', 'affordable', 'value', 'cheap', 'backpack'];
 const WEEKEND_KEYWORDS = ['weekend', '2 nights', '3 days', 'quick break', 'short getaway'];
+const SOUTH_INDIA_KEYWORDS = [
+  'kerala',
+  'tamil nadu',
+  'karnataka',
+  'andhra',
+  'telangana',
+  'ooty',
+  'kodaikanal',
+  'coorg',
+  'mysore',
+  'hampi',
+  'munnar',
+  'alleppey',
+  'wayanad',
+  'thekkady',
+  'kovalam',
+  'kochi',
+  'varkala',
+  'hyderabad',
+  'visakhapatnam',
+  'tirupati',
+  'pondicherry',
+  'mahabalipuram',
+];
+const NORTH_INDIA_KEYWORDS = [
+  'himachal',
+  'uttarakhand',
+  'rajasthan',
+  'kashmir',
+  'ladakh',
+  'manali',
+  'shimla',
+  'kasol',
+  'dharamshala',
+  'dalhousie',
+  'rishikesh',
+  'nainital',
+  'mussoorie',
+  'auli',
+  'haridwar',
+  'jaipur',
+  'udaipur',
+  'jodhpur',
+  'jaisalmer',
+  'agra',
+  'delhi',
+];
 
 const allCategories = new Set<PackageCategory>([
   'international',
@@ -106,34 +153,32 @@ export const classifyPackageCategories = (input: ClassifyInput): PackageCategory
     .join(' ')
     .toLowerCase();
 
-  const categories = new Set<PackageCategory>();
-  categories.add(inferDomesticVsInternational(mergedText, input.country));
-
-  if (hasAnyKeyword(mergedText, HONEYMOON_KEYWORDS)) categories.add('honeymoon');
-  if (hasAnyKeyword(mergedText, EDUCATIONAL_KEYWORDS)) categories.add('educational');
-  if (hasAnyKeyword(mergedText, GROUP_KEYWORDS)) categories.add('group');
-  if (hasAnyKeyword(mergedText, BUDGET_KEYWORDS) || (input.durationDays || 0) <= 4) categories.add('budget');
-  if (hasAnyKeyword(mergedText, WEEKEND_KEYWORDS) || (input.durationDays || 0) <= 3) categories.add('nearby');
-
-  if (Array.isArray(input.categories)) {
-    input.categories.forEach((item) => {
-      const normalized = item.toLowerCase();
-      if (allCategories.has(normalized as PackageCategory)) {
-        categories.add(normalized as PackageCategory);
-      }
-    });
+  const explicit = String(input.category || '').trim().toLowerCase();
+  if (explicit) {
+    if (explicit === 'indian') return ['domestic'];
+    if (explicit === 'solo' || explicit === 'solo-trips') return ['nearby'];
+    if (allCategories.has(explicit as PackageCategory)) return [explicit as PackageCategory];
   }
 
-  if (input.category) {
-    const normalized = input.category.toLowerCase();
-    if (normalized === 'indian') {
-      categories.add('domestic');
-    } else if (allCategories.has(normalized as PackageCategory)) {
-      categories.add(normalized as PackageCategory);
-    }
+  const fromCategories = (input.categories || [])
+    .map((item) => String(item || '').toLowerCase().trim())
+    .find((item) => allCategories.has(item as PackageCategory));
+  if (fromCategories) {
+    if (fromCategories === 'solo') return ['nearby'];
+    return [fromCategories as PackageCategory];
   }
 
-  return Array.from(categories);
+  if (hasAnyKeyword(mergedText, HONEYMOON_KEYWORDS)) return ['honeymoon'];
+  if (hasAnyKeyword(mergedText, EDUCATIONAL_KEYWORDS)) return ['educational'];
+  if (hasAnyKeyword(mergedText, GROUP_KEYWORDS)) return ['group'];
+  if (hasAnyKeyword(mergedText, WEEKEND_KEYWORDS) || (input.durationDays || 0) <= 4) return ['nearby'];
+  if (hasAnyKeyword(mergedText, BUDGET_KEYWORDS)) return ['budget'];
+
+  const inferred = inferDomesticVsInternational(mergedText, input.country);
+  if (inferred === 'international') return ['international'];
+  if (hasAnyKeyword(mergedText, SOUTH_INDIA_KEYWORDS)) return ['domestic'];
+  if (hasAnyKeyword(mergedText, NORTH_INDIA_KEYWORDS)) return ['domestic'];
+  return ['domestic'];
 };
 
 const priority: PackageCategory[] = ['honeymoon', 'educational', 'domestic', 'international', 'nearby', 'budget', 'group'];

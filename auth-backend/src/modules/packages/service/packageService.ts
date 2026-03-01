@@ -1,6 +1,7 @@
 import { config } from '../../../config/env';
 import { fetchAmadeusPackages, primeImageCacheSeeds } from '../provider/amadeusProvider';
 import {
+  deletePackageFromCache,
   getCategoryCountsFromCache,
   getCacheHealth,
   getImageCacheSeeds,
@@ -147,6 +148,14 @@ export const buildPackageListQuery = (query: Record<string, unknown>): PackageLi
   const destination = typeof query.destination === 'string' ? query.destination.trim() : undefined;
   const searchTerms = buildSearchTerms(q, destination);
 
+  const rawCategory = typeof query.category === 'string' ? query.category.trim().toLowerCase() : undefined;
+  const virtualCategory =
+    rawCategory === 'south-india' || rawCategory === 'north-india'
+      ? rawCategory
+      : rawCategory === 'solo' || rawCategory === 'solo-trips'
+      ? 'solo'
+      : undefined;
+
   const categoriesParam = typeof query.categories === 'string' ? query.categories : undefined;
   const categories = categoriesParam
     ? categoriesParam
@@ -161,6 +170,7 @@ export const buildPackageListQuery = (query: Record<string, unknown>): PackageLi
     searchTerms: searchTerms.length ? searchTerms : undefined,
     category: sanitizeCategory(query.category),
     categories: categories?.length ? Array.from(new Set(categories)) : undefined,
+    virtualCategory,
     minPrice: sanitizeNumber(query.minPrice),
     maxPrice: sanitizeNumber(query.maxPrice),
     minDuration: sanitizeNumber(query.minDuration),
@@ -208,6 +218,71 @@ export const recategorizePackage = (pkg: TravelPackage): TravelPackage => {
 
 const applyAdvancedFilters = (packages: TravelPackage[], query: PackageListQuery) => {
   let result = [...packages];
+  const normalizeText = (value: string) => value.toLowerCase();
+  const SOUTH_KEYWORDS = [
+    'kerala',
+    'tamil nadu',
+    'karnataka',
+    'andhra',
+    'telangana',
+    'ooty',
+    'kodaikanal',
+    'coorg',
+    'mysore',
+    'hampi',
+    'munnar',
+    'alleppey',
+    'wayanad',
+    'thekkady',
+    'kovalam',
+    'kochi',
+    'varkala',
+    'hyderabad',
+    'visakhapatnam',
+    'tirupati',
+    'pondicherry',
+    'mahabalipuram',
+  ];
+  const NORTH_KEYWORDS = [
+    'himachal',
+    'uttarakhand',
+    'rajasthan',
+    'kashmir',
+    'ladakh',
+    'manali',
+    'shimla',
+    'kasol',
+    'dharamshala',
+    'dalhousie',
+    'rishikesh',
+    'nainital',
+    'mussoorie',
+    'auli',
+    'haridwar',
+    'jaipur',
+    'udaipur',
+    'jodhpur',
+    'jaisalmer',
+    'agra',
+    'delhi',
+  ];
+  const isIndian = (pkg: TravelPackage) => (pkg.country || '').trim().toLowerCase() === 'india';
+  const hasKeyword = (pkg: TravelPackage, keywords: string[]) => {
+    const text = normalizeText(`${pkg.title} ${pkg.destination} ${pkg.location}`);
+    return keywords.some((keyword) => text.includes(keyword));
+  };
+  const isSouthIndian = (pkg: TravelPackage) => isIndian(pkg) && hasKeyword(pkg, SOUTH_KEYWORDS);
+  const isNorthIndian = (pkg: TravelPackage) => isIndian(pkg) && (hasKeyword(pkg, NORTH_KEYWORDS) || !hasKeyword(pkg, SOUTH_KEYWORDS));
+  const isSolo = (pkg: TravelPackage) =>
+    pkg.category === 'nearby' || pkg.durationDays <= 4 || pkg.travelerSegments.includes('solo');
+
+  if (query.virtualCategory === 'south-india') {
+    result = result.filter((pkg) => isSouthIndian(pkg));
+  } else if (query.virtualCategory === 'north-india') {
+    result = result.filter((pkg) => isNorthIndian(pkg));
+  } else if (query.virtualCategory === 'solo') {
+    result = result.filter((pkg) => isSolo(pkg));
+  }
 
   if (query.pricingTier) {
     result = result.filter((pkg) => pkg.pricingTier === query.pricingTier);
@@ -237,8 +312,9 @@ export const getPackages = async (query: PackageListQuery): Promise<PackageListR
     source = 'external';
   }
 
+  const { virtualCategory: _virtualCategory, ...cacheQuery } = query;
   const result = await getPackagesFromCache({
-    ...query,
+    ...cacheQuery,
     offset: 0,
     limit: 5000,
     sortBy: query.sortBy || 'trending',
@@ -293,7 +369,8 @@ export const setPackageCategories = async (packageId: string, categories: Packag
   if (!unique.length) {
     throw new Error('At least one category is required');
   }
-  return overridePackageCategories(packageId, unique);
+  // Enforce exactly one category per package.
+  return overridePackageCategories(packageId, [unique[0]]);
 };
 
 export const setPackageImage = async (packageId: string, imageUrl: string, imageAlt?: string) => {
@@ -314,4 +391,109 @@ export const getPackageHistory = async (packageId: string) => {
 
 export const updateGroupBookings = async (packageId: string, travelDate: string, travelers: number) => {
   return updatePackageGroupBookings(packageId, travelDate, travelers);
+};
+
+export const deletePackage = async (packageId: string) => {
+  const hasBookings = await hasActiveBookingsForPackage(packageId);
+  if (hasBookings) {
+    throw new Error("Cannot delete a package that already has active bookings. Create a new package version instead.");
+  }
+  return deletePackageFromCache(packageId);
+};
+
+export const createPackage = async (
+  input: Partial<TravelPackage> & {
+    title?: string;
+    destination?: string;
+    durationDays?: number;
+    price?: number;
+    category?: string;
+    imageUrl?: string;
+    highlights?: string[] | string;
+  }
+) => {
+  const nowIso = new Date().toISOString();
+  const toCategory = (value?: string): PackageCategory => {
+    const raw = String(value || '').trim().toLowerCase();
+    if (raw === 'south-india' || raw === 'north-india' || raw === 'indian') return 'domestic';
+    if (raw === 'solo' || raw === 'solo-trips') return 'nearby';
+    if (validCategories.has(raw)) return raw as PackageCategory;
+    return 'domestic';
+  };
+
+  const category = toCategory(input.category);
+  const destination = String(input.destination || input.title || '').trim();
+  const title = String(input.title || destination || 'Custom Package').trim();
+  const durationDays = Math.max(2, Math.min(14, Number(input.durationDays || 4)));
+  const basePrice = Math.max(2000, Number(input.price || 15000));
+  const imageUrl = String(input.imageUrl || '').trim();
+  if (!title || !destination || !imageUrl) {
+    throw new Error('Title, destination, and imageUrl are required');
+  }
+
+  const highlights =
+    Array.isArray(input.highlights)
+      ? input.highlights.map((item) => String(item || '').trim()).filter(Boolean)
+      : String(input.highlights || '')
+          .split(',')
+          .map((item) => item.trim())
+          .filter(Boolean);
+
+  const generatedId = `admin-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now()}`;
+  const draft = {
+    id: generatedId,
+    packageId: generatedId,
+    source: 'amadeus' as const,
+    category,
+    categories: [category],
+    categoryLabel: CATEGORY_LABELS[category],
+    country: category === 'international' ? String(input.country || 'Unknown') : 'India',
+    title,
+    destination,
+    location: String(input.location || destination),
+    duration: `${durationDays} Days / ${Math.max(1, durationDays - 1)} Nights`,
+    durationDays,
+    price: basePrice,
+    discount: 0,
+    rating: Number(input.rating || 4.2),
+    reviews: Number(input.reviews || 0),
+    shortDescription: String(input.shortDescription || `Explore ${destination} with a curated itinerary.`),
+    inclusions: Array.isArray(input.inclusions) ? input.inclusions : ['Hotel', 'Breakfast', 'Transfers'],
+    exclusions: Array.isArray(input.exclusions) ? input.exclusions : ['Flights', 'Personal expenses'],
+    imageUrl,
+    imageAlt: String(input.imageAlt || `${destination} travel package image`),
+    imageSource: 'admin' as const,
+    availableDates: Array.isArray(input.availableDates) ? input.availableDates : [],
+    image: imageUrl,
+    description: String(input.description || input.shortDescription || `Discover ${destination}.`),
+    highlights: highlights.length ? highlights : [`Top sights in ${destination}`, 'Local experiences', 'Comfortable stays'],
+    included: Array.isArray(input.included) ? input.included : ['Hotel', 'Breakfast', 'Transfers'],
+    excluded: Array.isArray(input.excluded) ? input.excluded : ['Flights', 'Personal expenses'],
+    itinerary: input.itinerary,
+    trendingScore: Number(input.trendingScore || 0),
+    budgetFriendly: typeof input.budgetFriendly === 'boolean' ? input.budgetFriendly : basePrice <= 30000,
+    budgetType: input.budgetType === 'low' || input.budgetType === 'medium' || input.budgetType === 'premium' ? input.budgetType : 'medium',
+    priceRange: String(input.priceRange || ''),
+    uniqueImageId: `admin-${generatedId}`,
+    affordabilityScore: Number(input.affordabilityScore || 70),
+    peopleCount: Number(input.peopleCount || 2),
+    hotelType: input.hotelType === 'budget' || input.hotelType === 'comfort' || input.hotelType === 'premium' ? input.hotelType : 'comfort',
+    transportMode: input.transportMode === 'public' || input.transportMode === 'shared' || input.transportMode === 'flight' ? input.transportMode : 'shared',
+    season: input.season === 'off-season' || input.season === 'shoulder' || input.season === 'peak' ? input.season : 'shoulder',
+    specialTags: Array.isArray(input.specialTags) ? input.specialTags : [],
+    isLuxury: Boolean(input.isLuxury),
+    lastUpdatedAt: nowIso,
+    pricingTier: 'standard' as const,
+    travelerSegments: ['families'] as const,
+    dynamicPricing: input.dynamicPricing as TravelPackage['dynamicPricing'],
+    badges: input.badges || { bestValue: false, mostAffordable: false },
+    popularityScore: Number(input.popularityScore || 0),
+    nearbyAlternatives: Array.isArray(input.nearbyAlternatives) ? input.nearbyAlternatives : [],
+    isGroupTour: Boolean(input.isGroupTour),
+    groupDepartures: Array.isArray(input.groupDepartures) ? input.groupDepartures : [],
+  } as TravelPackage;
+
+  const enriched = recategorizePackage(draft);
+  await upsertPackages([enriched]);
+  return enriched;
 };
