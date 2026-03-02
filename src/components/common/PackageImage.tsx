@@ -109,6 +109,10 @@ const shouldUseDynamicImage = (src?: string, fallbackSrc?: string) => {
   // No image provided at all
   if (!value) return true;
   
+  // If it's a high-quality unsplash or pexels image, DON'T override it
+  if (value.includes('images.unsplash.com') && value.includes('w=1200')) return false;
+  if (value.includes('pexels.com')) return false;
+  
   // It matches the hardcoded category fallback
   if (fallbackSrc && value === fallbackSrc.trim().toLowerCase()) return true;
   

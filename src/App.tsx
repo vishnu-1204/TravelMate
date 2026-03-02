@@ -23,7 +23,7 @@ import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
 import MyBookings from "./pages/MyBookings";
 import AdminBookingMonitor from "./pages/AdminBookingMonitor";
-import GroupTourThankYou from "./pages/GroupTourThankYou";
+
 import BookingConfirmed from "./pages/BookingConfirmed";
 import NotFound from "./pages/NotFound";
 
@@ -91,7 +91,7 @@ const AnimatedRoutes = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/group-tour/thank-you" element={<GroupTourThankYou />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

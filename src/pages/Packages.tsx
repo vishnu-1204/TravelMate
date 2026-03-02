@@ -82,7 +82,7 @@ const categorySuggestionMap: Record<string, string[]> = {
   solo: ['Rishikesh', 'Kasol', 'Hampi', 'Pondicherry', 'Coorg', 'Munnar', 'Udaipur', 'Goa'],
   budget: ['Goa', 'Pondicherry', 'Rishikesh', 'Jaipur', 'Kasol', 'Coorg', 'Mysore', 'Ooty'],
   honeymoon: ['Maldives', 'Bali', 'Paris', 'Santorini', 'Kerala', 'Manali', 'Kashmir', 'Mauritius'],
-  group: ['Goa', 'Dubai', 'Thailand', 'Rishikesh', 'Kasol', 'Bali', 'Manali', 'Singapore'],
+
   educational: ['Delhi', 'Agra', 'Jaipur', 'Mysore', 'Hampi', 'Kolkata', 'London', 'Rome'],
   south: ['Munnar', 'Alleppey', 'Wayanad', 'Kochi', 'Thekkady', 'Ooty', 'Coorg', 'Pondicherry', 'Mysore', 'Kodaikanal', 'Hampi', 'Vizag', 'Tirupati'],
   north: ['Manali', 'Shimla', 'Kashmir', 'Delhi', 'Agra', 'Jaipur', 'Rishikesh', 'Nainital'],
@@ -291,7 +291,13 @@ const Packages = () => {
   const { user } = useAuth();
   const selectedCategory = category || 'all';
   const isSoloCategory = selectedCategory === 'solo' || selectedCategory === 'nearby';
-  const isIndianCategory = selectedCategory === 'domestic' || selectedCategory === 'indian' || selectedCategory === 'south' || selectedCategory === 'north';
+  const isIndianCategory =
+    selectedCategory === 'domestic' ||
+    selectedCategory === 'indian' ||
+    selectedCategory === 'south' ||
+    selectedCategory === 'north' ||
+    selectedCategory === 'honeymoon' ||
+    selectedCategory === 'educational';
 
   const [packages, setPackages] = useState<TravelPackage[]>([]);
   const [nearbyMetaById, setNearbyMetaById] = useState<Record<string, NearbyMeta>>({});
@@ -310,6 +316,10 @@ const Packages = () => {
   const [total, setTotal] = useState(0);
   const [reloadToken, setReloadToken] = useState(0);
   const [voiceBusy, setVoiceBusy] = useState(false);
+  const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
+  const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+  const [minDuration, setMinDuration] = useState<number | undefined>(undefined);
+  const [maxDuration, setMaxDuration] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     setPage(1);
@@ -427,6 +437,10 @@ const Packages = () => {
           sortOrder: 'desc',
           limit: queryLimit,
           offset: queryOffset,
+          minPrice,
+          maxPrice,
+          minDuration,
+          maxDuration,
         });
         if (!active) return;
         let safetyFiltered = result.packages.filter((pkg) => {
@@ -530,7 +544,7 @@ const Packages = () => {
     return () => {
       active = false;
     };
-  }, [selectedCategory, debouncedSearch, page, reloadToken, userCoords, profileCity, isSoloCategory, isIndianCategory]);
+  }, [selectedCategory, debouncedSearch, page, reloadToken, userCoords, profileCity, isSoloCategory, isIndianCategory, minPrice, maxPrice, minDuration, maxDuration]);
 
   const pageTitle =
     selectedCategory === 'all'
@@ -705,77 +719,53 @@ const Packages = () => {
                 ) : null}
               </div>
 
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-                {[
-                  { id: 'all', label: 'All' },
-                  { id: 'south', label: 'South India' },
-                  { id: 'north', label: 'North India' },
-                  { id: 'solo', label: 'Solo Trips' },
-                  { id: 'honeymoon', label: 'Honeymoon' },
-                  { id: 'educational', label: 'Educational' },
-                ].map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => navigate(cat.id === 'all' ? '/packages' : `/packages/${cat.id}`)}
-                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                      selectedCategory === cat.id || (cat.id === 'solo' && selectedCategory === 'nearby')
-                        ? 'bg-sky-400 text-white shadow-lg'
-                        : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
 
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                <div className="flex items-center gap-2 bg-white/90 backdrop-blur px-3 py-2 rounded-xl border border-slate-200 shadow-sm transition-all hover:bg-white">
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Price</span>
+                  <select 
+                    className="bg-transparent text-sm font-semibold text-slate-700 outline-none cursor-pointer pr-4"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === 'all') { setMinPrice(undefined); setMaxPrice(undefined); }
+                      else if (val === 'low') { setMinPrice(0); setMaxPrice(10000); }
+                      else if (val === 'mid') { setMinPrice(10000); setMaxPrice(30000); }
+                      else if (val === 'high') { setMinPrice(30000); setMaxPrice(undefined); }
+                    }}
+                  >
+                    <option value="all">Any Price</option>
+                    <option value="low">Under ₹10k</option>
+                    <option value="mid">₹10k - ₹30k</option>
+                    <option value="high">Above ₹30k</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2 bg-white/90 backdrop-blur px-3 py-2 rounded-xl border border-slate-200 shadow-sm transition-all hover:bg-white">
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">Duration</span>
+                  <select 
+                    className="bg-transparent text-sm font-semibold text-slate-700 outline-none cursor-pointer pr-4"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === 'all') { setMinDuration(undefined); setMaxDuration(undefined); }
+                      else if (val === 'short') { setMinDuration(0); setMaxDuration(3); }
+                      else if (val === 'mid') { setMinDuration(4); setMaxDuration(6); }
+                      else if (val === 'long') { setMinDuration(7); setMaxDuration(undefined); }
+                    }}
+                  >
+                    <option value="all">Any Duration</option>
+                    <option value="short">Short (1-3 Days)</option>
+                    <option value="mid">Medium (4-6 Days)</option>
+                    <option value="long">Long (7+ Days)</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         <section className="py-16 bg-background">
           <div className="page-container">
-            {isSoloCategory ? (
-              <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                <p className="text-sm font-medium text-slate-900">Solo Trip Recommendations</p>
-                <p className="text-sm text-slate-700 mt-1">{locationNote || 'Resolving your location preferences...'}</p>
-                {nearbyCityPlaces.length > 0 ? (
-                  <div className="mt-3">
-                    <p className="text-xs text-slate-600 mb-2">Suggested places from your city:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {nearbyCityPlaces.map((place) => (
-                        <button
-                          key={place}
-                          type="button"
-                          onMouseDown={() => applySearch(place)}
-                          className="rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-white"
-                        >
-                          {place}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
-                {locationStatus === 'needs_profile' && !profileCity ? (
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <button
-                      type="button"
-                      className="btn-outline text-sm"
-                      onClick={() => navigate('/profile')}
-                    >
-                      Update Profile Address
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-outline text-sm"
-                      onClick={useCurrentLocation}
-                      disabled={askingGeo}
-                    >
-                      {askingGeo ? 'Detecting...' : 'Use Current Location'}
-                    </button>
-                  </div>
-                ) : null}
-              </div>
-            ) : null}
+
 
             {aiRecommendations.length > 0 ? (
               <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3">
@@ -811,18 +801,12 @@ const Packages = () => {
               <div className="text-center py-20 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
                 <div className="max-w-md mx-auto">
                   <p className="text-slate-900 text-xl font-bold mb-2">
-                    {selectedCategory === 'group' ? 'New Group Tours Coming Soon' : `No ${selectedCategory} destinations found`}
+                    {`No ${selectedCategory} destinations found`}
                   </p>
                   <p className="text-muted-foreground">
-                    {selectedCategory === 'group' 
-                      ? 'We are currently preparing exciting new group departure dates. Check back soon or explore our popular Indian packages.' 
-                      : `We couldn't find any packages matching your search criteria. Try a different destination or category.`}
+                    {`We couldn't find any packages matching your search criteria. Try a different destination or category.`}
                   </p>
-                  {selectedCategory === 'group' && (
-                    <Link to="/packages/indian" className="btn-primary mt-6 inline-block">
-                      Explore Indian Packages
-                    </Link>
-                  )}
+
                 </div>
               </div>
             ) : (
@@ -838,7 +822,7 @@ const Packages = () => {
                     <PackageCard
                       key={pkg.id}
                       id={pkg.id}
-                      detailsPath={selectedCategory === 'group' ? `/package/${pkg.id}?group=1` : `/package/${pkg.id}`}
+                      detailsPath={`/package/${pkg.id}`}
                       title={pkg.title}
                       destination={
                         isSoloCategory && nearbyMetaById[pkg.id]

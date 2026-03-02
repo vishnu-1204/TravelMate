@@ -61,6 +61,36 @@ type LocationResponse = {
       countryName?: string;
       countryCode?: string;
     };
+    geoCode?: {
+      latitude: number;
+      longitude: number;
+    };
+  }>;
+};
+
+type AmadeusActivityResponse = {
+  data?: Array<{
+    name: string;
+    pictures?: string[];
+  }>;
+};
+
+type AmadeusPoiResponse = {
+  data?: Array<{
+    name: string;
+    category: string;
+    rank: number;
+    pictures?: string[];
+  }>;
+};
+
+type AmadeusHotelResponse = {
+  data?: Array<{
+    hotel: {
+      hotelId: string;
+      name: string;
+      media?: Array<{ uri: string }>;
+    };
   }>;
 };
 
@@ -98,6 +128,7 @@ type PackageImageAsset = { url: string; imageId: string; fetchedAt: number; sour
 
 const INR_PER_USD = 83;
 const DAY_MS = 24 * 60 * 60 * 1000;
+
 const imageCache = new Map<string, PackageImageAsset>();
 const imageSeedCache = new Map<string, PackageImageAsset>();
 const usedImageIds = new Set<string>();
@@ -258,10 +289,7 @@ const buildThemeSuffix = (category: PackageCategory) => {
 };
 
 const generateCleanPackageTitle = (destinationLabel: string, locationLabel: string, category: PackageCategory) => {
-  const cleaned = buildReliableDestinationLabel(destinationLabel, locationLabel);
-  const suffix = buildThemeSuffix(category);
-  const title = `${cleaned} ${suffix}`.replace(/\s+/g, " ").trim();
-  return sanitizeTitleToken(title).replace(/\s+/g, " ").trim() || "Travel Tour";
+  return buildReliableDestinationLabel(destinationLabel, locationLabel);
 };
 
 const normalizeDurationDays = (departureDate: string, returnDate: string) => {
@@ -403,21 +431,14 @@ const makeHighlights = ({
   budgetType: BudgetType;
   category: PackageCategory;
 }) => [
-  `Curated ${durationDays}-day budget itinerary in ${destinationLabel}`,
-  hotelType === "budget" ? "Clean budget hotel in central area" : "Comfort hotel with breakfast",
-  transportMode === "public" ? "Local public transport and sleeper-class options" : "Shared station and city transfers",
-  category === "educational" ? "Student-focused museums and learning visits" : "Family-friendly local sightseeing and food experiences",
+  `Explore the beauty of ${destinationLabel}`,
+  hotelType === "budget" ? "Clean hotel in central area" : "Comfort hotel with breakfast",
+  transportMode === "public" ? "Local travel options included" : "Station and city transfers",
+  category === "educational" ? "Guided learning visits" : "Local sightseeing and food experiences",
 ];
 
 const buildSpecialTags = (category: PackageCategory, affordabilityScore: number, budgetType: BudgetType): string[] => {
-  const tags: string[] = [];
-  if (budgetType === "low" || affordabilityScore >= 75) tags.push("Best for budget travelers");
-  if (category === "educational") tags.push("Student-friendly tours");
-  if (category === "nearby" || category === "budget") tags.push("Weekend-ready budget trip");
-  if (category === "group" || affordabilityScore >= 68) tags.push("Most popular low-cost package");
-  if (category === "domestic" || category === "group") tags.push("Family-friendly");
-  if (category === "honeymoon") tags.push("Budget honeymoon");
-  return Array.from(new Set(tags));
+  return []; // User wants only name or place, no "other stuff" like badges
 };
 
 const GENERIC_ACTIVITY_BLOCKLIST = new Set(["city visit", "local market walk", "budget food stop", "local sightseeing day"]);
@@ -666,12 +687,16 @@ const getLocationDetails = async (token: string, iataCode: string) => {
   const city = item?.address?.cityName || item?.name || iataCode;
   const country = item?.address?.countryName;
   const countryCode = item?.address?.countryCode;
+  const latitude = item?.geoCode?.latitude;
+  const longitude = item?.geoCode?.longitude;
 
   return {
     destinationLabel: city,
     locationLabel: country ? `${city}, ${country}` : city,
     country: country || "Unknown",
     countryCode,
+    latitude,
+    longitude,
   };
 };
 
@@ -734,27 +759,93 @@ const getImageFromPexels = async (query: string, page: number) => {
   return null;
 };
 
+const getAmadeusActivityImage = async (token: string, lat: number, lon: number) => {
+  const url = new URL(`${config.amadeusBaseUrl}/v1/shopping/activities`);
+  url.searchParams.set("latitude", String(lat));
+  url.searchParams.set("longitude", String(lon));
+  url.searchParams.set("radius", "20");
+
+  const response = await fetch(url.toString(), {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) return null;
+
+  const payload = (await response.json()) as AmadeusActivityResponse;
+  const item = payload.data?.find(a => a.pictures && a.pictures.length > 0);
+  if (item?.pictures?.[0]) {
+    return { url: item.pictures[0], source: "admin" as const }; // Using admin as placeholder for Amadeus source in types
+  }
+  return null;
+};
+
+const getAmadeusPoiImage = async (token: string, lat: number, lon: number) => {
+  const url = new URL(`${config.amadeusBaseUrl}/v1/reference-data/locations/pois`);
+  url.searchParams.set("latitude", String(lat));
+  url.searchParams.set("longitude", String(lon));
+  url.searchParams.set("radius", "20");
+
+  const response = await fetch(url.toString(), {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) return null;
+
+  const payload = (await response.json()) as AmadeusPoiResponse;
+  const item = payload.data?.find(p => p.pictures && p.pictures.length > 0);
+  if (item?.pictures?.[0]) {
+    return { url: item.pictures[0], source: "admin" as const };
+  }
+  return null;
+};
+
+const getAmadeusHotelImage = async (token: string, cityCode: string) => {
+  const url = new URL(`${config.amadeusBaseUrl}/v1/shopping/hotel-offers`);
+  url.searchParams.set("cityCode", cityCode);
+  url.searchParams.set("view", "FULL"); // User requirement
+  url.searchParams.set("radius", "20");
+  url.searchParams.set("radiusUnit", "KM");
+
+  const response = await fetch(url.toString(), {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) return null;
+
+  const payload = (await response.json()) as AmadeusHotelResponse;
+  const item = payload.data?.find(h => h.hotel?.media && h.hotel.media.length > 0);
+  if (item?.hotel?.media?.[0]?.uri) {
+    return { url: item.hotel.media[0].uri, source: "admin" as const };
+  }
+  return null;
+};
+
+
 const DESTINATION_IMAGES: Record<string, string[]> = {
   'kerala|munnar|alleppey|wayanad|thekkady|kovalam|kochi|varkala': [
-    'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944',
-    'https://images.unsplash.com/photo-1595815771614-ade501f4b7d8'
+    'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944', // Backwaters
+    'https://images.unsplash.com/photo-1595815771614-ade501f4b7d8'  // Tea gardens
+  ],
+  'coorg|chikmagalur|ooty|kodaikanal|munnar': [
+    'https://images.unsplash.com/photo-1521292270410-a8c4d716d518', // Lush green hills (Coorg style)
+    'https://images.unsplash.com/photo-1527631746610-bca00a040d60'  // Coffee plantation
+  ],
+  'hampi|badami|pattadakal|belur|halebidu': [
+    'https://images.unsplash.com/photo-1501785888041-af3ef285b470', // Ancient stone temple ruins
+    'https://images.unsplash.com/photo-1582510003544-4d00b7f74220'  // Hampi stone chariot
   ],
   'goa|baga|calangute|palolem|aguada': [
-    'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2',
-    'https://images.unsplash.com/photo-1537996194471-e657df975ab4'
+    'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2', // Beach
+    'https://images.unsplash.com/photo-1537996194471-e657df975ab4'  // Church
   ],
   'rajasthan|jaipur|udaipur|jodhpur|jaisalmer|pushkar': [
-    'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1',
-    'https://images.unsplash.com/photo-1512453979798-5ea266f8880c'
+    'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1', // Palace
+    'https://images.unsplash.com/photo-1512453979798-5ea266f8880c'  // Desert
   ],
-  'himachal|manali|shimla|kasol|spiti|dharamshala|dalhousie|uttarakhand|rishikesh|nainital|mussoorie|auli|corbett|haridwar': [
-    'https://images.unsplash.com/photo-1521292270410-a8c4d716d518',
-    'https://images.unsplash.com/photo-1469474968028-56623f02e42e',
-    'https://images.unsplash.com/photo-1431274172761-fca41d930114'
-  ],
-  'karnataka|coorg|mysuru|mysore|hampi|gokarna|udupi|chikmagalur|tamil|ooty|kodaikanal|chennai|kanyakumari': [
-    'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
-    'https://images.unsplash.com/photo-1527631746610-bca00a040d60'
+  'himachal|manali|shimla|kasol|spiti|dharamshala|dalhousie': [
+    'https://images.unsplash.com/photo-1521292270410-a8c4d716d518', // Snow mountains
+    'https://images.unsplash.com/photo-1469474968028-56623f02e42e', // Forest hills
+    'https://images.unsplash.com/photo-1431274172761-fca41d930114'  // High peaks
   ],
   'maharashtra|mumbai|pune|lonavala|mahabaleshwar|nashik|alibaug|gujarat|ahmedabad|kutch|gir|somnath|dwarka': [
     'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
@@ -801,11 +892,17 @@ const getDynamicPackageImage = async ({
   category,
   budgetType,
   variantSeed,
+  latitude,
+  longitude,
+  cityCode,
 }: {
   destination: string;
   category: PackageCategory;
   budgetType: BudgetType;
   variantSeed: string;
+  latitude?: number;
+  longitude?: number;
+  cityCode?: string;
 }) => {
   const cacheKey = `${destination}-${category}-${budgetType}-${variantSeed}`;
   const signatureKey = `${destination}-${category}-${budgetType}`.toLowerCase();
@@ -817,6 +914,35 @@ const getDynamicPackageImage = async ({
   if (seeded) {
     imageCache.set(cacheKey, seeded);
     return seeded;
+  }
+
+  // Try Amadeus images first!
+  const amadeusToken = await getAmadeusToken().catch(() => null);
+  if (amadeusToken && config.amadeusClientId && config.amadeusClientSecret) {
+    if (latitude !== undefined && longitude !== undefined) {
+      const activity = await getAmadeusActivityImage(amadeusToken, latitude, longitude);
+      if (activity) {
+        const res: PackageImageAsset = { url: activity.url, imageId: `amadeus-activity-${latitude}-${longitude}-${variantSeed}`, fetchedAt: Date.now(), source: "admin" };
+        imageCache.set(cacheKey, res);
+        return res;
+      }
+
+      const poi = await getAmadeusPoiImage(amadeusToken, latitude, longitude);
+      if (poi) {
+        const res: PackageImageAsset = { url: poi.url, imageId: `amadeus-poi-${latitude}-${longitude}-${variantSeed}`, fetchedAt: Date.now(), source: "admin" };
+        imageCache.set(cacheKey, res);
+        return res;
+      }
+    }
+
+    if (cityCode && cityCode.length === 3) {
+      const hotel = await getAmadeusHotelImage(amadeusToken, cityCode);
+      if (hotel) {
+        const res: PackageImageAsset = { url: hotel.url, imageId: `amadeus-hotel-${cityCode}-${variantSeed}`, fetchedAt: Date.now(), source: "admin" };
+        imageCache.set(cacheKey, res);
+        return res;
+      }
+    }
   }
 
   // Use reliable curated Unsplash images!
@@ -838,14 +964,6 @@ const getDynamicPackageImage = async ({
   imageCache.set(cacheKey, result);
   imageSeedCache.set(signatureKey, result);
   return result;
-
-  const fallback = getFallbackImage(destination, category);
-  return {
-    url: fallback.imageUrl,
-    imageId: fallback.imageId,
-    fetchedAt: Date.now(),
-    source: fallback.source,
-  };
 };
 
 export const primeImageCacheSeeds = (
@@ -892,6 +1010,8 @@ const createSmartPackage = async ({
   countryCode,
   preferredCategory,
   variantSeed,
+  latitude,
+  longitude,
 }: {
   destination: FlightDestination;
   destinationLabel: string;
@@ -900,6 +1020,8 @@ const createSmartPackage = async ({
   countryCode?: string;
   preferredCategory?: PackageCategory;
   variantSeed: number;
+  latitude?: number;
+  longitude?: number;
 }): Promise<TravelPackage | null> => {
   const fareUsd = Number(destination.price?.total || 0);
   if (!Number.isFinite(fareUsd) || fareUsd <= 0) return null;
@@ -933,6 +1055,9 @@ const createSmartPackage = async ({
     category,
     budgetType,
     variantSeed: `${destination.destination}-${destination.departureDate}-${variantSeed}`,
+    latitude,
+    longitude,
+    cityCode: destination.destination.length === 3 ? destination.destination : undefined,
   });
   const cleanTitle = generateCleanPackageTitle(destinationLabel, locationLabel, category);
   const packageId = `amadeus-${destination.origin}-${destination.destination}-${destination.departureDate}-${variantSeed}`;
@@ -1034,7 +1159,8 @@ const createPackageFromDestination = async (
   preferredCategory?: PackageCategory,
   variantSeed = 1
 ): Promise<TravelPackage | null> => {
-  const { destinationLabel, locationLabel, country, countryCode } = await getLocationDetails(token, destination.destination);
+  const details = await getLocationDetails(token, destination.destination);
+  const { destinationLabel, locationLabel, country, countryCode } = details;
   return createSmartPackage({
     destination,
     destinationLabel,
@@ -1043,6 +1169,8 @@ const createPackageFromDestination = async (
     countryCode,
     preferredCategory,
     variantSeed,
+    latitude: details.latitude,
+    longitude: details.longitude,
   });
 };
 
@@ -1213,6 +1341,7 @@ export const fetchAmadeusPackages = async (): Promise<TravelPackage[]> => {
   url.searchParams.set("origin", config.packageOriginIata);
   url.searchParams.set("maxPrice", String(config.packageMaxPriceUsd));
   url.searchParams.set("viewBy", "DATE");
+  url.searchParams.set("view", "FULL"); // User requirement for receiving image URLs
 
   const response = await fetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },

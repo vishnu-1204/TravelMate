@@ -126,14 +126,13 @@ const categoryPriority: PackageCategory[] = [
   'honeymoon',
   'educational',
   'solo',
-  'south-india',
-  'north-india',
+  'south',
+  'north',
   'international',
   'group',
   'budget',
   'domestic',
   'nearby',
-  'kerala',
 ];
 
 export const classifyPackageCategories = (
@@ -156,8 +155,10 @@ export const classifyPackageCategories = (
 
   const explicit = String(pkg.category || '').trim().toLowerCase();
   if (explicit) {
-    if (explicit === 'indian') return ['north-india'];
+    if (explicit === 'indian' || explicit === 'domestic') return ['north'];
     if (explicit === 'nearby') return ['solo'];
+    if (explicit === 'south-india') return ['south'];
+    if (explicit === 'north-india') return ['north'];
     if (categoryPriority.includes(explicit as PackageCategory)) return [explicit as PackageCategory];
   }
 
@@ -177,9 +178,9 @@ export const classifyPackageCategories = (
 
   const baseCategory = inferDomesticVsInternational(mergedText, pkg.country);
   if (baseCategory === 'international') return ['international'];
-  if (hasAnyKeyword(mergedText, SOUTH_INDIA_KEYWORDS)) return ['south-india'];
-  if (hasAnyKeyword(mergedText, NORTH_INDIA_KEYWORDS)) return ['north-india'];
-  return ['north-india'];
+  if (hasAnyKeyword(mergedText, SOUTH_INDIA_KEYWORDS)) return ['south'];
+  if (hasAnyKeyword(mergedText, NORTH_INDIA_KEYWORDS)) return ['north'];
+  return ['north'];
 };
 
 export const pickPrimaryCategory = (categories: PackageCategory[]): PackageCategory => {

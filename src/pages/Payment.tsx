@@ -1007,8 +1007,6 @@ const Payment = () => {
                       </ul>
                     </div>
                   </div>
-                  {!isGroupTour ? (
-                    <>
                       <div className="flex flex-col gap-3 pb-4 mb-4 border-b border-border/60">
                         <div className="flex items-center gap-2">
                           <User className="h-5 w-5 text-primary" />
@@ -1136,15 +1134,8 @@ const Payment = () => {
                           </div>
                         </label>
                       </div>
-                    </>
-                  ) : (
-                    <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
-                      Group tour bookings are handled via Google Form.
-                    </div>
-                  )}
                 </div>
 
-                {!isGroupTour ? (
                 <div className="bg-card rounded-xl p-6 shadow-card">
                   <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
                     <Calendar className="h-5 w-5 text-primary" />
@@ -1198,7 +1189,6 @@ const Payment = () => {
                     />
                   </div>
                 </div>
-                ) : null}
 
                 <div className="bg-card rounded-xl p-6 shadow-card" id="payment-section">
                   <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">

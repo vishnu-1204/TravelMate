@@ -309,11 +309,11 @@ const hasRegionKeyword = (pkg: Pick<TravelPackage, 'title' | 'destination' | 'lo
   return keywords.some((keyword) => text.includes(keyword));
 };
 const isSouthIndianPackage = (pkg: Pick<TravelPackage, 'category' | 'country' | 'title' | 'destination' | 'location'>) =>
-  pkg.category === 'south' || (isLikelyIndianPackage(pkg) && hasRegionKeyword(pkg, SOUTH_INDIA_KEYWORDS));
+  pkg.category === 'south';
 const isNorthIndianPackage = (pkg: Pick<TravelPackage, 'category' | 'country' | 'title' | 'destination' | 'location'>) =>
-  pkg.category === 'north' || (isLikelyIndianPackage(pkg) && (hasRegionKeyword(pkg, NORTH_INDIA_KEYWORDS) || !hasRegionKeyword(pkg, SOUTH_INDIA_KEYWORDS)));
+  pkg.category === 'north';
 const isSoloTripPackage = (pkg: Pick<TravelPackage, 'category' | 'durationDays' | 'travelerSegments'>) =>
-  pkg.category === 'solo' || pkg.category === 'nearby' || pkg.durationDays <= 4 || pkg.travelerSegments.includes('solo');
+  pkg.category === 'solo';
 
 const inferCountry = (pkg: RawPackage) => {
   const looksIndianByText =
@@ -380,32 +380,25 @@ const toTitleCase = (value: string) =>
     .join(' ');
 
 const buildReliableTitle = (pkg: RawPackage, category: PackageCategory) => {
+  // If the package already has a well-formatted title with a dash or en-dash, keep it.
+  const existingTitle = String(pkg.title || '');
+  if (existingTitle.includes(' – ') || existingTitle.includes(' - ')) return existingTitle;
+
   const destination = String(pkg.destination || '');
-  const location = String(pkg.location || '');
-  const title = String(pkg.title || '');
-
-  const placeMap = new Map<string, string>();
-  [...splitPlaces(destination), ...splitPlaces(title), ...splitPlaces(location.split(',').slice(0, 2).join(', '))].forEach((place) => {
-    const key = normalizeTerm(place);
-    if (!key || placeMap.has(key)) return;
-    placeMap.set(key, toTitleCase(place));
-  });
-
-  const places = Array.from(placeMap.values()).slice(0, 2);
-  const destinationLabel =
-    places.length === 0 ? toTitleCase(normalizeTerm(destination || title || 'travel destination')) : places.length === 1 ? places[0] : `${places[0]} and ${places[1]}`;
+  const durationDays = Number(pkg.durationDays || 3);
+  
   const suffix =
     category === 'honeymoon'
-      ? 'Getaway'
-      : category === 'group'
-      ? 'Trip'
-      : category === 'nearby'
-      ? 'Escape'
-      : category === 'international'
+      ? 'Romantic Getaway'
+      : category === 'educational'
+      ? 'Educational Tour'
+      : category === 'solo'
+      ? 'Adventure Escape'
+      : category === 'international' || category === 'domestic'
       ? 'Holiday'
       : 'Tour';
 
-  return `${destinationLabel} ${suffix}`.replace(/\s+/g, ' ').trim();
+  return `${destination} – ${durationDays} Days ${suffix}`.replace(/\s+/g, ' ').trim();
 };
 
 const GENERIC_ACTIVITY_BLOCKLIST = new Set(['city visit', 'local market walk', 'budget food stop', 'local sightseeing day']);

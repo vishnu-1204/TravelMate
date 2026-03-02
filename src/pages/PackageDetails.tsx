@@ -151,19 +151,6 @@ export default function PackageDetails() {
   const groupFlowRequested = new URLSearchParams(location.search).get('group') === '1';
   const isGroupTour = packageData.category === 'group' || groupFlowRequested;
 
-  // Countdown logic
-  const nextDeparture = packageData.isGroupTour 
-    ? packageData.groupDepartures?.find(d => new Date(d.date).getTime() > new Date().getTime() && d.currentBookings < d.maxCapacity)
-    : null;
-
-  const timeLeft = nextDeparture ? (() => {
-    const diff = new Date(nextDeparture.date).getTime() - new Date().getTime();
-    if (diff <= 0) return null;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    return { days, hours };
-  })() : null;
-
   const itineraryDays =
     packageData.itinerary?.days && packageData.itinerary.days.length > 0
       ? packageData.itinerary.days
@@ -391,22 +378,8 @@ export default function PackageDetails() {
                 <span className="font-medium">{Number(packageData.rating).toFixed(1)}</span>
                 <span className="text-white/80">({packageData.reviews} reviews)</span>
               </div>
-              {packageData.specialTags.length > 0 ? (
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {packageData.specialTags.slice(0, 2).map((tag) => (
-                    <span key={tag} className="text-xs bg-emerald-500/90 text-white px-3 py-1 rounded-full">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
               <h1 className="text-3xl md:text-5xl font-bold text-white mb-3 font-serif">
                 {packageData.title}
-                {isGroupTour && (
-                  <span className="ml-4 text-xs md:text-sm bg-blue-600 text-white px-3 py-1 rounded-full align-middle font-sans font-bold shadow-lg">
-                    Group Tour
-                  </span>
-                )}
               </h1>
               <div className="flex flex-wrap items-center gap-4 text-white/90">
                 <div className="flex items-center gap-1">
@@ -456,76 +429,19 @@ export default function PackageDetails() {
                 <div className="bg-card rounded-xl p-6 shadow-card">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                     <h2 className="text-xl font-bold text-foreground">
-                      {isGroupTour ? 'Group Departures' : 'Available Dates'}
+                      Available Dates
                     </h2>
-                    {timeLeft && timeLeft.days <= 7 && (
-                      <div className="flex items-center gap-2 bg-rose-500/10 text-rose-600 px-3 py-1.5 rounded-full border border-rose-200 animate-pulse">
-                        <Clock className="h-4 w-4" />
-                        <span className="text-xs font-bold uppercase tracking-wider">
-                          Next trip starts in {timeLeft.days}d {timeLeft.hours}h
-                        </span>
-                      </div>
-                    )}
                   </div>
                   <div className="flex flex-wrap gap-3">
-                    {(() => {
-                      const displayDepartures = (isGroupTour && packageData.groupDepartures && packageData.groupDepartures.length > 0)
-                        ? packageData.groupDepartures
-                        : isGroupTour
-                        ? getFallbackDepartures(id || 'default')
-                        : [];
-
-                      if (isGroupTour && displayDepartures.length > 0) {
-                        return displayDepartures.map((departure) => {
-                          const isSelected = selectedDepartureDate === departure.date;
-                          const spotsLeft = departure.maxCapacity - departure.currentBookings;
-                          const isFull = spotsLeft <= 0;
-                          
-                          return (
-                            <button
-                              key={departure.date}
-                              type="button"
-                              onClick={() => !isFull && setSelectedDepartureDate(departure.date)}
-                              disabled={isFull}
-                              className={`flex flex-col items-center p-3 rounded-xl border-2 transition-all ${
-                                isSelected 
-                                  ? 'border-primary bg-primary/5' 
-                                  : isFull 
-                                    ? 'border-border opacity-50 cursor-not-allowed' 
-                                    : 'border-border hover:border-primary/50'
-                              }`}
-                            >
-                              <span className={`text-sm font-bold ${isSelected ? 'text-primary' : 'text-foreground'}`}>
-                                {new Date(departure.date).toLocaleDateString('en-IN', {
-                                  day: '2-digit',
-                                  month: 'short',
-                                  year: 'numeric',
-                                })}
-                              </span>
-                              <span className={`text-xs mt-1 ${isFull ? 'text-rose-500' : spotsLeft <= 5 ? 'text-amber-600' : 'text-emerald-600'}`}>
-                                {isFull ? 'Sold Out' : `${spotsLeft} spots left`}
-                              </span>
-                            </button>
-                          );
-                        });
-                      } else if (isGroupTour) {
-                        return (
-                          <div className="w-full p-8 text-center bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
-                            <p className="text-slate-600">New departure dates for this group tour will be announced soon.</p>
-                          </div>
-                        );
-                      } else {
-                        return packageData.availableDates.map((date) => (
-                          <span key={date} className="text-sm px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                            {new Date(date).toLocaleDateString('en-IN', {
-                              day: '2-digit',
-                              month: 'short',
-                              year: 'numeric',
-                            })}
-                          </span>
-                        ));
-                      }
-                    })()}
+                    {packageData.availableDates.map((date) => (
+                      <span key={date} className="text-sm px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                        {new Date(date).toLocaleDateString('en-IN', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
@@ -599,7 +515,7 @@ export default function PackageDetails() {
                     </div>
 
                     <div className="space-y-3">
-                      {itineraryDays.map((day: any, index) => {
+                      {itineraryDays.map((day: any, index: number) => {
                         const night = itineraryNights.find((n) => n.night === day.day);
                         const isOpen = openItineraryDay === day.day;
                         const narrativeText = day.narrative || buildFallbackNarrative(day, index);
@@ -627,7 +543,7 @@ export default function PackageDetails() {
                                   </p>
                                 ) : (
                                   <div className="space-y-3">
-                                    {day.activities.map((activity, actIndex) => (
+                                    {day.activities.map((activity: string, actIndex: number) => (
                                       <p key={actIndex} className="text-muted-foreground leading-relaxed">
                                         {activity}
                                       </p>
@@ -727,25 +643,11 @@ export default function PackageDetails() {
                     </div>
                   ) : null}
 
-                   {isGroupTour ? (
-                    <div className={`mb-4 p-4 rounded-lg border transition-colors ${selectedDepartureDate ? 'bg-emerald-50 border-emerald-100' : 'bg-blue-50 border-blue-100'}`}>
-                      <p className={`text-sm font-semibold mb-1 ${selectedDepartureDate ? 'text-emerald-900' : 'text-blue-900'}`}>
-                        {selectedDepartureDate ? '✓ Date Selected' : '📅 Action Required'}
-                      </p>
-                      <p className={`text-xs ${selectedDepartureDate ? 'text-emerald-800' : 'text-blue-800'}`}>
-                        {selectedDepartureDate 
-                          ? `You've joined the group departing on ${new Date(selectedDepartureDate).toLocaleDateString('en-IN')}.` 
-                          : 'This is a group tour. Please select a departure date from the options to continue your booking.'}
-                      </p>
-                    </div>
-                  ) : null}
                   <Link
-                    to={`/package/${packageData.id}/payment${isGroupTour ? `?group=1&date=${selectedDepartureDate}` : ''}`}
-                    className={`btn-primary w-full mb-4 flex items-center justify-center ${
-                      isGroupTour && !selectedDepartureDate ? 'opacity-50 pointer-events-none' : ''
-                    }`}
+                    to={`/package/${packageData.id}/payment`}
+                    className="btn-primary w-full mb-4 flex items-center justify-center"
                   >
-                    {isGroupTour ? 'Join This Group' : 'Book Now'}
+                    Book Now
                   </Link>
 
                   <button
@@ -808,14 +710,14 @@ export default function PackageDetails() {
                         </button>
                         {versionHistory.length > 0 ? (
                           <div className="mt-4 rounded-md border border-border p-2">
-                            <p className="text-xs uppercase text-muted-foreground mb-2">Package History</p>
-                            {versionHistory.slice(0, 5).map((item) => (
-                              <p key={item.id} className="text-xs text-muted-foreground">
-                                v{item.version_number} • {item.is_active ? 'Active' : 'Archived'} • {new Date(item.created_at).toLocaleDateString()}
-                              </p>
-                            ))}
-                          </div>
-                        ) : null}
+                             <p className="text-xs uppercase text-muted-foreground mb-2">Package History</p>
+                             {versionHistory.slice(0, 5).map((item) => (
+                               <p key={item.id} className="text-xs text-muted-foreground">
+                                 v{item.version_number} • {item.is_active ? 'Active' : 'Archived'} • {new Date(item.created_at).toLocaleDateString()}
+                               </p>
+                             ))}
+                           </div>
+                         ) : null}
                       </div>
                     ) : null}
                     <p className="text-sm text-muted-foreground text-center">
