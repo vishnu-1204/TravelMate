@@ -26,6 +26,7 @@ import bookingRoutes from "./routes/booking";
 import packagesRoutes from "./routes/packages";
 import testEmailRoutes from "./routes/testEmail";
 import reviewsRoutes from "./routes/reviews";
+import contactRoutes from "./routes/contact";
 import { refreshPackageCache } from "./modules/packages/service/packageService";
 import { startEmailRecoveryTask } from "./utils/emailRecovery";
 
@@ -77,9 +78,7 @@ app.use("/api/auth", authRateLimiter, authRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/packages", packageRateLimiter, packagesRoutes);
 app.use("/api/reviews", reviewsRoutes);
-app.use("/api", testEmailRoutes);
-
-// Health check
+app.use("/api/contact", contactRoutes);
 app.get("/", (req, res) => {
   res.json({ status: "🚀 Auth server running", timestamp: new Date().toISOString() });
 });

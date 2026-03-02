@@ -1,5 +1,5 @@
 import { config } from '../../../config/env';
-import { fetchAmadeusPackages, primeImageCacheSeeds } from '../provider/amadeusProvider';
+import { fetchAmadeusPackages } from '../provider/amadeusProvider';
 import {
   deletePackageFromCache,
   getCategoryCountsFromCache,
@@ -196,8 +196,6 @@ const shouldRefreshCache = async () => {
 };
 
 export const refreshPackageCache = async () => {
-  const imageSeeds = await getImageCacheSeeds();
-  primeImageCacheSeeds(imageSeeds);
   const packages = await fetchAmadeusPackages();
   await upsertPackages(packages);
   await pruneExpiredRows();

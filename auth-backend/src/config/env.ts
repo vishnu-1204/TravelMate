@@ -59,4 +59,6 @@ export const config = {
   packageRateLimitMaxRequests: toNumber(process.env.PACKAGE_RATE_LIMIT_MAX_REQUESTS, 80),
   packageFallbackEnabled: toBoolean(process.env.PACKAGE_FALLBACK_ENABLED, true),
   packageAdminToken: process.env.PACKAGE_ADMIN_TOKEN || "",
+  razorpayKeyId: process.env.RAZORPAY_KEY_ID || "",
+  razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET || "",
 };

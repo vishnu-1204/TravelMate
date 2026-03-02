@@ -384,3 +384,33 @@ export const sendTestEmail = async (to: string) => {
   return sendWithRetry("email/test", to, "TravelMate Email Diagnostic", html);
 };
 
+export const sendContactEmail = async (details: {
+  name: string;
+  email: string;
+  phone?: string;
+  subject?: string;
+  message: string;
+}) => {
+  const adminEmail = config.supportEmail || "admin@travelmate.com";
+  const html = layout(
+    "New Contact Message Received",
+    `<div style="color:#334155;line-height:1.6;">
+      <p><strong>From:</strong> ${escapeHtml(details.name)} (${escapeHtml(details.email)})</p>
+      <p><strong>Phone:</strong> ${escapeHtml(details.phone || "Not provided")}</p>
+      <p><strong>Subject:</strong> ${escapeHtml(details.subject || "No Subject")}</p>
+      <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;" />
+      <p style="white-space:pre-wrap;">${escapeHtml(details.message)}</p>
+    </div>`
+  );
+  return sendWithRetry("email/contact-admin", adminEmail, `Contact: ${details.subject || "New Message"}`, html);
+};
+
+export const sendContactAutoReply = async (details: { name: string; email: string }) => {
+  const html = layout(
+    "Thank you for contacting TravelMate",
+    `<p style="margin:0 0 12px;color:#334155;">Hi ${escapeHtml(details.name)},</p>
+     <p style="margin:0 0 12px;color:#334155;">Thank you for reaching out to us. We have received your message and our team will get back to you as soon as possible.</p>
+     <p style="margin:0;color:#334155;">Best regards,<br/>The TravelMate Team</p>`
+  );
+  return sendWithRetry("email/contact-autoreply", details.email, "We've received your message", html);
+};

@@ -492,6 +492,7 @@ const buildBaseActivityPool = (destinationLabel: string) => [
 ];
 
 const buildUniqueItinerary = (pkg: {
+  id: string;
   destination: string;
   location: string;
   durationDays: number;
@@ -508,7 +509,12 @@ const buildUniqueItinerary = (pkg: {
       return normalized && !GENERIC_ACTIVITY_BLOCKLIST.has(normalized);
     });
 
-  let cursor = Math.abs((pkg.destination + pkg.location).length) % Math.max(pool.length, 1);
+  const seedString = pkg.id + pkg.destination + pkg.location;
+  let seedNum = 0;
+  for (let i = 0; i < seedString.length; i++) {
+    seedNum += seedString.charCodeAt(i);
+  }
+  let cursor = seedNum % Math.max(pool.length, 1);
   const takeUnique = (count: number, preferred: string[] = []) => {
     const picked: string[] = [];
     const source = [...preferred, ...pool];
@@ -641,6 +647,7 @@ const normalizePackage = (pkg: RawPackage): TravelPackage => {
     included: Array.isArray(pkg.included) ? (pkg.included as string[]) : Array.isArray(pkg.inclusions) ? (pkg.inclusions as string[]) : [],
     excluded: Array.isArray(pkg.excluded) ? (pkg.excluded as string[]) : Array.isArray(pkg.exclusions) ? (pkg.exclusions as string[]) : [],
     itinerary: buildUniqueItinerary({
+      id: String(pkg.id || pkg.packageId || ''),
       destination: String(pkg.destination || pkg.location || ''),
       location: String(pkg.location || pkg.destination || ''),
       durationDays: normalizedDurationDays,

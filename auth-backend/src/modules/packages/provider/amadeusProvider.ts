@@ -130,7 +130,6 @@ const INR_PER_USD = 83;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const imageCache = new Map<string, PackageImageAsset>();
-const imageSeedCache = new Map<string, PackageImageAsset>();
 const usedImageIds = new Set<string>();
 let cachedToken: { value: string; expiresAtMs: number } | null = null;
 
@@ -826,39 +825,56 @@ const getAmadeusHotelImage = async (token: string, cityCode: string) => {
 const DESTINATION_IMAGES: Record<string, string[]> = {
   'kerala|munnar|alleppey|wayanad|thekkady|kovalam|kochi|varkala': [
     'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944', // Backwaters
-    'https://images.unsplash.com/photo-1595815771614-ade501f4b7d8'  // Tea gardens
+    'https://images.unsplash.com/photo-1595815771614-ade501f4b7d8', // Tea gardens
+    'https://images.unsplash.com/photo-1590603784197-88989528d22d', // Kerala Houseboat
+    'https://images.unsplash.com/photo-1593179357196-ea11a2e7c119', // Munnar Hills
   ],
-  'coorg|chikmagalur|ooty|kodaikanal|munnar': [
+  'coorg|chikmagalur|ooty|kodaikanal': [
     'https://images.unsplash.com/photo-1521292270410-a8c4d716d518', // Lush green hills (Coorg style)
-    'https://images.unsplash.com/photo-1527631746610-bca00a040d60'  // Coffee plantation
+    'https://images.unsplash.com/photo-1527631746610-bca00a040d60', // Coffee plantation
+    'https://images.unsplash.com/photo-1582239460021-e00f5fb9fbd4', // Ooty Toy Train
+    'https://images.unsplash.com/photo-1501785888041-af3ef285b470', // Kodaikanal Lake
   ],
   'hampi|badami|pattadakal|belur|halebidu': [
-    'https://images.unsplash.com/photo-1501785888041-af3ef285b470', // Ancient stone temple ruins
-    'https://images.unsplash.com/photo-1582510003544-4d00b7f74220'  // Hampi stone chariot
+    'https://images.unsplash.com/photo-1598091383021-15ddea10925d', // Hampi Rocks
+    'https://images.unsplash.com/photo-1582510003544-4d00b7f74220', // Hampi stone chariot
+    'https://images.unsplash.com/photo-1590050752117-23a9d7fc21ad', // Badami Caves
+    'https://images.unsplash.com/photo-1591541312384-fd66e8557995', // Belur Temple
   ],
   'goa|baga|calangute|palolem|aguada': [
     'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2', // Beach
-    'https://images.unsplash.com/photo-1537996194471-e657df975ab4'  // Church
+    'https://images.unsplash.com/photo-1537996194471-e657df975ab4', // Church
+    'https://images.unsplash.com/photo-1590333746438-23f49ca386e8', // Palm Trees
+    'https://images.unsplash.com/photo-1593179357062-8ce8b1b24df4', // Beach Sunset
   ],
   'rajasthan|jaipur|udaipur|jodhpur|jaisalmer|pushkar': [
     'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1', // Palace
-    'https://images.unsplash.com/photo-1512453979798-5ea266f8880c'  // Desert
+    'https://images.unsplash.com/photo-1512453979798-5ea266f8880c', // Desert
+    'https://images.unsplash.com/photo-1599661046289-e31887846eac', // Hawa Mahal
+    'https://images.unsplash.com/photo-1534447677768-be436bb09401', // Udaipur Lake
   ],
   'himachal|manali|shimla|kasol|spiti|dharamshala|dalhousie': [
     'https://images.unsplash.com/photo-1521292270410-a8c4d716d518', // Snow mountains
     'https://images.unsplash.com/photo-1469474968028-56623f02e42e', // Forest hills
-    'https://images.unsplash.com/photo-1431274172761-fca41d930114'  // High peaks
+    'https://images.unsplash.com/photo-1431274172761-fca41d930114', // High peaks
+    'https://images.unsplash.com/photo-1590632617750-60298d757d23', // Rohtang Pass
   ],
   'maharashtra|mumbai|pune|lonavala|mahabaleshwar|nashik|alibaug|gujarat|ahmedabad|kutch|gir|somnath|dwarka': [
-    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
-    'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86'
+    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e', // Gateway of India style
+    'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86', // Lonavala Fog
+    'https://images.unsplash.com/photo-1590333746438-23f49ca386e8', // Somnath Beach
+    'https://images.unsplash.com/photo-1593179357062-8ce8b1b24df4', // Kutch Desert
   ],
   'meghalaya|shillong|cherrapunji|dawki|sikkim|gangtok|pelling|lachung': [
-    'https://images.unsplash.com/photo-1525625293386-3f8f99389edd',
-    'https://images.unsplash.com/photo-1488646953014-85cb44e25828'
+    'https://images.unsplash.com/photo-1525625293386-3f8f99389edd', // North East Waterfall
+    'https://images.unsplash.com/photo-1488646953014-85cb44e25828', // Shillong Hills
+    'https://images.unsplash.com/photo-1589136777351-fdc9c9c85215', // Dawki River
+    'https://images.unsplash.com/photo-1591541312384-fd66e8557995', // Tsomgo Lake
   ],
   'delhi|agra': [
-    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da'
+    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da', // Taj Mahal
+    'https://images.unsplash.com/photo-1587474260584-1f20d4296c0a', // India Gate
+    'https://images.unsplash.com/photo-1585148011151-6f4e6f4e6f4e', // Red Fort
   ]
 };
 
@@ -906,16 +922,10 @@ const getDynamicPackageImage = async ({
   longitude?: number;
   cityCode?: string;
 }) => {
-  const cacheKey = `${destination}-${category}-${budgetType}-${variantSeed}`;
-  const signatureKey = `${destination}-${category}-${budgetType}`.toLowerCase();
+  const cacheKey = `${destination}-${category}-${budgetType}-${variantSeed}`.toLowerCase();
   const cached = imageCache.get(cacheKey);
   if (cached && Date.now() - cached.fetchedAt < DAY_MS) {
     return cached;
-  }
-  const seeded = imageSeedCache.get(signatureKey);
-  if (seeded) {
-    imageCache.set(cacheKey, seeded);
-    return seeded;
   }
 
   // Try Amadeus images first!
@@ -964,26 +974,10 @@ const getDynamicPackageImage = async ({
   };
 
   imageCache.set(cacheKey, result);
-  imageSeedCache.set(signatureKey, result);
   return result;
 };
 
-export const primeImageCacheSeeds = (
-  seeds: Array<{ destination: string; category: PackageCategory; budgetType: BudgetType; imageUrl: string; uniqueImageId: string; updatedAt: string }>
-) => {
-  seeds.forEach((seed) => {
-    if (!seed.imageUrl || !seed.uniqueImageId) return;
-    usedImageIds.add(seed.uniqueImageId);
-    const signatureKey = `${seed.destination}-${seed.category}-${seed.budgetType}`.toLowerCase();
-    const seededAsset: PackageImageAsset = {
-      url: seed.imageUrl,
-      imageId: seed.uniqueImageId,
-      fetchedAt: new Date(seed.updatedAt).getTime() || Date.now(),
-      source: "fallback",
-    };
-    imageSeedCache.set(signatureKey, seededAsset);
-  });
-};
+
 
 const generateRandomGroupDepartures = (seed: number) => {
   const departures: GroupDeparture[] = [];

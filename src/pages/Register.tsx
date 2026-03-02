@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import PageTransition from '@/components/layout/PageTransition';
 import { z } from 'zod';
@@ -22,9 +22,10 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [agreePolicy, setAgreePolicy] = useState(false);
+
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
@@ -32,10 +33,14 @@ const Register = () => {
     e.preventDefault();
     setError('');
 
+    if (!agreePolicy) {
+      setError("Please agree to the privacy policy");
+      return;
+    }
+
     const fullName = `${firstName.trim()} ${lastName.trim()}`.trim();
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Validate input
     const validation = registerSchema.safeParse({ name: fullName, email: normalizedEmail, password, confirmPassword });
     if (!validation.success) {
       setError(validation.error.errors[0].message);
@@ -45,9 +50,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      // Note: Passing fullName to signUp, though the hook may currently ignore it.
-      // Keeping original behavior where name was collected but not strictly required by the hook signature for now.
-      // @ts-ignore - The hook might only take 2 args, but we pass 3 for future support
+      // @ts-ignore
       const { error, needsEmailVerification } = await signUp(normalizedEmail, password, fullName);
       
       if (error) {
@@ -64,8 +67,7 @@ const Register = () => {
         }
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Unable to create account. Please try again later.';
-      setError(message);
+      setError('Unable to create account. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -73,126 +75,126 @@ const Register = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-[#131326] flex items-center justify-center p-4 text-white font-sans">
-        <div className="w-full max-w-md bg-transparent flex flex-col">
+      <div 
+        className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center bg-no-repeat relative"
+        style={{ backgroundImage: 'url("/images/auth-bg.png")' }}
+      >
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+
+        {/* Auth Card */}
+        <div className="w-full max-w-[480px] bg-[#282828] rounded-lg shadow-2xl p-8 md:p-12 flex flex-col items-center relative z-10">
           
-          <div className="w-full text-left mb-10">
-            <h1 className="text-4xl font-bold mb-2">Sign Up</h1>
+          {/* Brand Logo */}
+          <div className="flex flex-col items-center mb-10">
+            <span className="text-4xl font-bold text-white tracking-tight">
+              Travel<span className="text-sky-400">Mate</span>
+            </span>
           </div>
 
+          {/* Tabs */}
+          <div className="flex gap-10 mb-10 w-full justify-center">
+            <Link to="/login" className="text-sm font-bold text-gray-400 hover:text-white transition-colors py-2">
+              SIGN IN
+            </Link>
+            <button className="text-sm font-bold text-white relative py-2">
+              SIGN UP
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-sky-400" />
+            </button>
+          </div>
+
+          {/* Error Message */}
           {error && (
-            <div className="w-full bg-[#38bdf8]/10 border border-[#38bdf8]/30 text-[#38bdf8] px-4 py-3 rounded-2xl mb-6 text-sm text-center">
+            <div className="w-full bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-6 text-xs text-center">
               {error}
             </div>
           )}
 
+          {/* Form */}
           <form onSubmit={handleSubmit} className="w-full space-y-4">
-            {/* Name Row */}
-            <div className="flex gap-4">
-              <div className="auth-input-container !mb-0 flex-1">
-                <input
-                  type="text"
-                  placeholder="First Name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  className="auth-input !px-6"
-                  required
-                />
-              </div>
-              <div className="auth-input-container !mb-0 flex-1">
-                <input
-                  type="text"
-                  placeholder="Last Name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="auth-input !px-6"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="auth-input-container">
+            <div className="grid grid-cols-2 gap-4">
               <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="auth-input !px-6"
+                type="text"
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="w-full px-6 py-4 rounded-full bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all font-medium"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full px-6 py-4 rounded-full bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all font-medium"
                 required
               />
             </div>
 
-            {/* Password */}
-            <div className="auth-input-container">
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-6 py-4 rounded-full bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all font-medium"
+              required
+            />
+            
+            <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="auth-input !px-6 !pr-16"
+                className="w-full px-6 py-4 rounded-full bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all font-medium pr-16"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-6 top-1/2 -translate-y-1/2 text-white/70 text-sm hover:text-white transition-colors underline decoration-[#38bdf8]/30 underline-offset-2"
+                className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               >
-                {showPassword ? "Hide" : "Show"}
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
 
-            {/* Confirm Password */}
-            <div className="auth-input-container">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="auth-input !px-6 !pr-16"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-6 top-1/2 -translate-y-1/2 text-white/70 text-sm hover:text-white transition-colors underline decoration-[#38bdf8]/30 underline-offset-2"
-              >
-                {showConfirmPassword ? "Hide" : "Show"}
-              </button>
-            </div>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full px-6 py-4 rounded-full bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all font-medium"
+              required
+            />
 
-            <div className="flex items-center px-1 mb-6 pt-2">
+            <div className="flex items-center gap-2 px-2 py-2">
               <label className="flex items-center gap-3 cursor-pointer group">
-                <div className="relative flex items-center justify-center">
-                  <input type="checkbox" className="peer sr-only" required />
-                  <div className="h-5 w-5 border-2 border-white/20 rounded-md peer-checked:bg-[#38bdf8] peer-checked:border-[#38bdf8] transition-all" />
-                  <svg className="absolute h-3.5 w-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                </div>
-                <span className="text-sm text-white/60">
-                  I Agree with <span className="text-[#38bdf8] font-medium hover:underline">privacy</span> and <span className="text-[#38bdf8] font-medium hover:underline">policy</span>
+                <input 
+                  type="checkbox" 
+                  className="w-4 h-4 rounded-sm bg-[#535353] border-none checked:bg-sky-400 focus:ring-offset-0 focus:ring-0 transition-colors cursor-pointer" 
+                  checked={agreePolicy}
+                  onChange={(e) => setAgreePolicy(e.target.checked)}
+                  required
+                />
+                <span className="text-xs font-bold text-gray-300 group-hover:text-white transition-colors">
+                  agree with <span className="text-sky-400">privacy</span> and <span className="text-sky-400">policy</span>
                 </span>
               </label>
             </div>
 
-            <button type="submit" disabled={loading} className="auth-btn !mt-8">
-              {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Creating Account...
-                </div>
-              ) : (
-                "Sign up"
-              )}
+            <button 
+              type="submit" 
+              disabled={loading} 
+              className="w-full bg-sky-400 text-black py-4 rounded-full font-bold text-sm tracking-wider hover:bg-sky-300 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2 mt-4 shadow-lg shadow-sky-400/10"
+            >
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "SIGN UP"}
             </button>
           </form>
 
-          <p className="mt-12 text-center text-white/60 text-sm">
-            Already have an account ?{" "}
-            <Link to="/login" className="text-[#38bdf8] font-bold ml-1 hover:underline">
-              Sign in
-            </Link>
+          {/* Footer Link */}
+          <p className="mt-10 text-xs font-bold text-gray-400 tracking-wide">
+            Already have an account? <Link to="/login" className="text-sky-400 hover:text-sky-300 ml-1 transition-colors">Log In</Link>
           </p>
-
         </div>
       </div>
     </PageTransition>

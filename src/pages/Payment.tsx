@@ -768,180 +768,239 @@ const Payment = () => {
     return parsed.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
   };
 
-  const handleCardPayment = async () => {
+  const handleRazorpayPayment = async () => {
     const validationError = validateBooking();
     if (validationError) {
       setFormError(validationError);
       return;
     }
 
-    setFormError('');
+    setFormError("");
     setLoading(true);
-    setProcessingMessage('Processing...');
+    setProcessingMessage("Initializing payment...");
 
     try {
-      await delay(600);
       if (!user?.id) {
-        toast.error('Please login again to complete booking.');
+        toast.error("Please login again to complete booking.");
         return;
       }
 
-      const ref = `TM-${Date.now().toString().slice(-8)}`;
-      const paymentId = `sim_${Date.now()}`;
-      const primaryTraveler = travelers[0];
-      const normalizedPrimaryMobile = primaryTraveler.mobile.replace(/\D/g, '').slice(-10);
-      const registeredEmail = primaryTraveler.email.trim().toLowerCase() || user.email?.trim().toLowerCase();
-      const [firstName, ...lastNameParts] = primaryTraveler.fullName.trim().split(/\s+/);
-      const lastName = lastNameParts.join(' ') || '-';
-      const bookingTerms: BookingTerms = {
-        cancellationPolicy:
-          (packageData as unknown as { cancellationPolicy?: string }).cancellationPolicy ||
-          'Cancellation charges may apply based on departure date.',
-        termsVersion: 'v1',
-        lockedNotice: 'This package is locked after booking.',
-        acceptedAt: new Date().toISOString(),
-        destination: packageData.location,
-        travelDate,
-        travelCategory: packageData.category,
-        duration: packageData.duration,
-        airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
-        departureTime: flightData?.departureTime || '06:30 AM',
-        arrivalTime: flightData?.arrivalTime || '09:45 AM',
-        itinerary: {
-          days: packageData.itinerary?.days || [],
-          nights: packageData.itinerary?.nights || [],
-          activities: packageData.highlights || [],
-          included: Array.isArray(packageData.included) ? packageData.included : [],
-          excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
-        },
-        included: Array.isArray(packageData.included) ? packageData.included : [],
-        excluded: Array.isArray(packageData.excluded) ? packageData.excluded : [],
-        travelDetails: {
-          transportDetails: packageData.transportMode || '-',
-          checkIn: travelDate || '-',
-          checkOut: '-',
-        },
-        emergencyContact: '+91 9342180670',
-        travelGuidelines: [
-          'Arrive at the pickup point at least 45 minutes before departure.',
-          'Keep emergency contacts active during your trip.',
-          'Follow local regulations and guide instructions at all times.',
-        ],
-        documentsToCarry: ['Government ID proof', 'Booking confirmation email', 'Any required permits/visa documents'],
-        importantNotes: [
-          'Hotel check-in/check-out times depend on property policy.',
-          'Itinerary timings can shift due to weather or operational needs.',
-        ],
-        flightDataSource: flightData && !flightApiFailed ? 'amadeus' : 'fallback',
-        email: {
-          sent: false,
-          status: 'pending',
-          sentAt: null,
-        },
-        manualFollowUpRequired: false,
-        manualFollowUpReason: null,
-        manualFollowUpLoggedAt: null,
-      };
-
-      const bookingInsertPayload: BookingInsertPayload = {
-        user_id: user.id,
-        package_id: packageData.id,
-        package_title: packageData.title,
-        travelers: totalPassengers,
-        first_name: firstName || 'Guest',
-        last_name: lastName,
-        email: registeredEmail,
-        phone: normalizedPrimaryMobile,
-        total_amount: grandTotal,
-        payment_status: 'paid',
-        payment_verified: true,
-        payment_id: paymentId,
-        booking_reference: ref,
-        email_sent: false,
-        booking_status: 'confirmed',
-        ticket_pdf_url: null,
-        locked_price_per_person: pricePerPerson,
-        locked_total_amount: grandTotal,
-        booking_terms: bookingTerms,
-        is_locked: true,
-      };
-
-      setProcessingMessage('Confirming your booking...');
-
-      // Save booking to backend SQLite + trigger confirmation email
-      try {
-        const token = localStorage.getItem('auth_token');
-        await fetch(`${backendBaseUrl}/api/booking/book`, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            bookingReference: ref,
-            packageId: packageData.id,
-            packageTitle: packageData.title,
-            destination: packageData.location,
-            duration: packageData.duration,
-            travelDate,
-            travelers: totalPassengers,
-            travelerName: primaryTraveler.fullName,
-            email: primaryTraveler.email.trim().toLowerCase() || user.email,
-            roomType,
-            phone: normalizedPrimaryMobile,
-            totalAmount: grandTotal,
-            airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
-            departureTime: flightData?.departureTime || '06:30 AM',
-          }),
-        });
-      } catch (saveErr) {
-        console.warn('Booking save/email request failed, proceeding anyway:', saveErr);
-      }
-
-      // Set booking reference
-      setBookingRef(ref);
-      setBookingEmail(registeredEmail);
-
-      if (autoSaveProfile) {
-        void updateUserProfile();
-      }
-
-      toast.success('Successfully Booked!');
-      localStorage.removeItem(storageKey);
-
-      try {
-        downloadBookingItinerary(ref);
-      } catch (e) {
-        console.error('PDF auto-download skipped');
-      }
-
-      // Navigate to the Booking Confirmed page
-      navigate('/booking-confirmed', {
-        state: {
-          booking: {
-            bookingRef: ref,
-            packageTitle: packageData.title,
-            destination: packageData.location,
-            duration: packageData.duration,
-            travelDate,
-            travelers: totalPassengers,
-            totalAmount: grandTotal,
-            email: registeredEmail,
-            travelerName: primaryTraveler.fullName,
-            roomType,
-            airline: flightData?.airline || (packageData.transportMode === 'flight' ? 'Indigo / Air India' : 'Luxury Coach'),
-            departureTime: flightData?.departureTime || '06:30 AM',
-          },
-        },
+      // 1. Create order on backend
+      const orderResponse = await fetch(`${backendBaseUrl}/api/booking/create-razorpay-order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: grandTotal,
+          currency: "INR",
+          receipt: `rcpt_${Date.now()}`,
+        }),
       });
 
-    } catch (globalError: any) {
-      console.error('Global handleCardPayment error:', globalError);
-      toast.error(globalError.message || 'An unexpected error occurred. Please try again.');
+      if (!orderResponse.ok) {
+        const errData = await orderResponse.json();
+        throw new Error(errData.message || "Failed to initialize payment");
+      }
+
+      const order = await orderResponse.json();
+
+      // Demo Mode Bypass: If the order is marked as demo (placeholder keys used), bypass the popup
+      if (order.isDemo) {
+        setProcessingMessage("Demo Mode: Simulating secure payment...");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        try {
+          const verifyResponse = await fetch(`${backendBaseUrl}/api/booking/verify-payment`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: order.id,
+              razorpay_payment_id: `pay_demo_${Date.now()}`,
+              razorpay_signature: "demo_signature",
+              bookingData: {
+                user_id: user.id,
+                package_id: packageData.id,
+                package_title: packageData.title,
+                travelers: totalPassengers,
+                first_name: travelers[0].fullName.split(" ")[0] || "Guest",
+                last_name: travelers[0].fullName.split(" ").slice(1).join(" ") || "-",
+                email: travelers[0].email.trim().toLowerCase() || user.email,
+                phone: travelers[0].mobile.replace(/\D/g, "").slice(-10),
+                total_amount: grandTotal,
+                booking_reference: `TM-DEMO-${Date.now().toString().slice(-6)}`,
+                booking_terms: {
+                  cancellationPolicy: (packageData as any).cancellationPolicy || "Charges apply based on date.",
+                  termsVersion: "v1-demo",
+                  acceptedAt: new Date().toISOString(),
+                  destination: packageData.location,
+                  travelDate,
+                  travelCategory: packageData.category,
+                  duration: packageData.duration,
+                  airline: flightData?.airline || (packageData.transportMode === "flight" ? "Indigo" : "Coach"),
+                  departureTime: flightData?.departureTime || "06:30 AM",
+                  itinerary: packageData.itinerary || { days: [], nights: [] },
+                  included: packageData.included || [],
+                  excluded: packageData.excluded || [],
+                },
+                is_locked: true,
+              },
+            }),
+          });
+
+          const result = await verifyResponse.json();
+          if (verifyResponse.ok) {
+            setBookingRef(result.bookingReference);
+            setBookingEmail(travelers[0].email || user.email || "");
+            setShowSuccessModal(true);
+            toast.success("Demo payment successful! Booking confirmed.");
+            
+            navigate("/booking-confirmed", {
+              state: {
+                booking: {
+                  bookingRef: result.bookingReference,
+                  packageTitle: packageData.title,
+                  destination: packageData.location,
+                  duration: packageData.duration,
+                  travelDate,
+                  travelers: totalPassengers,
+                  totalAmount: grandTotal,
+                  email: travelers[0].email || user.email,
+                  travelerName: travelers[0].fullName,
+                  roomType,
+                  airline: flightData?.airline || (packageData.transportMode === "flight" ? "Indigo" : "Coach"),
+                  departureTime: flightData?.departureTime || "06:30 AM",
+                },
+              },
+            });
+          } else {
+            throw new Error(result.message || "Demo verification failed");
+          }
+        } catch (err: any) {
+          toast.error(err.message || "Demo payment simulation failed");
+        } finally {
+          setLoading(false);
+        }
+        return;
+      }
+
+      // 2. Open Razorpay Checkout
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_your_key_id",
+        amount: order.amount,
+        currency: order.currency,
+        name: "TravelMate",
+        description: `Booking for ${packageData.title}`,
+        order_id: order.id,
+        handler: async (response: any) => {
+          setProcessingMessage("Verifying payment...");
+          try {
+            const verifyResponse = await fetch(`${backendBaseUrl}/api/booking/verify-payment`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                bookingData: {
+                  user_id: user.id,
+                  package_id: packageData.id,
+                  package_title: packageData.title,
+                  travelers: totalPassengers,
+                  first_name: travelers[0].fullName.split(" ")[0] || "Guest",
+                  last_name: travelers[0].fullName.split(" ").slice(1).join(" ") || "-",
+                  email: travelers[0].email.trim().toLowerCase() || user.email,
+                  phone: travelers[0].mobile.replace(/\D/g, "").slice(-10),
+                  total_amount: grandTotal,
+                  booking_reference: `TM-${Date.now().toString().slice(-8)}`,
+                  booking_terms: {
+                    cancellationPolicy: (packageData as any).cancellationPolicy || "Charges apply based on date.",
+                    termsVersion: "v1",
+                    lockedNotice: "Package locked after booking.",
+                    acceptedAt: new Date().toISOString(),
+                    destination: packageData.location,
+                    travelDate,
+                    travelCategory: packageData.category,
+                    duration: packageData.duration,
+                    airline: flightData?.airline || (packageData.transportMode === "flight" ? "Indigo" : "Coach"),
+                    departureTime: flightData?.departureTime || "06:30 AM",
+                    arrivalTime: flightData?.arrivalTime || "09:45 AM",
+                    itinerary: packageData.itinerary || { days: [], nights: [] },
+                    included: packageData.included || [],
+                    excluded: packageData.excluded || [],
+                    travelDetails: {
+                      transportDetails: packageData.transportMode || "-",
+                      checkIn: travelDate || "-",
+                      checkOut: "-",
+                    },
+                    emergencyContact: "+91 9342180670",
+                    travelGuidelines: ["Arrive early.", "Keep contacts active."],
+                    documentsToCarry: ["ID proof", "Email confirmation"],
+                    importantNotes: ["Check-in times vary."],
+                    flightDataSource: flightData && !flightApiFailed ? "amadeus" : "fallback",
+                    email: { sent: false, status: "pending", sentAt: null },
+                    manualFollowUpRequired: false,
+                    manualFollowUpReason: null,
+                    manualFollowUpLoggedAt: null,
+                  },
+                  is_locked: true,
+                },
+              }),
+            });
+
+            const result = await verifyResponse.json();
+            if (verifyResponse.ok) {
+              setBookingRef(result.bookingReference);
+              setBookingEmail(travelers[0].email || user.email || "");
+              setShowSuccessModal(true);
+              toast.success("Payment successful! Booking confirmed.");
+              localStorage.removeItem(storageKey);
+              if (autoSaveProfile) void updateUserProfile();
+              
+              navigate("/booking-confirmed", {
+                state: {
+                  booking: {
+                    bookingRef: result.bookingReference,
+                    packageTitle: packageData.title,
+                    destination: packageData.location,
+                    duration: packageData.duration,
+                    travelDate,
+                    travelers: totalPassengers,
+                    totalAmount: grandTotal,
+                    email: travelers[0].email || user.email,
+                    travelerName: travelers[0].fullName,
+                    roomType,
+                    airline: flightData?.airline || (packageData.transportMode === "flight" ? "Indigo" : "Coach"),
+                    departureTime: flightData?.departureTime || "06:30 AM",
+                  },
+                },
+              });
+            } else {
+              throw new Error(result.message || "Verification failed");
+            }
+          } catch (err: any) {
+            toast.error(err.message || "Payment verification failed");
+          } finally {
+            setLoading(false);
+          }
+        },
+        prefill: {
+          name: travelers[0].fullName,
+          email: travelers[0].email,
+          contact: travelers[0].mobile,
+        },
+        theme: { color: "#0ea5e9" },
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+
+    } catch (err: any) {
+      console.error("Payment flow error:", err);
+      toast.error(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <Layout>
       <PageTransition>
@@ -1193,14 +1252,14 @@ const Payment = () => {
                 <div className="bg-card rounded-xl p-6 shadow-card" id="payment-section">
                   <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
                     <CreditCard className="h-5 w-5 text-primary" />
-                    Card Payment
+                    Secure Payment
                   </h2>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Click Book Now to pay by debit/credit card and generate your ticket.
+                    Complete your booking securely via Razorpay (UPI, Card, Net Banking).
                   </p>
                   <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
                     <Lock className="h-4 w-4" />
-                    <span>Secure payment flow. Final amount: ₹{grandTotal.toLocaleString('en-IN')}</span>
+                    <span>Razorpay Secure. Final amount: ₹{grandTotal.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
@@ -1267,7 +1326,7 @@ const Payment = () => {
 
                   <button
                     type="button"
-                    onClick={handleCardPayment}
+                    onClick={handleRazorpayPayment}
                     disabled={loading}
                     className="btn-primary w-full mt-6 flex items-center justify-center gap-2"
                   >

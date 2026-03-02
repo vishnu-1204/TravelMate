@@ -87,47 +87,6 @@ const categorySuggestionMap: Record<string, string[]> = {
   south: ['Munnar', 'Alleppey', 'Wayanad', 'Kochi', 'Thekkady', 'Ooty', 'Coorg', 'Pondicherry', 'Mysore', 'Kodaikanal', 'Hampi', 'Vizag', 'Tirupati'],
   north: ['Manali', 'Shimla', 'Kashmir', 'Delhi', 'Agra', 'Jaipur', 'Rishikesh', 'Nainital'],
 };
-const INDIAN_PACKAGES_FALLBACK_IMAGE =
-  'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75';
-const INDIAN_DESTINATION_IMAGE_RULES: Array<{ keywords: string[]; image: string }> = [
-  {
-    keywords: ['kerala', 'munnar', 'alleppey', 'wayanad', 'thekkady', 'kovalam', 'kochi', 'varkala'],
-    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75',
-  },
-  {
-    keywords: ['goa', 'baga', 'calangute', 'palolem'],
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75',
-  },
-  {
-    keywords: ['manali', 'shimla', 'kasol', 'himachal'],
-    image: 'https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75',
-  },
-  {
-    keywords: ['kashmir', 'gulmarg', 'pahalgam', 'srinagar'],
-    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75',
-  },
-  {
-    keywords: ['ooty', 'kodaikanal', 'coorg', 'mysore', 'hampi'],
-    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75',
-  },
-  {
-    keywords: ['rishikesh', 'nainital', 'mussoorie', 'uttarakhand'],
-    image: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75',
-  },
-  {
-    keywords: ['jaipur', 'udaipur', 'jodhpur', 'rajasthan'],
-    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75',
-  },
-  {
-    keywords: ['andaman', 'pondicherry', 'mahabalipuram'],
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75',
-  },
-];
-const GENERIC_INDIAN_IMAGE_MARKERS = [
-  'photo-1524492412937-b28074a5d7da',
-  'photo-1488646953014-85cb44e25828',
-  '/placeholder.svg',
-];
 
 const PackageCardSkeleton = () => (
   <div className="rounded-xl border border-border overflow-hidden bg-card">
@@ -817,7 +776,7 @@ const Packages = () => {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {packages.map((pkg, index) => {
-                    const cardImageUrl = isIndianPackagesView ? resolveIndianPackageImage(pkg) : pkg.imageUrl;
+                    const cardImageUrl = pkg.imageUrl || pkg.image;
                     return (
                     <PackageCard
                       key={pkg.id}

@@ -33,6 +33,7 @@ function Navbar() {
     { name: 'Packages', path: '/packages' },
     { name: 'Blog', path: '/blog' },
     { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   const fullName = (user?.user_metadata?.full_name as string | undefined)?.trim();

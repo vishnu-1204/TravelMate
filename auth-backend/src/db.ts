@@ -105,26 +105,58 @@ export const initDatabase = (): Promise<void> => {
                   travel_date TEXT,
                   travelers INTEGER DEFAULT 1,
                   traveler_name TEXT,
+                  first_name TEXT,
+                  last_name TEXT,
                   room_type TEXT,
                   email TEXT NOT NULL,
                   phone TEXT,
                   total_amount REAL NOT NULL,
                   airline TEXT,
                   departure_time TEXT,
+                  payment_id TEXT,
                   payment_status TEXT DEFAULT 'paid',
+                  payment_verified INTEGER DEFAULT 0,
+                  booking_terms TEXT,
                   booking_status TEXT DEFAULT 'confirmed',
                   email_sent INTEGER DEFAULT 0,
+                  email_sent_at DATETIME,
+                  email_attempts INTEGER DEFAULT 0,
+                  email_last_attempt_at DATETIME,
+                  email_last_error TEXT,
+                  ticket_pdf_url TEXT,
                   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )`;
                 await run(bookingsTable);
-                logger("Bookings table ready");
 
-                // Ensure package_id exists in bookings (multi-step migration for existing DB)
-                const bookingCols = await all<{ name: string }>("PRAGMA table_info(bookings)");
-                if (!bookingCols.find(c => c.name === 'package_id')) {
-                  await run("ALTER TABLE bookings ADD COLUMN package_id TEXT");
-                  logger("Added bookings.package_id");
-                }
+                const ensureBookingsTableColumns = async () => {
+                  logger("Checking bookings table columns...");
+                  const columns = await all<{ name: string }>("PRAGMA table_info(bookings)");
+                  const existing = new Set(columns.map((column) => column.name));
+                  
+                  const migrations = [
+                    { name: "package_id", ddl: "ALTER TABLE bookings ADD COLUMN package_id TEXT" },
+                    { name: "first_name", ddl: "ALTER TABLE bookings ADD COLUMN first_name TEXT" },
+                    { name: "last_name", ddl: "ALTER TABLE bookings ADD COLUMN last_name TEXT" },
+                    { name: "payment_id", ddl: "ALTER TABLE bookings ADD COLUMN payment_id TEXT" },
+                    { name: "payment_verified", ddl: "ALTER TABLE bookings ADD COLUMN payment_verified INTEGER DEFAULT 0" },
+                    { name: "booking_terms", ddl: "ALTER TABLE bookings ADD COLUMN booking_terms TEXT" },
+                    { name: "email_sent_at", ddl: "ALTER TABLE bookings ADD COLUMN email_sent_at DATETIME" },
+                    { name: "email_attempts", ddl: "ALTER TABLE bookings ADD COLUMN email_attempts INTEGER DEFAULT 0" },
+                    { name: "email_last_attempt_at", ddl: "ALTER TABLE bookings ADD COLUMN email_last_attempt_at DATETIME" },
+                    { name: "email_last_error", ddl: "ALTER TABLE bookings ADD COLUMN email_last_error TEXT" },
+                    { name: "ticket_pdf_url", ddl: "ALTER TABLE bookings ADD COLUMN ticket_pdf_url TEXT" }
+                  ];
+
+                  for (const m of migrations) {
+                    if (!existing.has(m.name)) {
+                      await run(m.ddl);
+                      logger(`Added bookings.${m.name}`);
+                    }
+                  }
+                };
+
+                await ensureBookingsTableColumns();
+                logger("Bookings table ready");
 
                 const ensurePackagesTableColumns = async () => {
                   logger("Checking packages table columns...");
@@ -182,6 +214,19 @@ export const initDatabase = (): Promise<void> => {
                 )`;
                 await run(failuresTable);
                 logger("Booking email failures table ready");
+
+                // Create contact_messages table
+                const contactMessagesTable = `CREATE TABLE IF NOT EXISTS contact_messages (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  name TEXT NOT NULL,
+                  email TEXT NOT NULL,
+                  phone TEXT,
+                  subject TEXT,
+                  message TEXT NOT NULL,
+                  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )`;
+                await run(contactMessagesTable);
+                logger("Contact messages table ready");
 
                 // Seed data if empty
                 const pkgCount = await all<{ count: number }>("SELECT COUNT(*) as count FROM packages");

@@ -1,3 +1,4 @@
+import { razorpay } from "../utils/razorpay";
 import { Router, Request, Response } from "express";
 import crypto from "crypto";
 import PDFDocument from "pdfkit";
@@ -193,46 +194,63 @@ const fromBooking = (booking: BookingRecord): EmailPayload => {
   };
 };
 
-const fetchBooking = async (bookingReference: string, userId?: string) => {
-  const client = getSupabase();
-  if (!client) throw new Error("Supabase service role config missing");
-  let query = client
-    .from("bookings")
-    .select("id,user_id,booking_reference,first_name,last_name,email,phone,package_title,payment_id,payment_status,payment_verified,travelers,total_amount,booking_terms,email_sent,booking_status")
-    .eq("booking_reference", bookingReference)
-    .limit(1);
-  if (userId) query = query.eq("user_id", userId);
-  const { data, error } = await query.maybeSingle();
-  if (error) throw new Error(error.message);
-  return (data || null) as BookingRecord | null;
+const fetchBooking = async (bookingReference: string, userId?: string): Promise<BookingRecord | null> => {
+  const db = getDb();
+  let sql = `SELECT * FROM bookings WHERE booking_reference = ?`;
+  const params: any[] = [bookingReference];
+  
+  if (userId) {
+    sql += ` AND user_id = ?`;
+    params.push(userId);
+  }
+  
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row: any) => {
+      if (err) return reject(err);
+      if (!row) return resolve(null);
+      
+      // Map SQLite row to BookingRecord type
+      const record: BookingRecord = {
+        ...row,
+        payment_verified: !!row.payment_verified,
+        email_sent: !!row.email_sent,
+        booking_terms: row.booking_terms ? JSON.parse(row.booking_terms) : null
+      };
+      resolve(record);
+    });
+  });
 };
 
 const safeUpdate = async (bookingId: string, patch: Record<string, unknown>) => {
-  const client = getSupabase();
-  if (!client) throw new Error("Supabase service role config missing");
-  const { error } = await client.from("bookings").update(patch).eq("id", bookingId);
-  if (error && /email_sent|booking_status|ticket_pdf_url|email_|schema cache/i.test(error.message)) {
-    const fallback = await client.from("bookings").update({ booking_terms: patch.booking_terms }).eq("id", bookingId);
-    if (fallback.error) throw new Error(fallback.error.message);
-    return;
-  }
-  if (error) throw new Error(error.message);
+  const db = getDb();
+  
+  // Convert patch object to SQL UPDATE statement
+  const fields = Object.keys(patch);
+  if (fields.length === 0) return;
+  
+  const setClause = fields.map(f => `${f} = ?`).join(", ");
+  const values = fields.map(f => {
+    const val = patch[f];
+    if (f === 'booking_terms' && val && typeof val === 'object') return JSON.stringify(val);
+    if (typeof val === 'boolean') return val ? 1 : 0;
+    return val;
+  });
+  
+  const sql = `UPDATE bookings SET ${setClause} WHERE id = ?`;
+  values.push(bookingId);
+  
+  return new Promise<void>((resolve, reject) => {
+    db.run(sql, values, function(err) {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
 };
 
 const uploadPdfAndGetUrl = async (booking: BookingRecord, pdf: Buffer) => {
-  const client = getSupabase();
-  if (!client || !config.bookingTicketsBucket) return null;
-  const path = `${booking.user_id}/${booking.booking_reference || booking.id}.pdf`;
-  const { error } = await client.storage.from(config.bookingTicketsBucket).upload(path, pdf, {
-    contentType: "application/pdf",
-    upsert: true,
-  });
-  if (error) {
-    console.error("ticket upload failed:", error.message);
-    return null;
-  }
-  const { data } = client.storage.from(config.bookingTicketsBucket).getPublicUrl(path);
-  return data.publicUrl || null;
+  // For local development without Supabase, we can save to a local public folder if it exists
+  // Or just return null and let the email attachment handle it
+  return null;
 };
 
 const sendWithRetry = async (payload: EmailPayload, pdf: Buffer) => {
@@ -431,6 +449,131 @@ const sendBookingConfirmationHandler = async (req: Request, res: Response) => {
   }
 };
 
+router.post("/create-razorpay-order", async (req: Request, res: Response) => {
+  const { amount, currency = "INR", receipt } = req.body as { amount: number; currency?: string; receipt?: string };
+  if (!amount) return res.status(400).json({ message: "Amount is required" });
+
+  if (!razorpay) {
+    return res.status(500).json({ message: "Razorpay is not configured on the server" });
+  }
+
+  try {
+    // Demo Mode: If using placeholders, return a mock order
+    if (config.razorpayKeyId === "rzp_test_YOUR_KEY_ID") {
+      return res.status(200).json({
+        id: `order_demo_${Date.now()}`,
+        amount: Math.round(amount * 100),
+        currency,
+        receipt: receipt || `receipt_${Date.now()}`,
+        status: "created",
+        isDemo: true
+      });
+    }
+
+    const options = {
+      amount: Math.round(amount * 100), // Razorpay expects amount in paise
+      currency,
+      receipt: receipt || `receipt_${Date.now()}`,
+    };
+
+    const order = await razorpay.orders.create(options);
+    return res.status(200).json(order);
+  } catch (error: any) {
+    console.error("Razorpay order creation failed:", error);
+    return res.status(500).json({ message: "Failed to create Razorpay order", error: error.message });
+  }
+});
+
+router.post("/verify-payment", async (req: Request, res: Response) => {
+  const {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+    bookingData
+  } = req.body;
+
+  const secret = config.razorpayKeySecret;
+  if (!secret) return res.status(500).json({ message: "Razorpay secret key not configured on server" });
+
+  const generated_signature = crypto
+    .createHmac("sha256", secret)
+    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+    .digest("hex");
+
+  const isDemo = razorpay_order_id?.startsWith("order_demo_");
+  
+  if (generated_signature !== razorpay_signature && !isDemo) {
+    return res.status(400).json({ message: "Invalid payment signature" });
+  }
+
+  // Payment verified! Now persist booking
+  try {
+    const db = getDb();
+
+    // Augment booking data with payment info
+    const fullBooking: any = {
+      ...bookingData,
+      payment_id: razorpay_payment_id,
+      payment_status: "paid",
+      payment_verified: 1, // Store as INTEGER for SQLite
+      booking_status: "confirmed"
+    };
+
+
+
+    // Filter fields to match SQLite schema
+    const validColumns = [
+      "user_id", "booking_reference", "package_id", "package_title", "destination", 
+      "duration", "travel_date", "travelers", "traveler_name", "first_name", 
+      "last_name", "room_type", "email", "phone", "total_amount", "airline", 
+      "departure_time", "payment_id", "payment_status", "payment_verified", 
+      "booking_terms", "booking_status", "email_sent"
+    ];
+
+    const filteredBooking: any = {};
+    validColumns.forEach(cat => {
+      if (fullBooking[cat] !== undefined) filteredBooking[cat] = fullBooking[cat];
+    });
+
+    const fields = Object.keys(filteredBooking);
+    const placeholders = fields.map(() => "?").join(", ");
+    const columns = fields.join(", ");
+    const values = fields.map(f => {
+      const val = filteredBooking[f];
+      if (f === "booking_terms" && val && typeof val === "object") return JSON.stringify(val);
+      return val;
+    });
+
+    const finalSql = `INSERT INTO bookings (${columns}) VALUES (${placeholders})`;
+
+    return new Promise<void>((resolve, reject) => {
+      db.run(finalSql, values, function (this: any, err: any) {
+        if (err) {
+          console.error("SQLite storage failed:", err);
+          return res.status(500).json({ message: "Payment verified but booking storage failed", error: err.message });
+        }
+
+        const newId = this.lastID;
+        
+        // Trigger confirmation email
+        fetchBooking(fullBooking.booking_reference).then(record => {
+          if (record) processStoredBooking(record);
+        }).catch(err => console.error("Delayed email processing failed:", err));
+
+        return res.status(200).json({
+          success: true,
+          message: "Payment verified and booking confirmed",
+          bookingReference: fullBooking.booking_reference,
+          bookingId: newId
+        });
+      });
+    });
+  } catch (error: any) {
+    console.error("Booking persistence failed after payment:", error);
+    return res.status(500).json({ message: "Payment verified but booking storage failed", error: error.message });
+  }
+});
+
 router.post("/confirm-after-payment", sendBookingConfirmationHandler);
 router.post("/send-booking-confirmation", sendBookingConfirmationHandler);
 
@@ -439,25 +582,28 @@ router.post("/confirm-booking", async (req: Request, res: Response) => {
   if (!bookingId && !bookingReference) return res.status(400).json({ message: "bookingId or bookingReference is required" });
 
   try {
-    const client = getSupabase();
-    if (!client) throw new Error("Supabase config missing");
-
-    let query = client.from("bookings").update({
-      payment_status: "paid",
-      payment_verified: true,
-      booking_status: "confirmed",
-    });
-
+    const db = getDb();
+    let sql = `UPDATE bookings SET payment_status = 'paid', payment_verified = 1, booking_status = 'confirmed' WHERE `;
+    const params: any[] = [];
+    
     if (bookingId) {
-      query = query.eq("id", bookingId);
-    } else if (bookingReference) {
-      query = query.eq("booking_reference", bookingReference);
+      sql += `id = ?`;
+      params.push(bookingId);
+    } else {
+      sql += `booking_reference = ?`;
+      params.push(bookingReference);
     }
 
-    const { error } = await query;
-    if (error) throw error;
-
-    return res.json({ success: true });
+    return new Promise<void>((resolve, reject) => {
+      db.run(sql, params, function(err) {
+        if (err) {
+          console.error("confirm-booking SQL failed:", err);
+          return res.status(500).json({ message: err.message });
+        }
+        res.json({ success: true, updated: this.changes });
+        resolve();
+      });
+    });
   } catch (error: any) {
     console.error("confirm-booking failed:", error);
     return res.status(500).json({ message: error.message || "Failed to confirm booking" });
@@ -465,41 +611,52 @@ router.post("/confirm-booking", async (req: Request, res: Response) => {
 });
 
 router.post("/create-booking", async (req: Request, res: Response) => {
-  const body = req.body as { booking?: Record<string, unknown> };
+  const body = req.body as { booking?: Record<string, any> };
   if (!body.booking) return res.status(400).json({ message: "booking payload is required" });
 
-  const client = getSupabase();
-  if (!client) return res.status(500).json({ message: "Supabase service role config missing" });
+  try {
+    const db = getDb();
+    const booking = body.booking;
 
-  let { error } = await client.from("bookings").insert(body.booking);
+    const validColumns = [
+      "user_id", "booking_reference", "package_id", "package_title", "destination", 
+      "duration", "travel_date", "travelers", "traveler_name", "first_name", 
+      "last_name", "room_type", "email", "phone", "total_amount", "airline", 
+      "departure_time", "payment_id", "payment_status", "payment_verified", 
+      "booking_terms", "booking_status", "email_sent"
+    ];
 
-  if (
-    error &&
-    /booking_terms|locked_price_per_person|locked_total_amount|is_locked|email_sent|booking_status|ticket_pdf_url|schema cache/i.test(
-      error.message
-    )
-  ) {
-    const legacyPayload = {
-      user_id: body.booking.user_id as string,
-      package_id: body.booking.package_id as string,
-      package_title: body.booking.package_title as string,
-      travelers: body.booking.travelers as number,
-      first_name: body.booking.first_name as string,
-      last_name: body.booking.last_name as string,
-      email: body.booking.email as string,
-      phone: body.booking.phone as string,
-      total_amount: body.booking.total_amount as number,
-      payment_status: body.booking.payment_status as string,
-      payment_verified: body.booking.payment_verified as boolean,
-      payment_id: body.booking.payment_id as string,
-      booking_reference: body.booking.booking_reference as string,
-    };
-    const retry = await client.from("bookings").insert(legacyPayload);
-    error = retry.error;
+    const filteredBooking: any = {};
+    validColumns.forEach(cat => {
+      if (booking[cat] !== undefined) filteredBooking[cat] = booking[cat];
+    });
+
+    const fields = Object.keys(filteredBooking);
+    const placeholders = fields.map(() => "?").join(", ");
+    const columns = fields.join(", ");
+    const values = fields.map(f => {
+      const val = filteredBooking[f];
+      if (f === "booking_terms" && val && typeof val === "object") return JSON.stringify(val);
+      if (typeof val === "boolean") return val ? 1 : 0;
+      return val;
+    });
+
+    const sql = `INSERT INTO bookings (${columns}) VALUES (${placeholders})`;
+
+    return new Promise<void>((resolve, reject) => {
+      db.run(sql, values, function (this: any, err: any) {
+        if (err) {
+          console.error("create-booking SQLite failed:", err);
+          return res.status(500).json({ message: err.message });
+        }
+        res.status(201).json({ message: "Booking saved", id: this.lastID });
+        resolve();
+      });
+    });
+  } catch (error: any) {
+    console.error("create-booking catch failed:", error);
+    return res.status(500).json({ message: error.message });
   }
-
-  if (error) return res.status(500).json({ message: error.message });
-  return res.status(201).json({ message: "Booking saved" });
 });
 
 router.get("/user-bookings", async (req: Request, res: Response) => {
@@ -633,6 +790,11 @@ router.post("/razorpay-webhook", async (req: Request, res: Response) => {
     const expected = crypto.createHmac("sha256", secret).update(rawBody).digest("hex");
     if (!signature || expected !== signature) return res.status(401).json({ message: "Invalid webhook signature" });
   }
+
+  if (!razorpay) {
+    return res.status(500).json({ message: "Razorpay is not configured on the server" });
+  }
+
   let payload: Record<string, unknown>;
   try {
     payload = JSON.parse(rawBody.toString("utf8")) as Record<string, unknown>;
