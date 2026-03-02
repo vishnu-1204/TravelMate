@@ -44,19 +44,19 @@ describe('validateRegister', () => {
   it('rejects when email is missing', () => {
     const result = validateRegisterLogic('', 'password123');
     expect(result.valid).toBe(false);
-    if (!result.valid) expect(result.message).toContain('required');
+    expect(result.valid === false && result.message).toContain('required');
   });
 
   it('rejects when password is missing', () => {
     const result = validateRegisterLogic('test@example.com', '');
     expect(result.valid).toBe(false);
-    if (!result.valid) expect(result.message).toContain('required');
+    expect(result.valid === false && result.message).toContain('required');
   });
 
   it('rejects invalid email format', () => {
     const result = validateRegisterLogic('not-an-email', 'password123');
     expect(result.valid).toBe(false);
-    if (!result.valid) expect(result.message).toContain('Invalid email');
+    expect(result.valid === false && result.message).toContain('Invalid email');
   });
 
   it('rejects email with no domain', () => {
@@ -72,14 +72,14 @@ describe('validateRegister', () => {
   it('rejects password shorter than 6 characters', () => {
     const result = validateRegisterLogic('test@example.com', '12345');
     expect(result.valid).toBe(false);
-    if (!result.valid) expect(result.message).toContain('at least 6');
+    expect(result.valid === false && result.message).toContain('at least 6');
   });
 
   it('rejects password longer than 128 characters', () => {
     const long = 'a'.repeat(129);
     const result = validateRegisterLogic('test@example.com', long);
     expect(result.valid).toBe(false);
-    if (!result.valid) expect(result.message).toContain('less than 128');
+    expect(result.valid === false && result.message).toContain('less than 128');
   });
 
   it('accepts exactly 128 character password', () => {

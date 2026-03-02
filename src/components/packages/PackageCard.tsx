@@ -111,7 +111,6 @@ export const PackageCard = ({
           </div>
         </div>
         <p className="text-muted-foreground text-sm mb-3 line-clamp-2 min-h-10">{shortDescription}</p>
-        <p className="text-muted-foreground text-sm mb-3 line-clamp-2 min-h-10">{shortDescription}</p>
         
  
 

@@ -14,102 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      bookings: {
-        Row: {
-          booking_reference: string | null
-          booking_status: string
-          booking_terms: Json | null
-          created_at: string
-          email_attempts: number
-          email_last_attempt_at: string | null
-          email_last_error: string | null
-          email_sent: boolean
-          email_sent_at: string | null
-          email: string
-          first_name: string
-          id: string
-          is_locked: boolean
-          last_name: string
-          locked_price_per_person: number | null
-          locked_total_amount: number | null
-          package_id: string
-          package_version_id: string | null
-          package_title: string
-          payment_id: string | null
-          payment_order_id: string | null
-          payment_status: string
-          payment_verified: boolean
-          phone: string
-          ticket_pdf_url: string | null
-          total_amount: number
-          travelers: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          booking_reference?: string | null
-          booking_status?: string
-          booking_terms?: Json | null
-          created_at?: string
-          email_attempts?: number
-          email_last_attempt_at?: string | null
-          email_last_error?: string | null
-          email_sent?: boolean
-          email_sent_at?: string | null
-          email: string
-          first_name: string
-          id?: string
-          is_locked?: boolean
-          last_name: string
-          locked_price_per_person?: number | null
-          locked_total_amount?: number | null
-          package_id: string
-          package_version_id?: string | null
-          package_title: string
-          payment_id?: string | null
-          payment_order_id?: string | null
-          payment_status?: string
-          payment_verified?: boolean
-          phone: string
-          ticket_pdf_url?: string | null
-          total_amount: number
-          travelers: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          booking_reference?: string | null
-          booking_status?: string
-          booking_terms?: Json | null
-          created_at?: string
-          email_attempts?: number
-          email_last_attempt_at?: string | null
-          email_last_error?: string | null
-          email_sent?: boolean
-          email_sent_at?: string | null
-          email?: string
-          first_name?: string
-          id?: string
-          is_locked?: boolean
-          last_name?: string
-          locked_price_per_person?: number | null
-          locked_total_amount?: number | null
-          package_id?: string
-          package_version_id?: string | null
-          package_title?: string
-          payment_id?: string | null
-          payment_order_id?: string | null
-          payment_status?: string
-          payment_verified?: boolean
-          phone?: string
-          ticket_pdf_url?: string | null
-          total_amount?: number
-          travelers?: number
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       booking_snapshots: {
         Row: {
           availability_lock: Json | null
@@ -159,6 +63,117 @@ export type Database = {
             columns: ["booking_id"]
             isOneToOne: true
             referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_snapshots_package_version_id_fkey"
+            columns: ["package_version_id"]
+            isOneToOne: false
+            referencedRelation: "package_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bookings: {
+        Row: {
+          booking_reference: string | null
+          booking_status: string
+          booking_terms: Json | null
+          created_at: string
+          email: string
+          email_attempts: number
+          email_last_attempt_at: string | null
+          email_last_error: string | null
+          email_sent: boolean
+          email_sent_at: string | null
+          first_name: string
+          id: string
+          is_locked: boolean
+          last_name: string
+          locked_price_per_person: number | null
+          locked_total_amount: number | null
+          package_id: string
+          package_title: string
+          package_version_id: string | null
+          payment_id: string | null
+          payment_order_id: string | null
+          payment_status: string
+          payment_verified: boolean
+          phone: string
+          ticket_pdf_url: string | null
+          total_amount: number
+          travelers: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          booking_reference?: string | null
+          booking_status?: string
+          booking_terms?: Json | null
+          created_at?: string
+          email: string
+          email_attempts?: number
+          email_last_attempt_at?: string | null
+          email_last_error?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
+          first_name: string
+          id?: string
+          is_locked?: boolean
+          last_name: string
+          locked_price_per_person?: number | null
+          locked_total_amount?: number | null
+          package_id: string
+          package_title: string
+          package_version_id?: string | null
+          payment_id?: string | null
+          payment_order_id?: string | null
+          payment_status?: string
+          payment_verified?: boolean
+          phone: string
+          ticket_pdf_url?: string | null
+          total_amount: number
+          travelers: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          booking_reference?: string | null
+          booking_status?: string
+          booking_terms?: Json | null
+          created_at?: string
+          email?: string
+          email_attempts?: number
+          email_last_attempt_at?: string | null
+          email_last_error?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
+          first_name?: string
+          id?: string
+          is_locked?: boolean
+          last_name?: string
+          locked_price_per_person?: number | null
+          locked_total_amount?: number | null
+          package_id?: string
+          package_title?: string
+          package_version_id?: string | null
+          payment_id?: string | null
+          payment_order_id?: string | null
+          payment_status?: string
+          payment_verified?: boolean
+          phone?: string
+          ticket_pdf_url?: string | null
+          total_amount?: number
+          travelers?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_package_version_id_fkey"
+            columns: ["package_version_id"]
+            isOneToOne: false
+            referencedRelation: "package_versions"
             referencedColumns: ["id"]
           },
         ]
