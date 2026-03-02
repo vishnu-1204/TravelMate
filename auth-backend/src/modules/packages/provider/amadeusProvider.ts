@@ -764,6 +764,7 @@ const getAmadeusActivityImage = async (token: string, lat: number, lon: number) 
   url.searchParams.set("latitude", String(lat));
   url.searchParams.set("longitude", String(lon));
   url.searchParams.set("radius", "20");
+  url.searchParams.set("view", "FULL");
 
   const response = await fetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },
@@ -784,6 +785,7 @@ const getAmadeusPoiImage = async (token: string, lat: number, lon: number) => {
   url.searchParams.set("latitude", String(lat));
   url.searchParams.set("longitude", String(lon));
   url.searchParams.set("radius", "20");
+  url.searchParams.set("view", "FULL");
 
   const response = await fetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },
