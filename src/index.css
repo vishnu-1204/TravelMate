@@ -177,18 +177,41 @@
 
 /* Auth Redesign Styles */
 :root {
-  --auth-navy: #131326;
-  --auth-sky: #38bdf8; /* sky-400 */
+  --auth-bg: #131326;
+  --auth-card: #1f1f2e;
+  --auth-accent: #38bdf8;
+  --auth-text-dim: #94a3b8;
 }
 
-.auth-input-container {
-  @apply relative w-full mb-4;
+.auth-split-layout {
+  @apply min-h-screen flex items-center justify-center bg-[#2d2d3a] p-4;
 }
 
-.auth-input {
-  @apply w-full bg-transparent border-2 border-[#38bdf8] rounded-full px-12 py-3 text-white placeholder:text-gray-400 focus:outline-none focus:ring-0 transition-all;
+.auth-container {
+  @apply w-full max-w-5xl bg-[#1f1f2e] rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px];
 }
 
-.auth-btn {
-  @apply w-full bg-[#38bdf8] text-white font-bold py-3 rounded-full hover:bg-[#7dd3fc] transition-all shadow-lg;
+.auth-sidebar {
+  @apply md:w-5/12 relative hidden md:block overflow-hidden;
 }
+
+.auth-sidebar-img {
+  @apply absolute inset-0 w-full h-full object-cover grayscale-[0.2] brightness-75;
+}
+
+.auth-content {
+  @apply md:w-7/12 p-8 md:p-16 flex flex-col justify-center bg-[#1f1f2e];
+}
+
+.auth-input-new {
+  @apply w-full bg-[#2d2d3a] border border-[#3d3d4a] rounded-xl px-4 py-3.5 text-white placeholder:text-[#64748b] focus:outline-none focus:ring-2 focus:ring-[#38bdf8]/50 transition-all;
+}
+
+.auth-btn-primary {
+  @apply w-full bg-[#38bdf8] text-black font-bold py-3.5 rounded-xl hover:bg-[#7dd3fc] transition-all shadow-lg active:scale-[0.98];
+}
+
+.auth-btn-social {
+  @apply flex-1 flex items-center justify-center gap-3 border border-[#3d3d4a] rounded-xl py-3 hover:bg-[#2d2d3a] transition-all text-sm font-medium text-white;
+}
+

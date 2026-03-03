@@ -5,6 +5,7 @@ export type BookingEmailDetails = {
   destination?: string;
   duration: string;
   price: string;
+  refundPrice?: string;
   bookingReference: string;
   travelDate: string;
   travelers?: number;

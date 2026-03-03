@@ -11,6 +11,7 @@ type PackageImageProps = {
   loading?: 'lazy' | 'eager';
   priority?: boolean;
   onErrorSrc?: string;
+  packageId?: string;
 };
 
 /* ── Segment hints appended to fallback search keywords ── */
@@ -125,6 +126,8 @@ const needsDynamicImage = (url: string): boolean => {
   if (lower.includes('placeholder')) return true;
   if (lower.includes('test-image')) return true;
   if (lower.includes('sample-image')) return true;
+  if (lower.includes('ftketypeknq')) return true;
+  if (lower.includes('nydo21ssgao')) return true;
   return false;
 };
 
@@ -189,6 +192,7 @@ export const PackageImage = ({
   loading = 'lazy',
   priority = false,
   onErrorSrc = '/placeholder.svg',
+  packageId,
 }: PackageImageProps) => {
   const normalizedQuery = normalizeQuery(imageQuery || alt || category || 'travel');
   const instanceId = useRef(++globalRenderCounter);
@@ -201,8 +205,8 @@ export const PackageImage = ({
       return rawSrc;
     }
 
-    // Generate a unique curated image using instance counter
-    const uniqueSeed = hashSeed(`${normalizedQuery}-${category || ''}-${instanceId.current}`);
+    // Generate a unique curated image using packageId for stability
+    const uniqueSeed = hashSeed(`${normalizedQuery}-${category || ''}-${packageId || instanceId.current}`);
     return getDestinationImage(normalizedQuery, uniqueSeed);
   }, [src, forceDynamic, normalizedQuery, category]);
 
@@ -213,10 +217,9 @@ export const PackageImage = ({
   }, [resolvedBaseSrc]);
 
   const fallbackSrc = useMemo(() => {
-    const city = extractCityName(normalizedQuery);
-    const hint = getSegmentHint(category, alt);
-    return `https://source.unsplash.com/featured/800x600?${encodeURIComponent(city + ',travel' + hint)}`;
-  }, [normalizedQuery, category, alt]);
+    const uniqueSeed = hashSeed(`${normalizedQuery}-${category || ''}-fallback`);
+    return getDestinationImage(normalizedQuery, uniqueSeed);
+  }, [normalizedQuery, category]);
 
   return (
     <img

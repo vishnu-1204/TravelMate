@@ -296,7 +296,7 @@ const normalizeDurationDays = (departureDate: string, returnDate: string) => {
   const returnMs = new Date(returnDate).getTime();
   const diffDays = Math.ceil((returnMs - departureMs) / DAY_MS);
   const safeDays = Number.isFinite(diffDays) && diffDays > 0 ? diffDays : 4;
-  return clamp(safeDays, 2, 5);
+  return clamp(safeDays, 2, 12);
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
@@ -829,11 +829,13 @@ const DESTINATION_IMAGES: Record<string, string[]> = {
     'https://images.unsplash.com/photo-1590603784197-88989528d22d', // Kerala Houseboat
     'https://images.unsplash.com/photo-1593179357196-ea11a2e7c119', // Munnar Hills
   ],
-  'coorg|chikmagalur|ooty|kodaikanal': [
-    'https://images.unsplash.com/photo-1521292270410-a8c4d716d518', // Lush green hills (Coorg style)
-    'https://images.unsplash.com/photo-1527631746610-bca00a040d60', // Coffee plantation
-    'https://images.unsplash.com/photo-1582239460021-e00f5fb9fbd4', // Ooty Toy Train
-    'https://images.unsplash.com/photo-1501785888041-af3ef285b470', // Kodaikanal Lake
+  'coorg|chikmagalur|ooty|kodaikanal|madurai|rameswaram|kanyakumari': [
+    'https://images.unsplash.com/photo-1521292270410-a8c4d716d518', // Lush green hills
+    'https://images.unsplash.com/photo-1527631746610-bca00a040d60', // Plantations
+    'https://images.unsplash.com/photo-1582239460021-e00f5fb9fbd4', // Hill station train
+    'https://images.unsplash.com/photo-1501785888041-af3ef285b470', // Lake/Scenic
+    'https://images.unsplash.com/photo-1580537659466-0a9bfa916a54', // Temple Architecture (South)
+    'https://images.unsplash.com/photo-1621341038038-7096d2e0524b', // Madurai Meenakshi Temple style
   ],
   'hampi|badami|pattadakal|belur|halebidu': [
     'https://images.unsplash.com/photo-1598091383021-15ddea10925d', // Hampi Rocks
@@ -998,6 +1000,8 @@ const generateRandomGroupDepartures = (seed: number) => {
   return departures;
 };
 
+import { getDeterministicGuideInfo } from '../service/guideUtils';
+
 const createSmartPackage = async ({
   destination,
   destinationLabel,
@@ -1050,7 +1054,7 @@ const createSmartPackage = async ({
     destination: destinationLabel,
     category,
     budgetType,
-    variantSeed: `${destination.destination}-${destination.departureDate}-${variantSeed}`,
+    variantSeed: `${destination.destination}-${destination.departureDate}-${durationDays}-${variantSeed}`,
     latitude,
     longitude,
     cityCode: destination.destination.length === 3 ? destination.destination : undefined,
@@ -1068,6 +1072,8 @@ const createSmartPackage = async ({
   });
   const trendingScore = Number(((rating * reviews) / 100 + affordabilityScore / 25).toFixed(2));
   const imageAlt = `${destinationLabel} ${CATEGORY_LABELS[category]} package image`;
+
+  const guideInfo = getDeterministicGuideInfo(packageId);
 
   return {
     id: packageId,
@@ -1146,7 +1152,35 @@ const createSmartPackage = async ({
     badges: { bestValue: false, mostAffordable: false },
     popularityScore: Math.round(rating * 20 + Math.log10(Math.max(10, reviews)) * 22),
     nearbyAlternatives: [],
+    guideName: guideInfo.name,
+    guidePhone: guideInfo.phone,
   };
+};
+
+const deduplicatePackagesByDestination = (packages: TravelPackage[]): TravelPackage[] => {
+  const groups = new Map<string, TravelPackage[]>();
+  
+  packages.forEach(pkg => {
+    const key = pkg.destination.toLowerCase().trim();
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(pkg);
+  });
+
+  return Array.from(groups.values()).map(variants => {
+    if (variants.length === 1) return variants[0];
+
+    // Priority 1: Duration closest to 5 days
+    // Priority 2: Higher trendingScore
+    // Priority 3: Higher rating
+    return variants.sort((a, b) => {
+      const distA = Math.abs(a.durationDays - 5);
+      const distB = Math.abs(b.durationDays - 5);
+      if (distA !== distB) return distA - distB;
+      
+      if (b.trendingScore !== a.trendingScore) return b.trendingScore - a.trendingScore;
+      return b.rating - a.rating;
+    })[0];
+  });
 };
 
 const createPackageFromDestination = async (
@@ -1220,7 +1254,7 @@ const generateStateBasedDomesticPackages = async (baseDate: Date): Promise<Trave
       const combo = combos[variantIndex];
       const destinationLabel = joinAttractionsForTitle(combo);
       const locationLabel = `${combo.join(", ")}, ${stateConfig.state}, India`;
-      const durationDays = 2 + ((variantIndex + stateIndex) % 4); // 2..5
+      const durationDays = 3 + ((variantIndex + stateIndex) % 6); // 3..8
       const departure = new Date(baseDate.getTime() + (5 + stateIndex * 2 + variantIndex * 4) * DAY_MS);
       const arrival = new Date(departure.getTime() + (durationDays - 1) * DAY_MS);
       const fareUsd = 55 + stateIndex * 4 + variantIndex * 3;
@@ -1296,7 +1330,7 @@ const generateFallbackPackages = async (): Promise<TravelPackage[]> => {
   for (let destinationIndex = 0; destinationIndex < limitedInternationalDestinations.length; destinationIndex += 1) {
     const entry = limitedInternationalDestinations[destinationIndex];
     for (let variantIndex = 0; variantIndex < 3; variantIndex += 1) {
-      const durationDays = 3 + ((destinationIndex + variantIndex) % 3);
+      const durationDays = 4 + ((destinationIndex + variantIndex) % 5); // 4..8
       const departure = new Date(baseDate.getTime() + (10 + destinationIndex * 3 + variantIndex * 9) * DAY_MS);
       const arrival = new Date(departure.getTime() + (durationDays - 1) * DAY_MS);
       const synthetic: FlightDestination = {
@@ -1321,7 +1355,7 @@ const generateFallbackPackages = async (): Promise<TravelPackage[]> => {
 
   const international = internationalGenerated.slice(0, MAX_INTL_PACKAGES);
   const ordered = [...domestic, ...groupTours, ...international].sort((a, b) => b.trendingScore - a.trendingScore);
-  return ordered.slice(0, Math.max(config.packageFetchLimit, 80));
+  return deduplicatePackagesByDestination(ordered).slice(0, Math.max(config.packageFetchLimit, 80));
 };
 
 export const fetchAmadeusPackages = async (): Promise<TravelPackage[]> => {
@@ -1390,7 +1424,7 @@ export const fetchAmadeusPackages = async (): Promise<TravelPackage[]> => {
     return b.trendingScore - a.trendingScore;
   });
 
-  return ordered;
+  return deduplicatePackagesByDestination(ordered);
 };
 
 export const searchFlightOffers = async (

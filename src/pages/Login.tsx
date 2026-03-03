@@ -79,103 +79,138 @@ const Login = () => {
 
   return (
     <PageTransition>
-      <div 
-        className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center bg-no-repeat relative"
-        style={{ backgroundImage: 'url("/images/auth-bg.png")' }}
-      >
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
-
-        {/* Auth Card */}
-        <div className="w-full max-w-[440px] bg-[#282828] rounded-lg shadow-2xl p-8 md:p-12 flex flex-col items-center relative z-10">
-          
-          {/* Brand Logo */}
-          <div className="flex flex-col items-center mb-10">
-            <span className="text-4xl font-bold text-white tracking-tight">
-              Travel<span className="text-sky-400">Mate</span>
-            </span>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex gap-10 mb-10 w-full justify-center">
-            <button className="text-sm font-bold text-white relative py-2">
-              SIGN IN
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-sky-400" />
-            </button>
-            <Link to="/register" className="text-sm font-bold text-gray-400 hover:text-white transition-colors py-2">
-              SIGN UP
-            </Link>
-          </div>
-
-          {/* Feedback Messages */}
-          {signupMessage && (
-            <div className="w-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-3 rounded-xl mb-6 text-xs text-center">
-              {signupMessage}
-            </div>
-          )}
-
-          {error && (
-            <div className="w-full bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-6 text-xs text-center">
-              {error}
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="w-full space-y-4">
-            <div className="space-y-4">
-              <input
-                type="email"
-                placeholder="Username or Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-6 py-4 rounded-full bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all font-medium"
-                required
-              />
+      <div className="auth-split-layout">
+        <div className="auth-container">
+          {/* Left Sidebar - Image & Brand */}
+          <div className="auth-sidebar">
+            <img 
+              src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" 
+              alt="Scenic Travel" 
+              className="auth-sidebar-img"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#131326]/80 via-transparent to-transparent z-10" />
+            
+            <div className="relative z-20 p-12 h-full flex flex-col">
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-white tracking-tight">
+                  Travel<span className="text-sky-400">Mate</span>
+                </span>
+                <Link to="/" className="text-sm font-medium text-white/80 hover:text-white flex items-center gap-2 transition-colors">
+                  Back to website <span className="text-lg">→</span>
+                </Link>
+              </div>
               
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-6 py-4 rounded-full bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all font-medium pr-16"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              <div className="mt-auto">
+                <h2 className="text-4xl font-bold text-white leading-tight mb-4">
+                  Capturing Moments,<br />Creating Memories
+                </h2>
+                <div className="flex gap-2">
+                  <div className="w-8 h-1 bg-white/30 rounded-full" />
+                  <div className="w-8 h-1 bg-white/30 rounded-full" />
+                  <div className="w-8 h-1 bg-white rounded-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Content - Form */}
+          <div className="auth-content">
+            <div className="max-w-md w-full mx-auto">
+              <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
+              <p className="text-[#94a3b8] text-sm mb-10">
+                Don't have an account? <Link to="/register" className="text-sky-400 hover:text-sky-400 font-medium ml-1 transition-colors">Sign up</Link>
+              </p>
+
+              {/* Feedback Messages */}
+              {signupMessage && (
+                <div className="w-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-3 rounded-xl mb-6 text-xs text-center">
+                  {signupMessage}
+                </div>
+              )}
+
+              {error && (
+                <div className="w-full bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-6 text-xs text-center">
+                  {error}
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-4">
+                  <div className="relative">
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="auth-input-new"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="auth-input-new pr-12"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#64748b] hover:text-sky-300 transition-colors"
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between px-1">
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <input 
+                      type="checkbox" 
+                      className="w-4 h-4 rounded-md border-[#3d3d4a] bg-[#2d2d3a] text-sky-400 focus:ring-sky-400/50 transition-colors cursor-pointer" 
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                    <span className="text-sm text-[#94a3b8] group-hover:text-white transition-colors tracking-tight">Stay signed in</span>
+                  </label>
+                  <Link to="/forgot-password"  className="text-sm font-medium text-sky-400 hover:text-sky-400 transition-colors">
+                    Forgot Password?
+                  </Link>
+                </div>
+
+                <button 
+                  type="submit" 
+                  disabled={loading} 
+                  className="auth-btn-primary mt-4 flex items-center justify-center gap-2"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Sign in"}
+                </button>
+              </form>
+
+              <div className="relative my-10">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-[#3d3d4a]"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-[#1f1f2e] px-4 text-[#64748b]">Or continue with</span>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <button className="auth-btn-social">
+                  <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+                  <span>Google</span>
+                </button>
+                <button className="auth-btn-social">
+                  <img src="https://www.svgrepo.com/show/442938/apple-logo.svg" alt="Apple" className="w-5 h-5 invert" />
+                  <span>Apple</span>
                 </button>
               </div>
             </div>
-
-            <div className="flex items-center gap-2 px-2 py-2">
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input 
-                  type="checkbox" 
-                  className="w-4 h-4 rounded-sm bg-[#535353] border-none checked:bg-sky-400 focus:ring-offset-0 focus:ring-0 transition-colors cursor-pointer" 
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                />
-                <span className="text-xs font-bold text-gray-300 group-hover:text-white transition-colors">stay signed in</span>
-              </label>
-            </div>
-
-            <button 
-              type="submit" 
-              disabled={loading} 
-              className="w-full bg-sky-400 text-black py-4 rounded-full font-bold text-sm tracking-wider hover:bg-sky-300 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2 mt-4 shadow-lg shadow-sky-400/10"
-            >
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "SIGN IN"}
-            </button>
-          </form>
-
-          {/* Footer Link */}
-          <Link to="/forgot-password"  className="mt-10 text-xs font-bold text-gray-400 hover:text-sky-400 transition-colors tracking-wide">
-            Forgot Password?
-          </Link>
+          </div>
         </div>
       </div>
     </PageTransition>

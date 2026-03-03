@@ -91,6 +91,8 @@ export type TravelPackage = {
   popularityScore: number;
   nearbyAlternatives: string[];
   groupFormLink?: string;
+  guideName: string;
+  guidePhone: string;
 };
 
 export type PackageQuery = {
@@ -696,8 +698,9 @@ const normalizePackage = (pkg: RawPackage): TravelPackage => {
     lastUpdatedAt: String(pkg.lastUpdatedAt || DEFAULT_REFRESHED_AT),
     isGroupTour: Boolean(pkg.isGroupTour),
     groupDepartures: Array.isArray(pkg.groupDepartures) ? pkg.groupDepartures : [],
+    guideName: String(pkg.guideName || 'Rahul Sharma'),
+    guidePhone: String(pkg.guidePhone || '+91 98765 43210'),
   };
-
   const categorized = applyCategorization(normalized);
 
   const pricingTier =
@@ -779,18 +782,35 @@ const normalizeKeyToken = (value: string) => value.toLowerCase().replace(/[^a-z0
 
 const buildPackageDuplicateKey = (pkg: TravelPackage) =>
   [
-    normalizeKeyToken(pkg.title),
     normalizeKeyToken(pkg.destination),
     normalizeKeyToken(pkg.location),
     normalizeKeyToken(pkg.country || ''),
   ].join('|');
 
 const pickCanonicalPackage = (existing: TravelPackage, candidate: TravelPackage) => {
-  if (candidate.price < existing.price) return candidate;
-  if (candidate.price > existing.price) return existing;
+  const targetDays = 5;
+  const distExisting = Math.abs(existing.durationDays - targetDays);
+  const distCandidate = Math.abs(candidate.durationDays - targetDays);
+
+  // 1. Prioritize closer to 5 days
+  if (distCandidate < distExisting) return candidate;
+  if (distCandidate > distExisting) return existing;
+
+  // 2. Prioritize higher rating
   if (candidate.rating > existing.rating) return candidate;
   if (candidate.rating < existing.rating) return existing;
+
+  // 3. Prioritize higher trending score
+  if (candidate.trendingScore > existing.trendingScore) return candidate;
+  if (candidate.trendingScore < existing.trendingScore) return existing;
+
+  // 4. Prioritize higher review count
   if (candidate.reviews > existing.reviews) return candidate;
+  if (candidate.reviews < existing.reviews) return existing;
+
+  // 5. Prioritize lower price
+  if (candidate.price < existing.price) return candidate;
+
   return existing;
 };
 
@@ -954,25 +974,33 @@ export const getPackagesPage = async (query: PackageQuery = {}): Promise<Package
         withQueryPricing(normalizePackage(pkg as RawPackage), query)
       );
 
-      if (normalizedPackages.length === 0 && (query.search || query.destination)) {
-         // If backend returns nothing for search, we might want to check local too
-         // But for now, let's just stick to the main fallback in catch
-      }
+      // Get filtered local packages to merge with backend results
+      const localResult = getPackagesPageFromLocal(query);
+      
+      // Merge backend and local results
+      const mergedPackages = [...normalizedPackages];
+      localResult.packages.forEach(lp => {
+         // Add local packages. deduplicatePackages will handle canonical selection.
+         mergedPackages.push(lp);
+      });
 
-      const dedupedPackages = deduplicatePackages(normalizedPackages);
+      const dedupedPackages = deduplicatePackages(mergedPackages);
 
-      if (dedupedPackages.length === 0 && !query.search && !query.destination) {
-        return getPackagesPageFromLocal(query);
-      }
+      // Re-sort the merged list
+      const sortBy = payload.sortBy || query.sortBy || 'trending';
+      const sortOrder = payload.sortOrder || query.sortOrder || 'desc';
+      dedupedPackages.sort((a, b) => comparePackages(a, b, sortBy, sortOrder));
+
+      const finalPackages = dedupedPackages.slice(query.offset || 0, (query.offset || 0) + (query.limit || 12));
 
       return {
-        packages: dedupedPackages,
-        count: dedupedPackages.length,
-        total: payload.total,
-        offset: typeof payload.offset === 'number' ? payload.offset : query.offset || 0,
-        limit: typeof payload.limit === 'number' ? payload.limit : query.limit || 12,
-        sortBy: payload.sortBy || query.sortBy || 'trending',
-        sortOrder: payload.sortOrder || query.sortOrder || 'desc',
+        packages: finalPackages,
+        count: finalPackages.length,
+        total: Math.max(payload.total || 0, localResult.total),
+        offset: query.offset || 0,
+        limit: query.limit || 12,
+        sortBy,
+        sortOrder,
         source: payload.source || 'cache',
         refreshedAt: payload.refreshedAt || DEFAULT_REFRESHED_AT,
       } satisfies PackagesPage;

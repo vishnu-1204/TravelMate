@@ -666,16 +666,24 @@ router.get("/user-bookings", async (req: Request, res: Response) => {
   try {
     const { getDb } = require("../db");
     const db = getDb();
+    console.log(`[user-bookings] Fetched db instance for ${userId}`);
     const rows = await new Promise<any[]>((resolve, reject) => {
+      console.log(`[user-bookings] Executing db.all for ${userId}`);
       db.all(
         `SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC`,
         [userId],
         (err: Error | null, rows: any[]) => {
-          if (err) reject(err);
-          else resolve(rows);
+          if (err) {
+            console.error(`[user-bookings] DB query error:`, err);
+            reject(err);
+          } else {
+            console.log(`[user-bookings] DB query success, rows: ${rows ? rows.length : 0}`);
+            resolve(rows);
+          }
         }
       );
     });
+    console.log(`[user-bookings] Proceeding to map rows`);
 
     // Map local SQLite rows to match the expected frontend BookingRow format
     const localBookings = rows.map((row) => ({
@@ -686,6 +694,7 @@ router.get("/user-bookings", async (req: Request, res: Response) => {
       travelers: row.travelers,
       total_amount: row.total_amount,
       payment_status: row.payment_status,
+      booking_status: row.booking_status,
       payment_verified: row.payment_status === "paid" || row.payment_status === "confirmed",
       is_locked: true,
       locked_price_per_person: row.total_amount / (row.travelers || 1),
@@ -725,6 +734,184 @@ router.post("/resend-confirmation", async (req: Request, res: Response) => {
   } catch (error) {
     console.error("resend-confirmation failed:", error);
     return res.status(500).json({ message: "Failed to resend confirmation email" });
+  }
+});
+
+// Helper to calculate exact departure timestamp
+function getExactDepartureDate(travelDateStr: string, departureTimeStr?: string | null): Date {
+  const dateObj = new Date(travelDateStr);
+  if (!departureTimeStr) return dateObj;
+
+  const match = departureTimeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+  if (match) {
+    let hours = parseInt(match[1], 10);
+    const minutes = parseInt(match[2], 10);
+    const isPM = match[3]?.toUpperCase() === 'PM';
+    const isAM = match[3]?.toUpperCase() === 'AM';
+
+    if (isPM && hours < 12) hours += 12;
+    if (isAM && hours === 12) hours = 0;
+
+    dateObj.setHours(hours, minutes, 0, 0);
+  }
+  return dateObj;
+}
+
+router.get("/details/:reference", async (req: Request, res: Response) => {
+  const { reference } = req.params;
+  const { userId } = req.query as { userId?: string };
+
+  if (!userId) return res.status(401).json({ message: "userId is required to view booking details" });
+
+  try {
+    const { getDb } = require("../db");
+    const db = getDb();
+
+    const row = await new Promise<any>((resolve, reject) => {
+      db.get(
+        `SELECT booking_reference, package_title, travel_date, departure_time, total_amount, booking_status FROM bookings WHERE booking_reference = ? AND user_id = ?`,
+        [reference, userId],
+        (err: Error | null, row: any) => {
+          if (err) reject(err);
+          else resolve(row);
+        }
+      );
+    });
+
+    if (!row) return res.status(404).json({ message: "Booking not found or unauthorized" });
+    if (row.booking_status === 'cancelled') return res.status(400).json({ message: "Booking is already cancelled" });
+
+    // Calculate Refund Eligibility
+    // Calculate Refund Eligibility using exact departure time
+    const travelDate = getExactDepartureDate(row.travel_date, row.departure_time);
+    const now = new Date();
+    const diffInMs = travelDate.getTime() - now.getTime();
+    const diffInHours = diffInMs / (1000 * 60 * 60);
+
+    let refundAmount = 0;
+    let refundable = false;
+
+    if (diffInHours > 48) {
+        refundAmount = row.total_amount;
+        refundable = true;
+    } else if (diffInHours > 0) {
+        refundAmount = row.total_amount * 0.5;
+        refundable = true;
+    }
+
+    return res.status(200).json({
+      bookingReference: row.booking_reference,
+      packageTitle: row.package_title,
+      travelDate: row.travel_date,
+      totalAmount: row.total_amount,
+      refundAmount: refundAmount,
+      isCancellable: refundable
+    });
+  } catch (error: any) {
+    console.error("[booking/details] Error:", error);
+    return res.status(500).json({ message: "Failed to fetch booking details" });
+  }
+});
+
+router.post("/cancel", async (req: Request, res: Response) => {
+  const { bookingReference, userId, cancellationReason } = req.body as { bookingReference?: string; userId?: string; cancellationReason?: string };
+  
+  if (!bookingReference || !userId || !cancellationReason) {
+    return res.status(400).json({ message: "bookingReference, userId, and cancellationReason are required" });
+  }
+
+  try {
+    const { getDb } = require("../db");
+    const db = getDb();
+
+    // Check if the booking exists and belongs to the user
+    const row = await new Promise<any>((resolve, reject) => {
+      db.get(
+        `SELECT * FROM bookings WHERE booking_reference = ? AND user_id = ?`,
+        [bookingReference, userId],
+        (err: Error | null, row: any) => {
+          if (err) reject(err);
+          else resolve(row);
+        }
+      );
+    });
+
+    if (!row) {
+      return res.status(404).json({ message: "Booking not found or unauthorized" });
+    }
+
+    // Ensure we can only cancel 'confirmed' or 'paid' bookings (not ones already cancelled)
+    if (row.booking_status === 'cancelled') {
+      return res.status(400).json({ message: "Booking is already cancelled" });
+    }
+
+    // Backend validation of travel date vs current date
+    // Backend validation of travel date vs current date using exact departure time
+    const travelDate = getExactDepartureDate(row.travel_date, row.departure_time);
+    const now = new Date();
+    const diffInMs = travelDate.getTime() - now.getTime();
+    const diffInHours = diffInMs / (1000 * 60 * 60);
+
+    let refundAmount = 0;
+    if (diffInHours > 48) {
+        refundAmount = row.total_amount;
+    } else if (diffInHours > 0) {
+        refundAmount = row.total_amount * 0.5;
+    } else {
+        return res.status(400).json({ message: "Travel date passed. Cannot cancel." });
+    }
+
+    // Update the booking status to cancelled with reason and timestamp
+    await new Promise<void>((resolve, reject) => {
+      db.run(
+        `UPDATE bookings SET booking_status = 'cancelled', payment_status = 'refunded', cancellation_reason = ?, cancelled_at = CURRENT_TIMESTAMP, refund_amount = ? WHERE booking_reference = ? AND user_id = ?`,
+        [cancellationReason, refundAmount, bookingReference, userId],
+        function (this: any, err: Error | null) {
+          if (err) {
+            console.error("[booking/cancel] Update error:", err);
+            reject(err);
+          } else if (this.changes === 0) {
+             reject(new Error("No rows updated"));
+          } else {
+             resolve();
+          }
+        }
+      );
+    });
+
+    // Send Cancellation Email
+    try {
+      const { sendCancellationEmail } = require("../services/email.service");
+      const user = await new Promise<any>((resolve) => {
+         db.get(`SELECT email FROM users WHERE id = ?`, [userId], (err: any, u: any) => resolve(u));
+      });
+      if (user) {
+        // Build BookingEmailDetails from row
+        const bookingDetails = {
+           packageTitle: row.package_title,
+           destination: row.destination,
+           duration: row.duration,
+           travelers: row.travelers,
+           totalAmount: row.total_amount,
+           paymentStatus: 'refunded',
+           airline: row.airline,
+           departureTime: row.departure_time,
+           bookingReference: row.booking_reference,
+           travelDate: row.travel_date,
+           checkIn: undefined,
+           checkOut: undefined
+        };
+        await sendCancellationEmail({ email: user.email, name: row.first_name ? `${row.first_name} ${row.last_name || ''}` : undefined }, bookingDetails, cancellationReason, refundAmount);
+      }
+    } catch (emailErr) {
+       console.error("[booking/cancel] Failed to send cancellation email:", emailErr);
+       // We don't fail the request if just the email fails
+    }
+
+    return res.status(200).json({ message: "Booking cancelled successfully" });
+  } catch (error: any) {
+    console.error("[booking/cancel] Catch error:", error);
+    return res.status(500).json({ message: error.message || "Failed to cancel booking" });
   }
 });
 
@@ -1389,6 +1576,124 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
       return res.status(409).json({ message: "Booking reference already exists" });
     }
     return res.status(500).json({ message: error.message || "Failed to save booking" });
+  }
+});
+
+router.post("/simulate-payment", async (req: Request, res: Response) => {
+  const { package: packageTitle, amount, email, bookingId, customerName } = req.body;
+  
+  if (!packageTitle || !amount || !email || !bookingId || !customerName) {
+    return res.status(400).json({ message: "Missing required fields: package, amount, email, bookingId, customerName" });
+  }
+
+  try {
+    const db = getDb();
+    
+    // Try to find user_id by email to link to an actual account if possible
+    const userRow = await new Promise<any>((resolve) => {
+      db.get("SELECT id FROM users WHERE email = ?", [email], (err, row) => resolve(row));
+    });
+    
+    const userId = userRow ? String(userRow.id) : "SIMULATED_USER";
+
+    // Insert into local SQLite bookings table
+    await new Promise<void>((resolve, reject) => {
+      db.run(
+        `INSERT INTO bookings
+          (user_id, booking_reference, package_title, email, traveler_name, total_amount, payment_status, booking_status, payment_verified)
+         VALUES (?, ?, ?, ?, ?, ?, 'paid', 'confirmed', 1)`,
+        [userId, bookingId, packageTitle, email, customerName, amount],
+        function (err) {
+          if (err) reject(err);
+          else resolve();
+        }
+      );
+    });
+
+    logger(`[booking/simulate-payment] Saved simulated booking ${bookingId} for ${email}`);
+
+    // Trigger confirmation email asynchronously
+    const hasEmailConfig = (config.resendApiKey && config.resendFrom) || (config.smtpUser && config.smtpPass);
+    if (hasEmailConfig) {
+      setImmediate(async () => {
+        logger(`[booking/simulate-payment] Starting async email process for ${bookingId}`);
+        try {
+          const payload: EmailPayload = {
+            fullName: customerName,
+            email: email,
+            phone: "-",
+            bookingReference: bookingId,
+            bookingId: bookingId,
+            paymentId: "SIMULATED_PAYMENT",
+            packageTitle: packageTitle,
+            destination: packageTitle,
+            travelDate: "TBA",
+            passengers: 1,
+            totalAmount: Number(amount),
+            travelCategory: "Simulation",
+            itineraryDays: [],
+            itineraryNights: [],
+            transportDetails: "-",
+            activities: [],
+            checkIn: "-",
+            checkOut: "-",
+            emergencyContact: config.supportPhone || "+91 9342180670",
+            travelGuidelines: ["This is a simulated booking for demonstration purposes."],
+            documentsToCarry: ["Government ID", "Simulated Booking Receipt"],
+            importantNotes: ["Payment was processed via simulation mode."],
+            duration: "-",
+            airline: "-",
+            departureTime: "-",
+            arrivalTime: "-",
+            included: [],
+            excluded: [],
+          };
+
+          const pdf = await generateTicketPdf(payload);
+          
+          await sendBookingConfirmation(
+            { email, name: customerName },
+            {
+              bookingReference: bookingId,
+              packageTitle: packageTitle,
+              travelDate: "TBA",
+              totalAmount: Number(amount),
+              supportEmail: config.supportEmail,
+              supportPhone: config.supportPhone,
+              duration: "-",
+              airline: "-",
+              departureTime: "-",
+              arrivalTime: "-",
+              itinerarySummary: [],
+              included: [],
+              excluded: [],
+            },
+            {
+              attachment: {
+                filename: `TravelMate-Ticket-SIM-${bookingId}.pdf`,
+                content: pdf,
+                contentType: "application/pdf",
+              },
+            }
+          );
+
+          // Mark email as sent in SQLite
+          db.run(`UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`, [bookingId]);
+          logger(`[booking/simulate-payment] Confirmation email successfully dispatched for ${bookingId}`);
+        } catch (emailErr: any) {
+          logger(`[booking/simulate-payment] Simulation email failed for ${bookingId}:`, emailErr.message);
+        }
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Payment successful (Simulated)",
+      bookingId
+    });
+  } catch (error: any) {
+    logger("[booking/simulate-payment] Error:", error.message);
+    return res.status(500).json({ message: "Failed to process simulated payment", error: error.message });
   }
 });
 

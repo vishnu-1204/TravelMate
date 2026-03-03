@@ -39,7 +39,7 @@ export const config = {
   brandLogoUrl: process.env.BRAND_LOGO_URL || "",
   bookingTicketsBucket: process.env.SUPABASE_BOOKING_TICKETS_BUCKET || "booking-tickets",
   razorpayWebhookSecret: process.env.RAZORPAY_WEBHOOK_SECRET || "",
-  frontendUrl: process.env.FRONTEND_URL || "http://localhost:8080",
+  frontendUrl: process.env.FRONTEND_URL || "http://localhost:8081",
   supabaseUrl: process.env.SUPABASE_URL || "",
   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || "",
   pexelsApiKey: process.env.PEXELS_API_KEY || "",

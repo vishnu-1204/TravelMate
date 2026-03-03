@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cancel Booking - TravelMate</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom simple styling to match the main app aesthetic based on payment.html */
+    body {
+      background-color: #f8fafc;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col pt-12">
+  <div class="container mx-auto max-w-2xl px-4 flex-grow">
+    
+    <div class="flex items-center gap-2 mb-8 cursor-pointer text-slate-600 hover:text-slate-900 transition-colors w-fit" onclick="goBack()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      <span class="font-medium text-sm">Back to My Bookings</span>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="bg-slate-900 px-6 py-4 text-white">
+        <h1 class="text-xl font-bold">Booking Cancellation</h1>
+        <p class="text-slate-300 text-sm mt-1">Please provide a reason for cancelling your trip.</p>
+      </div>
+
+      <div id="loading-state" class="p-8 text-center text-slate-500">
+        <svg class="animate-spin h-8 w-8 mx-auto mb-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p>Loading booking details...</p>
+      </div>
+
+      <div id="error-state" class="p-8 text-center text-red-500 hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-red-500"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <p id="error-message" class="font-medium">Failed to load booking.</p>
+        <button onclick="goBack()" class="mt-4 px-4 py-2 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 transition-colors text-sm font-medium">Return to My Bookings</button>
+      </div>
+
+      <div id="success-state" class="p-8 text-center text-emerald-600 hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-emerald-500"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <h2 class="text-2xl font-bold mb-2">Cancelled Successfully</h2>
+        <p class="text-slate-600 mb-6">Your booking has been cancelled and a confirmation email has been sent.</p>
+        <p class="text-sm text-slate-500">Redirecting you back in <span id="countdown">2</span> seconds...</p>
+      </div>
+
+      <form id="cancel-form" class="p-6 sm:p-8 hidden">
+        
+        <div class="bg-slate-50 rounded-xl p-5 border border-slate-100 mb-8">
+          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider pl-1 mb-4">Trip Details</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-slate-500 mb-1">Booking ID</p>
+              <p id="display-id" class="font-medium text-slate-900">-</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-500 mb-1">Amount Paid</p>
+              <p id="display-amount" class="font-medium text-slate-900">-</p>
+            </div>
+            <div class="sm:col-span-2 bg-emerald-50 rounded-lg p-3 border border-emerald-100 hidden" id="refund-container">
+              <p class="text-xs text-emerald-600 font-bold mb-1 uppercase tracking-wider">Refund Eligible</p>
+              <p id="display-refund" class="font-bold text-emerald-700 text-lg">-</p>
+            </div>
+            <div class="sm:col-span-2 bg-rose-50 rounded-lg p-3 border border-rose-100 hidden" id="no-refund-container">
+              <p id="error-refund" class="font-bold text-rose-700 text-sm">Cancellation not allowed. Travel date already started.</p>
+            </div>
+            <div class="sm:col-span-2">
+              <p class="text-xs text-slate-500 mb-1">Package Name</p>
+              <p id="display-package" class="font-medium text-slate-900">-</p>
+            </div>
+            <div class="sm:col-span-2">
+              <p class="text-xs text-slate-500 mb-1">Travel Date</p>
+              <p id="display-date" class="font-medium text-slate-900">-</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <label for="reason" class="block text-sm font-medium text-slate-700 mb-2">Reason for Cancellation <span class="text-red-500">*</span></label>
+            <select id="reason" name="reason" required class="w-full rounded-lg border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow">
+              <option value="" disabled selected>Select a reason...</option>
+              <option value="Change of plans">Change of plans</option>
+              <option value="Found better price">Found better price</option>
+              <option value="Health issues">Health issues</option>
+              <option value="Date not suitable">Date not suitable</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div id="other-reason-container" class="hidden">
+            <label for="other-reason" class="block text-sm font-medium text-slate-700 mb-2">Please specify <span class="text-red-500">*</span></label>
+            <textarea id="other-reason" name="other-reason" rows="3" class="w-full rounded-lg border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow placeholder-slate-400" placeholder="Tell us more about why you are cancelling..."></textarea>
+          </div>
+        </div>
+
+        <div class="mt-10 flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-100">
+          <button type="button" onclick="goBack()" class="flex-1 px-6 py-3 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200 transition-colors text-center order-2 sm:order-1">
+            Keep Booking
+          </button>
+          <button type="submit" id="submit-btn" class="flex-1 px-6 py-3 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 order-1 sm:order-2">
+            Confirm Cancellation
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // --- Configuration & Initialization ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookingReference = urlParams.get('bookingId');
+    let userId = urlParams.get('userId');
+
+    // Fallback just in case (e.g. if arriving via old link)
+    if (!userId) {
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.endsWith('-auth-token')) {
+            const authData = JSON.parse(localStorage.getItem(key));
+            if (authData && authData.user && authData.user.id) {
+              userId = authData.user.id;
+              break;
+            }
+          }
+        }
+      } catch(e) { console.error("Could not parse auth data", e); }
+    }
+
+    const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'http://localhost:3001' 
+      : 'https://travelmate-backend.onrender.com'; // Adjust dynamically if backend URL is known
+
+    // --- DOM Elements ---
+    const ui = {
+      loadingState: document.getElementById('loading-state'),
+      errorState: document.getElementById('error-state'),
+      successState: document.getElementById('success-state'),
+      form: document.getElementById('cancel-form'),
+      errorMessage: document.getElementById('error-message'),
+      
+      displayId: document.getElementById('display-id'),
+      displayAmount: document.getElementById('display-amount'),
+      displayRefund: document.getElementById('display-refund'),
+      refundContainer: document.getElementById('refund-container'),
+      noRefundContainer: document.getElementById('no-refund-container'),
+      displayPackage: document.getElementById('display-package'),
+      displayDate: document.getElementById('display-date'),
+      
+      reasonSelect: document.getElementById('reason'),
+      otherReasonContainer: document.getElementById('other-reason-container'),
+      otherReasonInput: document.getElementById('other-reason'),
+      submitBtn: document.getElementById('submit-btn'),
+      countdownText: document.getElementById('countdown')
+    };
+
+    // --- Core Logic ---
+    function goBack() {
+      window.location.href = '/my-bookings'; // React router handles this
+    }
+
+    function showError(message) {
+      ui.loadingState.classList.add('hidden');
+      ui.form.classList.add('hidden');
+      ui.errorState.classList.remove('hidden');
+      ui.errorMessage.textContent = message;
+    }
+
+    // Toggle "Other" text area
+    ui.reasonSelect.addEventListener('change', (e) => {
+      if (e.target.value === 'Other') {
+        ui.otherReasonContainer.classList.remove('hidden');
+        ui.otherReasonInput.required = true;
+      } else {
+        ui.otherReasonContainer.classList.add('hidden');
+        ui.otherReasonInput.required = false;
+        ui.otherReasonInput.value = '';
+      }
+    });
+
+    // Handle Cancellation Submission
+    ui.form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const isOther = ui.reasonSelect.value === 'Other';
+      const reasonText = isOther ? ui.otherReasonInput.value.trim() : ui.reasonSelect.value;
+      
+      if (isOther && !reasonText) {
+        alert("Please specify a reason.");
+        return;
+      }
+
+      // Loading state
+      const originalBtnText = ui.submitBtn.innerHTML;
+      ui.submitBtn.disabled = true;
+      ui.submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span class="ml-2">Processing...</span>';
+
+      try {
+        const response = await fetch(`${backendUrl}/api/booking/cancel`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bookingReference: bookingReference,
+            userId: userId,
+            cancellationReason: reasonText
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to cancel booking.');
+        }
+
+        // Success flow
+        ui.form.classList.add('hidden');
+        ui.successState.classList.remove('hidden');
+        
+        let seconds = 2;
+        const interval = setInterval(() => {
+          seconds--;
+          ui.countdownText.textContent = seconds;
+          if (seconds <= 0) {
+            clearInterval(interval);
+            goBack();
+          }
+        }, 1000);
+
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+        ui.submitBtn.disabled = false;
+        ui.submitBtn.innerHTML = originalBtnText;
+      }
+    });
+
+    // Initialization Fetch
+    async function initialize() {
+      if (!bookingReference) {
+        showError("Invalid link. No booking ID provided.");
+        return;
+      }
+      if (!userId) {
+         showError("Please log in to manage your bookings.");
+         return;
+      }
+
+      try {
+        const response = await fetch(`${backendUrl}/api/booking/details/${bookingReference}?userId=${userId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to load booking details.');
+        }
+
+        ui.displayId.textContent = data.bookingReference;
+        ui.displayPackage.textContent = data.packageTitle;
+        ui.displayDate.textContent = data.travelDate || 'TBA';
+        ui.displayAmount.textContent = `₹${Number(data.totalAmount).toLocaleString('en-IN')}`;
+
+        if (data.isCancellable) {
+           ui.refundContainer.classList.remove('hidden');
+           let percentage = data.refundAmount === data.totalAmount ? '100%' : '50%';
+           ui.displayRefund.textContent = `₹${Number(data.refundAmount).toLocaleString('en-IN')} (${percentage} refund)`;
+        } else {
+           ui.noRefundContainer.classList.remove('hidden');
+           ui.submitBtn.disabled = true;
+           ui.reasonSelect.disabled = true;
+        }
+
+        ui.loadingState.classList.add('hidden');
+        ui.form.classList.remove('hidden');
+
+      } catch (err) {
+        showError(err.message);
+      }
+    }
+
+    initialize();
+  </script>
+</body>
+</html>

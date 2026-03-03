@@ -993,10 +993,35 @@ const Payment = () => {
       const rzp = new (window as any).Razorpay(options);
       rzp.open();
 
-    } catch (err: any) {
-      console.error("Payment flow error:", err);
-      toast.error(err.message || "Something went wrong. Please try again.");
+    } catch (error: any) {
+      console.error("Razorpay payment initialization failed:", error);
+      toast.error(`Payment failed: ${error.message || "Unknown error"}`);
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSimulatedPaymentRedirect = async () => {
+    const validationError = validateBooking();
+    if (validationError) {
+      setFormError(validationError);
+      toast.error(validationError);
+      return;
+    }
+
+    setLoading(true);
+    setProcessingMessage("Preparing simulation...");
+
+    try {
+      const bookingId = `TM-SIM-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const packageName = encodeURIComponent(packageData.title);
+      const userEmail = user?.email || travelers[0].email || '';
+      
+      // Navigate to the static payment page with all necessary details
+      window.location.href = `/payment.html?package=${packageName}&price=${grandTotal}&email=${userEmail}&bookingId=${bookingId}`;
+    } catch (err) {
+      console.error("Simulation redirect failed:", err);
+      toast.error("Failed to start payment simulation.");
       setLoading(false);
     }
   };
@@ -1326,9 +1351,9 @@ const Payment = () => {
 
                   <button
                     type="button"
-                    onClick={handleRazorpayPayment}
+                    onClick={handleSimulatedPaymentRedirect}
                     disabled={loading}
-                    className="btn-primary w-full mt-6 flex items-center justify-center gap-2"
+                    className="btn-primary w-full mt-6 flex items-center justify-center gap-2 shadow-lg transform transition-all active:scale-[0.98]"
                   >
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                     {loading

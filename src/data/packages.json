@@ -29,9 +29,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/munnar--kerala.png",
     "imageAlt": "Munnar, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -125,9 +125,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/alleppey--kerala.png",
     "imageAlt": "Alleppey, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -235,9 +235,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/wayanad--kerala.png",
     "imageAlt": "Wayanad, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -359,9 +359,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/thekkady--kerala.png",
     "imageAlt": "Thekkady, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -497,9 +497,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kochi--kerala.png",
     "imageAlt": "Kochi, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -649,9 +649,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kovalam--kerala.png",
     "imageAlt": "Kovalam, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -745,7 +745,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1677216713977-50421d083abf?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Varkala, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -855,7 +855,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1624554305378-0f440dd3a8c1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a3VtYXJha29tfGVufDB8fDB8fHww",
     "imageAlt": "Kumarakom, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -979,9 +979,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/ooty--tamil-nadu.png",
     "imageAlt": "Ooty, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -1117,9 +1117,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kodaikanal--tamil-nadu.png",
     "imageAlt": "Kodaikanal, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -1269,9 +1269,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/coorg--karnataka.png",
     "imageAlt": "Coorg, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -1365,9 +1365,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/mysore--karnataka.png",
     "imageAlt": "Mysore, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -1475,7 +1475,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1722934804353-0d9f6a55ab5e?q=80&w=845&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Hampi, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -1599,7 +1599,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1693205118032-9382f7267f55?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z29rYXJuYXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Gokarna, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -1737,9 +1737,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/udupi--karnataka.png",
     "imageAlt": "Udupi, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -1889,7 +1889,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697730116501-72f5749dffce?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpa21hZ2FsdXJ8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Chikmagalur, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -1985,7 +1985,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1706932642959-97cdde19ef0b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmFtZXNod2FyYW18ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Rameshwaram, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -2095,9 +2095,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kanyakumari--tamil-nadu.png",
     "imageAlt": "Kanyakumari, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -2219,7 +2219,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-LF8gK8-HGSg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mahabalipuram, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -2357,7 +2357,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-eLUegVAjN7s?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pondicherry travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -2509,9 +2509,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/visakhapatnam--andhra-pradesh.png",
     "imageAlt": "Visakhapatnam, Andhra Pradesh travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -2605,9 +2605,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/araku-valley--andhra-pradesh.png",
     "imageAlt": "Araku Valley, Andhra Pradesh travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -2715,7 +2715,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://media.istockphoto.com/id/1372540523/photo/crowd-less-image-of-tirumala-tirupati-temple-with-clear-blue-sky-background-andhra-pradesh.jpg?s=612x612&w=0&k=20&c=783XmKmC7tkFtkxP5oh5DLQMl9b3nMcCEtPJk-w725Y=",
     "imageAlt": "Tirupati, Andhra Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -2839,7 +2839,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://t4.ftcdn.net/jpg/04/68/49/89/240_F_468498996_xCxckST7KE3N7wXisnO32FMqOorVcc6B.jpg",
     "imageAlt": "Madurai, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -2977,7 +2977,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1565195160611-251c9f88dc9c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8eWVyY2F1ZHxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Yercaud, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -3129,7 +3129,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697729603596-90888a05a6bc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2FybmF0YWthJTIwZGFuZGVsaXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Dandeli, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -3225,7 +3225,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1570788399982-cc106a4965ec?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a2FiaW5pfGVufDB8fDB8fHww",
     "imageAlt": "Kabini, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -3335,7 +3335,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1677216713977-50421d083abf?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Varkala, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -3459,9 +3459,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/munnar--kerala.png",
     "imageAlt": "Munnar, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -3597,9 +3597,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/alleppey--kerala.png",
     "imageAlt": "Alleppey, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -3749,9 +3749,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/wayanad--kerala.png",
     "imageAlt": "Wayanad, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -3845,9 +3845,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/thekkady--kerala.png",
     "imageAlt": "Thekkady, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -3955,9 +3955,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kochi--kerala.png",
     "imageAlt": "Kochi, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -4079,9 +4079,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kovalam--kerala.png",
     "imageAlt": "Kovalam, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -4217,7 +4217,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1677216713977-50421d083abf?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Varkala, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -4369,7 +4369,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1624554305378-0f440dd3a8c1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a3VtYXJha29tfGVufDB8fDB8fHww",
     "imageAlt": "Kumarakom, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -4465,9 +4465,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/ooty--tamil-nadu.png",
     "imageAlt": "Ooty, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -4575,9 +4575,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kodaikanal--tamil-nadu.png",
     "imageAlt": "Kodaikanal, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -4699,9 +4699,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/coorg--karnataka.png",
     "imageAlt": "Coorg, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -4837,9 +4837,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/mysore--karnataka.png",
     "imageAlt": "Mysore, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -4989,7 +4989,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1722934804353-0d9f6a55ab5e?q=80&w=845&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Hampi, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -5085,7 +5085,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1693205118032-9382f7267f55?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z29rYXJuYXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Gokarna, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -5195,9 +5195,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/udupi--karnataka.png",
     "imageAlt": "Udupi, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -5319,7 +5319,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697730116501-72f5749dffce?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpa21hZ2FsdXJ8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Chikmagalur, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -5457,7 +5457,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1706932642959-97cdde19ef0b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmFtZXNod2FyYW18ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Rameshwaram, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -5609,9 +5609,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kanyakumari--tamil-nadu.png",
     "imageAlt": "Kanyakumari, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -5705,7 +5705,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1717417925229-600a68f75cab?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWFoYWJhbGlwdXJhbXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Mahabalipuram, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -5815,7 +5815,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1597073420615-7801d12fe2d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHVkdWNoZXJyeXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Pondicherry travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -5939,9 +5939,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://tse2.mm.bing.net/th/id/OIP.SSzfvuImFHPgU9FB0A2jwgHaE0?w=1000&h=650&rs=1&pid=ImgDetMain&o=7&rm=3",
     "imageAlt": "Visakhapatnam, Andhra Pradesh travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -6077,9 +6077,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/araku-valley--andhra-pradesh.png",
     "imageAlt": "Araku Valley, Andhra Pradesh travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -6229,7 +6229,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-6J--NXulQCs?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Tirupati, Andhra Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -6325,7 +6325,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Cm7oKel-X2Q?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Madurai, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -6435,7 +6435,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1565195160611-251c9f88dc9c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8eWVyY2F1ZHxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Yercaud, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -6559,7 +6559,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697729603596-90888a05a6bc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2FybmF0YWthJTIwZGFuZGVsaXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Dandeli, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -6697,7 +6697,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1570788399982-cc106a4965ec?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a2FiaW5pfGVufDB8fDB8fHww",
     "imageAlt": "Kabini, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -6849,7 +6849,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1677216713977-50421d083abf?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Varkala, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -6945,9 +6945,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/munnar--kerala.png",
     "imageAlt": "Munnar, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -7055,9 +7055,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/alleppey--kerala.png",
     "imageAlt": "Alleppey, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -7179,9 +7179,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/wayanad--kerala.png",
     "imageAlt": "Wayanad, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -7317,9 +7317,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/thekkady--kerala.png",
     "imageAlt": "Thekkady, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -7469,9 +7469,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kochi--kerala.png",
     "imageAlt": "Kochi, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -7565,9 +7565,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kovalam--kerala.png",
     "imageAlt": "Kovalam, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -7675,7 +7675,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1677216713977-50421d083abf?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Varkala, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -7799,7 +7799,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1624554305378-0f440dd3a8c1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a3VtYXJha29tfGVufDB8fDB8fHww",
     "imageAlt": "Kumarakom, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -7937,9 +7937,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/ooty--tamil-nadu.png",
     "imageAlt": "Ooty, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -8089,9 +8089,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kodaikanal--tamil-nadu.png",
     "imageAlt": "Kodaikanal, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -8185,9 +8185,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/coorg--karnataka.png",
     "imageAlt": "Coorg, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -8295,9 +8295,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/mysore--karnataka.png",
     "imageAlt": "Mysore, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -8419,7 +8419,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1722934804353-0d9f6a55ab5e?q=80&w=845&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Hampi, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -8557,7 +8557,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1693205118032-9382f7267f55?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z29rYXJuYXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Gokarna, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -8709,9 +8709,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/udupi--karnataka.png",
     "imageAlt": "Udupi, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -8805,7 +8805,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697730116501-72f5749dffce?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpa21hZ2FsdXJ8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Chikmagalur, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -8915,7 +8915,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1706932642959-97cdde19ef0b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmFtZXNod2FyYW18ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Rameshwaram, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -9039,9 +9039,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kanyakumari--tamil-nadu.png",
     "imageAlt": "Kanyakumari, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -9177,7 +9177,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-LF8gK8-HGSg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mahabalipuram, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -9329,7 +9329,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-eLUegVAjN7s?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pondicherry travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -9425,9 +9425,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/visakhapatnam--andhra-pradesh.png",
     "imageAlt": "Visakhapatnam, Andhra Pradesh travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -9535,9 +9535,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/araku-valley--andhra-pradesh.png",
     "imageAlt": "Araku Valley, Andhra Pradesh travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -9659,7 +9659,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-6J--NXulQCs?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Tirupati, Andhra Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -9797,7 +9797,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://t4.ftcdn.net/jpg/00/77/16/29/240_F_77162906_340SK0WwATrqWXAY6RDnYcEOL6bhpiZi.jpg",
     "imageAlt": "Madurai, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -9949,7 +9949,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1565195160611-251c9f88dc9c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8eWVyY2F1ZHxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Yercaud, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -10045,7 +10045,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697729603596-90888a05a6bc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2FybmF0YWthJTIwZGFuZGVsaXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Dandeli, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -10155,7 +10155,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1570788399982-cc106a4965ec?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a2FiaW5pfGVufDB8fDB8fHww",
     "imageAlt": "Kabini, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -10279,7 +10279,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1677216713977-50421d083abf?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Varkala, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -10417,9 +10417,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/munnar--kerala.png",
     "imageAlt": "Munnar, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -10569,9 +10569,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/alleppey--kerala.png",
     "imageAlt": "Alleppey, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -10665,9 +10665,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/wayanad--kerala.png",
     "imageAlt": "Wayanad, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -10775,9 +10775,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/thekkady--kerala.png",
     "imageAlt": "Thekkady, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -10899,9 +10899,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kochi--kerala.png",
     "imageAlt": "Kochi, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -11037,9 +11037,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kovalam--kerala.png",
     "imageAlt": "Kovalam, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -11189,7 +11189,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1677216713977-50421d083abf?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Varkala, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -11285,7 +11285,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1624554305378-0f440dd3a8c1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a3VtYXJha29tfGVufDB8fDB8fHww",
     "imageAlt": "Kumarakom, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -11395,9 +11395,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/ooty--tamil-nadu.png",
     "imageAlt": "Ooty, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -11519,9 +11519,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kodaikanal--tamil-nadu.png",
     "imageAlt": "Kodaikanal, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -11657,9 +11657,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/coorg--karnataka.png",
     "imageAlt": "Coorg, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -11809,9 +11809,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/mysore--karnataka.png",
     "imageAlt": "Mysore, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -11905,7 +11905,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1722934804353-0d9f6a55ab5e?q=80&w=845&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Hampi, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -12015,7 +12015,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1693205118032-9382f7267f55?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z29rYXJuYXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Gokarna, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -12139,9 +12139,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/udupi--karnataka.png",
     "imageAlt": "Udupi, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -12277,7 +12277,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697730116501-72f5749dffce?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpa21hZ2FsdXJ8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Chikmagalur, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -12429,7 +12429,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "data:image/jpeg;base64,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",
     "imageAlt": "Manali, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -12525,7 +12525,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697729690458-2d64ca777c04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2hpbWxhfGVufDB8fDB8fHww",
     "imageAlt": "Shimla, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -12635,7 +12635,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-NYDo21ssGao?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Kasol, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -12759,7 +12759,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-gkT4FfgHO5o?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Spiti Valley, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -12897,7 +12897,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ven2CV8IJ5A?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Dharamshala, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -13049,7 +13049,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ps2n0rShqaM?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Dalhousie, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -13145,7 +13145,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1769963608832-cc25836772e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJpciUyMGJpbGxpbmd8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Bir Billing, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -13255,7 +13255,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-nJdwUHmaY8A?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mussoorie, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -13379,7 +13379,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1650341259809-9314b0de9268?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmlzaGlrZXNofGVufDB8fDB8fHww",
     "imageAlt": "Rishikesh, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -13517,9 +13517,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/30/3a/3c/mesmerizing.jpg?w=600&h=500&s=1",
     "imageAlt": "Nainital, Uttarakhand travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -13669,7 +13669,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-du_OrQAA4r0?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Auli, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -13765,9 +13765,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpgHftirtFkqOpONU_lc4YBnJtVeoDySozMQ&s",
     "imageAlt": "Corbett, Uttarakhand travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -13875,7 +13875,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-CIXoFys3gsw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Jaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -13999,7 +13999,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dWRhaXB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Udaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -14137,7 +14137,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1661904165347-369200d4bf72?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8am9kaHB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Jodhpur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -14289,7 +14289,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-2x_YJ23dG7w?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Jaisalmer, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -14385,7 +14385,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-cZhUxIQjILg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pushkar, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -14495,7 +14495,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Iuq0EL4EINY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Bikaner, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -14619,7 +14619,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-tCICLJ5ktBE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mount Abu, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -14757,7 +14757,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-iJnZwLBOB1I?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Srinagar, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -14909,7 +14909,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-_WiFMBRT7Aw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Gulmarg, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -15005,7 +15005,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-V0yAek6BgGk?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pahalgam, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -15115,7 +15115,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-M2gcezN_O3s?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Leh, Ladakh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -15239,7 +15239,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1641599592732-0028d03116bf?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bnVicmElMjB2YWxsZXl8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Nubra Valley, Ladakh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -15377,9 +15377,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/03/fe/ff/bc/pangong-tso-pangong-lake.jpg?w=700&h=-1&s=1",
     "imageAlt": "Pangong Lake, Ladakh travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -15529,7 +15529,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-78duR_6A-uY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Agra, Uttar Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -15625,7 +15625,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1627938823193-fd13c1c867dd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dmFyYW5hc2l8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Varanasi, Uttar Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -15735,7 +15735,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1593181629936-11c609b8db9b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a3VsbHUlMjBtYW5hbGl8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Manali, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -15859,7 +15859,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697729690458-2d64ca777c04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2hpbWxhfGVufDB8fDB8fHww",
     "imageAlt": "Shimla, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -15997,7 +15997,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-NYDo21ssGao?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Kasol, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -16149,7 +16149,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-gkT4FfgHO5o?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Spiti Valley, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -16245,7 +16245,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ven2CV8IJ5A?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Dharamshala, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -16355,7 +16355,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ps2n0rShqaM?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Dalhousie, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -16479,7 +16479,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1769963608832-cc25836772e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJpciUyMGJpbGxpbmd8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Bir Billing, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -16617,7 +16617,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-nJdwUHmaY8A?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mussoorie, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -16769,7 +16769,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1650341259809-9314b0de9268?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmlzaGlrZXNofGVufDB8fDB8fHww",
     "imageAlt": "Rishikesh, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -16865,9 +16865,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/30/3a/3c/mesmerizing.jpg?w=600&h=500&s=1",
     "imageAlt": "Nainital, Uttarakhand travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -16975,7 +16975,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-du_OrQAA4r0?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Auli, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -17099,9 +17099,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpgHftirtFkqOpONU_lc4YBnJtVeoDySozMQ&s",
     "imageAlt": "Corbett, Uttarakhand travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -17237,7 +17237,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-CIXoFys3gsw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Jaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -17389,7 +17389,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dWRhaXB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Udaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -17485,7 +17485,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1661904165347-369200d4bf72?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8am9kaHB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Jodhpur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -17595,7 +17595,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-2x_YJ23dG7w?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Jaisalmer, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -17719,7 +17719,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-cZhUxIQjILg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pushkar, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -17857,7 +17857,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Iuq0EL4EINY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Bikaner, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -18009,7 +18009,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-tCICLJ5ktBE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mount Abu, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -18105,7 +18105,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-iJnZwLBOB1I?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Srinagar, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -18215,7 +18215,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-_WiFMBRT7Aw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Gulmarg, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -18339,7 +18339,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-V0yAek6BgGk?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pahalgam, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -18477,7 +18477,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-M2gcezN_O3s?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Leh, Ladakh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -18629,7 +18629,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1641599592732-0028d03116bf?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bnVicmElMjB2YWxsZXl8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Nubra Valley, Ladakh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -18725,9 +18725,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/03/fe/ff/bc/pangong-tso-pangong-lake.jpg?w=700&h=-1&s=1",
     "imageAlt": "Pangong Lake, Ladakh travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -18835,7 +18835,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-78duR_6A-uY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Agra, Uttar Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -18959,7 +18959,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1627938823193-fd13c1c867dd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dmFyYW5hc2l8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Varanasi, Uttar Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -19097,7 +19097,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-YvYBOSiBJE8?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Manali, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -19249,7 +19249,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697729690458-2d64ca777c04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2hpbWxhfGVufDB8fDB8fHww",
     "imageAlt": "Shimla, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -19345,7 +19345,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-NYDo21ssGao?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Kasol, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -19455,7 +19455,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-gkT4FfgHO5o?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Spiti Valley, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -19579,7 +19579,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ven2CV8IJ5A?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Dharamshala, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -19717,7 +19717,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ps2n0rShqaM?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Dalhousie, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -19869,7 +19869,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1769963608832-cc25836772e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJpciUyMGJpbGxpbmd8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Bir Billing, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -19965,7 +19965,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-nJdwUHmaY8A?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mussoorie, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -20075,7 +20075,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1650341259809-9314b0de9268?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmlzaGlrZXNofGVufDB8fDB8fHww",
     "imageAlt": "Rishikesh, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -20199,9 +20199,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/30/3a/3c/mesmerizing.jpg?w=600&h=500&s=1",
     "imageAlt": "Nainital, Uttarakhand travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -20337,7 +20337,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-du_OrQAA4r0?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Auli, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -20489,9 +20489,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpgHftirtFkqOpONU_lc4YBnJtVeoDySozMQ&s",
     "imageAlt": "Corbett, Uttarakhand travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -20585,7 +20585,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-CIXoFys3gsw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Jaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -20695,7 +20695,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dWRhaXB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Udaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -20819,7 +20819,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1661904165347-369200d4bf72?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8am9kaHB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Jodhpur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -20957,7 +20957,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-2x_YJ23dG7w?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Jaisalmer, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -21109,7 +21109,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-cZhUxIQjILg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pushkar, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -21205,7 +21205,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Iuq0EL4EINY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Bikaner, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -21315,7 +21315,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-tCICLJ5ktBE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mount Abu, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -21439,7 +21439,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-iJnZwLBOB1I?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Srinagar, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -21577,7 +21577,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-_WiFMBRT7Aw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Gulmarg, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -21729,7 +21729,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-V0yAek6BgGk?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pahalgam, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -21825,7 +21825,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-M2gcezN_O3s?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Leh, Ladakh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -21935,7 +21935,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1641599592732-0028d03116bf?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bnVicmElMjB2YWxsZXl8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Nubra Valley, Ladakh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -22059,9 +22059,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/03/fe/ff/bc/pangong-tso-pangong-lake.jpg?w=700&h=-1&s=1",
     "imageAlt": "Pangong Lake, Ladakh travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -22197,7 +22197,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-78duR_6A-uY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Agra, Uttar Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -22349,7 +22349,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1627938823193-fd13c1c867dd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dmFyYW5hc2l8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Varanasi, Uttar Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -22445,7 +22445,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-YvYBOSiBJE8?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Manali, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -22555,7 +22555,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697729690458-2d64ca777c04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2hpbWxhfGVufDB8fDB8fHww",
     "imageAlt": "Shimla, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -22679,7 +22679,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-NYDo21ssGao?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Kasol, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -22817,7 +22817,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-gkT4FfgHO5o?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Spiti Valley, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -22969,7 +22969,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ven2CV8IJ5A?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Dharamshala, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -23065,7 +23065,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ps2n0rShqaM?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Dalhousie, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -23175,7 +23175,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1769963608832-cc25836772e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJpciUyMGJpbGxpbmd8ZW58MHx8MHx8fDA%3D",
     "imageAlt": "Bir Billing, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -23299,7 +23299,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-nJdwUHmaY8A?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mussoorie, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -23437,7 +23437,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1650341259809-9314b0de9268?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmlzaGlrZXNofGVufDB8fDB8fHww",
     "imageAlt": "Rishikesh, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -23589,9 +23589,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/30/3a/3c/mesmerizing.jpg?w=600&h=500&s=1",
     "imageAlt": "Nainital, Uttarakhand travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -23685,7 +23685,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-du_OrQAA4r0?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Auli, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -23795,9 +23795,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpgHftirtFkqOpONU_lc4YBnJtVeoDySozMQ&s",
     "imageAlt": "Corbett, Uttarakhand travel image",
-    "imageSource": "unsplash",
+    "imageSource": "external",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -23919,7 +23919,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-CIXoFys3gsw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Jaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -24057,7 +24057,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dWRhaXB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Udaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -24209,7 +24209,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1661904165347-369200d4bf72?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8am9kaHB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Jodhpur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -24305,7 +24305,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-2x_YJ23dG7w?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Jaisalmer, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -24415,7 +24415,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-cZhUxIQjILg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pushkar, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -24539,7 +24539,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Iuq0EL4EINY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Bikaner, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -24677,7 +24677,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-tCICLJ5ktBE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mount Abu, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -24829,7 +24829,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-NYDo21ssGao?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Kasol, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -24925,7 +24925,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1650341259809-9314b0de9268?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmlzaGlrZXNofGVufDB8fDB8fHww",
     "imageAlt": "Rishikesh, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -25035,7 +25035,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1722934804353-0d9f6a55ab5e?q=80&w=845&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Hampi, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -25159,7 +25159,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1693205118032-9382f7267f55?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z29rYXJuYXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Gokarna, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -25297,7 +25297,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1677216713977-50421d083abf?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Varkala, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -25449,7 +25449,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-cZhUxIQjILg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pushkar, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -25545,7 +25545,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-M2gcezN_O3s?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Leh, Ladakh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -25655,7 +25655,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-gkT4FfgHO5o?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Spiti Valley, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -25779,7 +25779,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-eG3k60PrTGY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Ziro Valley, Arunachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -25917,7 +25917,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-LBI7cgq3pbM?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Tawang, Arunachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -26069,7 +26069,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-zZvsEMPxjIA?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mcleodganj, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -26165,7 +26165,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-znM0ujn2RUA?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Tosh, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -26275,7 +26275,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-osSryggkso4?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Old Manali, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -26399,7 +26399,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-j_j0l1rZzQY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Anjuna, Goa travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -26537,7 +26537,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-erTjj730fMk?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Palolem, Goa travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -26689,7 +26689,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-JabLtzJl8bc?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Auroville, Pondicherry travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -26785,7 +26785,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-pFqrYbhIAXs?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Shillong, Meghalaya travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -26895,7 +26895,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-N-1XGL54pQg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Cherrapunji, Meghalaya travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -27019,7 +27019,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-fTKetYpEKNQ?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Dawki, Meghalaya travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -27157,7 +27157,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-KR2mdHJ5qMg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Gangtok, Sikkim travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -27309,7 +27309,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-IoCWq07GaG4?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pelling, Sikkim travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -27405,7 +27405,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-R1E6x8U83Ho?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Lachung, Sikkim travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -27515,7 +27515,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo--XA-fTYYfV0?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Majuli, Assam travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -27639,7 +27639,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-NYDo21ssGao?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Kasol, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -27777,7 +27777,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1650341259809-9314b0de9268?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmlzaGlrZXNofGVufDB8fDB8fHww",
     "imageAlt": "Rishikesh, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -27929,7 +27929,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1722934804353-0d9f6a55ab5e?q=80&w=845&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Hampi, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -28025,7 +28025,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1693205118032-9382f7267f55?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z29rYXJuYXxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Gokarna, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -28135,7 +28135,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1677216713977-50421d083abf?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Varkala, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -28259,7 +28259,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-cZhUxIQjILg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pushkar, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -28397,7 +28397,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-M2gcezN_O3s?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Leh, Ladakh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -28549,7 +28549,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Nzw3HHsNHYU?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Havelock Island, Andaman travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -28645,7 +28645,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-uDUiRS8YroY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Neil Island, Andaman travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -28755,7 +28755,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1uxV8fAfhVM?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Lakshadweep Islands travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -28879,7 +28879,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dWRhaXB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Udaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -29017,9 +29017,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/munnar--kerala.png",
     "imageAlt": "Munnar, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -29169,7 +29169,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-_WiFMBRT7Aw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Gulmarg, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -29265,7 +29265,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-d_8uP7V6iN0?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Alleppey (Houseboat), Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -29375,7 +29375,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1624554305378-0f440dd3a8c1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a3VtYXJha29tfGVufDB8fDB8fHww",
     "imageAlt": "Kumarakom, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -29499,7 +29499,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Qo51KwK1dKg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "South Goa travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -29637,7 +29637,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-V0yAek6BgGk?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pahalgam, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -29789,7 +29789,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697729690458-2d64ca777c04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2hpbWxhfGVufDB8fDB8fHww",
     "imageAlt": "Shimla, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -29885,9 +29885,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/ooty--tamil-nadu.png",
     "imageAlt": "Ooty, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -29995,9 +29995,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/kodaikanal--tamil-nadu.png",
     "imageAlt": "Kodaikanal, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -30119,7 +30119,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-llYg8Ni43fc?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Darjeeling, West Bengal travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -30257,7 +30257,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-KR2mdHJ5qMg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Gangtok, Sikkim travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -30409,7 +30409,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-IoCWq07GaG4?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pelling, Sikkim travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -30505,7 +30505,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-R1E6x8U83Ho?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Lachung, Sikkim travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -30615,7 +30615,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-nJdwUHmaY8A?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mussoorie, Uttarakhand travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -30739,7 +30739,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Nzw3HHsNHYU?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Havelock Island, Andaman travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -30877,7 +30877,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-uDUiRS8YroY?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Neil Island, Andaman travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -31029,7 +31029,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1uxV8fAfhVM?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Lakshadweep Islands travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -31125,7 +31125,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dWRhaXB1cnxlbnwwfHwwfHx8MA%3D%3D",
     "imageAlt": "Udaipur, Rajasthan travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -31235,9 +31235,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/munnar--kerala.png",
     "imageAlt": "Munnar, Kerala travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -31359,7 +31359,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-_WiFMBRT7Aw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Gulmarg, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -31497,7 +31497,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-d_8uP7V6iN0?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Alleppey (Houseboat), Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -31649,7 +31649,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1624554305378-0f440dd3a8c1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a3VtYXJha29tfGVufDB8fDB8fHww",
     "imageAlt": "Kumarakom, Kerala travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -31745,7 +31745,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Qo51KwK1dKg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "South Goa travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -31855,7 +31855,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-V0yAek6BgGk?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Pahalgam, Kashmir travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -31979,7 +31979,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1697729690458-2d64ca777c04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2hpbWxhfGVufDB8fDB8fHww",
     "imageAlt": "Shimla, Himachal Pradesh travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -32117,9 +32117,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/ooty--tamil-nadu.png",
     "imageAlt": "Ooty, Tamil Nadu travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -32269,7 +32269,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-L7MpmBGpM94?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "National Museum, Delhi travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -32365,7 +32365,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-knYQ6arClBE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "ISRO-VHSC, Bangalore travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -32475,7 +32475,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-57vHdjeZ0yg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Science City, Ahmedabad travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -32599,7 +32599,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-L0x_M7NnxzE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Amer Fort Heritage, Jaipur travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -32737,7 +32737,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-6qORI5j_6n8?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Nalanda University Ruins, Bihar travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -32889,7 +32889,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-d19by2PLaPc?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Sarnath Buddhist Circuit, UP travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -32985,7 +32985,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ony_M7NnxzE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Ajanta Caves, Maharashtra travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -33095,7 +33095,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-akbHiqZy4Pg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Ellora Caves, Maharashtra travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -33219,7 +33219,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-VLdaxYyXJvw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Konark Sun Temple, Odisha travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -33357,7 +33357,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1722934804353-0d9f6a55ab5e?q=80&w=845&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Hampi Architecture, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -33509,9 +33509,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/mysore-palace--karnataka.png",
     "imageAlt": "Mysore Palace, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -33605,7 +33605,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-SyBYM8R6VU4?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Tanjore Temples, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -33715,7 +33715,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-LF8gK8-HGSg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mahabalipuram, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -33839,7 +33839,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo--kEr-QltARg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Jantar Mantar, Jaipur travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -33977,7 +33977,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-algEQavPY4M?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Sabarmati Ashram, Gujarat travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -34129,7 +34129,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Hi9GSwWkCJk?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Khajuraho Temples, MP travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -34225,7 +34225,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-zMz14hsbpuU?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Golconda Fort, Hyderabad travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -34335,7 +34335,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-L7MpmBGpM94?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "National Museum, Delhi travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -34459,7 +34459,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-knYQ6arClBE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "ISRO-VHSC, Bangalore travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -34597,7 +34597,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1544161515-4ad6ce6e85bd?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-57vHdjeZ0yg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Science City, Ahmedabad travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -34749,7 +34749,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-L0x_M7NnxzE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Amer Fort Heritage, Jaipur travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -34845,7 +34845,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1567157577867-05ccb13880ef?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-6qORI5j_6n8?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Nalanda University Ruins, Bihar travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -34955,7 +34955,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-d19by2PLaPc?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Sarnath Buddhist Circuit, UP travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -35079,7 +35079,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1517330357046-3ab5a5dd42b1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-Ony_M7NnxzE?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Ajanta Caves, Maharashtra travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -35217,7 +35217,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa756180f1?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-akbHiqZy4Pg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Ellora Caves, Maharashtra travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -35369,7 +35369,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-VLdaxYyXJvw?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Konark Sun Temple, Odisha travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -35465,7 +35465,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-1722934804353-0d9f6a55ab5e?q=80&w=845&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "imageAlt": "Hampi Architecture, Karnataka travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -35575,9 +35575,9 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "/images/packages/mysore-palace--karnataka.png",
     "imageAlt": "Mysore Palace, Karnataka travel image",
-    "imageSource": "unsplash",
+    "imageSource": "local",
     "availableDates": [
       "2026-04-10",
       "2026-05-15",
@@ -35699,7 +35699,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-SyBYM8R6VU4?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Tanjore Temples, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [
@@ -35837,7 +35837,7 @@
       "Lunches",
       "Tips"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75",
+    "imageUrl": "https://images.unsplash.com/photo-LF8gK8-HGSg?auto=format&fit=crop&w=3840&q=100",
     "imageAlt": "Mahabalipuram, Tamil Nadu travel image",
     "imageSource": "unsplash",
     "availableDates": [

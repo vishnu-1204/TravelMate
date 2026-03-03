@@ -87,6 +87,7 @@ export const PackageCard = ({
           alt={imageAlt || `${title} in ${destination}`}
           category={category}
           imageQuery={`${title} ${destination}`}
+          packageId={id}
           loading={imageLoading}
           priority={imagePriority}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"

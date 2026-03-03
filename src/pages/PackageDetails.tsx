@@ -1,5 +1,5 @@
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Hotel, Utensils, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
+import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Hotel, Utensils, ChevronDown, ChevronUp, Loader2, User, Phone } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import {
@@ -14,6 +14,7 @@ import {
 import { jsPDF } from 'jspdf';
 import { useEffect, useState } from 'react';
 import PackageImage from '@/components/common/PackageImage';
+import { useAuth } from '@/hooks/useAuth';
 
 const getFallbackDepartures = (packageId: string) => {
   const seed = (packageId || 'default').split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -45,6 +46,7 @@ export default function PackageDetails() {
   const [openItineraryDay, setOpenItineraryDay] = useState<number>(1);
   const [itineraryView, setItineraryView] = useState<'story' | 'bullet'>('story');
   const [selectedDepartureDate, setSelectedDepartureDate] = useState<string>('');
+  const { user } = useAuth();
 
 
   const backendUrl =
@@ -358,6 +360,7 @@ export default function PackageDetails() {
             alt={packageData.imageAlt || `${packageData.title} in ${packageData.destination}`}
             category={packageData.category}
             imageQuery={`${packageData.title} ${packageData.destination}`}
+            packageId={packageData.id}
             className="w-full h-full object-cover"
             loading="eager"
             priority
@@ -642,6 +645,24 @@ export default function PackageDetails() {
                       ))}
                     </div>
                   ) : null}
+
+                  {/* Guide Information */}
+                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 mb-6">
+                    <p className="font-bold text-foreground mb-3 flex items-center gap-2">
+                       <User className="h-4 w-4 text-primary" />
+                       Your Tour Guide
+                    </p>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-foreground flex items-center gap-2">
+                        {packageData.guideName}
+                      </p>
+                      <p className="text-sm text-muted-foreground flex items-center gap-2">
+                        <Phone className="h-3.5 w-3.5 text-primary" />
+                        {packageData.guidePhone}
+                      </p>
+                    </div>
+                  </div>
+                  
 
                   <Link
                     to={`/package/${packageData.id}/payment`}

@@ -400,6 +400,7 @@ export const deletePackage = async (packageId: string) => {
   }
   return deletePackageFromCache(packageId);
 };
+import { getDeterministicGuideInfo } from './guideUtils';
 
 export const createPackage = async (
   input: Partial<TravelPackage> & {
@@ -410,6 +411,8 @@ export const createPackage = async (
     category?: string;
     imageUrl?: string;
     highlights?: string[] | string;
+    guideName?: string;
+    guidePhone?: string;
   }
 ) => {
   const nowIso = new Date().toISOString();
@@ -427,19 +430,18 @@ export const createPackage = async (
   const durationDays = Math.max(2, Math.min(14, Number(input.durationDays || 4)));
   const basePrice = Math.max(2000, Number(input.price || 15000));
   const imageUrl = String(input.imageUrl || '').trim();
-  if (!title || !destination || !imageUrl) {
-    throw new Error('Title, destination, and imageUrl are required');
-  }
-
-  const highlights =
-    Array.isArray(input.highlights)
+  
+  const generatedId = `admin-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now()}`;
+  const guideInfo = getDeterministicGuideInfo(generatedId);
+  const guideName = String(input.guideName || guideInfo.name).trim();
+  const guidePhone = String(input.guidePhone || guideInfo.phone).trim();
+  const highlights = Array.isArray(input.highlights)
       ? input.highlights.map((item) => String(item || '').trim()).filter(Boolean)
       : String(input.highlights || '')
           .split(',')
           .map((item) => item.trim())
           .filter(Boolean);
 
-  const generatedId = `admin-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now()}`;
   const draft = {
     id: generatedId,
     packageId: generatedId,
@@ -491,6 +493,8 @@ export const createPackage = async (
     nearbyAlternatives: Array.isArray(input.nearbyAlternatives) ? input.nearbyAlternatives : [],
     isGroupTour: Boolean(input.isGroupTour),
     groupDepartures: Array.isArray(input.groupDepartures) ? input.groupDepartures : [],
+    guideName,
+    guidePhone,
   } as TravelPackage;
 
   const enriched = recategorizePackage(draft);

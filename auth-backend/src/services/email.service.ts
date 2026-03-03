@@ -97,14 +97,41 @@ async function sendWithRetry(
   html: string,
   options?: { attachments?: any[] }
 ) {
-  const maxRetries = 3;
+  const maxRetries = 2; // Reduced from 3
   let lastError: any = null;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       logger(`[${tag}] Attempt ${attempt}/${maxRetries} to ${to}`);
 
-      // Try Resend first
+      // Try SMTP first (if it failed before with auth error, we might want to skip, but for now we try once)
+      if (hasSmtpConfig()) {
+        try {
+          // Add a connection timeout to the transporter if possible or just race it
+          const result = await Promise.race([
+            transporter.sendMail({
+              from: config.smtpFrom || config.smtpUser,
+              to,
+              subject,
+              html,
+              attachments: options?.attachments,
+            }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("SMTP Timeout")), 6000))
+          ]);
+          logger(`[${tag}] SUCCESS via SMTP on attempt ${attempt}`);
+          return result;
+        } catch (smtpErr: any) {
+          logger(`[${tag}] SMTP failed (Attempt ${attempt}): ${smtpErr.message}`);
+          lastError = smtpErr;
+          // If it's an Auth error (535), don't bother retrying SMTP or waiting
+          if (smtpErr.message.includes('535') || smtpErr.message.includes('Username and Password not accepted')) {
+             logger(`[${tag}] Permanent Auth Error detected. Skipping SMTP retries.`);
+             // We don't return here, we let it fall through to Resend
+          }
+        }
+      }
+
+      // Try Resend
       if (hasResendConfig()) {
         try {
           const { data, error } = await resend.emails.send({
@@ -126,26 +153,9 @@ async function sendWithRetry(
         }
       }
 
-      // Fallback to SMTP
-      if (hasSmtpConfig()) {
-        try {
-          const result = await transporter.sendMail({
-            from: config.smtpFrom || config.smtpUser,
-            to,
-            subject,
-            html,
-            attachments: options?.attachments,
-          });
-          logger(`[${tag}] SUCCESS via SMTP on attempt ${attempt}`);
-          return result;
-        } catch (smtpErr: any) {
-          logger(`[${tag}] SMTP failed (Attempt ${attempt}): ${smtpErr.message}`);
-          lastError = smtpErr;
-        }
-      }
-
       if (attempt < maxRetries) {
-        const delay = Math.pow(2, attempt) * 1000;
+        // Shorter delay for retries
+        const delay = 1000; 
         logger(`[${tag}] Waiting ${delay}ms before next retry...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
@@ -240,17 +250,104 @@ export const sendBookingConfirmation = async (
     supportPhone: config.supportPhone,
   };
 
-  const html = getBookingConfirmationTemplate(templateDetails);
+  try {
+    const html = getBookingConfirmationTemplate(templateDetails);
 
-  return sendWithRetry(
-    "email/booking",
-    user.email,
-    `Booking Confirmation - ${booking.bookingReference}`,
-    html,
-    options?.attachment ? {
+    return sendWithRetry(`email/booking-${booking.bookingReference}`, user.email, `Booking Confirmed: ${booking.packageTitle}`, html, options?.attachment ? {
       attachments: [{ content: options.attachment.content, filename: options.attachment.filename }]
-    } : undefined
-  );
+    } : undefined);
+  } catch (err: any) {
+    logger(`[email/booking] Error structuring template: ${err.message}`);
+    throw err;
+  }
+};
+
+export const sendCancellationEmail = async (
+  user: EmailUser,
+  booking: BookingEmailDetails,
+  cancellationReason: string,
+  refundAmount?: number
+) => {
+  const templateDetails: TemplateDetails = {
+    firstName: user.name?.split(' ')[0] || "Traveler",
+    email: user.email,
+    packageTitle: booking.packageTitle,
+    destination: booking.destination,
+    duration: booking.duration || "TBA",
+    price: `INR ${Number(booking.totalAmount).toLocaleString("en-IN")}`,
+    bookingReference: booking.bookingReference,
+    travelDate: booking.travelDate || "TBA",
+    travelers: booking.travelers,
+    paymentStatus: "Refunded",
+    airline: booking.airline || "TBA",
+    departureTime: booking.departureTime || "TBA",
+    arrivalTime: booking.arrivalTime || "TBA",
+    itinerary: booking.itinerarySummary || [],
+    included: [],
+    excluded: [],
+    checkIn: booking.checkIn,
+    checkOut: booking.checkOut,
+    transportType: booking.transportType || (booking.airline?.toLowerCase().includes('coach') ? 'bus' : 'flight'),
+    heroImage: getHeroImage(booking.destination || booking.packageTitle),
+    emergencyContact: config.supportPhone,
+    supportEmail: config.supportEmail,
+    supportPhone: config.supportPhone,
+  };
+
+  try {
+    const html = layout(
+      `Booking Cancelled - ${booking.bookingReference}`,
+      `
+      <div style="text-align:center;padding:10px 0 20px;">
+        <h2 style="color:#ef4444;margin:0;font-size:24px;">Booking Cancelled</h2>
+        <p style="color:#64748b;margin:8px 0 0;font-size:16px;">Reference: <strong>${templateDetails.bookingReference}</strong></p>
+      </div>
+      
+      <p style="color:#334155;font-size:16px;line-height:1.5;margin-bottom:20px;">Hi ${templateDetails.firstName},</p>
+      <p style="color:#334155;font-size:16px;line-height:1.5;margin-bottom:24px;">Your booking for <strong>${templateDetails.packageTitle}</strong> has been successfully cancelled as per your request.</p>
+      
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:24px;">
+        <h3 style="margin:0 0 16px;color:#0f172a;font-size:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px;">Cancellation Overview</h3>
+        
+        <table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.6;">
+          <tr>
+            <td style="color:#64748b;padding:6px 0;width:140px;">Travel Date</td>
+            <td style="color:#0f172a;font-weight:600;padding:6px 0;">${templateDetails.travelDate}</td>
+          </tr>
+          <tr>
+            <td style="color:#64748b;padding:6px 0;">Amount Paid</td>
+            <td style="color:#0f172a;font-weight:600;padding:6px 0;">${templateDetails.price}</td>
+          </tr>
+          <tr>
+            <td style="color:#64748b;padding:6px 0;">Refund Amount</td>
+            <td style="color:#22c55e;font-weight:600;padding:6px 0;">${templateDetails.refundPrice}</td>
+          </tr>
+          <tr>
+            <td style="color:#64748b;padding:6px 0;vertical-align:top;">Your Reason</td>
+            <td style="color:#0f172a;font-weight:600;padding:6px 0;">${escapeHtml(cancellationReason)}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="background:#fdf4ff;border:1px solid #fbcfe8;border-radius:12px;padding:20px;margin-bottom:32px;">
+        <h3 style="margin:0 0 12px;color:#86198f;font-size:16px;display:flex;align-items:center;">Refund Information</h3>
+        <p style="color:#701a75;font-size:14px;margin:0;line-height:1.5;">Your refund of <strong>${templateDetails.refundPrice}</strong> will be processed within 5-7 business days. (Note: Since this is a test environment, no actual funds will be transferred).</p>
+      </div>
+      
+      <div style="border-top:2px dashed #e2e8f0;padding-top:24px;margin-top:10px;">
+        <h3 style="margin:0 0 12px;color:#0f172a;font-size:16px;">Need Further Support?</h3>
+        <p style="color:#475569;font-size:14px;margin:0 0 8px;">We hope to travel with you in the future! If you have any further questions or challenges with your refund, do not hesitate to reach us:</p>
+        <p style="margin:0 0 6px;color:#334155;font-size:14px;">Email: <a href="mailto:${templateDetails.supportEmail}" style="color:#0284c7;text-decoration:none;font-weight:500;">${templateDetails.supportEmail}</a></p>
+        <p style="margin:0;color:#334155;font-size:14px;">Phone: <strong>${templateDetails.supportPhone}</strong></p>
+      </div>
+      `
+    );
+
+    return sendWithRetry(`email/cancel-${booking.bookingReference}`, user.email, `Booking Cancelled: ${booking.packageTitle}`, html);
+  } catch (err: any) {
+    logger(`[email/cancel] Error structuring template: ${err.message}`);
+    throw err;
+  }
 };
 
 export const sendFlightTicketEmail = async (

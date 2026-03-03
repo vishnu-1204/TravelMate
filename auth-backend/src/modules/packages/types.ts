@@ -113,6 +113,8 @@ export type TravelPackage = {
   nearbyAlternatives: string[];
   isGroupTour?: boolean;
   groupDepartures?: GroupDeparture[];
+  guideName: string;
+  guidePhone: string;
 };
 
 export type PackageListQuery = {

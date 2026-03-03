@@ -3,6 +3,7 @@ import { config } from "../../../config/env";
 import type { BudgetType, PackageCategory, TravelPackage } from "../types";
 import { classifyPackageCategories, pickPrimaryCategory } from "../service/packageCategorizer";
 import { CATEGORY_LABELS } from "../constants";
+import { getDeterministicGuideInfo } from '../service/guideUtils';
 
 type CacheRow = {
   package_id: string;
@@ -16,14 +17,17 @@ type CacheRow = {
   price_range: string;
   unique_image_id: string;
   affordability_score: number;
+  itinerary_json: string | null;
   is_luxury: boolean;
   is_group_tour: boolean;
-  group_departures: string; // JSON string
+  group_departures_json: string | null;
   duration_days: number;
   price: number;
   rating: number;
   budget_friendly: boolean;
   trending_score: number;
+  guide_name: string;
+  guide_phone: string;
   payload: TravelPackage;
   updated_at: string;
   expires_at: string;
@@ -231,9 +235,12 @@ export const upsertPackages = async (packages: TravelPackage[]) => {
         price_range: payload.priceRange,
         unique_image_id: payload.uniqueImageId,
         affordability_score: payload.affordabilityScore,
+        itinerary_json: pkg.itinerary ? JSON.stringify(pkg.itinerary) : null,
         is_luxury: payload.isLuxury,
-        is_group_tour: pkg.isGroupTour || false,
-        group_departures: JSON.stringify(pkg.groupDepartures || []),
+        is_group_tour: pkg.isGroupTour ? 1 : 0,
+        group_departures_json: pkg.groupDepartures ? JSON.stringify(pkg.groupDepartures) : null,
+        guide_name: pkg.guideName,
+        guide_phone: pkg.guidePhone,
         duration_days: payload.durationDays,
         price: payload.price,
         rating: payload.rating,
@@ -249,7 +256,7 @@ export const upsertPackages = async (packages: TravelPackage[]) => {
   const client = getClient();
   if (!client) {
     const map = new Map<string, CacheRow>(inMemoryCache.map((row) => [row.package_id, row]));
-    (rows as CacheRow[]).forEach((row) => map.set(row.package_id, row));
+    (rows as unknown as CacheRow[]).forEach((row) => map.set(row.package_id, row));
     inMemoryCache = Array.from(map.values());
     return;
   }
@@ -283,7 +290,9 @@ export const getPackagesFromCache = async (query: CacheQuery) => {
         ...row.payload,
         country: row.payload.country || row.country || inferCountryFromRow(row),
         isGroupTour: row.is_group_tour,
-        groupDepartures: row.group_departures ? JSON.parse(row.group_departures) : [],
+        groupDepartures: row.group_departures_json ? JSON.parse(row.group_departures_json) : [],
+        guideName: row.guide_name || row.payload.guideName || getDeterministicGuideInfo(row.package_id).name,
+        guidePhone: row.guide_phone || row.payload.guidePhone || getDeterministicGuideInfo(row.package_id).phone,
       },
     }));
     if (query.category) rows = rows.filter((row) => row.category === query.category);
@@ -413,7 +422,9 @@ export const getPackagesFromCache = async (query: CacheQuery) => {
         ...row.payload,
         country,
         isGroupTour: row.is_group_tour,
-        groupDepartures: row.group_departures ? JSON.parse(row.group_departures) : [],
+        groupDepartures: row.group_departures_json ? JSON.parse(row.group_departures_json) : [],
+        guideName: row.guide_name || row.payload.guideName || getDeterministicGuideInfo(row.package_id).name,
+        guidePhone: row.guide_phone || row.payload.guidePhone || getDeterministicGuideInfo(row.package_id).phone,
       };
     }),
     total: count || 0,
@@ -427,7 +438,9 @@ export const getPackageByIdFromCache = async (packageId: string): Promise<Travel
     return row ? {
       ...row.payload,
       isGroupTour: row.is_group_tour,
-      groupDepartures: row.group_departures ? JSON.parse(row.group_departures) : [],
+      groupDepartures: row.group_departures_json ? JSON.parse(row.group_departures_json) : [],
+      guideName: row.guide_name || row.payload.guideName || 'Rahul Sharma',
+      guidePhone: row.guide_phone || row.payload.guidePhone || '+91 98765 43210',
     } : null;
   }
   const { data, error } = await client
@@ -442,7 +455,9 @@ export const getPackageByIdFromCache = async (packageId: string): Promise<Travel
   return {
     ...row.payload,
     isGroupTour: row.is_group_tour,
-    groupDepartures: row.group_departures ? JSON.parse(row.group_departures) : [],
+    groupDepartures: row.group_departures_json ? JSON.parse(row.group_departures_json) : [],
+    guideName: row.guide_name || row.payload.guideName || getDeterministicGuideInfo(row.package_id).name,
+    guidePhone: row.guide_phone || row.payload.guidePhone || getDeterministicGuideInfo(row.package_id).phone,
   };
 };
 
@@ -699,7 +714,7 @@ export const updatePackageGroupBookings = async (packageId: string, travelDate: 
     if (index < 0) return null;
 
     const row = inMemoryCache[index];
-    const departures = row.group_departures ? JSON.parse(row.group_departures) : [];
+    const departures = row.group_departures_json ? JSON.parse(row.group_departures_json) : [];
     const departure = departures.find((d: any) => d.date === travelDate);
     if (!departure) return null;
 
@@ -713,7 +728,7 @@ export const updatePackageGroupBookings = async (packageId: string, travelDate: 
 
     inMemoryCache[index] = {
       ...row,
-      group_departures: updatedDepartures,
+      group_departures_json: updatedDepartures,
       payload: updatedPayload,
       updated_at: new Date().toISOString()
     };
@@ -723,13 +738,13 @@ export const updatePackageGroupBookings = async (packageId: string, travelDate: 
 
   const { data: hit, error: fetchError } = await client
     .from(CACHE_TABLE)
-    .select("group_departures, payload")
+    .select("group_departures_json, payload")
     .eq("package_id", packageId)
     .maybeSingle();
 
   if (fetchError || !hit) return null;
 
-  const departures = hit.group_departures ? JSON.parse(hit.group_departures) : [];
+  const departures = hit.group_departures_json ? JSON.parse(hit.group_departures_json) : [];
   const departure = departures.find((d: any) => d.date === travelDate);
   if (!departure) return null;
 
@@ -742,7 +757,7 @@ export const updatePackageGroupBookings = async (packageId: string, travelDate: 
   const { error } = await client
     .from(CACHE_TABLE)
     .update({
-      group_departures: JSON.stringify(departures),
+      group_departures_json: JSON.stringify(departures),
       payload: updatedPayload,
       updated_at: new Date().toISOString()
     })

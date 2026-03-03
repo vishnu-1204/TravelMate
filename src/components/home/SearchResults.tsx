@@ -79,6 +79,7 @@ const SearchResults = ({ results, hasSearched }: SearchResultsProps) => {
                       alt={`${pkg.title} in ${pkg.location}`}
                       category={pkg.category}
                       imageQuery={`${pkg.title} ${pkg.location}`}
+                      packageId={pkg.id}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       sizes="(max-width: 768px) 100vw, 25vw"
                     />

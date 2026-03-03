@@ -144,7 +144,10 @@ export const initDatabase = (): Promise<void> => {
                     { name: "email_attempts", ddl: "ALTER TABLE bookings ADD COLUMN email_attempts INTEGER DEFAULT 0" },
                     { name: "email_last_attempt_at", ddl: "ALTER TABLE bookings ADD COLUMN email_last_attempt_at DATETIME" },
                     { name: "email_last_error", ddl: "ALTER TABLE bookings ADD COLUMN email_last_error TEXT" },
-                    { name: "ticket_pdf_url", ddl: "ALTER TABLE bookings ADD COLUMN ticket_pdf_url TEXT" }
+                    { name: "ticket_pdf_url", ddl: "ALTER TABLE bookings ADD COLUMN ticket_pdf_url TEXT" },
+                    { name: "cancellation_reason", ddl: "ALTER TABLE bookings ADD COLUMN cancellation_reason TEXT" },
+                    { name: "cancelled_at", ddl: "ALTER TABLE bookings ADD COLUMN cancelled_at DATETIME" },
+                    { name: "refund_amount", ddl: "ALTER TABLE bookings ADD COLUMN refund_amount REAL" }
                   ];
 
                   for (const m of migrations) {
@@ -170,6 +173,14 @@ export const initDatabase = (): Promise<void> => {
                   if (!existing.has("group_departures_json")) {
                     await run("ALTER TABLE packages ADD COLUMN group_departures_json TEXT");
                     logger("Added packages.group_departures_json");
+                  }
+                  if (!existing.has("guide_name")) {
+                    await run("ALTER TABLE packages ADD COLUMN guide_name TEXT");
+                    logger("Added packages.guide_name");
+                  }
+                  if (!existing.has("guide_phone")) {
+                    await run("ALTER TABLE packages ADD COLUMN guide_phone TEXT");
+                    logger("Added packages.guide_phone");
                   }
                 };
 
