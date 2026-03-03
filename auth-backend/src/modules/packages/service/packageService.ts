@@ -150,8 +150,10 @@ export const buildPackageListQuery = (query: Record<string, unknown>): PackageLi
 
   const rawCategory = typeof query.category === 'string' ? query.category.trim().toLowerCase() : undefined;
   const virtualCategory =
-    rawCategory === 'south-india' || rawCategory === 'north-india'
-      ? rawCategory
+    rawCategory === 'south-india' || rawCategory === 'south'
+      ? 'south-india'
+      : rawCategory === 'north-india' || rawCategory === 'north'
+      ? 'north-india'
       : rawCategory === 'solo' || rawCategory === 'solo-trips'
       ? 'solo'
       : undefined;

@@ -950,29 +950,9 @@ export const getPackagesPage = async (query: PackageQuery = {}): Promise<Package
         throw new Error('Invalid package payload');
       }
 
-      const normalizedPackages = payload.packages
-        .map((pkg) => withQueryPricing(normalizePackage(pkg as RawPackage), query))
-        .filter((pkg) => {
-          if (normalizedCategory === 'south') return isSouthIndianPackage(pkg);
-          if (normalizedCategory === 'north') return isNorthIndianPackage(pkg);
-          if (normalizedCategory === 'solo') return isSoloTripPackage(pkg);
-          if (normalizedCategory) return pkg.category === (normalizedCategory as PackageCategory);
-          return true;
-        })
-        .filter((pkg) => {
-          const normalizedQueryCategories = (query.categories || [])
-            .map((item) => normalizeCategory(item))
-            .filter((item): item is PackageCategory => Boolean(item));
-          if (normalizedQueryCategories.length) {
-            return normalizedQueryCategories.some((category) => {
-              if (category === 'south') return isSouthIndianPackage(pkg);
-              if (category === 'north') return isNorthIndianPackage(pkg);
-              if (category === 'solo') return isSoloTripPackage(pkg);
-              return pkg.category === category;
-            });
-          }
-          return true;
-        });
+      const normalizedPackages = payload.packages.map((pkg) =>
+        withQueryPricing(normalizePackage(pkg as RawPackage), query)
+      );
 
       if (normalizedPackages.length === 0 && (query.search || query.destination)) {
          // If backend returns nothing for search, we might want to check local too

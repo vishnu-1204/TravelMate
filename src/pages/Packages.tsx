@@ -125,21 +125,6 @@ const isIndianDestination = (name: string) => {
   if (indianDestinationSet.has(normalized)) return true;
   return indianDestinationKeywords.some((keyword) => normalized.includes(keyword));
 };
-const isGenericIndianImage = (url?: string) => {
-  const normalized = String(url || '').trim().toLowerCase();
-  if (!normalized) return true;
-  if (normalized === INDIAN_PACKAGES_FALLBACK_IMAGE.toLowerCase()) return true;
-  return GENERIC_INDIAN_IMAGE_MARKERS.some((marker) => normalized.includes(marker));
-};
-
-const resolveIndianPackageImage = (pkg: TravelPackage) => {
-  const sourceImage = String(pkg.imageUrl || pkg.image || '').trim();
-  if (sourceImage && !isGenericIndianImage(sourceImage)) return sourceImage;
-
-  const haystack = normalizeSuggestion(`${pkg.title} ${pkg.destination} ${pkg.location}`);
-  const matched = INDIAN_DESTINATION_IMAGE_RULES.find((rule) => rule.keywords.some((keyword) => haystack.includes(keyword)));
-  return matched?.image || INDIAN_PACKAGES_FALLBACK_IMAGE;
-};
 
 const normalizePlaceKey = (value: string) =>
   value
@@ -402,16 +387,7 @@ const Packages = () => {
           maxDuration,
         });
         if (!active) return;
-        let safetyFiltered = result.packages.filter((pkg) => {
-          const looksIndianByText = isIndianDestination(`${pkg.destination} ${pkg.location} ${pkg.title}`);
-          if (selectedCategory === 'international') {
-            return pkg.category === 'international' && !isIndiaCountry(pkg.country) && !looksIndianByText;
-          }
-          if (isIndianCategory) {
-            return pkg.category === 'domestic' || isIndiaCountry(pkg.country) || looksIndianByText;
-          }
-          return true;
-        });
+        let safetyFiltered = result.packages;
 
         const nearbyMeta: Record<string, NearbyMeta> = {};
         if (isNearbyCategory && userCoords) {
@@ -480,14 +456,7 @@ const Packages = () => {
         setNearbyMetaById(nearbyMeta);
         setPackages(withNearbyAnnotations);
 
-        if (isNearbyCategory) {
-          setTotal(safetyFiltered.length);
-        } else if (selectedCategory === 'international' || isIndianCategory || isSoloCategory) {
-          const removedOnPage = Math.max(result.packages.length - safetyFiltered.length, 0);
-          setTotal(Math.max(result.total - removedOnPage, safetyFiltered.length));
-        } else {
-          setTotal(result.total);
-        }
+        setTotal(result.total);
       } catch (err) {
         if (!active) return;
         setPackages([]);
