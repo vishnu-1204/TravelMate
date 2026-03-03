@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 
 type PackageImageProps = {
   src: string;
@@ -13,7 +13,7 @@ type PackageImageProps = {
   onErrorSrc?: string;
 };
 
-/* ── Category-based segment hints for search keywords ── */
+/* ── Segment hints appended to fallback search keywords ── */
 const SEGMENT_HINTS: Record<string, string> = {
   heritage: ',temple,ruins',
   historical: ',temple,ruins',
@@ -28,65 +28,76 @@ const SEGMENT_HINTS: Record<string, string> = {
   educational: ',monument,history',
 };
 
-/* ── Curated destination-specific Unsplash photos ── */
+/* ── Large curated pool per destination region (used only when src is empty/placeholder) ── */
 const DESTINATION_IMAGES: Record<string, string[]> = {
-  'kerala|munnar|alleppey|wayanad|thekkady|kovalam|kochi|varkala': [
+  'kerala|munnar|alleppey|wayanad|thekkady|kovalam|kochi|varkala|kumarakom': [
     'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944',
     'https://images.unsplash.com/photo-1595815771614-ade501f4b7d8',
+    'https://images.unsplash.com/photo-1593693397690-362cb9666fc2',
+    'https://images.unsplash.com/photo-1609340667284-1a4cb816cc61',
+    'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+    'https://images.unsplash.com/photo-1567157577867-05ccb1388e13',
+    'https://images.unsplash.com/photo-1614082242765-7c98ca0f3df3',
   ],
   'goa|baga|calangute|palolem|aguada': [
     'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2',
     'https://images.unsplash.com/photo-1537996194471-e657df975ab4',
+    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
+    'https://images.unsplash.com/photo-1559827291-baf86b9deb2a',
+    'https://images.unsplash.com/photo-1544551763-46a013bb70d5',
   ],
   'rajasthan|jaipur|udaipur|jodhpur|jaisalmer|pushkar': [
     'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1',
     'https://images.unsplash.com/photo-1512453979798-5ea266f8880c',
+    'https://images.unsplash.com/photo-1599661046289-e31897846e41',
+    'https://images.unsplash.com/photo-1548013146-72479768bada',
   ],
-  'himachal|manali|shimla|kasol|spiti|dharamshala|dalhousie|uttarakhand|rishikesh|nainital|mussoorie|auli|corbett|haridwar': [
+  'himachal|manali|shimla|kasol|spiti|dharamshala|dalhousie': [
     'https://images.unsplash.com/photo-1521292270410-a8c4d716d518',
     'https://images.unsplash.com/photo-1469474968028-56623f02e42e',
     'https://images.unsplash.com/photo-1431274172761-fca41d930114',
+    'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99',
+    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
   ],
-  'karnataka|coorg|mysuru|mysore|hampi|gokarna|udupi|chikmagalur|tamil|ooty|kodaikanal|chennai|kanyakumari': [
-    'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
-    'https://images.unsplash.com/photo-1527631746610-bca00a040d60',
+  'uttarakhand|rishikesh|nainital|mussoorie|auli|corbett|haridwar': [
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4',
+    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
+    'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99',
   ],
-  'maharashtra|mumbai|pune|lonavala|mahabaleshwar|nashik|alibaug|gujarat|ahmedabad|kutch|gir|somnath|dwarka': [
-    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
-    'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86',
+  'karnataka|coorg|mysuru|mysore|hampi|gokarna|udupi|chikmagalur': [
+    'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05',
+    'https://images.unsplash.com/photo-1472214103451-9374bd1c798e',
+    'https://images.unsplash.com/photo-1433086966358-54859d0ed716',
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4',
   ],
-  'meghalaya|shillong|cherrapunji|dawki|sikkim|gangtok|pelling|lachung|darjeeling': [
-    'https://images.unsplash.com/photo-1525625293386-3f8f99389edd',
-    'https://images.unsplash.com/photo-1488646953014-85cb44e25828',
+  'ooty|kodaikanal|chennai|kanyakumari|pondicherry|mahabalipuram': [
+    'https://images.unsplash.com/photo-1582510003544-4d00b7f74220',
+    'https://images.unsplash.com/photo-1506929562872-bb421503ef21',
+    'https://images.unsplash.com/photo-1530789253388-582c481c54b0',
   ],
   'kashmir|srinagar|gulmarg|pahalgam|leh|ladakh': [
     'https://images.unsplash.com/photo-1431274172761-fca41d930114',
     'https://images.unsplash.com/photo-1506905925346-21bda4d32df4',
+    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
+    'https://images.unsplash.com/photo-1519681393784-d120267933ba',
   ],
-  'delhi|agra': [
-    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da',
-  ],
-  'andaman|lakshadweep': [
-    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
+  'maharashtra|mumbai|pune|lonavala|mahabaleshwar|nashik|alibaug|gujarat|ahmedabad|kutch|gir|somnath|dwarka': [
+    'https://images.unsplash.com/photo-1544551763-46a013bb70d5',
     'https://images.unsplash.com/photo-1559827291-baf86b9deb2a',
   ],
-  'pondicherry|mahabalipuram': [
-    'https://images.unsplash.com/photo-1582510003544-4d00b7f74220',
+  'meghalaya|shillong|cherrapunji|dawki|sikkim|gangtok|pelling|lachung|darjeeling': [
+    'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05',
+    'https://images.unsplash.com/photo-1472214103451-9374bd1c798e',
+  ],
+  'delhi|agra': [
+    'https://images.unsplash.com/photo-1548013146-72479768bada',
+    'https://images.unsplash.com/photo-1585135497273-1a86d9d43f07',
+  ],
+  'andaman|lakshadweep': [
+    'https://images.unsplash.com/photo-1559827291-baf86b9deb2a',
+    'https://images.unsplash.com/photo-1544551763-46a013bb70d5',
   ],
 };
-
-const GENERIC_IMAGE_MARKERS = [
-  'photo-1524492412937-b28074a5d7da',
-  'photo-1467269204594-9661b134dd2b',
-  'photo-1501785888041-af3ef285b470',
-  'photo-1527631746610-bca00a040d60',
-  'photo-1518509562904-e7ef99cdcc86',
-  'photo-1529156069898-49953e39b3ac',
-  'photo-1525625293386-3f8f99389edd',
-  '/placeholder.svg',
-];
-
-const NON_UNIQUE_MARKERS = ['placeholder', 'test', 'sample'];
 
 const normalizeQuery = (value: string) =>
   value.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -97,37 +108,23 @@ const hashSeed = (value: string) => {
     hash = (hash << 5) - hash + value.charCodeAt(i);
     hash |= 0;
   }
-  return Math.abs(hash % 1000) + 1;
+  return Math.abs(hash % 10000);
 };
 
-/* ── Global seen-URL tracker to detect duplicates across cards ── */
-const seenUrls = new Set<string>();
-let lastResetTime = 0;
+let globalRenderCounter = 0;
 
-const resetSeenIfStale = () => {
-  const now = Date.now();
-  // Reset every 5 seconds to avoid stale data between renders
-  if (now - lastResetTime > 5000) {
-    seenUrls.clear();
-    lastResetTime = now;
-  }
-};
-
-const isNonUniqueUrl = (url: string): boolean => {
-  const lower = url.toLowerCase().trim();
-  if (!lower) return true;
-
-  // Check for non-unique markers
-  if (NON_UNIQUE_MARKERS.some((m) => lower.includes(m))) return true;
-
-  // Check for generic fallback markers
-  if (GENERIC_IMAGE_MARKERS.some((m) => lower.includes(m))) return true;
-
-  // Check for duplicate across cards
-  resetSeenIfStale();
-  if (seenUrls.has(lower)) return true;
-  seenUrls.add(lower);
-
+/**
+ * Only flag a URL as "needs replacement" if it is truly empty or a placeholder.
+ * Trust all real Unsplash / Pexels / Amadeus URLs from packages.json.
+ */
+const needsDynamicImage = (url: string): boolean => {
+  const trimmed = url.trim();
+  if (!trimmed) return true;
+  const lower = trimmed.toLowerCase();
+  if (lower === '/placeholder.svg') return true;
+  if (lower.includes('placeholder')) return true;
+  if (lower.includes('test-image')) return true;
+  if (lower.includes('sample-image')) return true;
   return false;
 };
 
@@ -139,14 +136,7 @@ const getSegmentHint = (category?: string, title?: string): string => {
   return '';
 };
 
-const extractCityName = (query: string): string => {
-  // Try to extract a city/destination name from the query
-  const parts = query.split(/\s+/);
-  // Return the most destination-like word (capitalize first)
-  return parts[parts.length - 1] || 'travel';
-};
-
-const getDestinationImage = (query: string, seed: number) => {
+const getDestinationImage = (query: string, seed: number): string => {
   const normalized = query.toLowerCase();
   for (const [key, urls] of Object.entries(DESTINATION_IMAGES)) {
     const keywords = key.split('|');
@@ -158,34 +148,22 @@ const getDestinationImage = (query: string, seed: number) => {
   const genericPool = [
     'https://images.unsplash.com/photo-1488646953014-85cb44e25828',
     'https://images.unsplash.com/photo-1469474968028-56623f02e42e',
-    'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
-    'https://images.unsplash.com/photo-1467269204594-9661b134dd2b',
     'https://images.unsplash.com/photo-1512453979798-5ea266f8880c',
-    'https://images.unsplash.com/photo-1527631746610-bca00a040d60',
-    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac',
+    'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05',
+    'https://images.unsplash.com/photo-1472214103451-9374bd1c798e',
+    'https://images.unsplash.com/photo-1433086966358-54859d0ed716',
   ];
   return genericPool[seed % genericPool.length];
 };
 
-const buildDynamicUrl = (query: string, category?: string, title?: string): string => {
-  const city = extractCityName(query);
-  const hint = getSegmentHint(category, title);
-  const seed = hashSeed(`${query}-${category || ''}`);
-
-  // Try curated destination image first
-  const curated = getDestinationImage(query, seed);
-  if (curated) {
-    // Append unique sig to avoid browser cache collisions between cards
-    return `${curated}?auto=format&fit=crop&w=1200&q=75&sig=${seed}`;
-  }
-
-  // Primary: Unsplash search by city + segment hint
-  return `https://source.unsplash.com/featured/800x600?${encodeURIComponent(city + ',travel' + hint)}`;
+const extractCityName = (query: string): string => {
+  const parts = query.split(/\s+/).filter(Boolean);
+  return parts[parts.length - 1] || 'travel';
 };
 
 const optimizeUrl = (url: string, width: number) => {
   if (!url) return url;
-  if (url.includes('source.unsplash.com')) return url; // already sized
+  if (url.includes('source.unsplash.com')) return url;
   if (url.includes('loremflickr.com')) return url;
   if (url.includes('picsum.photos/seed/')) {
     return url.replace(/\/\d+\/\d+$/, `/${width}/${Math.round(width * 0.625)}`);
@@ -213,17 +191,20 @@ export const PackageImage = ({
   onErrorSrc = '/placeholder.svg',
 }: PackageImageProps) => {
   const normalizedQuery = normalizeQuery(imageQuery || alt || category || 'travel');
+  const instanceId = useRef(++globalRenderCounter);
 
   const resolvedBaseSrc = useMemo(() => {
     const rawSrc = (src || '').trim();
 
-    // If forced dynamic or the URL is non-unique → build a fresh one
-    if (forceDynamic || isNonUniqueUrl(rawSrc)) {
-      return buildDynamicUrl(normalizedQuery, category, alt);
+    // Trust the provided URL if it's a real image (not a placeholder)
+    if (!forceDynamic && !needsDynamicImage(rawSrc)) {
+      return rawSrc;
     }
 
-    return rawSrc;
-  }, [src, forceDynamic, normalizedQuery, category, alt]);
+    // Generate a unique curated image using instance counter
+    const uniqueSeed = hashSeed(`${normalizedQuery}-${category || ''}-${instanceId.current}`);
+    return getDestinationImage(normalizedQuery, uniqueSeed);
+  }, [src, forceDynamic, normalizedQuery, category]);
 
   const srcSet = useMemo(() => {
     return [480, 768, 1024, 1400]
