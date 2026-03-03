@@ -115,6 +115,33 @@ const dedupeSuggestions = (items: string[]) =>
         .map((item) => [normalizeSuggestion(item), item] as const)
     ).values()
   );
+const INDIAN_PACKAGES_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75';
+
+const GENERIC_INDIAN_IMAGE_MARKERS = [
+  'photo-1524492412937-b28074a5d7da',
+  'photo-1467269204594-9661b134dd2b',
+  'photo-1501785888041-af3ef285b470',
+  'photo-1527631746610-bca00a040d60',
+  'photo-1518509562904-e7ef99cdcc86',
+  'photo-1529156069898-49953e39b3ac',
+  'photo-1525625293386-3f8f99389edd',
+  '/placeholder.svg',
+];
+
+const INDIAN_DESTINATION_IMAGE_RULES: { keywords: string[]; image: string }[] = [
+  { keywords: ['kerala', 'munnar', 'alleppey', 'wayanad', 'thekkady', 'kovalam', 'kochi', 'varkala'], image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['goa', 'baga', 'calangute', 'palolem', 'aguada'], image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['rajasthan', 'jaipur', 'udaipur', 'jodhpur', 'jaisalmer', 'pushkar'], image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['himachal', 'manali', 'shimla', 'kasol', 'spiti', 'dharamshala', 'dalhousie'], image: 'https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['uttarakhand', 'rishikesh', 'nainital', 'mussoorie', 'auli', 'corbett', 'haridwar'], image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['coorg', 'mysuru', 'mysore', 'hampi', 'gokarna', 'udupi', 'chikmagalur'], image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['ooty', 'kodaikanal', 'chennai', 'kanyakumari', 'pondicherry', 'mahabalipuram'], image: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['kashmir', 'srinagar', 'gulmarg', 'pahalgam', 'leh', 'ladakh'], image: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['delhi', 'agra'], image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['meghalaya', 'shillong', 'cherrapunji', 'dawki', 'sikkim', 'gangtok', 'darjeeling'], image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1200&q=75' },
+  { keywords: ['andaman', 'lakshadweep'], image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=75' },
+];
+
 const isIndiaCountry = (country?: string) => {
   const normalized = normalizeCountry(country);
   return normalized === 'india' || normalized === 'in' || normalized === 'ind';
