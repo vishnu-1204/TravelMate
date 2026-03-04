@@ -1,0 +1,30 @@
+﻿nslookup : *** Request 
+to UnKnown timed-out
+At line:1 char:1
++ nslookup 
+api.resend.com > 
+ns_out.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (*** Request t   
+ o UnKnown timed-ou    
+t:String) [], Remo    
+teException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+
+Server:  UnKnown
+Address:  172.20.227.243
+
+DNS request timed out.
+    timeout was 2 seconds.
+DNS request timed out.
+    timeout was 2 seconds.
+DNS request timed out.
+    timeout was 2 seconds.
+DNS request timed out.
+    timeout was 2 seconds.

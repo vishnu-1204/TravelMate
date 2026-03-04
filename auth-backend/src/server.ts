@@ -99,7 +99,7 @@ const startServer = async () => {
 
     const tryListen = () => {
       if (attempts >= maxAttempts) {
-        logger(`❌ [PID ${process.pid}] Failed to find an available port after ${maxAttempts} attempts.`);
+        logger(`❌ [PID ${process.pid}] Failed to find an available port after ${maxAttempts} attempts starting from ${config.port}.`);
         process.exit(1);
       }
 
@@ -121,7 +121,12 @@ const startServer = async () => {
             
             const server = app.listen(currentPort, () => {
               logger(`🚀 [PID ${process.pid}] Server SUCCESS on http://localhost:${currentPort}`);
-              // Update config if port changed so other parts of the app know the active port
+              // Important: log the FINAL port clearly for debugging
+              console.log(`\n--- SERVER READY ---`);
+              console.log(`Port: ${currentPort}`);
+              console.log(`URL: http://localhost:${currentPort}`);
+              console.log(`--------------------\n`);
+              
               (config as any).activePort = currentPort;
             });
 

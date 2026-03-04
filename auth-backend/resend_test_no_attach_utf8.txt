@@ -1,0 +1,9 @@
+﻿{
+  data: null,
+  error: {
+    name: 'application_error',
+    statusCode: null,
+    message: 'Unable to fetch data. The request could not be resolved.'
+  },
+  headers: null
+}

@@ -1,0 +1,43 @@
+﻿[dotenv@17.2.4] injecting env (14) from .env -- tip: ≡ƒ¢á∩╕Å  run anywhere with `dotenvx run -- yourcommand`
+--- Email Diagnostic START ---
+Time: 2026-03-04T06:12:15.580Z
+RESEND_API_KEY: Present
+SMTP_USER: travelmate713@gmail.com
+
+Testing SMTP (smtp.gmail.com:587)...
+node : Γ¥î SMTP 
+Connection Failed: 
+Invalid login: 
+534-5.7.9 Please log 
+in with your web 
+browser and then try 
+again. For more
+At line:1 char:1
++ node test_email_diagn
+ostic.js > 
+email_diag_out.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Γ¥î SMTP Conn   
+ ec...again. For mo    
+re:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+534-5.7.9 information, 
+go to
+534 5.7.9  https://supp
+ort.google.com/mail/?p=
+WebLoginRequired d2e1a7
+2fcca58-82739d4d826sm17
+764475b3a.10 - gsmtp
+
+Testing Resend API...
+Γ£à Resend API SUCCESS: { id: 'dde4bcb1-da16-45eb-90db-cb1a391dcbf9' }
+
+--- Email Diagnostic END ---

@@ -4,7 +4,7 @@ import { Loader2, ArrowLeft, CheckCircle, Eye, EyeOff } from 'lucide-react';
 import PageTransition from '@/components/layout/PageTransition';
 import { z } from 'zod';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3003';
 
 const passwordSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),

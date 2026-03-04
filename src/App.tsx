@@ -16,6 +16,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Packages from "./pages/Packages";
 import PackageDetails from "./pages/PackageDetails";
 import Payment from "./pages/Payment";
+import DummyPayment from "./pages/DummyPayment";
 import Blog from "./pages/Blog";
 import BlogDetails from "./pages/BlogDetails";
 import About from "./pages/About";
@@ -52,6 +53,14 @@ const AnimatedRoutes = () => {
           element={
             <ProtectedRoute>
               <Payment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dummy-payment"
+          element={
+            <ProtectedRoute>
+              <DummyPayment />
             </ProtectedRoute>
           }
         />

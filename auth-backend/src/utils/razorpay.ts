@@ -1,4 +1,4 @@
-import Razorpay from "razorpay";
+import Razorpay = require("razorpay");
 import { config } from "../config/env";
 
 export const razorpay = config.razorpayKeyId && config.razorpayKeySecret

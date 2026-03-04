@@ -1,0 +1,19 @@
+﻿[dotenv@17.2.4] injecting env (14) from .env -- tip: ≡ƒöÉ encrypt with Dotenvx: https://dotenvx.com
+--- Email Attachment Diagnostic START ---
+
+Testing Resend API with Attachment...
+Generated PDF Buffer Size: 1267 bytes
+
+--- Email Attachment Diagnostic END ---
+node : Γ¥î Resend API Failed: Unable to fetch data. The request could not be resolved.
+At line:1 char:1
++ node test_email_attachment_diagnostic.js > email_attach_diag_out.txt  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo              : NotSpecifi    ed: (Γ¥î Resend AP    I ...ot be resolve    d.:String) [], Rem    oteException
+    + FullyQualifiedEr    rorId : NativeComm    andError
+ 
+Error Details: {
+  "name": "application_error",
+  "statusCode": null,
+  "message": "Unable to fetch data. The request could not be resolved."
+}

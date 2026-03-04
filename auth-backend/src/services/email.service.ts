@@ -31,6 +31,7 @@ export type BookingEmailDetails = {
   checkIn?: string;
   checkOut?: string;
   transportType?: 'flight' | 'bus' | 'train' | 'other';
+  payment_id?: string;
 };
 
 export type Attachment = {
@@ -97,17 +98,17 @@ async function sendWithRetry(
   html: string,
   options?: { attachments?: any[] }
 ) {
-  const maxRetries = 2; // Reduced from 3
+  const maxRetries = 2;
   let lastError: any = null;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       logger(`[${tag}] Attempt ${attempt}/${maxRetries} to ${to}`);
 
-      // Try SMTP first (if it failed before with auth error, we might want to skip, but for now we try once)
+      // Try SMTP first
       if (hasSmtpConfig()) {
         try {
-          // Add a connection timeout to the transporter if possible or just race it
+          // Increased SMTP Timeout to 15s
           const result = await Promise.race([
             transporter.sendMail({
               from: config.smtpFrom || config.smtpUser,
@@ -116,17 +117,15 @@ async function sendWithRetry(
               html,
               attachments: options?.attachments,
             }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error("SMTP Timeout")), 6000))
+            new Promise((_, reject) => setTimeout(() => reject(new Error("SMTP Timeout")), 15000))
           ]);
           logger(`[${tag}] SUCCESS via SMTP on attempt ${attempt}`);
           return result;
         } catch (smtpErr: any) {
           logger(`[${tag}] SMTP failed (Attempt ${attempt}): ${smtpErr.message}`);
           lastError = smtpErr;
-          // If it's an Auth error (535), don't bother retrying SMTP or waiting
           if (smtpErr.message.includes('535') || smtpErr.message.includes('Username and Password not accepted')) {
              logger(`[${tag}] Permanent Auth Error detected. Skipping SMTP retries.`);
-             // We don't return here, we let it fall through to Resend
           }
         }
       }
@@ -134,17 +133,32 @@ async function sendWithRetry(
       // Try Resend
       if (hasResendConfig()) {
         try {
-          const { data, error } = await resend.emails.send({
+          const sendParams: any = {
             from: config.resendFrom,
             to,
             subject,
             html,
             attachments: options?.attachments,
-          });
+          };
+
+          const { data, error } = await resend.emails.send(sendParams);
+          
           if (!error) {
             logger(`[${tag}] SUCCESS via Resend on attempt ${attempt}`);
             return data;
           }
+
+          // IF Resend fails with "Unable to fetch data" and we have attachments, try one last time WITHOUT attachments
+          if (error.message.includes('Unable to fetch data') && options?.attachments?.length) {
+            logger(`[${tag}] Resend failed with attachment error. Retrying WITHOUT attachments...`);
+            const fallbackResult = await resend.emails.send({ ...sendParams, attachments: undefined });
+            if (!fallbackResult.error) {
+              logger(`[${tag}] SUCCESS via Resend (Fallback: No Attachments) on attempt ${attempt}`);
+              return fallbackResult.data;
+            }
+            logger(`[${tag}] Resend fallback also failed: ${fallbackResult.error.message}`);
+          }
+
           logger(`[${tag}] Resend failed (Attempt ${attempt}): ${error.message}`);
           lastError = error;
         } catch (resendErr: any) {
@@ -154,7 +168,6 @@ async function sendWithRetry(
       }
 
       if (attempt < maxRetries) {
-        // Shorter delay for retries
         const delay = 1000; 
         logger(`[${tag}] Waiting ${delay}ms before next retry...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
@@ -248,6 +261,7 @@ export const sendBookingConfirmation = async (
     emergencyContact: config.supportPhone,
     supportEmail: config.supportEmail,
     supportPhone: config.supportPhone,
+    payment_id: booking.payment_id,
   };
 
   try {
@@ -289,6 +303,7 @@ export const sendCancellationEmail = async (
     checkOut: booking.checkOut,
     transportType: booking.transportType || (booking.airline?.toLowerCase().includes('coach') ? 'bus' : 'flight'),
     heroImage: getHeroImage(booking.destination || booking.packageTitle),
+    refundPrice: `INR ${Number(refundAmount || 0).toLocaleString("en-IN")}`,
     emergencyContact: config.supportPhone,
     supportEmail: config.supportEmail,
     supportPhone: config.supportPhone,

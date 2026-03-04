@@ -1,0 +1,11 @@
+{
+  "root": {
+    "path": "C:\\Users\\acer\\OneDrive\\Desktop\\TravelMate\\auth-backend\\auth.db",
+    "exists": true,
+    "mtime": "2026-03-04T00:52:46.956Z"
+  },
+  "src": {
+    "path": "C:\\Users\\acer\\OneDrive\\Desktop\\TravelMate\\auth-backend\\src\\auth.db",
+    "exists": false
+  }
+}

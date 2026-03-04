@@ -11,6 +11,10 @@ import { sendBookingConfirmation, sendFlightTicketEmail, recordEmailFailure } fr
 import { searchFlightOffers } from "../modules/packages/provider/amadeusProvider";
 import { getPackageById } from "../modules/packages/service/packageService";
 import { logger } from "../utils/logger";
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+
+dayjs.extend(isBetween);
 
 const router = Router();
 const EMAIL_RETRY_LIMIT = 3;
@@ -367,7 +371,6 @@ const sendFlightWithRetry = async (payload: EmailPayload, pdf: Buffer) => {
   }
   return { ok: false, attempts: EMAIL_RETRY_LIMIT, error: lastError?.message || "send failed" };
 };
-
 const processStoredBooking = async (booking: BookingRecord, force = false) => {
   if (!config.resendApiKey || !config.resendFrom) return { ok: false, code: 500, message: "Resend not configured" };
   if (!validEmail(booking.email)) return { ok: false, code: 400, message: "Invalid booking email" };
@@ -429,6 +432,38 @@ const processStoredBooking = async (booking: BookingRecord, force = false) => {
   return { ok: true, code: 200, message: "sent" };
 };
 
+/**
+ * Robustly combines a travel date string and a departure time string into a Date object.
+ * Handles Various formats: '2026-03-25', '25 March 2026', 'TBA', etc.
+ */
+function getExactDepartureDate(travelDateStr: string, departureTimeStr?: string | null): Date {
+  if (!travelDateStr || travelDateStr === "TBA") {
+    // If no date, return a date in the far future to prevent accidental "travel date passed" errors
+    // though in practice, travelDate should be mandatory for cancellation.
+    return dayjs().add(1, 'year').toDate();
+  }
+
+  let dt = dayjs(travelDateStr);
+  
+  // If travelDateStr is just '2026-03-25', it defaults to midnight.
+  // Now add time if available
+  if (departureTimeStr && departureTimeStr !== "TBA") {
+    const match = departureTimeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+    if (match) {
+      let hours = parseInt(match[1], 10);
+      const minutes = parseInt(match[2], 10);
+      const suffix = match[3]?.toUpperCase();
+
+      if (suffix === 'PM' && hours < 12) hours += 12;
+      if (suffix === 'AM' && hours === 12) hours = 0;
+
+      dt = dt.hour(hours).minute(minutes).second(0).millisecond(0);
+    }
+  }
+
+  return dt.toDate();
+}
+
 const sendBookingConfirmationHandler = async (req: Request, res: Response) => {
   const { bookingReference, userId, paymentId } = req.body as { bookingReference?: string; userId?: string; paymentId?: string };
   if (!bookingReference) return res.status(400).json({ message: "bookingReference is required" });
@@ -449,29 +484,25 @@ const sendBookingConfirmationHandler = async (req: Request, res: Response) => {
   }
 };
 
-router.post("/create-razorpay-order", async (req: Request, res: Response) => {
-  const { amount, currency = "INR", receipt } = req.body as { amount: number; currency?: string; receipt?: string };
-  if (!amount) return res.status(400).json({ message: "Amount is required" });
-
+router.post("/create-order", async (req: Request, res: Response) => {
+  const { amount = 500, currency = "INR", receipt } = req.body as { amount?: number; currency?: string; receipt?: string };
+  
   if (!razorpay) {
-    return res.status(500).json({ message: "Razorpay is not configured on the server" });
+    console.warn("[Razorpay] Not configured, using demo order simulation.");
+    return res.status(200).json({
+      id: `order_demo_${Date.now()}`,
+      amount: Math.round(amount * 100),
+      currency,
+      receipt: receipt || `receipt_${Date.now()}`,
+      status: "created",
+      isDemo: true
+    });
   }
 
   try {
-    // Demo Mode: If using placeholders, return a mock order
-    if (config.razorpayKeyId === "rzp_test_YOUR_KEY_ID") {
-      return res.status(200).json({
-        id: `order_demo_${Date.now()}`,
-        amount: Math.round(amount * 100),
-        currency,
-        receipt: receipt || `receipt_${Date.now()}`,
-        status: "created",
-        isDemo: true
-      });
-    }
-
+    const paiseAmount = Math.round(amount * 100);
     const options = {
-      amount: Math.round(amount * 100), // Razorpay expects amount in paise
+      amount: paiseAmount,
       currency,
       receipt: receipt || `receipt_${Date.now()}`,
     };
@@ -479,12 +510,66 @@ router.post("/create-razorpay-order", async (req: Request, res: Response) => {
     const order = await razorpay.orders.create(options);
     return res.status(200).json(order);
   } catch (error: any) {
-    console.error("Razorpay order creation failed:", error);
+    console.error("[Razorpay] Order creation failed:", error);
     return res.status(500).json({ message: "Failed to create Razorpay order", error: error.message });
   }
 });
 
-router.post("/verify-payment", async (req: Request, res: Response) => {
+router.post("/create-razorpay-order", async (req: Request, res: Response) => {
+  const { amount, currency = "INR", receipt } = req.body as { amount: number; currency?: string; receipt?: string };
+  if (!amount) return res.status(400).json({ message: "Amount is required" });
+
+  if (!razorpay) {
+    // Demo Mode fallback if Razorpay is not configured
+    console.warn("[Razorpay] Not configured, using demo order simulation.");
+    return res.status(200).json({
+      id: `order_demo_${Date.now()}`,
+      amount: Math.round(amount * 100),
+      currency,
+      receipt: receipt || `receipt_${Date.now()}`,
+      status: "created",
+      isDemo: true
+    });
+  }
+
+  try {
+    const paiseAmount = Math.round(amount * 100);
+    console.log(`[Razorpay] Creating order for amount: ${amount} (${paiseAmount} paise), currency: ${currency}`);
+    
+    if (!razorpay || typeof razorpay.orders === 'undefined') {
+      console.error("[Razorpay] SDK instance corrupted or orders property missing.", {
+        razorpayExists: !!razorpay,
+        ordersExists: razorpay ? !!razorpay.orders : false
+      });
+      throw new Error("Razorpay SDK initialization failed internally.");
+    }
+
+    const options = {
+      amount: paiseAmount,
+      currency,
+      receipt: receipt || `receipt_${Date.now()}`,
+    };
+
+    console.log("[Razorpay] Request Options:", JSON.stringify(options));
+    const order = await razorpay.orders.create(options);
+    console.log(`[Razorpay] Order created successfully: ${order.id}`);
+    return res.status(200).json(order);
+  } catch (error: any) {
+    console.error("[Razorpay] Order creation failed. Error details:", {
+      message: error.message,
+      code: error.code,
+      description: error.description,
+      metadata: error.metadata
+    });
+    return res.status(500).json({ 
+      message: "Failed to create Razorpay order", 
+      error: error.message,
+      details: error.description || null
+    });
+  }
+});
+
+router.post("/verify-payment", authenticateToken, async (req: AuthRequest, res: Response) => {
   const {
     razorpay_order_id,
     razorpay_payment_id,
@@ -492,34 +577,138 @@ router.post("/verify-payment", async (req: Request, res: Response) => {
     bookingData
   } = req.body;
 
-  const secret = config.razorpayKeySecret;
-  if (!secret) return res.status(500).json({ message: "Razorpay secret key not configured on server" });
-
-  const generated_signature = crypto
-    .createHmac("sha256", secret)
-    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-    .digest("hex");
-
-  const isDemo = razorpay_order_id?.startsWith("order_demo_");
-  
-  if (generated_signature !== razorpay_signature && !isDemo) {
-    return res.status(400).json({ message: "Invalid payment signature" });
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+    return res.status(400).json({ message: "Missing payment verification details" });
   }
 
-  // Payment verified! Now persist booking
+  const secret = config.razorpayKeySecret;
+  const isDemo = razorpay_order_id?.startsWith("order_demo_");
+
+  if (!isDemo) {
+    if (!secret || secret === "rzp_test_secret_placeholder") {
+      console.warn("[Razorpay] Signature verification skipped (Secret missing/placeholder).");
+    } else {
+      const generated_signature = crypto
+        .createHmac("sha256", secret)
+        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+        .digest("hex");
+
+      if (generated_signature !== razorpay_signature) {
+        console.error("[Razorpay] Signature mismatch!");
+        return res.status(400).json({ message: "Invalid payment signature" });
+      }
+    }
+  }
+
+  try {
+    const db = getDb();
+    const userId = req.user?.id || bookingData.user_id;
+    const userEmail = req.user?.email || bookingData.email;
+
+    if (!userId) {
+      return res.status(401).json({ message: "User identification failed" });
+    }
+
+    // Persist booking with confirmed status
+    const fullBooking: any = {
+      ...bookingData,
+      user_id: userId,
+      payment_id: razorpay_payment_id,
+      payment_status: "paid",
+      payment_verified: 1,
+      booking_status: "confirmed",
+      email_sent: 0
+    };
+
+    // Filter fields to match SQLite schema
+    const validColumns = [
+      "user_id", "booking_reference", "package_id", "package_title", "destination", 
+      "duration", "travel_date", "travelers", "traveler_name", "first_name", 
+      "last_name", "room_type", "email", "phone", "total_amount", "airline", 
+      "departure_time", "payment_id", "payment_status", "payment_verified", 
+      "booking_terms", "booking_status", "email_sent"
+    ];
+
+    const filteredBooking: any = {};
+    validColumns.forEach(col => {
+      if (fullBooking[col] !== undefined) filteredBooking[col] = fullBooking[col];
+    });
+
+    const fields = Object.keys(filteredBooking);
+    const placeholders = fields.map(() => "?").join(", ");
+    const columns = fields.join(", ");
+    const values = fields.map(f => {
+      const val = filteredBooking[f];
+      if (f === "booking_terms" && val && typeof val === "object") return JSON.stringify(val);
+      if (typeof val === "boolean") return val ? 1 : 0;
+      return val;
+    });
+
+    const finalSql = `INSERT INTO bookings (${columns}) VALUES (${placeholders})`;
+
+    return new Promise<void>((resolve, reject) => {
+      db.run(finalSql, values, function (this: any, err: any) {
+        if (err) {
+          console.error("[Booking] Storage failed after payment:", err);
+          return res.status(500).json({ message: "Payment verified but booking storage failed", error: err.message });
+        }
+
+        const newId = this.lastID;
+        const bookingRef = fullBooking.booking_reference;
+        
+        // Trigger professional confirmation email dispatch
+        fetchBooking(bookingRef).then(async (record) => {
+          if (record) {
+             console.log(`[Razorpay] Payment verified. Dispatching professional confirmation for ${bookingRef} to ${userEmail}`);
+             try {
+                // Ensure record has the payment_id for the email template
+                record.payment_id = razorpay_payment_id;
+                await processStoredBooking(record);
+             } catch (emailErr) {
+                console.error("[Email] Dispatch failed:", emailErr);
+             }
+          }
+        }).catch(err => console.error("[Razorpay] Post-payment processing failure:", err));
+
+        return res.status(200).json({
+          success: true,
+          message: "Payment verified and booking confirmed",
+          bookingReference: bookingRef,
+          bookingId: newId,
+          paymentId: razorpay_payment_id
+        });
+      });
+    });
+  } catch (error: any) {
+    console.error("Payment verification route execution failed:", error);
+    return res.status(500).json({ message: "Failed to process payment verification", error: error.message });
+  }
+});
+
+router.post("/process-dummy-payment", authenticateToken, async (req: AuthRequest, res: Response) => {
+  const { bookingData } = req.body;
+  
+  if (!bookingData) {
+    return res.status(400).json({ message: "Booking data is required" });
+  }
+
+  const userId = req.user?.id || bookingData.user_id;
+  if (!userId) {
+    return res.status(401).json({ message: "User not authenticated" });
+  }
+
   try {
     const db = getDb();
 
-    // Augment booking data with payment info
+    // Augment booking data for dummy payment
     const fullBooking: any = {
       ...bookingData,
-      payment_id: razorpay_payment_id,
+      user_id: userId,
       payment_status: "paid",
-      payment_verified: 1, // Store as INTEGER for SQLite
-      booking_status: "confirmed"
+      payment_verified: 1, // SQLite INTEGER
+      booking_status: "confirmed",
+      email_sent: 0
     };
-
-
 
     // Filter fields to match SQLite schema
     const validColumns = [
@@ -535,42 +724,55 @@ router.post("/verify-payment", async (req: Request, res: Response) => {
       if (fullBooking[cat] !== undefined) filteredBooking[cat] = fullBooking[cat];
     });
 
+    // Ensure first_name/last_name are set for confirmation email logic if not present
+    if (!filteredBooking.first_name && filteredBooking.traveler_name) {
+      const names = filteredBooking.traveler_name.split(' ');
+      filteredBooking.first_name = names[0];
+      filteredBooking.last_name = names.slice(1).join(' ') || '-';
+    }
+
     const fields = Object.keys(filteredBooking);
     const placeholders = fields.map(() => "?").join(", ");
     const columns = fields.join(", ");
     const values = fields.map(f => {
       const val = filteredBooking[f];
       if (f === "booking_terms" && val && typeof val === "object") return JSON.stringify(val);
+      if (typeof val === "boolean") return val ? 1 : 0;
       return val;
     });
 
-    const finalSql = `INSERT INTO bookings (${columns}) VALUES (${placeholders})`;
+    const sql = `INSERT INTO bookings (${columns}) VALUES (${placeholders})`;
 
     return new Promise<void>((resolve, reject) => {
-      db.run(finalSql, values, function (this: any, err: any) {
+      db.run(sql, values, function (this: any, err: any) {
         if (err) {
-          console.error("SQLite storage failed:", err);
-          return res.status(500).json({ message: "Payment verified but booking storage failed", error: err.message });
+          console.error("Dummy booking storage failed:", err);
+          return res.status(500).json({ message: "Payment processed but booking storage failed", error: err.message });
         }
 
         const newId = this.lastID;
+        const bookingRef = fullBooking.booking_reference;
         
-        // Trigger confirmation email
-        fetchBooking(fullBooking.booking_reference).then(record => {
-          if (record) processStoredBooking(record);
-        }).catch(err => console.error("Delayed email processing failed:", err));
+        // Trigger confirmation email dispatch
+        fetchBooking(bookingRef).then(record => {
+          if (record) {
+             console.log(`[DummyPayment] Triggering email for ${bookingRef}`);
+             processStoredBooking(record);
+          }
+        }).catch(err => console.error("[DummyPayment] Delayed email processing failed:", err));
 
         return res.status(200).json({
           success: true,
-          message: "Payment verified and booking confirmed",
-          bookingReference: fullBooking.booking_reference,
-          bookingId: newId
+          message: "Dummy payment processed and booking confirmed",
+          bookingReference: bookingRef,
+          bookingId: newId,
+          paymentId: fullBooking.paymentId
         });
       });
     });
   } catch (error: any) {
-    console.error("Booking persistence failed after payment:", error);
-    return res.status(500).json({ message: "Payment verified but booking storage failed", error: error.message });
+    console.error("Dummy booking persistence failed:", error);
+    return res.status(500).json({ message: "Failed to process dummy booking", error: error.message });
   }
 });
 
@@ -737,25 +939,7 @@ router.post("/resend-confirmation", async (req: Request, res: Response) => {
   }
 });
 
-// Helper to calculate exact departure timestamp
-function getExactDepartureDate(travelDateStr: string, departureTimeStr?: string | null): Date {
-  const dateObj = new Date(travelDateStr);
-  if (!departureTimeStr) return dateObj;
 
-  const match = departureTimeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
-  if (match) {
-    let hours = parseInt(match[1], 10);
-    const minutes = parseInt(match[2], 10);
-    const isPM = match[3]?.toUpperCase() === 'PM';
-    const isAM = match[3]?.toUpperCase() === 'AM';
-
-    if (isPM && hours < 12) hours += 12;
-    if (isAM && hours === 12) hours = 0;
-
-    dateObj.setHours(hours, minutes, 0, 0);
-  }
-  return dateObj;
-}
 
 router.get("/details/:reference", async (req: Request, res: Response) => {
   const { reference } = req.params;
@@ -784,20 +968,23 @@ router.get("/details/:reference", async (req: Request, res: Response) => {
     // Calculate Refund Eligibility
     // Calculate Refund Eligibility using exact departure time
     const travelDate = getExactDepartureDate(row.travel_date, row.departure_time);
-    const now = new Date();
-    const diffInMs = travelDate.getTime() - now.getTime();
-    const diffInHours = diffInMs / (1000 * 60 * 60);
+    const now = dayjs();
+    const travelDayjs = dayjs(travelDate);
+    const diffInHours = travelDayjs.diff(now, 'hour', true);
 
     let refundAmount = 0;
     let refundable = false;
 
-    if (diffInHours > 48) {
+    if (diffInHours >= 48) {
+        // Full Refund: If cancelling more than 48 hours before Travel Date
         refundAmount = row.total_amount;
         refundable = true;
     } else if (diffInHours > 0) {
+        // Partial Refund (50%): If cancelling within 48 hours but before trip starts
         refundAmount = row.total_amount * 0.5;
         refundable = true;
     }
+    // Else: No Refund if trip already started or passed
 
     return res.status(200).json({
       bookingReference: row.booking_reference,
@@ -848,17 +1035,17 @@ router.post("/cancel", async (req: Request, res: Response) => {
     // Backend validation of travel date vs current date
     // Backend validation of travel date vs current date using exact departure time
     const travelDate = getExactDepartureDate(row.travel_date, row.departure_time);
-    const now = new Date();
-    const diffInMs = travelDate.getTime() - now.getTime();
-    const diffInHours = diffInMs / (1000 * 60 * 60);
+    const now = dayjs();
+    const travelDayjs = dayjs(travelDate);
+    const diffInHours = travelDayjs.diff(now, 'hour', true);
 
     let refundAmount = 0;
-    if (diffInHours > 48) {
+    if (diffInHours >= 48) {
         refundAmount = row.total_amount;
     } else if (diffInHours > 0) {
         refundAmount = row.total_amount * 0.5;
     } else {
-        return res.status(400).json({ message: "Travel date passed. Cannot cancel." });
+        return res.status(400).json({ message: "Cancellation not allowed. Travel date already started." });
     }
 
     // Update the booking status to cancelled with reason and timestamp

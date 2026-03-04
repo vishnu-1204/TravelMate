@@ -26,6 +26,7 @@ type BookingTerms = {
   departureTime?: string;
   arrivalTime?: string;
   duration?: string;
+  imageUrl?: string;
 };
 
 type BookingRow = {
@@ -73,12 +74,36 @@ const TITLE_IMAGE_MATCHERS: Array<{ keywords: string[]; imageUrl: string }> = [
     imageUrl: 'https://images.unsplash.com/photo-1595815771614-ade501f4b7d8?auto=format&fit=crop&w=1400&q=80',
   },
   {
-    keywords: ['kerala', 'alleppey', 'munnar'],
+    keywords: ['kerala', 'alleppey', 'munnar', 'thekkady', 'kochi'],
     imageUrl: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1400&q=80',
   },
   {
-    keywords: ['swiss', 'switzerland', 'interlaken'],
+    keywords: ['mount abu', 'rajasthan'],
+    imageUrl: 'https://images.unsplash.com/photo-1590050752117-23992374819a?auto=format&fit=crop&w=1400&q=80',
+  },
+  {
+    keywords: ['rishikesh', 'haridwar', 'uttarakhand'],
+    imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1400&q=80',
+  },
+  {
+    keywords: ['varanasi', 'banaras', 'kashi'],
+    imageUrl: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1400&q=80',
+  },
+  {
+    keywords: ['manali', 'shimla', 'kullu', 'himachal'],
+    imageUrl: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1400&q=80',
+  },
+  {
+    keywords: ['tanjore', 'thanjavur', 'tamil nadu'],
+    imageUrl: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1400&q=80',
+  },
+  {
+    keywords: ['swiss', 'switzerland', 'interlaken', 'alps'],
     imageUrl: 'https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1400&q=80',
+  },
+  {
+    keywords: ['andaman', 'port blair', 'havelock'],
+    imageUrl: 'https://images.unsplash.com/photo-1589135339689-1440c918ec3d?auto=format&fit=crop&w=1400&q=80',
   },
 ];
 
@@ -257,10 +282,16 @@ const MyBookings = () => {
     const normalized = normalizeBookingSnapshot(snapshot, booking.package_title);
     const packageImage = bookingImageById.get(booking.id);
     const generatedFallback = buildBookingFallbackImage(booking.package_title, booking.id);
-    const resolvedImageUrl =
-      normalized.imageUrl.includes('unsplash.com/photo-1488646953014-85cb44e25828')
-        ? packageImage || generatedFallback
-        : normalized.imageUrl;
+    
+    // Priority: Persisted term image > Snapshot image > Fetched package image > Keyword fallback
+    const termsImageUrl = booking.booking_terms?.imageUrl;
+    const isGenericUnsplash = normalized.imageUrl.includes('unsplash.com/photo-1488646953014-85cb44e25828');
+    
+    const resolvedImageUrl = 
+      termsImageUrl || 
+      (!isGenericUnsplash ? normalized.imageUrl : packageImage) || 
+      generatedFallback;
+      
     const resolvedDestination =
       normalized.destination === 'As booked' ? booking.package_title : normalized.destination;
 

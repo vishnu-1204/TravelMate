@@ -1,0 +1,30 @@
+﻿DEBUG: server.ts is starting...
+[dotenv@17.2.4] injecting env (14) from .env -- tip: ΓÜÖ∩╕Å  specify custom .env file path with { path: '/custom/path/.env' }
+[Razorpay] Initialized: true (KeyID: Present)
+[PID 10452] Starting server initialization (Port 3001)...
+Initalizing database...
+SQLite connected at C:\Users\acer\OneDrive\Desktop\TravelMate\auth-backend\auth.db
+WAL mode enabled
+Running CREATE TABLE IF NOT EXISTS users...
+Users table verified/created successfully.
+Checking users table columns...
+Existing columns: id, email, password, created_at, email_verified, verification_token, verification_token_expires_at, verified_at, reset_token, reset_token_expires_at
+Users table ready
+Checking bookings table columns...
+Bookings table ready
+Checking packages table columns...
+Packages table ready
+Itineraries table ready
+Booking email failures table ready
+Contact messages table ready
+[email/recovery] Starting background recovery task (Interval: 15 mins)
+[email/recovery] Checking for failed emails to retry...
+Γ£à [PID 10452] Port 3001 is FREE. Binding Express...
+≡ƒÜÇ [PID 10452] Server SUCCESS on http://localhost:3001
+
+--- SERVER READY ---
+Port: 3001
+URL: http://localhost:3001
+--------------------
+
+[email/recovery] No pending failures found.

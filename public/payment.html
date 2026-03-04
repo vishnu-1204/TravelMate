@@ -165,7 +165,7 @@
             await new Promise(r => setTimeout(r, 2000));
 
             try {
-                const response = await fetch('http://localhost:3001/api/booking/simulate-payment', {
+                const response = await fetch('http://localhost:3003/api/booking/simulate-payment', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

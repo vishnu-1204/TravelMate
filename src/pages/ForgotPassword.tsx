@@ -4,7 +4,7 @@ import { Loader2, ArrowLeft, Mail } from 'lucide-react';
 import PageTransition from '@/components/layout/PageTransition';
 import { z } from 'zod';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3003';
 
 const emailSchema = z.object({
   email: z.string().trim().toLowerCase().email('Please enter a valid email address'),

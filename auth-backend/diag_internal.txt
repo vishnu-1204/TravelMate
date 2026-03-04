@@ -1,0 +1,15 @@
+[2026-03-04T11:30:57.780Z] Testing Razorpay Initialization...
+[2026-03-04T11:30:57.783Z] Key ID: rzp_test...
+[2026-03-04T11:30:57.785Z] Key Secret: YOUR...
+[2026-03-04T11:30:57.843Z] Attempting to create a test order...
+[2026-03-04T11:30:58.193Z] FAILURE: Error creating order.
+[2026-03-04T11:30:58.195Z] Message: undefined
+[2026-03-04T11:30:58.196Z] Code: undefined
+[2026-03-04T11:30:58.198Z] Description: undefined
+[2026-03-04T11:30:58.202Z] Full Error Object: {
+  "statusCode": 401,
+  "error": {
+    "code": "BAD_REQUEST_ERROR",
+    "description": "Authentication failed"
+  }
+}

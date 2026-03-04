@@ -786,7 +786,7 @@ const Payment = () => {
       }
 
       // 1. Create order on backend
-      const orderResponse = await fetch(`${backendBaseUrl}/api/booking/create-razorpay-order`, {
+      const orderResponse = await fetch(`${backendBaseUrl}/api/booking/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -798,11 +798,14 @@ const Payment = () => {
 
       if (!orderResponse.ok) {
         const errData = await orderResponse.json();
-        throw new Error(errData.message || "Failed to initialize payment");
+        const detailMsg = errData.details ? ` (${errData.details})` : (errData.error ? `: ${errData.error}` : "");
+        throw new Error(errData.message + detailMsg);
       }
 
       const order = await orderResponse.json();
 
+      const authToken = localStorage.getItem('auth_token');
+      
       // Demo Mode Bypass: If the order is marked as demo (placeholder keys used), bypass the popup
       if (order.isDemo) {
         setProcessingMessage("Demo Mode: Simulating secure payment...");
@@ -811,7 +814,10 @@ const Payment = () => {
         try {
           const verifyResponse = await fetch(`${backendBaseUrl}/api/booking/verify-payment`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+              "Content-Type": "application/json",
+              ...(authToken ? { "Authorization": `Bearer ${authToken}` } : {})
+            },
             body: JSON.stringify({
               razorpay_order_id: order.id,
               razorpay_payment_id: `pay_demo_${Date.now()}`,
@@ -825,6 +831,7 @@ const Payment = () => {
                 last_name: travelers[0].fullName.split(" ").slice(1).join(" ") || "-",
                 email: travelers[0].email.trim().toLowerCase() || user.email,
                 phone: travelers[0].mobile.replace(/\D/g, "").slice(-10),
+                travel_date: travelDate,
                 total_amount: grandTotal,
                 booking_reference: `TM-DEMO-${Date.now().toString().slice(-6)}`,
                 booking_terms: {
@@ -837,6 +844,7 @@ const Payment = () => {
                   duration: packageData.duration,
                   airline: flightData?.airline || (packageData.transportMode === "flight" ? "Indigo" : "Coach"),
                   departureTime: flightData?.departureTime || "06:30 AM",
+                  imageUrl: packageData.imageUrl || packageData.image || "",
                   itinerary: packageData.itinerary || { days: [], nights: [] },
                   included: packageData.included || [],
                   excluded: packageData.excluded || [],
@@ -851,7 +859,8 @@ const Payment = () => {
             setBookingRef(result.bookingReference);
             setBookingEmail(travelers[0].email || user.email || "");
             setShowSuccessModal(true);
-            toast.success("Demo payment successful! Booking confirmed.");
+            toast.success("Order Booked! Your confirmation has been sent.");
+            localStorage.removeItem(storageKey);
             
             navigate("/booking-confirmed", {
               state: {
@@ -875,27 +884,31 @@ const Payment = () => {
             throw new Error(result.message || "Demo verification failed");
           }
         } catch (err: any) {
-          toast.error(err.message || "Demo payment simulation failed");
+          toast.error(`Demo Payment Error: ${err.message}`);
         } finally {
           setLoading(false);
         }
         return;
       }
 
-      // 2. Open Razorpay Checkout
+      // 2. Real Payment Flow: Open Razorpay Modal
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_your_key_id",
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_SN6739Wb0PGzgr",
         amount: order.amount,
         currency: order.currency,
         name: "TravelMate",
         description: `Booking for ${packageData.title}`,
         order_id: order.id,
         handler: async (response: any) => {
+          setLoading(true);
           setProcessingMessage("Verifying payment...");
           try {
             const verifyResponse = await fetch(`${backendBaseUrl}/api/booking/verify-payment`, {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: { 
+                "Content-Type": "application/json",
+                ...(authToken ? { "Authorization": `Bearer ${authToken}` } : {})
+              },
               body: JSON.stringify({
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
@@ -909,12 +922,12 @@ const Payment = () => {
                   last_name: travelers[0].fullName.split(" ").slice(1).join(" ") || "-",
                   email: travelers[0].email.trim().toLowerCase() || user.email,
                   phone: travelers[0].mobile.replace(/\D/g, "").slice(-10),
+                  travel_date: travelDate,
                   total_amount: grandTotal,
-                  booking_reference: `TM-${Date.now().toString().slice(-8)}`,
+                  booking_reference: `TM-${Date.now().toString().slice(-6)}`,
                   booking_terms: {
                     cancellationPolicy: (packageData as any).cancellationPolicy || "Charges apply based on date.",
-                    termsVersion: "v1",
-                    lockedNotice: "Package locked after booking.",
+                    termsVersion: "v1-live",
                     acceptedAt: new Date().toISOString(),
                     destination: packageData.location,
                     travelDate,
@@ -922,24 +935,10 @@ const Payment = () => {
                     duration: packageData.duration,
                     airline: flightData?.airline || (packageData.transportMode === "flight" ? "Indigo" : "Coach"),
                     departureTime: flightData?.departureTime || "06:30 AM",
-                    arrivalTime: flightData?.arrivalTime || "09:45 AM",
+                    imageUrl: packageData.imageUrl || packageData.image || "",
                     itinerary: packageData.itinerary || { days: [], nights: [] },
                     included: packageData.included || [],
                     excluded: packageData.excluded || [],
-                    travelDetails: {
-                      transportDetails: packageData.transportMode || "-",
-                      checkIn: travelDate || "-",
-                      checkOut: "-",
-                    },
-                    emergencyContact: "+91 9342180670",
-                    travelGuidelines: ["Arrive early.", "Keep contacts active."],
-                    documentsToCarry: ["ID proof", "Email confirmation"],
-                    importantNotes: ["Check-in times vary."],
-                    flightDataSource: flightData && !flightApiFailed ? "amadeus" : "fallback",
-                    email: { sent: false, status: "pending", sentAt: null },
-                    manualFollowUpRequired: false,
-                    manualFollowUpReason: null,
-                    manualFollowUpLoggedAt: null,
                   },
                   is_locked: true,
                 },
@@ -951,7 +950,7 @@ const Payment = () => {
               setBookingRef(result.bookingReference);
               setBookingEmail(travelers[0].email || user.email || "");
               setShowSuccessModal(true);
-              toast.success("Payment successful! Booking confirmed.");
+              toast.success("Order Booked! Your confirmation has been sent.");
               localStorage.removeItem(storageKey);
               if (autoSaveProfile) void updateUserProfile();
               
@@ -974,20 +973,27 @@ const Payment = () => {
                 },
               });
             } else {
-              throw new Error(result.message || "Verification failed");
+              throw new Error(result.message || "Payment verification failed");
             }
           } catch (err: any) {
-            toast.error(err.message || "Payment verification failed");
+            toast.error(`Verification Error: ${err.message}`);
           } finally {
             setLoading(false);
           }
         },
         prefill: {
-          name: travelers[0].fullName,
-          email: travelers[0].email,
-          contact: travelers[0].mobile,
+          name: travelers[0]?.fullName || user?.email || "Guest",
+          email: travelers[0]?.email || user?.email || "",
+          contact: travelers[0]?.mobile || "",
         },
-        theme: { color: "#0ea5e9" },
+        theme: {
+          color: "#0f172a",
+        },
+        modal: {
+          ondismiss: () => {
+            setLoading(false);
+          }
+        }
       };
 
       const rzp = new (window as any).Razorpay(options);
@@ -1014,11 +1020,33 @@ const Payment = () => {
 
     try {
       const bookingId = `TM-SIM-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-      const packageName = encodeURIComponent(packageData.title);
-      const userEmail = user?.email || travelers[0].email || '';
       
-      // Navigate to the static payment page with all necessary details
-      window.location.href = `/payment.html?package=${packageName}&price=${grandTotal}&email=${userEmail}&bookingId=${bookingId}`;
+      // Navigate to the React-based dummy payment page with all necessary details
+      navigate('/dummy-payment', {
+        state: {
+          bookingData: {
+            bookingReference: bookingId,
+            packageId: packageData.id,
+            packageTitle: packageData.title,
+            location: packageData.location,
+            duration: packageData.duration,
+            travelDate,
+            totalPassengers,
+            grandTotal,
+            totalAmount: grandTotal,
+            email: user?.email || travelers[0].email,
+            travelerName: travelers[0].fullName,
+            travelers: totalPassengers,
+            roomType,
+            airline: flightData?.airline || (packageData.transportMode === "flight" ? "Indigo" : "Coach"),
+            departureTime: flightData?.departureTime || "06:30 AM",
+            arrivalTime: flightData?.arrivalTime || "09:45 AM",
+            itinerary: packageData.itinerary,
+            included: packageData.included,
+            excluded: packageData.excluded,
+          }
+        }
+      });
     } catch (err) {
       console.error("Simulation redirect failed:", err);
       toast.error("Failed to start payment simulation.");
@@ -1282,9 +1310,9 @@ const Payment = () => {
                   <p className="text-sm text-muted-foreground mb-4">
                     Complete your booking securely via Razorpay (UPI, Card, Net Banking).
                   </p>
-                  <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
-                    <Lock className="h-4 w-4" />
-                    <span>Razorpay Secure. Final amount: ₹{grandTotal.toLocaleString('en-IN')}</span>
+                  <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                    <Lock className="h-3 w-3" />
+                    <span>Razorpay Secure Connection. Final amount: ₹{grandTotal.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
@@ -1351,7 +1379,7 @@ const Payment = () => {
 
                   <button
                     type="button"
-                    onClick={handleSimulatedPaymentRedirect}
+                    onClick={handleRazorpayPayment}
                     disabled={loading}
                     className="btn-primary w-full mt-6 flex items-center justify-center gap-2 shadow-lg transform transition-all active:scale-[0.98]"
                   >
@@ -1371,7 +1399,7 @@ const Payment = () => {
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/20 ring-1 ring-emerald-400/40">
                 <Check className="h-7 w-7 text-emerald-300" />
               </div>
-              <DialogTitle className="text-center text-2xl font-semibold text-white">Booking Confirmed</DialogTitle>
+              <DialogTitle className="text-center text-2xl font-semibold text-white">Order Booked</DialogTitle>
               <DialogDescription className="text-center text-slate-300">
                 Check your email ({bookingEmail}) for your ticket.
               </DialogDescription>

@@ -9,7 +9,7 @@ const logger = (msg: string, ...args: any[]) => {
   console.log(msg, ...args);
 };
 
-const dbPath = path.resolve(__dirname, "../auth.db");
+const dbPath = path.resolve(process.cwd(), "auth.db");
 
 let db: sqlite3.Database;
 
