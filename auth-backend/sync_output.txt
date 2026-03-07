@@ -1,0 +1,25 @@
+﻿[dotenv@17.2.4] injecting env (14) from .env -- tip: ≡ƒöæ add access controls to secrets: https://dotenvx.com/ops
+≡ƒÜÇ Starting synchronization from SQLite to Supabase...
+node.exe : Γ¥î Error: 
+SUPABASE_URL or SUPABAS
+E_SERVICE_ROLE_KEY is 
+missing in .env
+At line:1 char:1
++ & "D:\/node.exe" "C:\
+Users\acer\AppData\Roam
+ing\npm/node_modules/np
+m/ ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Γ¥î Error: SU   
+ PA...missing in .e    
+nv:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 

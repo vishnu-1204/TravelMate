@@ -372,7 +372,11 @@ const Payment = () => {
 
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
-    if (!saved) return;
+    if (!saved) {
+      // If no saved draft, try to load from profile automatically
+      void loadFromProfile();
+      return;
+    }
 
     try {
       const parsed = JSON.parse(saved) as Partial<BookingDraft>;
@@ -390,8 +394,9 @@ const Payment = () => {
       }
     } catch {
       // Ignore corrupted local drafts
+      void loadFromProfile();
     }
-  }, [storageKey]);
+  }, [storageKey, user?.id]); // Re-run if user changes to ensure correct profile is loaded
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -860,7 +865,7 @@ const Payment = () => {
             setBookingEmail(travelers[0].email || user.email || "");
             setShowSuccessModal(true);
             toast.success("Order Booked! Your confirmation has been sent.");
-            localStorage.removeItem(storageKey);
+            // Removed: localStorage.removeItem(storageKey) to allow re-booking with same details
             
             navigate("/booking-confirmed", {
               state: {
@@ -951,7 +956,7 @@ const Payment = () => {
               setBookingEmail(travelers[0].email || user.email || "");
               setShowSuccessModal(true);
               toast.success("Order Booked! Your confirmation has been sent.");
-              localStorage.removeItem(storageKey);
+              // Removed: localStorage.removeItem(storageKey) to allow re-booking
               if (autoSaveProfile) void updateUserProfile();
               
               navigate("/booking-confirmed", {

@@ -656,6 +656,22 @@ router.post("/verify-payment", authenticateToken, async (req: AuthRequest, res: 
         const newId = this.lastID;
         const bookingRef = fullBooking.booking_reference;
         
+        // Sync to Supabase if available
+        if (hasSupabase()) {
+          const supabase = getSupabase();
+          if (supabase) {
+            (supabase.from("bookings").upsert({
+              ...filteredBooking,
+              booking_terms: filteredBooking.booking_terms ? JSON.parse(JSON.stringify(filteredBooking.booking_terms)) : null,
+              payment_verified: !!filteredBooking.payment_verified,
+              email_sent: !!filteredBooking.email_sent
+            }, { onConflict: "booking_reference" }) as any).then(({ error }: any) => {
+              if (error) console.error("[Supabase] Sync failed:", error.message);
+              else console.log("[Supabase] Sync successful for", bookingRef);
+            }).catch((err: any) => console.error("[Supabase] Sync error:", err));
+          }
+        }
+
         // Trigger professional confirmation email dispatch
         fetchBooking(bookingRef).then(async (record) => {
           if (record) {
@@ -753,6 +769,22 @@ router.post("/process-dummy-payment", authenticateToken, async (req: AuthRequest
         const newId = this.lastID;
         const bookingRef = fullBooking.booking_reference;
         
+        // Sync to Supabase if available
+        if (hasSupabase()) {
+          const supabase = getSupabase();
+          if (supabase) {
+            (supabase.from("bookings").upsert({
+              ...filteredBooking,
+              booking_terms: filteredBooking.booking_terms ? JSON.parse(JSON.stringify(filteredBooking.booking_terms)) : null,
+              payment_verified: !!filteredBooking.payment_verified,
+              email_sent: !!filteredBooking.email_sent
+            }, { onConflict: "booking_reference" }) as any).then(({ error }: any) => {
+              if (error) console.error("[Supabase] Sync failed (Dummy):", error.message);
+              else console.log("[Supabase] Sync successful for", bookingRef);
+            }).catch((err: any) => console.error("[Supabase] Sync error (Dummy):", err));
+          }
+        }
+
         // Trigger confirmation email dispatch
         fetchBooking(bookingRef).then(record => {
           if (record) {
