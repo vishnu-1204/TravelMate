@@ -6,61 +6,30 @@ export type PackageCategory = {
 
 export const packageCategories: PackageCategory[] = [
   {
-    id: 'international',
-    title: 'International',
-    image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=1200&auto=format&fit=crop',
-  },
-  {
-    id: 'domestic',
-    title: 'Indian Packages',
-    image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200&auto=format&fit=crop',
-  },
-  {
     id: 'south',
     title: 'South Indian Packages',
-    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&auto=format&fit=crop',
+    image: 'https://media.istockphoto.com/id/1347088244/photo/kerala-most-beautiful-place-of-india.webp?a=1&b=1&s=612x612&w=0&k=20&c=azs5OiyZpD_zPj96NASr737IVrCq2_m0iu08EVDvIvE=',
   },
   {
     id: 'north',
     title: 'North Indian Packages',
-    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&auto=format&fit=crop',
-  },
-  {
-    id: 'nearby',
-    title: 'Solo Trips',
-    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1615555199911-7e6be103ded8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG5vcnRoJTIwaW5kaWFuJTIwaW1hZ2VzfGVufDB8fDB8fHww',
   },
   {
     id: 'solo',
     title: 'Solo Trips',
-    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&auto=format&fit=crop',
-  },
-  {
-    id: 'budget',
-    title: 'Budget Travel',
-    image: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1200&auto=format&fit=crop',
+    image: 'https://media.istockphoto.com/id/177426108/photo/backpacker.webp?a=1&b=1&s=612x612&w=0&k=20&c=oqT-ELcigAyejjqbX-1I0btmstwJ6Q9ANuq7dfHWr_k=',
   },
   {
     id: 'honeymoon',
     title: 'Honeymoon',
-    image: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=1200&auto=format&fit=crop',
-  },
-  {
-    id: 'group',
-    title: 'Group Tours',
-    image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&auto=format&fit=crop',
+    image: 'https://media.istockphoto.com/id/1196528669/photo/couple-walks-down-a-wooden-pier-in-the-maldives-indian-ocean.webp?a=1&b=1&s=612x612&w=0&k=20&c=gc9p9H4lWzNZk8n_llqBXKxbonBrSBBewvJYaXGv9Fs=',
   },
   {
     id: 'educational',
     title: 'Educational Packages',
-    image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200&auto=format&fit=crop',
-  },
-
-  {
-    id: 'trending',
-    title: 'Trending Picks',
-    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&auto=format&fit=crop',
-  },
+    image: 'https://images.unsplash.com/photo-1764072970350-2ce4f354a483?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWR1Y2F0aW9uJTIwdG91cnxlbnwwfHwwfHx8MA%3D%3D',
+  }
 ];
 
 export const packageCategoryLabelById = Object.fromEntries(

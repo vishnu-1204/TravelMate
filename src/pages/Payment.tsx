@@ -202,12 +202,14 @@ const FormInput = ({
   onChange,
   type = 'text',
   required = false,
+  disabled = false,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   type?: string;
   required?: boolean;
+  disabled?: boolean;
 }) => (
   <div>
     <label className="form-label">
@@ -218,8 +220,9 @@ const FormInput = ({
       type={type}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="input-field"
+      className="input-field disabled:bg-muted/50 disabled:text-muted-foreground disabled:cursor-not-allowed"
       required={required}
+      disabled={disabled}
     />
   </div>
 );
@@ -317,7 +320,7 @@ const Payment = () => {
     'http://localhost:3000';
   const storageKey = useMemo(() => `travelmate-booking-draft-${id || 'unknown'}`, [id]);
 
-  const [travelers, setTravelers] = useState<Traveler[]>([createTraveler(1, user?.email || '')]);
+  const [travelers, setTravelers] = useState<Traveler[]>([createTraveler(1, '')]);
   const [travelDate, setTravelDate] = useState('');
   const [roomType, setRoomType] = useState<RoomType>('Double');
   const [extras, setExtras] = useState<ExtraServices>({
@@ -682,7 +685,7 @@ const Payment = () => {
 
   const addTraveler = () => {
     setFormError('');
-    setTravelers((prev) => [...prev, createTraveler(prev.length + 1, user?.email || '')]);
+    setTravelers((prev) => [...prev, createTraveler(prev.length + 1, '')]);
   };
 
   const removeTraveler = (travelerId: string) => {
@@ -1406,7 +1409,7 @@ const Payment = () => {
               </div>
               <DialogTitle className="text-center text-2xl font-semibold text-white">Order Booked</DialogTitle>
               <DialogDescription className="text-center text-slate-300">
-                Check your email ({bookingEmail}) for your ticket.
+                Check your email ({user?.email || bookingEmail}) for your ticket.
               </DialogDescription>
             </DialogHeader>
             <div className="rounded-xl border border-slate-700/80 bg-slate-900/70 p-4">

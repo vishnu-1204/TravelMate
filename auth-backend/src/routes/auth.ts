@@ -39,8 +39,8 @@ router.post("/register", validateRegister, async (req: Request, res: Response) =
 
       const hashedPassword = await bcrypt.hash(password, 12);
       getDb().run(
-        "INSERT INTO users (email, password, email_verified, verification_token, verification_token_expires_at) VALUES (?, ?, 0, ?, ?)",
-        [email.toLowerCase(), hashedPassword, verificationToken, verificationExpiresAt],
+        "INSERT INTO users (email, password, email_verified, verified_at) VALUES (?, ?, 1, ?)",
+        [email.toLowerCase(), hashedPassword, new Date().toISOString()],
         function (insertErr) {
           if (insertErr) return res.status(500).json({ message: "Registration failed" });
 
@@ -122,10 +122,13 @@ router.post("/login", validateLogin, (req: Request, res: Response) => {
       return res.status(401).json({ message: "Incorrect password" });
     }
 
+    // Verification check removed as per user request
+    /*
     if (!user.email_verified) {
       console.warn(`[auth/login] Failed: Email not verified for ${email}`);
       return res.status(403).json({ message: "Please verify your email before logging in." });
     }
+    */
 
     const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, jwtSignOptions);
     console.log(`[auth/login] Success: ${email}`);

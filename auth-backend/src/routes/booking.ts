@@ -609,10 +609,17 @@ router.post("/verify-payment", authenticateToken, async (req: AuthRequest, res: 
       return res.status(401).json({ message: "User identification failed" });
     }
 
+    // Explicitly fetch the logged-in user's registered email from the database
+    const userRow = await new Promise<any>((resolve) => {
+      db.get("SELECT email FROM users WHERE id = ?", [userId], (err, row) => resolve(row));
+    });
+    const finalEmail = userRow?.email || req.user?.email || bookingData.email;
+
     // Persist booking with confirmed status
     const fullBooking: any = {
       ...bookingData,
       user_id: userId,
+      email: finalEmail, // Use the dynamically fetched registered email
       payment_id: razorpay_payment_id,
       payment_status: "paid",
       payment_verified: 1,
@@ -716,10 +723,17 @@ router.post("/process-dummy-payment", authenticateToken, async (req: AuthRequest
   try {
     const db = getDb();
 
+    // Explicitly fetch the logged-in user's registered email from the database
+    const userRow = await new Promise<any>((resolve) => {
+      db.get("SELECT email FROM users WHERE id = ?", [userId], (err, row) => resolve(row));
+    });
+    const finalEmail = userRow?.email || req.user?.email || bookingData.email;
+
     // Augment booking data for dummy payment
     const fullBooking: any = {
       ...bookingData,
       user_id: userId,
+      email: finalEmail, // Use the dynamically fetched registered email
       payment_status: "paid",
       payment_verified: 1, // SQLite INTEGER
       booking_status: "confirmed",
@@ -1612,7 +1626,7 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
           body.travelers || 1,
           body.travelerName || null,
           body.roomType || null,
-          body.email || user.email, // Prioritize the traveler's provided email, fallback to registered
+          user.email || body.email, // Prioritize the logged-in user's registered email from the database
           body.phone || null,
           body.totalAmount,
           body.airline || null,
