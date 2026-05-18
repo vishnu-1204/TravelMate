@@ -1,4 +1,4 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { db } from "../../../utils/turso";
 import { config } from "../../../config/env";
 import type { BudgetType, PackageCategory, TravelPackage } from "../types";
 import { classifyPackageCategories, pickPrimaryCategory } from "../service/packageCategorizer";
@@ -34,21 +34,6 @@ type CacheRow = {
 };
 
 const CACHE_TABLE = "travel_packages_cache";
-
-let cachedClient: SupabaseClient | null = null;
-let inMemoryCache: CacheRow[] = [];
-
-const hasSupabaseConfig = () => Boolean(config.supabaseUrl && config.supabaseServiceRoleKey);
-
-const getClient = () => {
-  if (!hasSupabaseConfig()) return null;
-  if (cachedClient) return cachedClient;
-
-  cachedClient = createClient(config.supabaseUrl, config.supabaseServiceRoleKey, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-  return cachedClient;
-};
 
 export type CacheQuery = {
   q?: string;
@@ -145,63 +130,25 @@ const isLikelyIndianRow = (row: Partial<CacheRow> & { payload?: Partial<TravelPa
   return false;
 };
 
-const editDistance = (a: string, b: string) => {
-  if (a === b) return 0;
-  if (!a.length) return b.length;
-  if (!b.length) return a.length;
-  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
-  for (let i = 1; i <= a.length; i += 1) {
-    let prev = i - 1;
-    row[0] = i;
-    for (let j = 1; j <= b.length; j += 1) {
-      const tmp = row[j];
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, prev + cost);
-      prev = tmp;
-    }
-  }
-  return row[b.length];
-};
-
-const fuzzyContains = (haystack: string, term: string) => {
-  const text = normalizeSearch(haystack);
-  const needle = normalizeSearch(term);
-  if (!text || !needle) return false;
-  if (text.includes(needle)) return true;
-  const words = text.split(/\s+/).filter(Boolean);
-  const threshold = needle.length >= 8 ? 2 : 1;
-  return words.some((word) => editDistance(word, needle) <= threshold);
-};
-
 export const getCacheHealth = async () => {
-  const client = getClient();
-  if (!client) {
-    const latest = inMemoryCache
-      .slice()
-      .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())[0];
+  try {
+    const result = await db.execute({
+      sql: `SELECT updated_at, expires_at FROM ${CACHE_TABLE} ORDER BY updated_at DESC LIMIT 1`,
+    });
+    const latest = result.rows.length > 0 ? (result.rows[0] as unknown as any) : null;
     return {
       hasData: Boolean(latest),
       latestUpdatedAt: latest?.updated_at || null,
       latestExpiresAt: latest?.expires_at || null,
     };
+  } catch (err: any) {
+    console.error("getCacheHealth failed:", err.message);
+    return {
+      hasData: false,
+      latestUpdatedAt: null,
+      latestExpiresAt: null,
+    };
   }
-
-  const { data, error } = await client
-    .from(CACHE_TABLE)
-    .select("updated_at, expires_at")
-    .order("updated_at", { ascending: false })
-    .limit(1);
-
-  if (error) {
-    throw new Error(`Failed to inspect package cache: ${error.message}`);
-  }
-
-  const latest = data?.[0];
-  return {
-    hasData: Boolean(latest),
-    latestUpdatedAt: latest?.updated_at || null,
-    latestExpiresAt: latest?.expires_at || null,
-  };
 };
 
 export const upsertPackages = async (packages: TravelPackage[]) => {
@@ -209,182 +156,139 @@ export const upsertPackages = async (packages: TravelPackage[]) => {
 
   const nowIso = new Date().toISOString();
   const expiresAtIso = new Date(Date.now() + config.packageCacheTtlMinutes * 60_000).toISOString();
-  const rows = packages.map((pkg) => ({
-    ...(() => {
-      const categories = classifyPackageCategories(pkg);
-      const category = pickPrimaryCategory(categories);
-      const categoryLabel = CATEGORY_LABELS[category];
-      const payload: TravelPackage = {
-        ...pkg,
-        country: pkg.country || "Unknown",
-        category,
-        categories,
-        categoryLabel,
-        lastUpdatedAt: nowIso,
-      };
 
-      return {
-        package_id: pkg.id,
-        source: payload.source,
-        title: payload.title,
-        destination: payload.destination,
-        country: payload.country,
-        category,
-        categories,
-        budget_type: payload.budgetType,
-        price_range: payload.priceRange,
-        unique_image_id: payload.uniqueImageId,
-        affordability_score: payload.affordabilityScore,
-        itinerary_json: pkg.itinerary ? JSON.stringify(pkg.itinerary) : null,
-        is_luxury: payload.isLuxury,
-        is_group_tour: pkg.isGroupTour ? 1 : 0,
-        group_departures_json: pkg.groupDepartures ? JSON.stringify(pkg.groupDepartures) : null,
-        guide_name: pkg.guideName,
-        guide_phone: pkg.guidePhone,
-        duration_days: payload.durationDays,
-        price: payload.price,
-        rating: payload.rating,
-        budget_friendly: payload.budgetFriendly,
-        trending_score: payload.trendingScore,
-        payload,
-        updated_at: nowIso,
-        expires_at: expiresAtIso,
-      };
-    })(),
-  }));
+  const statements = packages.map((pkg) => {
+    const categories = classifyPackageCategories(pkg);
+    const category = pickPrimaryCategory(categories);
+    const categoryLabel = CATEGORY_LABELS[category];
+    const payload: TravelPackage = {
+      ...pkg,
+      country: pkg.country || "Unknown",
+      category,
+      categories,
+      categoryLabel,
+      lastUpdatedAt: nowIso,
+    };
 
-  const client = getClient();
-  if (!client) {
-    const map = new Map<string, CacheRow>(inMemoryCache.map((row) => [row.package_id, row]));
-    (rows as unknown as CacheRow[]).forEach((row) => map.set(row.package_id, row));
-    inMemoryCache = Array.from(map.values());
-    return;
-  }
-  const { error } = await client.from(CACHE_TABLE).upsert(rows, { onConflict: "package_id" });
-  if (error) {
+    return {
+      sql: `INSERT OR REPLACE INTO ${CACHE_TABLE} (
+              package_id, source, title, destination, country, category, categories,
+              budget_type, price_range, unique_image_id, affordability_score, itinerary_json,
+              is_luxury, is_group_tour, group_departures_json, guide_name, guide_phone,
+              duration_days, price, rating, budget_friendly, trending_score, payload,
+              updated_at, expires_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        pkg.id,
+        payload.source || "amadeus",
+        payload.title,
+        payload.destination,
+        payload.country,
+        category,
+        JSON.stringify(categories),
+        payload.budgetType,
+        payload.priceRange,
+        payload.uniqueImageId,
+        payload.affordabilityScore,
+        pkg.itinerary ? JSON.stringify(pkg.itinerary) : null,
+        payload.isLuxury ? 1 : 0,
+        pkg.isGroupTour ? 1 : 0,
+        pkg.groupDepartures ? JSON.stringify(pkg.groupDepartures) : null,
+        pkg.guideName || null,
+        pkg.guidePhone || null,
+        payload.durationDays,
+        payload.price,
+        payload.rating,
+        payload.budgetFriendly ? 1 : 0,
+        payload.trendingScore,
+        JSON.stringify(payload),
+        nowIso,
+        expiresAtIso,
+      ],
+    };
+  });
+
+  try {
+    await db.batch(statements);
+  } catch (error: any) {
     throw new Error(`Failed to upsert package cache: ${error.message}`);
   }
 };
 
 export const pruneExpiredRows = async () => {
   const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  const client = getClient();
-  if (!client) {
-    inMemoryCache = inMemoryCache.filter((row) => row.expires_at >= cutoff);
-    return;
-  }
-  const { error } = await client.from(CACHE_TABLE).delete().lt("expires_at", cutoff);
-  if (error) {
+  try {
+    await db.execute({
+      sql: `DELETE FROM ${CACHE_TABLE} WHERE expires_at < ?`,
+      args: [cutoff],
+    });
+  } catch (error: any) {
     throw new Error(`Failed to prune package cache: ${error.message}`);
   }
 };
 
 export const getPackagesFromCache = async (query: CacheQuery) => {
-  const client = getClient();
-  if (!client) {
-    let rows = [...inMemoryCache];
-    rows = rows.map((row) => ({
-      ...row,
-      country: row.country || inferCountryFromRow(row),
-      payload: {
-        ...row.payload,
-        country: row.payload.country || row.country || inferCountryFromRow(row),
-        isGroupTour: row.is_group_tour,
-        groupDepartures: row.group_departures_json ? JSON.parse(row.group_departures_json) : [],
-        guideName: row.guide_name || row.payload.guideName || getDeterministicGuideInfo(row.package_id).name,
-        guidePhone: row.guide_phone || row.payload.guidePhone || getDeterministicGuideInfo(row.package_id).phone,
-      },
-    }));
-    if (query.category) rows = rows.filter((row) => row.category === query.category);
-    if (query.category === "international") rows = rows.filter((row) => !isLikelyIndianRow(row));
-    if (query.category === "domestic") rows = rows.filter((row) => isLikelyIndianRow(row));
-    if (query.categories?.length) {
-      rows = rows.filter((row) => query.categories!.some((category) => row.categories.includes(category)));
-      const includesInternational = query.categories.includes("international");
-      const includesDomestic = query.categories.includes("domestic");
-      if (includesInternational && !includesDomestic) {
-        rows = rows.filter((row) => !isLikelyIndianRow(row));
-      } else if (includesDomestic && !includesInternational) {
-        rows = rows.filter((row) => isLikelyIndianRow(row));
-      }
-    }
-    if (query.destination) {
-      const d = query.destination.toLowerCase();
-      rows = rows.filter((row) => row.destination.toLowerCase().includes(d));
-    }
-    if (typeof query.minPrice === "number") {
-      const minPrice = query.minPrice;
-      rows = rows.filter((row) => row.price >= minPrice);
-    }
-    if (typeof query.maxPrice === "number") {
-      const maxPrice = query.maxPrice;
-      rows = rows.filter((row) => row.price <= maxPrice);
-    }
-    if (typeof query.minDuration === "number") {
-      const minDuration = query.minDuration;
-      rows = rows.filter((row) => row.duration_days >= minDuration);
-    }
-    if (typeof query.maxDuration === "number") {
-      const maxDuration = query.maxDuration;
-      rows = rows.filter((row) => row.duration_days <= maxDuration);
-    }
-    if (typeof query.minRating === "number") {
-      const minRating = query.minRating;
-      rows = rows.filter((row) => row.rating >= minRating);
-    }
-    if (query.budgetType) {
-      rows = rows.filter((row) => row.budget_type === query.budgetType);
-    }
-    if (!query.premiumUser) {
-      rows = rows.filter((row) => !row.is_luxury);
-    }
-    const searchTerms = query.searchTerms?.length
-      ? query.searchTerms.map((term) => term.toLowerCase()).filter(Boolean)
-      : query.q
-      ? [query.q.toLowerCase()]
-      : [];
-    if (searchTerms.length) {
-      rows = rows.filter((row) => {
-        const text = `${row.destination} ${row.title} ${row.payload.title} ${row.payload.location}`;
-        return searchTerms.some((term) => fuzzyContains(text, term));
-      });
-    }
+  let sql = `SELECT * FROM ${CACHE_TABLE} WHERE 1=1`;
+  const args: any[] = [];
 
-    const sortField = mapSortField(query.sortBy);
-    rows.sort((a, b) => {
-      const x = (a as unknown as Record<string, number>)[sortField] || 0;
-      const y = (b as unknown as Record<string, number>)[sortField] || 0;
-      return query.sortOrder === "asc" ? x - y : y - x;
-    });
-
-    const total = rows.length;
-    const paged = rows.slice(query.offset, query.offset + query.limit);
-    return { packages: paged.map((row) => row.payload), total };
+  if (query.category) {
+    sql += " AND category = ?";
+    args.push(query.category);
   }
-
-  let request = client.from(CACHE_TABLE).select("*", { count: "exact" });
-
-  if (query.category) request = request.eq("category", query.category);
-  if (query.category === "international") request = request.neq("country", "India");
-  if (query.category === "domestic") request = request.eq("country", "India");
-  if (query.categories?.length) request = request.overlaps("categories", query.categories);
+  if (query.category === "international") {
+    sql += " AND country <> 'India'";
+  }
+  if (query.category === "domestic") {
+    sql += " AND country = 'India'";
+  }
   if (query.categories?.length) {
+    const catLikes = query.categories.map((cat) => {
+      args.push(`%"${cat}"%`);
+      return "categories LIKE ?";
+    }).join(" OR ");
+    if (catLikes) {
+      sql += ` AND (${catLikes})`;
+    }
+
     const includesInternational = query.categories.includes("international");
     const includesDomestic = query.categories.includes("domestic");
     if (includesInternational && !includesDomestic) {
-      request = request.neq("country", "India");
+      sql += " AND country <> 'India'";
     } else if (includesDomestic && !includesInternational) {
-      request = request.eq("country", "India");
+      sql += " AND country = 'India'";
     }
   }
-  if (query.destination) request = request.ilike("destination", `%${query.destination}%`);
-  if (typeof query.minPrice === "number") request = request.gte("price", query.minPrice);
-  if (typeof query.maxPrice === "number") request = request.lte("price", query.maxPrice);
-  if (typeof query.minDuration === "number") request = request.gte("duration_days", query.minDuration);
-  if (typeof query.maxDuration === "number") request = request.lte("duration_days", query.maxDuration);
-  if (typeof query.minRating === "number") request = request.gte("rating", query.minRating);
-  if (query.budgetType) request = request.eq("budget_type", query.budgetType);
-  if (!query.premiumUser) request = request.eq("is_luxury", false);
+  if (query.destination) {
+    sql += " AND destination LIKE ?";
+    args.push(`%${query.destination}%`);
+  }
+  if (typeof query.minPrice === "number") {
+    sql += " AND price >= ?";
+    args.push(query.minPrice);
+  }
+  if (typeof query.maxPrice === "number") {
+    sql += " AND price <= ?";
+    args.push(query.maxPrice);
+  }
+  if (typeof query.minDuration === "number") {
+    sql += " AND duration_days >= ?";
+    args.push(query.minDuration);
+  }
+  if (typeof query.maxDuration === "number") {
+    sql += " AND duration_days <= ?";
+    args.push(query.maxDuration);
+  }
+  if (typeof query.minRating === "number") {
+    sql += " AND rating >= ?";
+    args.push(query.minRating);
+  }
+  if (query.budgetType) {
+    sql += " AND budget_type = ?";
+    args.push(query.budgetType);
+  }
+  if (!query.premiumUser) {
+    sql += " AND is_luxury = 0";
+  }
 
   const searchTerms = query.searchTerms?.length
     ? query.searchTerms
@@ -392,101 +296,93 @@ export const getPackagesFromCache = async (query: CacheQuery) => {
     ? [query.q]
     : [];
   if (searchTerms.length) {
-    const orFilters = searchTerms
-      .map((term) => term.replace(/[%_,]/g, "").trim())
-      .filter(Boolean)
-      .map((term) => `destination.ilike.%${term}%,title.ilike.%${term}%`)
-      .join(",");
-    if (orFilters) {
-      request = request.or(orFilters);
+    const searchFilters = searchTerms.map((term) => {
+      args.push(`%${term}%`, `%${term}%`);
+      return "(destination LIKE ? OR title LIKE ?)";
+    }).join(" OR ");
+    if (searchFilters) {
+      sql += ` AND (${searchFilters})`;
     }
   }
 
   const sortField = mapSortField(query.sortBy);
-  request = request.order(sortField, { ascending: query.sortOrder === "asc" });
+  const order = query.sortOrder === "asc" ? "ASC" : "DESC";
+  sql += ` ORDER BY ${sortField} ${order}`;
 
-  const from = query.offset;
-  const to = query.offset + query.limit - 1;
-  request = request.range(from, to);
+  // Count exact total matching records
+  try {
+    const countSql = `SELECT COUNT(*) as cnt FROM (${sql})`;
+    const countResult = await db.execute({ sql: countSql, args });
+    const total = Number(countResult.rows[0]?.cnt || 0);
 
-  const { data, error, count } = await request;
-  if (error) {
-    throw new Error(`Failed to fetch packages from cache: ${error.message}`);
-  }
+    // Limit / Offset
+    sql += " LIMIT ? OFFSET ?";
+    args.push(query.limit, query.offset);
 
-  const rows = (data || []) as unknown as CacheRow[];
-  return {
-    packages: rows.map((row) => {
+    const result = await db.execute({ sql, args });
+    const rows = result.rows as unknown as any[];
+
+    const packages = rows.map((row) => {
+      const payload = typeof row.payload === "string" ? JSON.parse(row.payload) : row.payload;
       const country = inferCountryFromRow(row);
       return {
-        ...row.payload,
+        ...payload,
         country,
-        isGroupTour: row.is_group_tour,
+        isGroupTour: !!row.is_group_tour,
         groupDepartures: row.group_departures_json ? JSON.parse(row.group_departures_json) : [],
-        guideName: row.guide_name || row.payload.guideName || getDeterministicGuideInfo(row.package_id).name,
-        guidePhone: row.guide_phone || row.payload.guidePhone || getDeterministicGuideInfo(row.package_id).phone,
+        guideName: row.guide_name || payload?.guideName || getDeterministicGuideInfo(row.package_id).name,
+        guidePhone: row.guide_phone || payload?.guidePhone || getDeterministicGuideInfo(row.package_id).phone,
       };
-    }),
-    total: count || 0,
-  };
+    });
+
+    return { packages, total };
+  } catch (error: any) {
+    throw new Error(`Failed to fetch packages from cache: ${error.message}`);
+  }
 };
 
 export const getPackageByIdFromCache = async (packageId: string): Promise<TravelPackage | null> => {
-  const client = getClient();
-  if (!client) {
-    const row = inMemoryCache.find((row) => row.package_id === packageId);
-    return row ? {
-      ...row.payload,
-      isGroupTour: row.is_group_tour,
+  try {
+    const result = await db.execute({
+      sql: `SELECT * FROM ${CACHE_TABLE} WHERE package_id = ? LIMIT 1`,
+      args: [packageId],
+    });
+    if (result.rows.length === 0) return null;
+    const row = result.rows[0] as unknown as any;
+    const payload = typeof row.payload === "string" ? JSON.parse(row.payload) : row.payload;
+    if (!payload) return null;
+    return {
+      ...payload,
+      isGroupTour: !!row.is_group_tour,
       groupDepartures: row.group_departures_json ? JSON.parse(row.group_departures_json) : [],
-      guideName: row.guide_name || row.payload.guideName || 'Rahul Sharma',
-      guidePhone: row.guide_phone || row.payload.guidePhone || '+91 98765 43210',
-    } : null;
+      guideName: row.guide_name || payload.guideName || getDeterministicGuideInfo(row.package_id).name,
+      guidePhone: row.guide_phone || payload.guidePhone || getDeterministicGuideInfo(row.package_id).phone,
+    };
+  } catch (err: any) {
+    console.error("getPackageByIdFromCache failed:", err.message);
+    return null;
   }
-  const { data, error } = await client
-    .from(CACHE_TABLE)
-    .select("*")
-    .eq("package_id", packageId)
-    .maybeSingle();
-
-  const row = (data as unknown as CacheRow);
-  if (!row?.payload) return null;
-
-  return {
-    ...row.payload,
-    isGroupTour: row.is_group_tour,
-    groupDepartures: row.group_departures_json ? JSON.parse(row.group_departures_json) : [],
-    guideName: row.guide_name || row.payload.guideName || getDeterministicGuideInfo(row.package_id).name,
-    guidePhone: row.guide_phone || row.payload.guidePhone || getDeterministicGuideInfo(row.package_id).phone,
-  };
 };
 
 export const getCategoryCountsFromCache = async () => {
-  const client = getClient();
   const countMap = new Map<PackageCategory, number>();
-
-  if (!client) {
-    inMemoryCache.forEach((row) => {
-      row.categories.forEach((category) => {
-        countMap.set(category, (countMap.get(category) || 0) + 1);
-      });
+  try {
+    const result = await db.execute({
+      sql: `SELECT categories, category FROM ${CACHE_TABLE}`,
     });
-    return countMap;
-  }
-
-  const { data, error } = await client.from(CACHE_TABLE).select("categories");
-  if (error) {
-    throw new Error(`Failed to fetch package category counts: ${error.message}`);
-  }
-
-  (data || []).forEach((row) => {
-    const typed = row as { categories?: PackageCategory[]; category?: PackageCategory };
-    const categories = (typed.categories?.length ? typed.categories : typed.category ? [typed.category] : []) as PackageCategory[];
-    categories.forEach((category) => {
-      countMap.set(category, (countMap.get(category) || 0) + 1);
+    result.rows.forEach((row: any) => {
+      const categories = row.categories
+        ? (typeof row.categories === "string" ? JSON.parse(row.categories) : row.categories)
+        : (row.category ? [row.category] : []);
+      if (Array.isArray(categories)) {
+        categories.forEach((category: PackageCategory) => {
+          countMap.set(category, (countMap.get(category) || 0) + 1);
+        });
+      }
     });
-  });
-
+  } catch (err: any) {
+    console.error("getCategoryCountsFromCache failed:", err.message);
+  }
   return countMap;
 };
 
@@ -494,294 +390,175 @@ export const overridePackageCategories = async (packageId: string, categories: P
   const primaryCategory = pickPrimaryCategory(categories);
   const singleCategory = [primaryCategory];
 
-  const client = getClient();
-  if (!client) {
-    const index = inMemoryCache.findIndex((row) => row.package_id === packageId);
-    if (index < 0) return null;
+  const hit = await getPackageByIdFromCache(packageId);
+  if (!hit) return null;
 
-    const row = inMemoryCache[index];
-    const payload: TravelPackage = {
-      ...row.payload,
-      category: primaryCategory,
-      categories: singleCategory,
-      categoryLabel: CATEGORY_LABELS[primaryCategory],
-      lastUpdatedAt: new Date().toISOString(),
-    };
-
-    inMemoryCache[index] = {
-      ...row,
-      category: primaryCategory,
-      categories: singleCategory,
-      payload,
-      updated_at: new Date().toISOString(),
-    };
-
-    return payload;
-  }
-
-  const { data: hit, error: fetchError } = await client
-    .from(CACHE_TABLE)
-    .select("payload")
-    .eq("package_id", packageId)
-    .maybeSingle();
-
-  if (fetchError) {
-    throw new Error(`Failed to fetch package for category override: ${fetchError.message}`);
-  }
-  if (!hit?.payload) return null;
-
-  const payload = hit.payload as TravelPackage;
   const updatedPayload: TravelPackage = {
-    ...payload,
+    ...hit,
     category: primaryCategory,
     categories: singleCategory,
     categoryLabel: CATEGORY_LABELS[primaryCategory],
     lastUpdatedAt: new Date().toISOString(),
   };
 
-  const { error } = await client
-    .from(CACHE_TABLE)
-    .update({
-      category: primaryCategory,
-      categories: singleCategory,
-      payload: updatedPayload,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("package_id", packageId);
-
-  if (error) {
+  try {
+    await db.execute({
+      sql: `UPDATE ${CACHE_TABLE} SET 
+              category = ?, 
+              categories = ?, 
+              payload = ?, 
+              updated_at = ? 
+            WHERE package_id = ?`,
+      args: [
+        primaryCategory,
+        JSON.stringify(singleCategory),
+        JSON.stringify(updatedPayload),
+        new Date().toISOString(),
+        packageId,
+      ],
+    });
+    return updatedPayload;
+  } catch (error: any) {
     throw new Error(`Failed to override package categories: ${error.message}`);
   }
-
-  return updatedPayload;
 };
 
 export const getImageCacheSeeds = async () => {
-  const client = getClient();
-  if (!client) {
-    return inMemoryCache.map((row) => ({
-      destination: row.payload.destination,
-      category: row.payload.category,
-      budgetType: row.payload.budgetType,
-      imageUrl: row.payload.imageUrl,
-      uniqueImageId: row.payload.uniqueImageId,
-      updatedAt: row.updated_at,
-    }));
-  }
-
-  const { data, error } = await client.from(CACHE_TABLE).select("destination, category, budget_type, payload, unique_image_id, updated_at");
-  if (error) {
+  try {
+    const result = await db.execute({
+      sql: `SELECT destination, category, budget_type, payload, unique_image_id, updated_at FROM ${CACHE_TABLE}`,
+    });
+    return result.rows.map((row: any) => {
+      const payload = row.payload ? (typeof row.payload === "string" ? JSON.parse(row.payload) : row.payload) : null;
+      return {
+        destination: row.destination || payload?.destination || "",
+        category: row.category || payload?.category || "international",
+        budgetType: row.budget_type || payload?.budgetType || "medium",
+        imageUrl: payload?.imageUrl || "",
+        uniqueImageId: row.unique_image_id || payload?.uniqueImageId || "",
+        updatedAt: row.updated_at || new Date(0).toISOString(),
+      };
+    });
+  } catch (error: any) {
     throw new Error(`Failed to fetch image cache seeds: ${error.message}`);
   }
-
-  return (data || []).map((row) => {
-    const typed = row as {
-      destination?: string;
-      category?: PackageCategory;
-      budget_type?: BudgetType;
-      unique_image_id?: string;
-      updated_at?: string;
-      payload?: TravelPackage;
-    };
-    return {
-      destination: typed.destination || typed.payload?.destination || "",
-      category: typed.category || typed.payload?.category || "international",
-      budgetType: typed.budget_type || typed.payload?.budgetType || "medium",
-      imageUrl: typed.payload?.imageUrl || "",
-      uniqueImageId: typed.unique_image_id || typed.payload?.uniqueImageId || "",
-      updatedAt: typed.updated_at || new Date(0).toISOString(),
-    };
-  });
 };
 
 export const overridePackageImage = async (packageId: string, imageUrl: string, imageAlt?: string) => {
-  const client = getClient();
   const nowIso = new Date().toISOString();
   const generatedImageId = `admin-${packageId}-${Math.abs(imageUrl.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0))}`;
 
-  if (!client) {
-    const index = inMemoryCache.findIndex((row) => row.package_id === packageId);
-    if (index < 0) return null;
+  const hit = await getPackageByIdFromCache(packageId);
+  if (!hit) return null;
 
-    const row = inMemoryCache[index];
-    const payload: TravelPackage = {
-      ...row.payload,
-      imageUrl,
-      image: imageUrl,
-      imageAlt: imageAlt || row.payload.imageAlt || `${row.payload.destination} travel package`,
-      imageSource: "admin",
-      uniqueImageId: generatedImageId,
-      lastUpdatedAt: nowIso,
-    };
-
-    inMemoryCache[index] = {
-      ...row,
-      unique_image_id: generatedImageId,
-      payload,
-      updated_at: nowIso,
-    };
-
-    return payload;
-  }
-
-  const { data: hit, error: fetchError } = await client
-    .from(CACHE_TABLE)
-    .select("payload")
-    .eq("package_id", packageId)
-    .maybeSingle();
-
-  if (fetchError) {
-    throw new Error(`Failed to fetch package for image override: ${fetchError.message}`);
-  }
-  if (!hit?.payload) return null;
-
-  const payload = hit.payload as TravelPackage;
   const updatedPayload: TravelPackage = {
-    ...payload,
+    ...hit,
     imageUrl,
     image: imageUrl,
-    imageAlt: imageAlt || payload.imageAlt || `${payload.destination} travel package`,
+    imageAlt: imageAlt || hit.imageAlt || `${hit.destination} travel package`,
     imageSource: "admin",
     uniqueImageId: generatedImageId,
     lastUpdatedAt: nowIso,
   };
 
-  const { error } = await client
-    .from(CACHE_TABLE)
-    .update({
-      unique_image_id: generatedImageId,
-      payload: updatedPayload,
-      updated_at: nowIso,
-    })
-    .eq("package_id", packageId);
-
-  if (error) {
+  try {
+    await db.execute({
+      sql: `UPDATE ${CACHE_TABLE} SET 
+              unique_image_id = ?, 
+              payload = ?, 
+              updated_at = ? 
+            WHERE package_id = ?`,
+      args: [
+        generatedImageId,
+        JSON.stringify(updatedPayload),
+        nowIso,
+        packageId,
+      ],
+    });
+    return updatedPayload;
+  } catch (error: any) {
     throw new Error(`Failed to override package image: ${error.message}`);
   }
-
-  return updatedPayload;
 };
 
 export const hasActiveBookingsForPackage = async (packageId: string) => {
-  const client = getClient();
-  if (!client) {
-    return false;
-  }
-
-  const { count, error } = await client
-    .from("bookings")
-    .select("id", { count: "exact", head: true })
-    .eq("package_id", packageId)
-    .or("payment_verified.eq.true,payment_status.in.(pending,paid,confirmed)");
-
-  if (error) {
+  try {
+    const result = await db.execute({
+      sql: `SELECT COUNT(*) as cnt FROM bookings 
+            WHERE package_id = ? 
+            AND (payment_verified = 1 OR payment_status IN ('pending', 'paid', 'confirmed'))`,
+      args: [packageId],
+    });
+    return Number(result.rows[0]?.cnt || 0) > 0;
+  } catch (error: any) {
     throw new Error(`Failed to verify active bookings: ${error.message}`);
   }
-
-  return (count || 0) > 0;
 };
 
 export const getPackageVersionHistory = async (packageId: string) => {
-  const client = getClient();
-  if (!client) return [];
-
-  const { data, error } = await client
-    .from("package_versions")
-    .select("id, package_id, version_number, created_at, created_by, is_active, price, duration_days")
-    .eq("package_id", packageId)
-    .order("version_number", { ascending: false });
-
-  if (error) {
+  try {
+    const result = await db.execute({
+      sql: `SELECT id, package_id, version_number, created_at, created_by, is_active, price, duration_days 
+            FROM package_versions WHERE package_id = ? ORDER BY version_number DESC`,
+      args: [packageId],
+    });
+    return result.rows.map((row: any) => ({
+      id: row.id,
+      package_id: row.package_id,
+      version_number: Number(row.version_number),
+      created_at: row.created_at,
+      created_by: row.created_by,
+      is_active: !!row.is_active,
+      price: row.price !== null ? Number(row.price) : null,
+      duration_days: row.duration_days !== null ? Number(row.duration_days) : null,
+    }));
+  } catch (error: any) {
     throw new Error(`Failed to fetch package version history: ${error.message}`);
   }
-
-  return (data || []) as Array<{
-    id: string;
-    package_id: string;
-    version_number: number;
-    created_at: string;
-    created_by: string;
-    is_active: boolean;
-    price: number | null;
-    duration_days: number | null;
-  }>;
 };
 
 export const updatePackageGroupBookings = async (packageId: string, travelDate: string, travelers: number) => {
-  const client = getClient();
-  if (!client) {
-    const index = inMemoryCache.findIndex((row) => row.package_id === packageId);
-    if (index < 0) return null;
+  const hit = await getPackageByIdFromCache(packageId);
+  if (!hit) return null;
 
-    const row = inMemoryCache[index];
-    const departures = row.group_departures_json ? JSON.parse(row.group_departures_json) : [];
-    const departure = departures.find((d: any) => d.date === travelDate);
-    if (!departure) return null;
-
-    departure.currentBookings += travelers;
-    const updatedDepartures = JSON.stringify(departures);
-    
-    const updatedPayload = {
-      ...row.payload,
-      groupDepartures: departures
-    };
-
-    inMemoryCache[index] = {
-      ...row,
-      group_departures_json: updatedDepartures,
-      payload: updatedPayload,
-      updated_at: new Date().toISOString()
-    };
-
-    return updatedPayload;
-  }
-
-  const { data: hit, error: fetchError } = await client
-    .from(CACHE_TABLE)
-    .select("group_departures_json, payload")
-    .eq("package_id", packageId)
-    .maybeSingle();
-
-  if (fetchError || !hit) return null;
-
-  const departures = hit.group_departures_json ? JSON.parse(hit.group_departures_json) : [];
+  const departures = hit.groupDepartures || [];
   const departure = departures.find((d: any) => d.date === travelDate);
   if (!departure) return null;
 
   departure.currentBookings += travelers;
   const updatedPayload = {
-    ...hit.payload,
-    groupDepartures: departures
+    ...hit,
+    groupDepartures: departures,
   };
 
-  const { error } = await client
-    .from(CACHE_TABLE)
-    .update({
-      group_departures_json: JSON.stringify(departures),
-      payload: updatedPayload,
-      updated_at: new Date().toISOString()
-    })
-    .eq("package_id", packageId);
-
-  if (error) throw new Error(`Failed to update group bookings: ${error.message}`);
-  return updatedPayload;
+  try {
+    await db.execute({
+      sql: `UPDATE ${CACHE_TABLE} SET 
+              group_departures_json = ?, 
+              payload = ?, 
+              updated_at = ? 
+            WHERE package_id = ?`,
+      args: [
+        JSON.stringify(departures),
+        JSON.stringify(updatedPayload),
+        new Date().toISOString(),
+        packageId,
+      ],
+    });
+    return updatedPayload;
+  } catch (error: any) {
+    throw new Error(`Failed to update group bookings: ${error.message}`);
+  }
 };
 
 export const deletePackageFromCache = async (packageId: string) => {
-  const client = getClient();
-  if (!client) {
-    const before = inMemoryCache.length;
-    inMemoryCache = inMemoryCache.filter((row) => row.package_id !== packageId);
-    return inMemoryCache.length < before;
-  }
-
-  const { error, count } = await client
-    .from(CACHE_TABLE)
-    .delete({ count: "exact" })
-    .eq("package_id", packageId);
-
-  if (error) {
+  try {
+    const result = await db.execute({
+      sql: `DELETE FROM ${CACHE_TABLE} WHERE package_id = ?`,
+      args: [packageId],
+    });
+    return result.rowsAffected > 0;
+  } catch (error: any) {
     throw new Error(`Failed to delete package: ${error.message}`);
   }
-  return (count || 0) > 0;
 };

@@ -6,7 +6,6 @@ import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { jsPDF } from 'jspdf';
 import { getPackageById, type TravelPackage } from '@/lib/packagesApi';
@@ -455,19 +454,23 @@ const Payment = () => {
 
     setProfileLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .maybeSingle();
+      const response = await fetch(`${backendBaseUrl}/api/auth/profile`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
+        },
+      });
 
-      if (error) throw error;
-      if (!data) {
+      if (!response.ok) {
+        throw new Error('Failed to load profile.');
+      }
+
+      const resData = await response.json();
+      const profileData = resData.user?.user_metadata?.profile_details as ProfileRow;
+
+      if (!profileData) {
         toast.error('No saved profile found. Please update your profile first.');
         return;
       }
-
-      const profileData = data as unknown as ProfileRow;
 
       const calculateAge = (dob: string | null) => {
         if (!dob) return '';
@@ -512,11 +515,9 @@ const Payment = () => {
     
     // Create payload with available fields
     const payload: Record<string, string | null> = {
-      id: user.id,
       full_name: primary.fullName || null,
       phone: primary.mobile || null,
       gender: primary.gender.toLowerCase() || null,
-      updated_at: new Date().toISOString(),
     };
 
     // If a full Aadhaar was entered, update the hash and last 4
@@ -532,10 +533,13 @@ const Payment = () => {
     }
 
     try {
-      await (supabase.from('profiles').upsert(payload as any, { onConflict: 'id' }) as any);
-      // Also update auth metadata for faster access
-      await supabase.auth.updateUser({
-        data: { full_name: payload.full_name }
+      await fetch(`${backendBaseUrl}/api/auth/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
+        },
+        body: JSON.stringify(payload),
       });
     } catch (err) {
       console.error('Failed to auto-save profile:', err);

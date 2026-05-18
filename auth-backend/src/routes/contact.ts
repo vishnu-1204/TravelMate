@@ -1,6 +1,7 @@
 import express from "express";
 import rateLimit from "express-rate-limit";
-import { getDb } from "../db";
+import crypto from "crypto";
+import { db } from "../utils/turso";
 import { sendContactEmail, sendContactAutoReply } from "../services/email.service";
 import { logger } from "../utils/logger";
 import { z } from "zod";
@@ -34,22 +35,11 @@ router.post("/", contactRateLimiter, async (req, res) => {
     }
 
     const { name, email, phone, subject, message } = result.data;
-    const db = getDb();
 
     // 1. Save to Database
-    await new Promise<void>((resolve, reject) => {
-      db.run(
-        `INSERT INTO contact_messages (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)`,
-        [name, email, phone, subject, message],
-        (err) => {
-          if (err) {
-            logger("Database error saving contact message:", err.message);
-            reject(err);
-          } else {
-            resolve();
-          }
-        }
-      );
+    await db.execute({
+      sql: "INSERT INTO contact_messages (id, name, email, phone, subject, message, created_at) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
+      args: [crypto.randomUUID(), name, email, phone, subject, message],
     });
 
     // 2. Send Emails (Async, don't block response)

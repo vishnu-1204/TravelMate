@@ -28,7 +28,7 @@ function Navbar() {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Group Tours', path: '/packages/group' },
+    { name: 'Solo trips', path: '/packages/solo' },
     { name: 'Honeymoon', path: '/packages/honeymoon' },
     { name: 'Packages', path: '/packages' },
     { name: 'Blog', path: '/blog' },

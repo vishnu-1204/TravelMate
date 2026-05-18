@@ -10,7 +10,7 @@ References
 - Express Documentation – https://expressjs.com/
 - Node.js Documentation – https://nodejs.org/en/docs/
 - SQLite Documentation – https://www.sqlite.org/docs.html
-- Supabase Documentation – https://supabase.com/docs
+- Turso Cloud Documentation – https://docs.turso.tech
 - Amadeus for Developers – https://developers.amadeus.com/
 - Razorpay Documentation – https://razorpay.com/docs/
 

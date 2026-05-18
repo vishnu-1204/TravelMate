@@ -1,4 +1,4 @@
-import { sendBookingConfirmation } from './services/email.service';
+import { sendBookingConfirmation } from '../services/email.service';
 
 async function testEmail() {
   try {

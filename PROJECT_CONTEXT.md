@@ -10,7 +10,7 @@ TravelMate is a premium, high-end travel booking platform focused on:
 ## 🛠️ Core Tech Stack
 - **Backend:** Node.js (auth-backend) with TypeScript.
 - **Frontend:** React (TypeScript), specifically utilizing `Payment.tsx` and `MyBookings.tsx`.
-- **Database/Auth:** Supabase (for reviews, booking tables, and profiles).
+- **Database/Auth:** Turso Cloud (for reviews, booking tables, and profiles).
 - **Flight Data:** Amadeus Self-Service API via `amadeusProvider.ts`.
 - **Email Service:** Resend SDK with React-based HTML templates.
 - **Documentation:** `pdfkit` for branded, rich-data ticket generation.
@@ -21,7 +21,7 @@ TravelMate is a premium, high-end travel booking platform focused on:
 | **Flight Search** | Real-time queries via `searchFlightOffers` in `amadeusProvider.ts`. Handles city-to-IATA mapping. |
 | **Transactional Email** | Responsive premium templates in `templates/bookingConfirmation.ts`. |
 | **PDF Generation** | Dark-themed "TRAVELMATE" wordmark, flight box layouts, and inclusion lists. |
-| **Smart Checkout** | "Use My Profile" for 90% faster booking; auto-saves traveler data to Supabase. |
+| **Smart Checkout** | "Use My Profile" for 90% faster booking; auto-saves traveler data to Turso Cloud. |
 | **Reviews** | Verified Purchase logic linked to confirmed booking status. |
 
 ## 🎨 Design & Coding Standards

@@ -20,7 +20,7 @@ import express from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import { config } from "./config/env";
-import { initDatabase } from "./db";
+
 import authRoutes from "./routes/auth";
 import bookingRoutes from "./routes/booking";
 import packagesRoutes from "./routes/packages";
@@ -29,6 +29,7 @@ import reviewsRoutes from "./routes/reviews";
 import contactRoutes from "./routes/contact";
 import { refreshPackageCache } from "./modules/packages/service/packageService";
 import { startEmailRecoveryTask } from "./utils/emailRecovery";
+import { initDatabase } from "./utils/turso";
 
 const app = express();
 
@@ -91,6 +92,7 @@ const startServer = async () => {
   logger(`[PID ${process.pid}] Starting server initialization (Port ${config.port})...`);
   
   try {
+    // Database initialization via Turso Cloud
     await initDatabase();
     
     let currentPort = config.port;

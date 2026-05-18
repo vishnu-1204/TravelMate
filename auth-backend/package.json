@@ -1,7 +1,7 @@
 {
   "name": "auth-backend",
   "version": "1.0.0",
-  "description": "Express + SQLite Authentication Backend",
+  "description": "Express + Turso Cloud Authentication Backend",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
@@ -13,7 +13,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@supabase/supabase-js": "^2.57.4",
+    "@libsql/client": "^0.17.3",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dayjs": "^1.11.19",
@@ -24,8 +24,7 @@
     "nodemailer": "^8.0.1",
     "pdfkit": "^0.17.2",
     "razorpay": "^2.9.6",
-    "resend": "^6.9.2",
-    "sqlite3": "^5.0.2"
+    "resend": "^6.9.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -35,7 +34,6 @@
     "@types/node": "^25.2.3",
     "@types/nodemailer": "^7.0.9",
     "@types/pdfkit": "^0.17.5",
-    "@types/sqlite3": "^3.1.11",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

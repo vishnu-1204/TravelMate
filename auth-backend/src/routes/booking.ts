@@ -2,9 +2,8 @@ import { razorpay } from "../utils/razorpay";
 import { Router, Request, Response } from "express";
 import crypto from "crypto";
 import PDFDocument from "pdfkit";
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { config } from "../config/env";
-import { getDb } from "../db";
+import { db } from "../utils/turso";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
 import { Resend } from "resend";
 import { sendBookingConfirmation, sendFlightTicketEmail, recordEmailFailure } from "../services/email.service";
@@ -126,9 +125,7 @@ type EmailPayload = {
   excluded: string[];
 };
 
-let cachedClient: SupabaseClient | null = null;
 const hasSmtp = () => Boolean(config.smtpHost && config.smtpUser && config.smtpPass && config.smtpFrom);
-const hasSupabase = () => Boolean(config.supabaseUrl && config.supabaseServiceRoleKey);
 const validEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const toList = (value: unknown, fallback: string[] = []) =>
@@ -143,16 +140,6 @@ const toItinerarySummary = (payload: EmailPayload) => {
   return payload.itineraryDays.map((day) => {
     return `Day ${day.day}: ${day.title} - ${day.activities?.join(", ") || day.narrative || ""}`;
   });
-};
-
-const getSupabase = () => {
-  if (!hasSupabase()) return null;
-  if (!cachedClient) {
-    cachedClient = createClient(config.supabaseUrl, config.supabaseServiceRoleKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
-  }
-  return cachedClient;
 };
 
 const baseDefaults = {
@@ -199,56 +186,42 @@ const fromBooking = (booking: BookingRecord): EmailPayload => {
 };
 
 const fetchBooking = async (bookingReference: string, userId?: string): Promise<BookingRecord | null> => {
-  const db = getDb();
-  let sql = `SELECT * FROM bookings WHERE booking_reference = ?`;
-  const params: any[] = [bookingReference];
-  
-  if (userId) {
-    sql += ` AND user_id = ?`;
-    params.push(userId);
+  try {
+    let sql = "SELECT * FROM bookings WHERE booking_reference = ?";
+    const args: any[] = [bookingReference];
+    if (userId) {
+      sql += " AND user_id = ?";
+      args.push(String(userId));
+    }
+    sql += " LIMIT 1";
+
+    const result = await db.execute({ sql, args });
+    if (result.rows.length === 0) return null;
+    const data = result.rows[0] as unknown as any;
+    
+    return {
+      ...data,
+      payment_verified: !!data.payment_verified,
+      email_sent: !!data.email_sent,
+      booking_terms: typeof data.booking_terms === "string" ? JSON.parse(data.booking_terms) : data.booking_terms
+    } as unknown as BookingRecord;
+  } catch (err) {
+    console.error("fetchBooking error:", err);
+    return null;
   }
-  
-  return new Promise((resolve, reject) => {
-    db.get(sql, params, (err, row: any) => {
-      if (err) return reject(err);
-      if (!row) return resolve(null);
-      
-      // Map SQLite row to BookingRecord type
-      const record: BookingRecord = {
-        ...row,
-        payment_verified: !!row.payment_verified,
-        email_sent: !!row.email_sent,
-        booking_terms: row.booking_terms ? JSON.parse(row.booking_terms) : null
-      };
-      resolve(record);
-    });
-  });
 };
 
 const safeUpdate = async (bookingId: string, patch: Record<string, unknown>) => {
-  const db = getDb();
-  
-  // Convert patch object to SQL UPDATE statement
-  const fields = Object.keys(patch);
-  if (fields.length === 0) return;
-  
-  const setClause = fields.map(f => `${f} = ?`).join(", ");
-  const values = fields.map(f => {
-    const val = patch[f];
-    if (f === 'booking_terms' && val && typeof val === 'object') return JSON.stringify(val);
-    if (typeof val === 'boolean') return val ? 1 : 0;
-    return val;
-  });
-  
-  const sql = `UPDATE bookings SET ${setClause} WHERE id = ?`;
-  values.push(bookingId);
-  
-  return new Promise<void>((resolve, reject) => {
-    db.run(sql, values, function(err) {
-      if (err) return reject(err);
-      resolve();
-    });
-  });
+  try {
+    const keys = Object.keys(patch);
+    if (keys.length === 0) return;
+    const sql = `UPDATE bookings SET ${keys.map(k => `${k} = ?`).join(", ")} WHERE id = ?`;
+    const args = [...keys.map(k => patch[k] as any), bookingId];
+    await db.execute({ sql, args });
+  } catch (error: any) {
+    logger("Turso safeUpdate error:", error.message);
+    throw error;
+  }
 };
 
 const uploadPdfAndGetUrl = async (booking: BookingRecord, pdf: Buffer) => {
@@ -601,7 +574,6 @@ router.post("/verify-payment", authenticateToken, async (req: AuthRequest, res: 
   }
 
   try {
-    const db = getDb();
     const userId = req.user?.id || bookingData.user_id;
     const userEmail = req.user?.email || bookingData.email;
 
@@ -609,11 +581,12 @@ router.post("/verify-payment", authenticateToken, async (req: AuthRequest, res: 
       return res.status(401).json({ message: "User identification failed" });
     }
 
-    // Explicitly fetch the logged-in user's registered email from the database
-    const userRow = await new Promise<any>((resolve) => {
-      db.get("SELECT email FROM users WHERE id = ?", [userId], (err, row) => resolve(row));
+    // Explicitly fetch the logged-in user's registered email from Turso
+    const userResult = await db.execute({
+      sql: "SELECT email FROM users WHERE id = ? LIMIT 1",
+      args: [String(userId)],
     });
-    const finalEmail = userRow?.email || req.user?.email || bookingData.email;
+    const finalEmail = (userResult.rows.length > 0 ? (userResult.rows[0].email as string) : "") || req.user?.email || bookingData.email;
 
     // Persist booking with confirmed status
     const fullBooking: any = {
@@ -622,9 +595,9 @@ router.post("/verify-payment", authenticateToken, async (req: AuthRequest, res: 
       email: finalEmail, // Use the dynamically fetched registered email
       payment_id: razorpay_payment_id,
       payment_status: "paid",
-      payment_verified: 1,
+      payment_verified: true,
       booking_status: "confirmed",
-      email_sent: 0
+      email_sent: false
     };
 
     // Filter fields to match SQLite schema
@@ -641,66 +614,63 @@ router.post("/verify-payment", authenticateToken, async (req: AuthRequest, res: 
       if (fullBooking[col] !== undefined) filteredBooking[col] = fullBooking[col];
     });
 
-    const fields = Object.keys(filteredBooking);
-    const placeholders = fields.map(() => "?").join(", ");
-    const columns = fields.join(", ");
-    const values = fields.map(f => {
-      const val = filteredBooking[f];
-      if (f === "booking_terms" && val && typeof val === "object") return JSON.stringify(val);
-      if (typeof val === "boolean") return val ? 1 : 0;
-      return val;
+    const bookingRef = fullBooking.booking_reference;
+
+    // Insert into Turso
+    const newId = crypto.randomUUID();
+    await db.execute({
+      sql: `INSERT INTO bookings (
+              id, user_id, booking_reference, package_id, package_title, destination,
+              duration, travel_date, travelers, traveler_name, first_name, last_name,
+              room_type, email, phone, total_amount, airline, departure_time,
+              payment_id, payment_status, payment_verified, booking_terms, booking_status, email_sent
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)`,
+      args: [
+        newId,
+        filteredBooking.user_id || null,
+        filteredBooking.booking_reference || null,
+        filteredBooking.package_id || null,
+        filteredBooking.package_title || null,
+        filteredBooking.destination || null,
+        filteredBooking.duration || null,
+        filteredBooking.travel_date || null,
+        filteredBooking.travelers || 1,
+        filteredBooking.traveler_name || null,
+        filteredBooking.first_name || null,
+        filteredBooking.last_name || null,
+        filteredBooking.room_type || null,
+        filteredBooking.email || null,
+        filteredBooking.phone || null,
+        filteredBooking.total_amount || 0,
+        filteredBooking.airline || null,
+        filteredBooking.departure_time || null,
+        filteredBooking.payment_id || null,
+        filteredBooking.payment_status || null,
+        filteredBooking.payment_verified ? 1 : 0,
+        filteredBooking.booking_terms ? JSON.stringify(filteredBooking.booking_terms) : null,
+        filteredBooking.booking_status || null,
+      ],
     });
 
-    const finalSql = `INSERT INTO bookings (${columns}) VALUES (${placeholders})`;
+    // Trigger professional confirmation email dispatch
+    fetchBooking(bookingRef).then(async (record) => {
+      if (record) {
+         console.log(`[Razorpay] Payment verified. Dispatching professional confirmation for ${bookingRef} to ${userEmail}`);
+         try {
+            record.payment_id = razorpay_payment_id;
+            await processStoredBooking(record);
+         } catch (emailErr) {
+            console.error("[Email] Dispatch failed:", emailErr);
+         }
+      }
+    }).catch(err => console.error("[Razorpay] Post-payment processing failure:", err));
 
-    return new Promise<void>((resolve, reject) => {
-      db.run(finalSql, values, function (this: any, err: any) {
-        if (err) {
-          console.error("[Booking] Storage failed after payment:", err);
-          return res.status(500).json({ message: "Payment verified but booking storage failed", error: err.message });
-        }
-
-        const newId = this.lastID;
-        const bookingRef = fullBooking.booking_reference;
-        
-        // Sync to Supabase if available
-        if (hasSupabase()) {
-          const supabase = getSupabase();
-          if (supabase) {
-            (supabase.from("bookings").upsert({
-              ...filteredBooking,
-              booking_terms: filteredBooking.booking_terms ? JSON.parse(JSON.stringify(filteredBooking.booking_terms)) : null,
-              payment_verified: !!filteredBooking.payment_verified,
-              email_sent: !!filteredBooking.email_sent
-            }, { onConflict: "booking_reference" }) as any).then(({ error }: any) => {
-              if (error) console.error("[Supabase] Sync failed:", error.message);
-              else console.log("[Supabase] Sync successful for", bookingRef);
-            }).catch((err: any) => console.error("[Supabase] Sync error:", err));
-          }
-        }
-
-        // Trigger professional confirmation email dispatch
-        fetchBooking(bookingRef).then(async (record) => {
-          if (record) {
-             console.log(`[Razorpay] Payment verified. Dispatching professional confirmation for ${bookingRef} to ${userEmail}`);
-             try {
-                // Ensure record has the payment_id for the email template
-                record.payment_id = razorpay_payment_id;
-                await processStoredBooking(record);
-             } catch (emailErr) {
-                console.error("[Email] Dispatch failed:", emailErr);
-             }
-          }
-        }).catch(err => console.error("[Razorpay] Post-payment processing failure:", err));
-
-        return res.status(200).json({
-          success: true,
-          message: "Payment verified and booking confirmed",
-          bookingReference: bookingRef,
-          bookingId: newId,
-          paymentId: razorpay_payment_id
-        });
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Payment verified and booking confirmed",
+      bookingReference: bookingRef,
+      bookingId: newId,
+      paymentId: razorpay_payment_id
     });
   } catch (error: any) {
     console.error("Payment verification route execution failed:", error);
@@ -721,13 +691,12 @@ router.post("/process-dummy-payment", authenticateToken, async (req: AuthRequest
   }
 
   try {
-    const db = getDb();
-
-    // Explicitly fetch the logged-in user's registered email from the database
-    const userRow = await new Promise<any>((resolve) => {
-      db.get("SELECT email FROM users WHERE id = ?", [userId], (err, row) => resolve(row));
+    // Explicitly fetch the logged-in user's registered email from Turso
+    const userResult = await db.execute({
+      sql: "SELECT email FROM users WHERE id = ? LIMIT 1",
+      args: [String(userId)],
     });
-    const finalEmail = userRow?.email || req.user?.email || bookingData.email;
+    const finalEmail = (userResult.rows.length > 0 ? (userResult.rows[0].email as string) : "") || req.user?.email || bookingData.email;
 
     // Augment booking data for dummy payment
     const fullBooking: any = {
@@ -735,9 +704,9 @@ router.post("/process-dummy-payment", authenticateToken, async (req: AuthRequest
       user_id: userId,
       email: finalEmail, // Use the dynamically fetched registered email
       payment_status: "paid",
-      payment_verified: 1, // SQLite INTEGER
+      payment_verified: true,
       booking_status: "confirmed",
-      email_sent: 0
+      email_sent: false
     };
 
     // Filter fields to match SQLite schema
@@ -761,60 +730,58 @@ router.post("/process-dummy-payment", authenticateToken, async (req: AuthRequest
       filteredBooking.last_name = names.slice(1).join(' ') || '-';
     }
 
-    const fields = Object.keys(filteredBooking);
-    const placeholders = fields.map(() => "?").join(", ");
-    const columns = fields.join(", ");
-    const values = fields.map(f => {
-      const val = filteredBooking[f];
-      if (f === "booking_terms" && val && typeof val === "object") return JSON.stringify(val);
-      if (typeof val === "boolean") return val ? 1 : 0;
-      return val;
+    const bookingRef = fullBooking.booking_reference;
+
+    // Insert into Turso
+    const newId = crypto.randomUUID();
+    await db.execute({
+      sql: `INSERT INTO bookings (
+              id, user_id, booking_reference, package_id, package_title, destination,
+              duration, travel_date, travelers, traveler_name, first_name, last_name,
+              room_type, email, phone, total_amount, airline, departure_time,
+              payment_id, payment_status, payment_verified, booking_terms, booking_status, email_sent
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)`,
+      args: [
+        newId,
+        filteredBooking.user_id || null,
+        filteredBooking.booking_reference || null,
+        filteredBooking.package_id || null,
+        filteredBooking.package_title || null,
+        filteredBooking.destination || null,
+        filteredBooking.duration || null,
+        filteredBooking.travel_date || null,
+        filteredBooking.travelers || 1,
+        filteredBooking.traveler_name || null,
+        filteredBooking.first_name || null,
+        filteredBooking.last_name || null,
+        filteredBooking.room_type || null,
+        filteredBooking.email || null,
+        filteredBooking.phone || null,
+        filteredBooking.total_amount || 0,
+        filteredBooking.airline || null,
+        filteredBooking.departure_time || null,
+        filteredBooking.payment_id || null,
+        filteredBooking.payment_status || null,
+        filteredBooking.payment_verified ? 1 : 0,
+        filteredBooking.booking_terms ? JSON.stringify(filteredBooking.booking_terms) : null,
+        filteredBooking.booking_status || null,
+      ],
     });
 
-    const sql = `INSERT INTO bookings (${columns}) VALUES (${placeholders})`;
+    // Trigger confirmation email dispatch
+    fetchBooking(bookingRef).then(record => {
+      if (record) {
+         console.log(`[DummyPayment] Triggering email for ${bookingRef}`);
+         processStoredBooking(record);
+      }
+    }).catch(err => console.error("[DummyPayment] Delayed email processing failed:", err));
 
-    return new Promise<void>((resolve, reject) => {
-      db.run(sql, values, function (this: any, err: any) {
-        if (err) {
-          console.error("Dummy booking storage failed:", err);
-          return res.status(500).json({ message: "Payment processed but booking storage failed", error: err.message });
-        }
-
-        const newId = this.lastID;
-        const bookingRef = fullBooking.booking_reference;
-        
-        // Sync to Supabase if available
-        if (hasSupabase()) {
-          const supabase = getSupabase();
-          if (supabase) {
-            (supabase.from("bookings").upsert({
-              ...filteredBooking,
-              booking_terms: filteredBooking.booking_terms ? JSON.parse(JSON.stringify(filteredBooking.booking_terms)) : null,
-              payment_verified: !!filteredBooking.payment_verified,
-              email_sent: !!filteredBooking.email_sent
-            }, { onConflict: "booking_reference" }) as any).then(({ error }: any) => {
-              if (error) console.error("[Supabase] Sync failed (Dummy):", error.message);
-              else console.log("[Supabase] Sync successful for", bookingRef);
-            }).catch((err: any) => console.error("[Supabase] Sync error (Dummy):", err));
-          }
-        }
-
-        // Trigger confirmation email dispatch
-        fetchBooking(bookingRef).then(record => {
-          if (record) {
-             console.log(`[DummyPayment] Triggering email for ${bookingRef}`);
-             processStoredBooking(record);
-          }
-        }).catch(err => console.error("[DummyPayment] Delayed email processing failed:", err));
-
-        return res.status(200).json({
-          success: true,
-          message: "Dummy payment processed and booking confirmed",
-          bookingReference: bookingRef,
-          bookingId: newId,
-          paymentId: fullBooking.paymentId
-        });
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Dummy payment processed and booking confirmed",
+      bookingReference: bookingRef,
+      bookingId: newId,
+      paymentId: fullBooking.paymentId
     });
   } catch (error: any) {
     console.error("Dummy booking persistence failed:", error);
@@ -830,28 +797,19 @@ router.post("/confirm-booking", async (req: Request, res: Response) => {
   if (!bookingId && !bookingReference) return res.status(400).json({ message: "bookingId or bookingReference is required" });
 
   try {
-    const db = getDb();
-    let sql = `UPDATE bookings SET payment_status = 'paid', payment_verified = 1, booking_status = 'confirmed' WHERE `;
-    const params: any[] = [];
-    
+    let result;
     if (bookingId) {
-      sql += `id = ?`;
-      params.push(bookingId);
-    } else {
-      sql += `booking_reference = ?`;
-      params.push(bookingReference);
-    }
-
-    return new Promise<void>((resolve, reject) => {
-      db.run(sql, params, function(err) {
-        if (err) {
-          console.error("confirm-booking SQL failed:", err);
-          return res.status(500).json({ message: err.message });
-        }
-        res.json({ success: true, updated: this.changes });
-        resolve();
+      result = await db.execute({
+        sql: "UPDATE bookings SET payment_status = 'paid', payment_verified = 1, booking_status = 'confirmed' WHERE id = ?",
+        args: [bookingId]
       });
-    });
+    } else {
+      result = await db.execute({
+        sql: "UPDATE bookings SET payment_status = 'paid', payment_verified = 1, booking_status = 'confirmed' WHERE booking_reference = ?",
+        args: [bookingReference || ""]
+      });
+    }
+    res.json({ success: true, updated: result.rowsAffected });
   } catch (error: any) {
     console.error("confirm-booking failed:", error);
     return res.status(500).json({ message: error.message || "Failed to confirm booking" });
@@ -863,7 +821,6 @@ router.post("/create-booking", async (req: Request, res: Response) => {
   if (!body.booking) return res.status(400).json({ message: "booking payload is required" });
 
   try {
-    const db = getDb();
     const booking = body.booking;
 
     const validColumns = [
@@ -879,28 +836,42 @@ router.post("/create-booking", async (req: Request, res: Response) => {
       if (booking[cat] !== undefined) filteredBooking[cat] = booking[cat];
     });
 
-    const fields = Object.keys(filteredBooking);
-    const placeholders = fields.map(() => "?").join(", ");
-    const columns = fields.join(", ");
-    const values = fields.map(f => {
-      const val = filteredBooking[f];
-      if (f === "booking_terms" && val && typeof val === "object") return JSON.stringify(val);
-      if (typeof val === "boolean") return val ? 1 : 0;
-      return val;
+    const newId = crypto.randomUUID();
+    await db.execute({
+      sql: `INSERT INTO bookings (
+              id, user_id, booking_reference, package_id, package_title, destination,
+              duration, travel_date, travelers, traveler_name, first_name, last_name,
+              room_type, email, phone, total_amount, airline, departure_time,
+              payment_id, payment_status, payment_verified, booking_terms, booking_status, email_sent
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)`,
+      args: [
+        newId,
+        filteredBooking.user_id || null,
+        filteredBooking.booking_reference || null,
+        filteredBooking.package_id || null,
+        filteredBooking.package_title || null,
+        filteredBooking.destination || null,
+        filteredBooking.duration || null,
+        filteredBooking.travel_date || null,
+        filteredBooking.travelers || 1,
+        filteredBooking.traveler_name || null,
+        filteredBooking.first_name || null,
+        filteredBooking.last_name || null,
+        filteredBooking.room_type || null,
+        filteredBooking.email || null,
+        filteredBooking.phone || null,
+        filteredBooking.total_amount || 0,
+        filteredBooking.airline || null,
+        filteredBooking.departure_time || null,
+        filteredBooking.payment_id || null,
+        filteredBooking.payment_status || null,
+        filteredBooking.payment_verified ? 1 : 0,
+        filteredBooking.booking_terms ? JSON.stringify(filteredBooking.booking_terms) : null,
+        filteredBooking.booking_status || null,
+      ],
     });
 
-    const sql = `INSERT INTO bookings (${columns}) VALUES (${placeholders})`;
-
-    return new Promise<void>((resolve, reject) => {
-      db.run(sql, values, function (this: any, err: any) {
-        if (err) {
-          console.error("create-booking SQLite failed:", err);
-          return res.status(500).json({ message: err.message });
-        }
-        res.status(201).json({ message: "Booking saved", id: this.lastID });
-        resolve();
-      });
-    });
+    res.status(201).json({ message: "Booking saved", id: newId });
   } catch (error: any) {
     console.error("create-booking catch failed:", error);
     return res.status(500).json({ message: error.message });
@@ -912,40 +883,25 @@ router.get("/user-bookings", async (req: Request, res: Response) => {
   if (!userId) return res.status(400).json({ message: "userId is required" });
 
   try {
-    const { getDb } = require("../db");
-    const db = getDb();
-    console.log(`[user-bookings] Fetched db instance for ${userId}`);
-    const rows = await new Promise<any[]>((resolve, reject) => {
-      console.log(`[user-bookings] Executing db.all for ${userId}`);
-      db.all(
-        `SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC`,
-        [userId],
-        (err: Error | null, rows: any[]) => {
-          if (err) {
-            console.error(`[user-bookings] DB query error:`, err);
-            reject(err);
-          } else {
-            console.log(`[user-bookings] DB query success, rows: ${rows ? rows.length : 0}`);
-            resolve(rows);
-          }
-        }
-      );
+    const result = await db.execute({
+      sql: `SELECT id, booking_reference, package_id, package_title, travelers, total_amount, payment_status, booking_status, payment_verified, created_at, first_name, last_name, email, phone, airline, departure_time, duration, destination, room_type 
+            FROM bookings WHERE user_id = ? ORDER BY created_at DESC`,
+      args: [userId],
     });
-    console.log(`[user-bookings] Proceeding to map rows`);
+    const rows = result.rows as unknown as any[];
 
-    // Map local SQLite rows to match the expected frontend BookingRow format
-    const localBookings = rows.map((row) => ({
-      id: `local-${row.id}`,
+    const formattedBookings = (rows || []).map((row) => ({
+      id: row.id,
       booking_reference: row.booking_reference,
-      package_id: row.package_title, // Using title as fallback id for mapping
+      package_id: row.package_id || row.package_title,
       package_title: row.package_title,
       travelers: row.travelers,
-      total_amount: row.total_amount,
+      total_amount: Number(row.total_amount),
       payment_status: row.payment_status,
       booking_status: row.booking_status,
-      payment_verified: row.payment_status === "paid" || row.payment_status === "confirmed",
+      payment_verified: !!row.payment_verified,
       is_locked: true,
-      locked_price_per_person: row.total_amount / (row.travelers || 1),
+      locked_price_per_person: Number(row.total_amount) / (row.travelers || 1),
       booking_snapshots: [
         {
           snapshot: {
@@ -963,12 +919,29 @@ router.get("/user-bookings", async (req: Request, res: Response) => {
       created_at: row.created_at,
     }));
 
-    return res.json({ bookings: localBookings });
+    return res.json({ bookings: formattedBookings });
   } catch (error: any) {
     console.error("[booking/user-bookings] Error:", error.message);
     return res.status(500).json({ message: error.message || "Failed to fetch user bookings" });
   }
 });
+
+router.delete("/user-bookings", async (req: Request, res: Response) => {
+  const userId = req.query.userId as string;
+  if (!userId) return res.status(400).json({ message: "userId is required" });
+
+  try {
+    await db.execute({
+      sql: "DELETE FROM bookings WHERE user_id = ?",
+      args: [userId]
+    });
+    res.json({ success: true, message: "All bookings cleared successfully" });
+  } catch (error: any) {
+    console.error("clear-bookings failed:", error);
+    res.status(500).json({ message: error.message || "Failed to clear bookings" });
+  }
+});
+
 
 router.post("/resend-confirmation", async (req: Request, res: Response) => {
   const { bookingReference, userId } = req.body as { bookingReference?: string; userId?: string };
@@ -994,19 +967,11 @@ router.get("/details/:reference", async (req: Request, res: Response) => {
   if (!userId) return res.status(401).json({ message: "userId is required to view booking details" });
 
   try {
-    const { getDb } = require("../db");
-    const db = getDb();
-
-    const row = await new Promise<any>((resolve, reject) => {
-      db.get(
-        `SELECT booking_reference, package_title, travel_date, departure_time, total_amount, booking_status FROM bookings WHERE booking_reference = ? AND user_id = ?`,
-        [reference, userId],
-        (err: Error | null, row: any) => {
-          if (err) reject(err);
-          else resolve(row);
-        }
-      );
+    const result = await db.execute({
+      sql: "SELECT booking_reference, package_title, travel_date, departure_time, total_amount, booking_status FROM bookings WHERE booking_reference = ? AND user_id = ? LIMIT 1",
+      args: [String(reference), String(userId)],
     });
+    const row = result.rows.length > 0 ? (result.rows[0] as unknown as any) : null;
 
     if (!row) return res.status(404).json({ message: "Booking not found or unauthorized" });
     if (row.booking_status === 'cancelled') return res.status(400).json({ message: "Booking is already cancelled" });
@@ -1054,20 +1019,12 @@ router.post("/cancel", async (req: Request, res: Response) => {
   }
 
   try {
-    const { getDb } = require("../db");
-    const db = getDb();
-
     // Check if the booking exists and belongs to the user
-    const row = await new Promise<any>((resolve, reject) => {
-      db.get(
-        `SELECT * FROM bookings WHERE booking_reference = ? AND user_id = ?`,
-        [bookingReference, userId],
-        (err: Error | null, row: any) => {
-          if (err) reject(err);
-          else resolve(row);
-        }
-      );
+    const result = await db.execute({
+      sql: "SELECT * FROM bookings WHERE booking_reference = ? AND user_id = ? LIMIT 1",
+      args: [bookingReference, userId],
     });
+    const row = result.rows.length > 0 ? (result.rows[0] as unknown as any) : null;
 
     if (!row) {
       return res.status(404).json({ message: "Booking not found or unauthorized" });
@@ -1079,7 +1036,6 @@ router.post("/cancel", async (req: Request, res: Response) => {
     }
 
     // Backend validation of travel date vs current date
-    // Backend validation of travel date vs current date using exact departure time
     const travelDate = getExactDepartureDate(row.travel_date, row.departure_time);
     const now = dayjs();
     const travelDayjs = dayjs(travelDate);
@@ -1095,29 +1051,26 @@ router.post("/cancel", async (req: Request, res: Response) => {
     }
 
     // Update the booking status to cancelled with reason and timestamp
-    await new Promise<void>((resolve, reject) => {
-      db.run(
-        `UPDATE bookings SET booking_status = 'cancelled', payment_status = 'refunded', cancellation_reason = ?, cancelled_at = CURRENT_TIMESTAMP, refund_amount = ? WHERE booking_reference = ? AND user_id = ?`,
-        [cancellationReason, refundAmount, bookingReference, userId],
-        function (this: any, err: Error | null) {
-          if (err) {
-            console.error("[booking/cancel] Update error:", err);
-            reject(err);
-          } else if (this.changes === 0) {
-             reject(new Error("No rows updated"));
-          } else {
-             resolve();
-          }
-        }
-      );
+    await db.execute({
+      sql: `UPDATE bookings SET 
+            booking_status = 'cancelled',
+            payment_status = 'refunded',
+            cancellation_reason = ?,
+            cancelled_at = ?,
+            refund_amount = ?
+            WHERE booking_reference = ? AND user_id = ?`,
+      args: [cancellationReason, new Date().toISOString(), refundAmount, bookingReference, userId],
     });
 
     // Send Cancellation Email
     try {
       const { sendCancellationEmail } = require("../services/email.service");
-      const user = await new Promise<any>((resolve) => {
-         db.get(`SELECT email FROM users WHERE id = ?`, [userId], (err: any, u: any) => resolve(u));
+      const userResult = await db.execute({
+        sql: "SELECT email FROM users WHERE id = ? LIMIT 1",
+        args: [userId],
       });
+      const user = userResult.rows.length > 0 ? (userResult.rows[0] as unknown as any) : null;
+      
       if (user) {
         // Build BookingEmailDetails from row
         const bookingDetails = {
@@ -1138,7 +1091,6 @@ router.post("/cancel", async (req: Request, res: Response) => {
       }
     } catch (emailErr) {
        console.error("[booking/cancel] Failed to send cancellation email:", emailErr);
-       // We don't fail the request if just the email fails
     }
 
     return res.status(200).json({ message: "Booking cancelled successfully" });
@@ -1154,46 +1106,20 @@ router.get("/admin/recent-bookings", async (req: Request, res: Response) => {
   const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
 
   try {
-    // 1. Fetch from SQLite
-    const db = getDb();
-    const localRows = await new Promise<any[]>((resolve, reject) => {
-      db.all<any[]>(
-        `SELECT booking_reference, email, total_amount, email_sent, created_at FROM bookings ORDER BY created_at DESC LIMIT ?`,
-        [limit],
-        (err: Error | null, rows: any[]) => {
-          if (err) reject(err);
-          else resolve(rows || []);
-        }
-      );
+    const result = await db.execute({
+      sql: `SELECT booking_reference, email, total_amount, email_sent, created_at 
+            FROM bookings ORDER BY created_at DESC LIMIT ?`,
+      args: [limit],
     });
+    const data = result.rows as unknown as any[];
 
-    const localAdminRows: AdminBookingRow[] = localRows.map(row => ({
+    const combined: AdminBookingRow[] = (data || []).map(row => ({
       booking_reference: row.booking_reference,
       email: row.email,
-      total_amount: row.total_amount,
-      email_sent: row.email_sent === 1,
+      total_amount: Number(row.total_amount),
+      email_sent: !!row.email_sent,
       created_at: row.created_at
     }));
-
-    // 2. Fetch from Supabase (if configured)
-    let supabaseAdminRows: AdminBookingRow[] = [];
-    const client = getSupabase();
-    if (client) {
-      const { data, error } = await client
-        .from("bookings")
-        .select("booking_reference,email,total_amount,email_sent,created_at")
-        .order("created_at", { ascending: false })
-        .limit(limit);
-      
-      if (!error && data) {
-        supabaseAdminRows = data as AdminBookingRow[];
-      }
-    }
-
-    // Combine and sort
-    const combined = [...localAdminRows, ...supabaseAdminRows]
-      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-      .slice(0, limit);
 
     return res.status(200).json({ bookings: combined });
   } catch (error: any) {
@@ -1558,17 +1484,12 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
   const authUser = req.user!;
 
   try {
-    const db = getDb();
-
-    // 1. Fetch the user's latest name and email from SQLite to ensure accuracy
-    // In our users table, we track 'email' and potentially other fields.
-    // Let's assume the user's name is either provided in the registration or we use a fallback.
-    const user = await new Promise<any>((resolve, reject) => {
-      db.get("SELECT email FROM users WHERE id = ?", [authUser.id], (err: Error | null, row: any) => {
-        if (err) reject(err);
-        else resolve(row);
-      });
+    // 1. Fetch the user's latest email from Turso to ensure accuracy
+    const userResult = await db.execute({
+      sql: "SELECT email FROM users WHERE id = ? LIMIT 1",
+      args: [String(authUser.id)],
     });
+    const user = userResult.rows.length > 0 ? (userResult.rows[0] as unknown as any) : null;
 
     if (!user) {
       return res.status(404).json({ message: "Authenticated user not found in database." });
@@ -1601,42 +1522,34 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
             remainingSpots
           });
         }
-        
-        // Note: In a real app, we'd update currentBookings here or in a transaction.
-        // For this MVP, we'll proceed as if it's reserved and update later or manually.
       }
     }
 
-    // Insert into local SQLite bookings table linked to authUser.id
-    await new Promise<void>((resolve, reject) => {
-      db.run(
-        `INSERT INTO bookings
-          (user_id, booking_reference, package_id, package_title, destination, duration,
-           travel_date, travelers, traveler_name, room_type, email, phone,
-           total_amount, airline, departure_time, payment_status, booking_status)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'paid', 'confirmed')`,
-        [
-          String(authUser.id),
-          body.bookingReference,
-          body.packageId || null,
-          body.packageTitle,
-          body.destination || null,
-          body.duration || null,
-          body.travelDate || null,
-          body.travelers || 1,
-          body.travelerName || null,
-          body.roomType || null,
-          user.email || body.email, // Prioritize the logged-in user's registered email from the database
-          body.phone || null,
-          body.totalAmount,
-          body.airline || null,
-          body.departureTime || null,
-        ],
-        function (err) {
-          if (err) reject(err);
-          else resolve();
-        }
-      );
+    // Insert into Turso bookings table linked to authUser.id
+    await db.execute({
+      sql: `INSERT INTO bookings (
+              id, user_id, booking_reference, package_id, package_title, destination,
+              duration, travel_date, travelers, traveler_name, room_type, email,
+              phone, total_amount, airline, departure_time, payment_status, booking_status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'paid', 'confirmed')`,
+      args: [
+        crypto.randomUUID(),
+        String(authUser.id),
+        body.bookingReference,
+        body.packageId || null,
+        body.packageTitle,
+        body.destination || null,
+        body.duration || null,
+        body.travelDate || null,
+        body.travelers || 1,
+        body.travelerName || null,
+        body.roomType || null,
+        user.email || body.email,
+        body.phone || null,
+        body.totalAmount,
+        body.airline || null,
+        body.departureTime || null,
+      ],
     });
 
     logger(`[booking/book] Saved booking ${body.bookingReference} to SQLite`);
@@ -1660,24 +1573,30 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
       setImmediate(async () => {
         logger(`[booking/book] Starting async email process for ${body.bookingReference}`);
         try {
-          const { getDb } = require("../db");
-          const db = getDb();
-          
-          // 1. Fetch Detailed Itinerary from SQLite
+          // 1. Fetch Detailed Itinerary from Supabase travel_packages_cache
           let detailedItinerary: { day: number; title: string; description: string }[] = [];
           if (body.packageId) {
             try {
-              detailedItinerary = await new Promise<any[]>((resolve, reject) => {
-                db.all(
-                  "SELECT day_number as day, activity_title as title, description FROM itineraries WHERE package_id = ? ORDER BY day_number ASC",
-                  [body.packageId],
-                  (err: Error | null, rows: any[]) => {
-                    if (err) reject(err);
-                    else resolve(rows || []);
-                  }
-                );
+              const cacheResult = await db.execute({
+                sql: "SELECT payload, itinerary_json FROM travel_packages_cache WHERE package_id = ? LIMIT 1",
+                args: [body.packageId],
               });
-              logger(`[booking/book] Fetched ${detailedItinerary.length} itinerary items for ${body.packageId}`);
+              const cacheRow = cacheResult.rows.length > 0 ? (cacheResult.rows[0] as unknown as any) : null;
+
+              if (cacheRow) {
+                const payloadObj = cacheRow.payload && typeof cacheRow.payload === 'string' ? JSON.parse(cacheRow.payload) : cacheRow.payload;
+                const itineraryData = cacheRow.itinerary_json
+                  ? (typeof cacheRow.itinerary_json === 'string' ? JSON.parse(cacheRow.itinerary_json) : cacheRow.itinerary_json)
+                  : (payloadObj?.itinerary || []);
+                if (Array.isArray(itineraryData)) {
+                  detailedItinerary = itineraryData.map((it: any) => ({
+                    day: Number(it.day_number || it.day || 1),
+                    title: String(it.activity_title || it.title || ""),
+                    description: String(it.description || it.narrative || "")
+                  }));
+                }
+              }
+              logger(`[booking/book] Fetched ${detailedItinerary.length} itinerary items from Turso for ${body.packageId}`);
             } catch (dbErr: any) {
               logger(`[booking/book] Failed to fetch itinerary:`, dbErr.message);
             }
@@ -1686,7 +1605,7 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
           // 2. Construct full payload for PDF
           const payload: EmailPayload = {
             fullName: body.travelerName || "Traveler",
-            email: user.email,
+            email: user.email || body.email || "",
             phone: body.phone || "-",
             bookingReference: body.bookingReference!,
             bookingId: body.bookingReference!, 
@@ -1726,7 +1645,7 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
           const checkOutDate = new Date(travelDate);
           checkOutDate.setDate(checkOutDate.getDate() + (durationDays > 0 ? durationDays - 1 : 0));
 
-          const emailUser = { email: body.email || user.email, name: body.travelerName || "Traveler" };
+          const emailUser = { email: body.email || user.email || "", name: body.travelerName || "Traveler" };
           const emailData = {
             bookingReference: body.bookingReference!,
             packageTitle: body.packageTitle!,
@@ -1761,22 +1680,18 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
               }
             );
 
-            // Mark email as sent in SQLite
-            await new Promise<void>((resolve, reject) => {
-              db.run(
-                `UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`,
-                [body.bookingReference],
-                (err: Error | null) => (err ? reject(err) : resolve())
-              );
+            // Mark email as sent in Turso
+            await db.execute({
+              sql: "UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?",
+              args: [body.bookingReference || ""],
             });
+              
             logger(`[booking/book] Consolidated confirmation email successfully dispatched for ${body.bookingReference}`);
           } catch (sendErr: any) {
             logger(`[booking/book] All email retries failed for ${body.bookingReference}. Recording failure in DB.`);
-            // Record failure for background recovery
-            // We store the PDF content as base64 in the payload_json
             await recordEmailFailure(
               body.bookingReference!,
-              user.email,
+              user.email || body.email || "",
               { 
                 user: emailUser, 
                 booking: emailData,
@@ -1820,27 +1735,32 @@ router.post("/simulate-payment", async (req: Request, res: Response) => {
   }
 
   try {
-    const db = getDb();
-    
-    // Try to find user_id by email to link to an actual account if possible
-    const userRow = await new Promise<any>((resolve) => {
-      db.get("SELECT id FROM users WHERE email = ?", [email], (err, row) => resolve(row));
-    });
-    
-    const userId = userRow ? String(userRow.id) : "SIMULATED_USER";
+    let userId = "SIMULATED_USER";
+    try {
+      const userResult = await db.execute({
+        sql: "SELECT id FROM users WHERE email = ? LIMIT 1",
+        args: [email],
+      });
+      if (userResult.rows.length > 0) userId = String(userResult.rows[0].id);
+    } catch (err: any) {
+      console.warn("[booking/simulate-payment] User check warning:", err.message);
+    }
 
-    // Insert into local SQLite bookings table
-    await new Promise<void>((resolve, reject) => {
-      db.run(
-        `INSERT INTO bookings
-          (user_id, booking_reference, package_title, email, traveler_name, total_amount, payment_status, booking_status, payment_verified)
-         VALUES (?, ?, ?, ?, ?, ?, 'paid', 'confirmed', 1)`,
-        [userId, bookingId, packageTitle, email, customerName, amount],
-        function (err) {
-          if (err) reject(err);
-          else resolve();
-        }
-      );
+    // Insert into Turso bookings table
+    await db.execute({
+      sql: `INSERT INTO bookings (
+              id, user_id, booking_reference, package_title, email, traveler_name, 
+              total_amount, payment_status, booking_status, payment_verified
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, 'paid', 'confirmed', 1)`,
+      args: [
+        crypto.randomUUID(),
+        userId,
+        bookingId,
+        packageTitle,
+        email,
+        customerName,
+        amount,
+      ],
     });
 
     logger(`[booking/simulate-payment] Saved simulated booking ${bookingId} for ${email}`);
@@ -1910,8 +1830,11 @@ router.post("/simulate-payment", async (req: Request, res: Response) => {
             }
           );
 
-          // Mark email as sent in SQLite
-          db.run(`UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`, [bookingId]);
+          // Mark email as sent in Turso
+          await db.execute({
+            sql: "UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?",
+            args: [bookingId],
+          });
           logger(`[booking/simulate-payment] Confirmation email successfully dispatched for ${bookingId}`);
         } catch (emailErr: any) {
           logger(`[booking/simulate-payment] Simulation email failed for ${bookingId}:`, emailErr.message);

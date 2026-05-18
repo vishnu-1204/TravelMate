@@ -1,3 +1,0 @@
-Error: Command failed: wmic process where "name='node.exe'" get CommandLine, ExecutablePath, ProcessId, WorkingDirectory
-'wmic' is not recognized as an internal or external command,
-operable program or batch file.

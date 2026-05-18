@@ -1,6 +1,0 @@
---- Testing Booking Email Prioritization ---
-1. Registering user: registered_1773228506718@example.com
-2. Attempting booking with body email: wrong_email@example.com
-Booking Status: 200
-Stored email in DB: registered_1773228506718@example.com
-✅ SUCCESS: Registered email correctly prioritized.

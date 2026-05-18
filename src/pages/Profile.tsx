@@ -3,7 +3,21 @@ import { Loader2, PencilLine, ShieldCheck, ShieldAlert, UserRound } from 'lucide
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+
+const resolveBackendUrl = () => {
+  const configured = (import.meta.env.VITE_AUTH_BACKEND_URL || import.meta.env.VITE_BACKEND_URL || '').trim();
+  if (configured) return configured.replace(/\/+$/, '');
+
+  const { hostname, origin } = window.location;
+  const isLocal =
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '::1';
+
+  return isLocal ? 'http://localhost:5000' : origin;
+};
+
+const BACKEND_URL = resolveBackendUrl();
 
 type ProfileRow = {
   id: string;
@@ -77,7 +91,6 @@ const Profile = () => {
   const [formData, setFormData] = useState<FormData>(emptyForm);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const isSupabaseUser = !!user?.id && isUuid(user.id);
   const metadataDetails = useMemo(
     () => getProfileDetailsFromUser((user as { user_metadata?: unknown } | null)?.user_metadata),
     [(user as { user_metadata?: unknown } | null)?.user_metadata]
@@ -92,63 +105,26 @@ const Profile = () => {
       setError('');
 
       try {
-        if (!isUuid(userId)) {
-          const local = localStorage.getItem(localProfileKey(userId));
-          const profileData = local
-            ? (JSON.parse(local) as ProfileRow)
-            : ({
-                id: userId,
-                full_name: null,
-                phone: null,
-                aadhaar_hash: null,
-                aadhaar_last4: null,
-                date_of_birth: null,
-                gender: null,
-                address: null,
-                city: null,
-                state: null,
-                country: null,
-                emergency_contact_name: null,
-                emergency_contact_phone: null,
-                alternate_email: null,
-                occupation: null,
-                bio: null,
-                avatar_path: null,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-              } as ProfileRow);
-          setProfile(profileData);
-          setFormData(toForm(profileData, metadataDetails));
-          return;
+        const response = await fetch(`${BACKEND_URL}/api/auth/profile`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to load profile from backend.');
         }
 
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', userId)
-          .maybeSingle();
-
-        if (error) throw error;
-
-        let profileData = data as ProfileRow | null;
-        if (!profileData) {
-          const seed = {
-            id: userId,
-            full_name: ((user as { user_metadata?: { full_name?: string } } | null)?.user_metadata?.full_name as string | undefined) || null,
-            phone: null,
-          };
-          const { data: inserted, error: insertError } = await supabase
-            .from('profiles')
-            .insert(seed)
-            .select('*')
-            .single();
-
-          if (insertError) throw insertError;
-          profileData = inserted as ProfileRow;
-        }
+        const data = await response.json();
+        const profileData = {
+          id: data.user.id,
+          full_name: data.user.user_metadata?.full_name || null,
+          phone: data.user.user_metadata?.phone || null,
+          ...data.user.user_metadata?.profile_details,
+        } as ProfileRow;
 
         setProfile(profileData);
-        setFormData(toForm(profileData, metadataDetails));
+        setFormData(toForm(profileData, data.user.user_metadata?.profile_details || metadataDetails));
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Failed to load profile.';
         setError(message);
@@ -156,7 +132,7 @@ const Profile = () => {
         setLoading(false);
       }
     },
-    [metadataDetails, (user as { user_metadata?: { full_name?: string } } | null)?.user_metadata?.full_name]
+    [metadataDetails]
   );
 
   useEffect(() => {
@@ -208,7 +184,6 @@ const Profile = () => {
     setSuccess('');
 
     try {
-      let usedMetadataFallback = false;
       let aadhaarHash = profile.aadhaar_hash;
       let aadhaarLast4 = profile.aadhaar_last4;
       const normalizedAadhaar = formData.aadhaar_input.replace(/\D/g, '');
@@ -222,9 +197,8 @@ const Profile = () => {
       }
 
       const payload = {
-        id: user.id,
-        full_name: toNullable(formData.full_name),
-        phone: toNullable(formData.phone),
+        full_name: formData.full_name.trim(),
+        phone: toNullable(formData.phone.trim()),
         aadhaar_hash: aadhaarHash,
         aadhaar_last4: aadhaarLast4,
         date_of_birth: normalizeDateForDb(formData.date_of_birth),
@@ -241,83 +215,33 @@ const Profile = () => {
         avatar_path: profile.avatar_path,
       };
 
-      if (!isSupabaseUser) {
-        const localUpdated = {
-          ...profile,
-          ...payload,
-          updated_at: new Date().toISOString(),
-        } as ProfileRow;
-        localStorage.setItem(localProfileKey(user.id), JSON.stringify(localUpdated));
-        setProfile(localUpdated);
-        setFormData(toForm(localUpdated, metadataDetails));
-        setClearAadhaar(false);
-        setEditing(false);
-        setSuccess('Profile updated successfully.');
-        return;
-      }
-
-      const { data: updated, error: updateError } = await supabase
-        .from('profiles')
-        .upsert(payload, { onConflict: 'id' })
-        .select('*')
-        .single();
-
-      let updatedProfileData = updated as ProfileRow | null;
-      if (updateError && isProfileSchemaError(updateError.message || '')) {
-        usedMetadataFallback = true;
-        const minimalPayload = {
-          id: user.id,
-          full_name: payload.full_name,
-          phone: payload.phone,
-        };
-        const { data: minimalUpdated, error: minimalError } = await supabase
-          .from('profiles')
-          .upsert(minimalPayload, { onConflict: 'id' })
-          .select('*')
-          .single();
-
-        if (minimalError) {
-          throw new Error(minimalError.message || 'Profile update failed.');
-        }
-        updatedProfileData = minimalUpdated as ProfileRow;
-      } else if (updateError) {
-        throw new Error(updateError.message || 'Profile update failed.');
-      }
-
-      const profileDetails = {
-        date_of_birth: payload.date_of_birth,
-        gender: payload.gender,
-        address: payload.address,
-        city: payload.city,
-        state: payload.state,
-        country: payload.country,
-        emergency_contact_name: payload.emergency_contact_name,
-        emergency_contact_phone: payload.emergency_contact_phone,
-        alternate_email: payload.alternate_email,
-        occupation: payload.occupation,
-        bio: payload.bio,
-        aadhaar_last4: payload.aadhaar_last4,
-        aadhaar_hash: payload.aadhaar_hash,
-      };
-
-      await supabase.auth.updateUser({
-        data: {
-          full_name: payload.full_name,
-          profile_details: profileDetails,
+      const response = await fetch(`${BACKEND_URL}/api/auth/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
         },
+        body: JSON.stringify(payload),
       });
 
-      if (updatedProfileData) {
-        setProfile(updatedProfileData);
-        setFormData(toForm(updatedProfileData, profileDetails));
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => null);
+        throw new Error(errJson?.message || 'Failed to update profile.');
       }
+
+      const resData = await response.json();
+      const updatedProfileData = {
+        id: user.id,
+        ...payload,
+        created_at: profile.created_at,
+        updated_at: new Date().toISOString(),
+      } as ProfileRow;
+
+      setProfile(updatedProfileData);
+      setFormData(toForm(updatedProfileData, payload));
       setClearAadhaar(false);
       setEditing(false);
-      setSuccess(
-        usedMetadataFallback
-          ? 'Profile updated successfully. Advanced fields were saved to account metadata.'
-          : 'Profile updated successfully.'
-      );
+      setSuccess('Profile updated successfully.');
     } catch (e) {
       const message = getErrorMessage(e, 'Failed to update profile.');
       setError(message);
@@ -331,20 +255,25 @@ const Profile = () => {
     setError('');
     setSuccess('');
 
-    if (!isSupabaseUser) {
-      setSuccess('Password reset is handled by backend auth flow. Please use the backend reset endpoint.');
-      return;
-    }
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: user.email }),
+      });
 
-    const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
-      redirectTo: `${window.location.origin}/login`,
-    });
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => null);
+        throw new Error(errJson?.message || 'Unable to send password reset email.');
+      }
 
-    if (error) {
-      setError(error.message || 'Unable to send password reset email.');
-      return;
+      setSuccess(`Password reset email sent to ${user.email}.`);
+    } catch (e) {
+      const message = getErrorMessage(e, 'Failed to send password reset.');
+      setError(message);
     }
-    setSuccess(`Password reset email sent to ${user.email}.`);
   };
 
   const deleteAccountData = async () => {
@@ -359,15 +288,17 @@ const Profile = () => {
     setSuccess('');
 
     try {
-      if (!isSupabaseUser) {
-        localStorage.removeItem(localProfileKey(user.id));
-        await signOut();
-        window.location.assign('/');
-        return;
-      }
+      const response = await fetch(`${BACKEND_URL}/api/auth/profile`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
+        },
+      });
 
-      const { error } = await supabase.from('profiles').delete().eq('id', user.id);
-      if (error) throw error;
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => null);
+        throw new Error(errJson?.message || 'Failed to delete account data.');
+      }
 
       await signOut();
       window.location.assign('/');

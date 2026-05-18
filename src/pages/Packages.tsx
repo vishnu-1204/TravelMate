@@ -7,7 +7,6 @@ import { Mic, Search, Sparkles, TrendingUp } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 
 type SpeechRecognitionCtor = new () => {
   lang: string;
@@ -371,14 +370,22 @@ const Packages = () => {
       setLocationStatus('ready');
       setLocationNote('Showing solo trip picks from your saved profile location.');
       try {
-        await supabase.auth.updateUser({
-          data: {
-            profile_details: {
-              ...meta.details,
-              location_lat: coords.lat,
-              location_lon: coords.lon,
-            },
+        const backendBaseUrl =
+          import.meta.env.VITE_AUTH_BACKEND_URL ||
+          import.meta.env.VITE_BACKEND_URL ||
+          'http://localhost:3000';
+
+        await fetch(`${backendBaseUrl}/api/auth/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
           },
+          body: JSON.stringify({
+            ...meta.details,
+            location_lat: coords.lat,
+            location_lon: coords.lon,
+          }),
         });
       } catch {
         // Non-blocking: recommendations still work for this session.

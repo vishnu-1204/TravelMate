@@ -3,7 +3,8 @@ import nodemailer from "nodemailer";
 import { config } from "../config/env";
 import { getBookingConfirmationTemplate, type BookingEmailDetails as TemplateDetails } from "../templates/bookingConfirmation";
 import { getFlightTicketTemplate, type FlightTicketEmailDetails } from "../templates/flightTicket";
-import { getDb } from "../db";
+import { db } from "../utils/turso";
+import crypto from "crypto";
 import { logger } from "../utils/logger";
 
 export type EmailUser = {
@@ -387,41 +388,39 @@ export const sendFlightTicketEmail = async (
  * Records a failed email attempt in the database for later recovery.
  */
 export const recordEmailFailure = async (bookingRef: string, email: string, payload: any, errorMessage: string) => {
-  const db = getDb();
-  return new Promise<void>((resolve, reject) => {
-    db.run(
-      `INSERT INTO booking_email_failures (booking_reference, email, payload_json, error_message, last_attempt, attempts) 
-       VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, 1)`,
-      [bookingRef, email, JSON.stringify(payload), errorMessage],
-      (err) => {
-        if (err) {
-          logger(`[email/recovery] CRITICAL: Failed to record email failure in DB: ${err.message}`);
-          reject(err);
-        } else {
-          logger(`[email/recovery] Recorded failure for ${bookingRef} in DB.`);
-          resolve();
-        }
-      }
-    );
-  });
+  try {
+    await db.execute({
+      sql: `INSERT INTO booking_email_failures (id, booking_reference, email, payload_json, error_message, attempts, status, last_attempt, created_at)
+            VALUES (?, ?, ?, ?, ?, 1, 'pending', ?, CURRENT_TIMESTAMP)`,
+      args: [
+        crypto.randomUUID(),
+        bookingRef,
+        email,
+        JSON.stringify(payload),
+        errorMessage,
+        new Date().toISOString()
+      ]
+    });
+    logger(`[email/recovery] Recorded failure for ${bookingRef} in DB.`);
+  } catch (error: any) {
+    logger(`[email/recovery] CRITICAL: Failed to record email failure in DB: ${error.message}`);
+    throw error;
+  }
 };
 
 /**
  * Retries all pending failed emails from the database.
  */
 export const retryFailedEmailsList = async () => {
-  const db = getDb();
   logger(`[email/recovery] Checking for failed emails to retry...`);
   
   try {
-    const failures = await new Promise<any[]>((resolve, reject) => {
-      db.all(`SELECT * FROM booking_email_failures WHERE status = 'pending' AND attempts < 5`, (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows || []);
-      });
+    const result = await db.execute({
+      sql: "SELECT * FROM booking_email_failures WHERE status = 'pending' AND attempts < 5",
     });
+    const failures = result.rows as unknown as any[];
 
-    if (failures.length === 0) {
+    if (!failures || failures.length === 0) {
       logger(`[email/recovery] No pending failures found.`);
       return;
     }
@@ -430,15 +429,7 @@ export const retryFailedEmailsList = async () => {
 
     for (const fail of failures) {
       try {
-        const payload = JSON.parse(fail.payload_json);
-        // Extract attachment if it was stored (Note: we might need to store attachment if it's dynamic, 
-        // but usually we regenerate it or store only metadata. For now, assuming payload has enough for sendBookingConfirmation)
-        
-        // Re-generate PDF if it's missing from payload but needed? 
-        // In our current flow, booking.ts generates PDF and passes it. 
-        // To be truly robust, failure table should store enough to RE-GENERATE or the buffer itself.
-        // Storing Buffer as base64 in JSON is okay for small tickets.
-        
+        const payload = typeof fail.payload_json === "string" ? JSON.parse(fail.payload_json) : fail.payload_json;
         const attachment = payload.attachment ? {
           filename: payload.attachment.filename,
           content: Buffer.from(payload.attachment.content, 'base64'),
@@ -451,33 +442,24 @@ export const retryFailedEmailsList = async () => {
           attachment ? { attachment } : undefined
         );
 
-        // Success! Update status
-        await new Promise<void>((resolve, reject) => {
-          db.run(
-            `UPDATE booking_email_failures SET status = 'sent', attempts = attempts + 1, last_attempt = CURRENT_TIMESTAMP WHERE id = ?`,
-            [fail.id],
-            (err) => (err ? reject(err) : resolve())
-          );
+        // Success! Update status in failure table
+        await db.execute({
+          sql: "UPDATE booking_email_failures SET status = 'sent', attempts = ?, last_attempt = ? WHERE id = ?",
+          args: [fail.attempts + 1, new Date().toISOString(), fail.id],
         });
         
         // Also update main bookings table
-        await new Promise<void>((resolve, reject) => {
-          db.run(
-            `UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?`,
-            [fail.booking_reference],
-            (err) => (err ? reject(err) : resolve())
-          );
+        await db.execute({
+          sql: "UPDATE bookings SET email_sent = 1 WHERE booking_reference = ?",
+          args: [fail.booking_reference],
         });
 
         logger(`[email/recovery] Successfully recovered email for ${fail.booking_reference}`);
       } catch (retryErr: any) {
         logger(`[email/recovery] Retry failed for ${fail.booking_reference}: ${retryErr.message}`);
-        await new Promise<void>((resolve) => {
-          db.run(
-            `UPDATE booking_email_failures SET attempts = attempts + 1, last_attempt = CURRENT_TIMESTAMP, error_message = ? WHERE id = ?`,
-            [retryErr.message, fail.id],
-            () => resolve()
-          );
+        await db.execute({
+          sql: "UPDATE booking_email_failures SET attempts = ?, last_attempt = ?, error_message = ? WHERE id = ?",
+          args: [fail.attempts + 1, new Date().toISOString(), retryErr.message, fail.id],
         });
       }
     }

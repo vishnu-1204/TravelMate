@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Calendar, Users, Receipt, Loader2, MapPin, XCircle } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { LOCKED_NOTICE, isLockedBooking, normalizeBookingSnapshot } from '@/lib/bookingSnapshot';
@@ -150,23 +149,7 @@ const MyBookings = () => {
           ]);
         };
 
-        // 1. Fetch from Supabase with 5s timeout
-        const supabasePromise = supabase
-          .from('bookings')
-          .select(
-            'id, booking_reference, package_id, package_title, travelers, total_amount, payment_status, booking_status, payment_verified, is_locked, locked_price_per_person, booking_terms, created_at, booking_snapshots(snapshot, locked_transport, locked_hotel)'
-          )
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false });
-
-        const supabaseRes = await withTimeout(supabasePromise, 5000, { data: null, error: new Error("Supabase timeout") } as any);
-        
-        let supabaseBookings: BookingRow[] = [];
-        if (!supabaseRes.error && supabaseRes.data) {
-          supabaseBookings = (supabaseRes.data as unknown) as BookingRow[];
-        }
-
-        // 2. Fetch from Backend (SQLite) with 5s timeout
+        // Fetch from Backend with 5s timeout
         const backendBaseUrl =
           import.meta.env.VITE_AUTH_BACKEND_URL ||
           import.meta.env.VITE_BACKEND_URL ||
@@ -174,7 +157,6 @@ const MyBookings = () => {
         
         let localBookings: BookingRow[] = [];
         try {
-          // If fetch hangs, AbortController handles the manual abort, but doing a simple fetch race is fine
           const fetchPromise = fetch(`${backendBaseUrl}/api/booking/user-bookings?userId=${user.id}`).then(res => {
             if (res.ok) return res.json();
             throw new Error("HTTP error " + res.status);
@@ -189,12 +171,7 @@ const MyBookings = () => {
           console.warn('Failed to fetch local bookings:', fetchErr);
         }
 
-        // 3. Merge and Sort
-        const merged = [...localBookings, ...supabaseBookings].sort(
-          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
-
-        setBookings(merged);
+        setBookings(localBookings);
       } catch (err: any) {
         setError(err.message || 'Failed to load bookings.');
       } finally {
@@ -253,22 +230,35 @@ const MyBookings = () => {
     if (!confirmed) return;
 
     setClearing(true);
-    const { error: deleteError } = await supabase.from('bookings').delete().eq('user_id', user.id);
+    setError('');
 
-    if (deleteError) {
-      setError(deleteError.message || 'Failed to clear bookings.');
+    try {
+      const backendBaseUrl =
+        import.meta.env.VITE_AUTH_BACKEND_URL ||
+        import.meta.env.VITE_BACKEND_URL ||
+        'http://localhost:3000';
+
+      const response = await fetch(`${backendBaseUrl}/api/booking/user-bookings?userId=${user.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => null);
+        throw new Error(errJson?.message || 'Failed to clear bookings.');
+      }
+
+      setBookings([]);
+      toast.success('All bookings cleared.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to clear bookings.');
+    } finally {
       setClearing(false);
-      return;
     }
-
-    setBookings([]);
-    setClearing(false);
-    toast.success('All bookings cleared.');
   };
 
   const handleCancelRedirect = (booking: BookingRow) => {
      // Redirect to the dedicated cancellation page with the booking reference
-     // For Supabase bookings vs Local Bookings, we use the booking_reference if available, otherwise the ID
+     // For Turso bookings vs Local Bookings, we use the booking_reference if available, otherwise the ID
      const reference = booking.booking_reference || booking.id.slice(0, 8).toUpperCase();
      window.location.href = `/cancel-booking.html?bookingId=${reference}&userId=${user?.id}`;
   };
