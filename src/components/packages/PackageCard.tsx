@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Star, MapPin, Clock, ArrowRight, TrendingUp } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowRight } from 'lucide-react';
 import type { DynamicPricing, PricingTier, TravelerSegment } from '@/lib/packagePricing';
 import PackageImage from '@/components/common/PackageImage';
 import type { ReactNode } from 'react';
@@ -65,13 +65,8 @@ export const PackageCard = ({
   imageAlt,
   category,
   shortDescription,
-  pricingTier,
-  travelerSegments,
-  affordabilityScore,
   dynamicPricing,
-  specialTags,
   isGroupTour,
-  groupDepartures,
   highlightQuery,
   imageLoading = 'lazy',
   imagePriority = false,
@@ -80,8 +75,22 @@ export const PackageCard = ({
   const savings = dynamicPricing.savingsPerPerson || Math.max(price - finalPrice, 0);
 
   return (
-    <Link to={detailsPath || `/package/${id}`} className="card-travel group overflow-hidden">
+    <Link to={detailsPath || `/package/${id}`} className="card-travel group overflow-hidden bg-[#222222]/80 backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all rounded-3xl shadow-lg block">
       <div className="relative h-56 overflow-hidden">
+        {/* Luxury Glassmorphic Overlay Badges */}
+        <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5 pointer-events-none">
+          {category && (
+            <span className="px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-md border border-white/10 text-[9px] font-extrabold tracking-widest uppercase text-white shadow-md">
+              {category}
+            </span>
+          )}
+          {isGroupTour && (
+            <span className="px-2.5 py-1 rounded-lg bg-[#FF7A00] text-white text-[9px] font-extrabold tracking-widest uppercase shadow-md">
+              Group Tour
+            </span>
+          )}
+        </div>
+
         <PackageImage
           src={imageUrl}
           alt={imageAlt || `${title} in ${destination}`}
@@ -94,40 +103,51 @@ export const PackageCard = ({
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
+      
       <div className="p-5 flex flex-col">
+        {/* Reviews Rating Section */}
         <div className="flex items-center gap-1 text-amber-500 mb-2">
           <Star className="h-4 w-4 fill-current" />
-          <span className="text-sm font-medium">{Number(rating).toFixed(1)}</span>
-          <span className="text-muted-foreground text-sm">({reviews} reviews)</span>
+          <span className="text-sm font-semibold">{Number(rating).toFixed(1)}</span>
+          <span className="text-gray-400 text-xs font-medium ml-1">({reviews} reviews)</span>
         </div>
-        <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-1">{highlightText(title, highlightQuery)}</h3>
-        <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm mb-3">
+
+        <h3 className="text-base md:text-lg font-bold text-white mb-2 line-clamp-1 group-hover:text-[hsl(var(--cyan-accent))] transition-colors">
+          {highlightText(title, highlightQuery)}
+        </h3>
+
+        {/* Location & Time Specs */}
+        <div className="flex flex-wrap items-center gap-3.5 text-gray-400 text-xs mb-3">
           <div className="flex items-center gap-1">
-            <MapPin className="h-4 w-4" />
-            <span>{highlightText(destination, highlightQuery)}</span>
+            <MapPin className="h-3.5 w-3.5 text-[hsl(var(--cyan-accent))]" />
+            <span className="font-semibold text-gray-300">{highlightText(destination, highlightQuery)}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Clock className="h-4 w-4" />
-            <span>{duration}</span>
+            <Clock className="h-3.5 w-3.5 text-[hsl(var(--cyan-accent))]" />
+            <span className="font-semibold text-gray-300">{duration}</span>
           </div>
         </div>
-        <p className="text-muted-foreground text-sm mb-3 line-clamp-2 min-h-10">{shortDescription}</p>
-        
- 
 
+        <p className="text-gray-400 text-xs leading-relaxed mb-4 line-clamp-2 min-h-[2.5rem]">{shortDescription}</p>
 
-        <div className="flex items-end justify-between mt-auto">
+        {/* Price & Book Button */}
+        <div className="flex items-end justify-between mt-auto pt-3 border-t border-white/5">
           <div>
             {dynamicPricing.basePricePerPerson > finalPrice ? (
-              <p className="text-xs text-muted-foreground line-through">Rs {dynamicPricing.basePricePerPerson.toLocaleString('en-IN')}</p>
+              <p className="text-[10px] text-gray-500 line-through">₹{dynamicPricing.basePricePerPerson.toLocaleString('en-IN')}</p>
             ) : null}
-            <span className="text-2xl font-bold text-primary">Rs {finalPrice.toLocaleString('en-IN')}</span>
-            <span className="text-muted-foreground text-sm"> / person</span>
-            {savings > 0 ? <p className="text-xs text-emerald-600">You save Rs {savings.toLocaleString('en-IN')}</p> : null}
+            <div className="flex items-baseline">
+              <span className="text-xl font-extrabold text-[hsl(var(--cyan-accent))]">₹{finalPrice.toLocaleString('en-IN')}</span>
+              <span className="text-gray-400 text-[10px] ml-0.5">/ person</span>
+            </div>
+            {savings > 0 ? (
+              <p className="text-[9px] font-semibold text-emerald-400 mt-0.5">Save ₹{savings.toLocaleString('en-IN')}</p>
+            ) : null}
           </div>
-          <div className="flex items-center text-primary font-medium group-hover:gap-2 transition-all">
-            Book Now
-            <ArrowRight className="h-4 w-4 ml-1" />
+
+          <div className="flex items-center text-xs font-bold text-[hsl(var(--cyan-accent))] bg-[hsl(var(--cyan-accent))]/10 group-hover:bg-[hsl(var(--cyan-accent))]/20 px-3 py-1.5 rounded-xl transition-all">
+            Book
+            <ArrowRight className="h-3.5 w-3.5 ml-1 transition-transform group-hover:translate-x-0.5" />
           </div>
         </div>
       </div>

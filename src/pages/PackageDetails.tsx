@@ -119,7 +119,7 @@ export default function PackageDetails() {
 
   if (loading) {
     return (
-      <Layout>
+      <Layout hideFooter>
         <PageTransition>
           <div className="min-h-[60vh] flex items-center justify-center">
             <p className="text-muted-foreground">Loading package details...</p>
@@ -131,7 +131,7 @@ export default function PackageDetails() {
 
   if (!packageData) {
     return (
-      <Layout>
+      <Layout hideFooter>
         <PageTransition>
           <div className="min-h-[60vh] flex items-center justify-center">
             <div className="text-center">
@@ -351,7 +351,7 @@ export default function PackageDetails() {
   };
 
   return (
-    <Layout>
+    <Layout hideFooter>
       <PageTransition>
         {/* Hero Image */}
         <div className="relative h-[400px] md:h-[500px]">
@@ -753,6 +753,30 @@ export default function PackageDetails() {
             </div>
           </div>
         </section>
+
+        {/* Floating persistent bottom booking bar on mobile */}
+        <div className="fixed bottom-16 left-0 right-0 z-40 bg-[#222222]/95 backdrop-blur-xl border-t border-white/5 px-5 py-4 flex items-center justify-between shadow-2xl md:hidden">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Starting from</span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-xl font-extrabold text-[#FFC857]">
+                ₹{discountedPrice.toLocaleString('en-IN')}
+              </span>
+              <span className="text-[10px] text-gray-300">/ person</span>
+            </div>
+            {savingsPerPerson > 0 && (
+              <span className="text-[10px] font-semibold text-emerald-400 mt-0.5">
+                Save ₹{savingsPerPerson.toLocaleString('en-IN')}
+              </span>
+            )}
+          </div>
+          <Link
+            to={`/package/${packageData.id}/payment`}
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFC857] text-white font-bold text-sm tracking-wide shadow-[0_4px_15px_rgba(255,122,0,0.4)] hover:brightness-110 active:scale-[0.98] transition-all"
+          >
+            Book Now
+          </Link>
+        </div>
       </PageTransition>
     </Layout>
   );

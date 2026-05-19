@@ -68,7 +68,7 @@ const Login = () => {
         const mapped = mapLoginError(error.message || "");
         setError(mapped.userMessage);
       } else {
-        navigate("/");
+        navigate("/", { replace: true });
       }
     } catch (err: any) {
       setError("An unexpected error occurred. Please try again.");
@@ -88,12 +88,12 @@ const Login = () => {
               alt="Scenic Travel" 
               className="auth-sidebar-img"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#131326]/80 via-transparent to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/90 via-transparent to-transparent z-10" />
             
             <div className="relative z-20 p-12 h-full flex flex-col">
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-white tracking-tight">
-                  Travel<span className="text-sky-400">Mate</span>
+                  Travel<span className="text-[#FF7A00]">Mate</span>
                 </span>
                 <Link to="/" className="text-sm font-medium text-white/80 hover:text-white flex items-center gap-2 transition-colors">
                   Back to website <span className="text-lg">→</span>
@@ -118,7 +118,7 @@ const Login = () => {
             <div className="max-w-md w-full mx-auto">
               <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
               <p className="text-[#94a3b8] text-sm mb-10">
-                Don't have an account? <Link to="/register" className="text-sky-400 hover:text-sky-400 font-medium ml-1 transition-colors">Sign up</Link>
+                Don't have an account? <Link to="/register" className="text-[#FF7A00] hover:brightness-110 font-medium ml-1 transition-colors">Sign up</Link>
               </p>
 
               {/* Feedback Messages */}
@@ -159,7 +159,7 @@ const Login = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#64748b] hover:text-sky-300 transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#64748b] hover:text-[#FF7A00] transition-colors"
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
@@ -170,13 +170,13 @@ const Login = () => {
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <input 
                       type="checkbox" 
-                      className="w-4 h-4 rounded-md border-[#3d3d4a] bg-[#2d2d3a] text-sky-400 focus:ring-sky-400/50 transition-colors cursor-pointer" 
+                      className="w-4 h-4 rounded-md border-white/10 bg-[#1A1A1A] text-[#FF7A00] focus:ring-[#FF7A00]/50 transition-colors cursor-pointer" 
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
                     <span className="text-sm text-[#94a3b8] group-hover:text-white transition-colors tracking-tight">Stay signed in</span>
                   </label>
-                  <Link to="/forgot-password"  className="text-sm font-medium text-sky-400 hover:text-sky-400 transition-colors">
+                  <Link to="/forgot-password"  className="text-sm font-medium text-[#FF7A00] hover:brightness-110 transition-colors">
                     Forgot Password?
                   </Link>
                 </div>
@@ -195,7 +195,7 @@ const Login = () => {
                   <div className="w-full border-t border-[#3d3d4a]"></div>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-[#1f1f2e] px-4 text-[#64748b]">Or continue with</span>
+                  <span className="bg-[#222222] px-4 text-gray-500">Or continue with</span>
                 </div>
               </div>
 

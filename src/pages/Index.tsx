@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import HeroSection from '@/components/home/HeroSection';
-import SearchBar from '@/components/home/SearchBar';
 import SearchResults from '@/components/home/SearchResults';
 import FeaturedPackages from '@/components/home/FeaturedPackages';
 import WhyChooseUs from '@/components/home/WhyChooseUs';
@@ -81,7 +80,6 @@ const Index = () => {
     <Layout>
       <PageTransition>
         <HeroSection />
-        <SearchBar onSearch={handleSearch} />
         <SearchResults results={searchResults} hasSearched={hasSearched} />
         <FeaturedPackages />
         <WhyChooseUs />

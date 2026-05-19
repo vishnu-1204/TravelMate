@@ -299,11 +299,11 @@ const MyBookings = () => {
           </div>
           <div className="md:col-span-3 p-5">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
-              <h2 className="text-lg font-semibold text-foreground">{booking.package_title}</h2>
+              <h2 className="text-lg font-bold text-slate-900">{booking.package_title}</h2>
               <span
-                className={`text-xs px-3 py-1 rounded-full w-fit ${
-                  booking.booking_status === 'cancelled' ? 'bg-red-500/10 text-red-600' :
-                  booking.payment_verified ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'
+                className={`text-xs px-3 py-1 rounded-full w-fit font-bold ${
+                  booking.booking_status === 'cancelled' ? 'bg-red-100 text-red-700 border border-red-200' :
+                  booking.payment_verified ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-amber-100 text-amber-700 border border-amber-200'
                 }`}
               >
                 {booking.booking_status === 'cancelled' ? 'Cancelled' : booking.payment_verified ? 'Confirmed' : booking.payment_status}
@@ -311,7 +311,7 @@ const MyBookings = () => {
             </div>
 
             {isLockedBooking(booking.is_locked) ? (
-              <p className="text-xs rounded-md bg-blue-50 text-blue-700 px-3 py-2 mb-4">
+              <p className="text-xs rounded-xl bg-blue-50/80 border border-blue-100 text-blue-800 px-3 py-2 mb-4 font-semibold shadow-sm">
                 {LOCKED_NOTICE}
               </p>
             ) : null}
@@ -342,7 +342,7 @@ const MyBookings = () => {
             </div>
 
             {booking.booking_terms?.airline && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm mt-3 border-t border-border pt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm mt-3 border-t border-slate-100 pt-3">
                 <InfoItem 
                   icon={<Receipt className="h-4 w-4" />} 
                   label="Airline" 
@@ -371,9 +371,9 @@ const MyBookings = () => {
                   <button
                     onClick={() => handleCancelRedirect(booking)}
                     aria-label={`Cancel package ${booking.package_title}`}
-                    className="text-xs px-3 py-1.5 border border-red-200 text-red-600 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500/50 transition-colors flex items-center gap-2"
+                    className="text-xs px-4 py-2 border border-red-200 hover:border-red-300 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/50 transition-colors flex items-center gap-2 font-bold shadow-sm"
                   >
-                    <XCircle className="w-3 h-3" />
+                    <XCircle className="w-3.5 h-3.5" />
                     Cancel Package
                   </button>
                 </div>
@@ -395,7 +395,7 @@ const MyBookings = () => {
               )}
             </div>
 
-            <p className="text-xs text-muted-foreground mt-3">
+            <p className="text-xs text-slate-500 font-medium mt-3">
               Cancellation policy at booking time: {normalized.cancellationPolicy}
             </p>
           </div>
@@ -405,22 +405,22 @@ const MyBookings = () => {
   };
 
   return (
-    <Layout>
+    <Layout hideFooter>
       <PageTransition>
-        <section className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-indigo-900 dark:via-purple-800 dark:to-pink-800 py-10">
+        <section className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-10">
           <div className="page-container">
             <div className="mb-8">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div>
-                  <h1 className="text-3xl font-bold text-foreground">My Bookings</h1>
-                  <p className="text-muted-foreground mt-2">View all your confirmed travel bookings.</p>
+                  <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>My Bookings</h1>
+                  <p className="text-slate-600 mt-2 font-medium">View all your confirmed travel bookings.</p>
                 </div>
                 <button
                   type="button"
                   onClick={clearMyBookings}
                   disabled={clearing || loading || bookings.length === 0}
                   aria-label="Clear all my bookings"
-                  className="btn-outline disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="px-4 py-2 border border-slate-300 hover:border-slate-400 bg-white/50 text-slate-700 hover:text-slate-900 rounded-xl font-bold text-xs transition active:scale-95 shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {clearing ? 'Clearing...' : 'Clear My Bookings'}
                 </button>
@@ -428,16 +428,16 @@ const MyBookings = () => {
             </div>
 
             {loading ? (
-              <div className="bg-card rounded-xl p-8 shadow-card flex items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin mr-2" />
+              <div className="bg-white/80 border border-slate-100 rounded-2xl p-8 shadow-sm flex items-center justify-center text-slate-800 font-semibold">
+                <Loader2 className="h-6 w-6 animate-spin mr-2 text-[#FF7A00]" />
                 Loading bookings...
               </div>
             ) : error ? (
-              <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-4 text-destructive">{error}</div>
+              <div className="bg-red-50 border border-red-100 text-red-700 rounded-2xl p-4 font-semibold">{error}</div>
             ) : bookings.length === 0 ? (
-              <div className="bg-card rounded-xl p-8 shadow-card text-center">
-                <p className="text-muted-foreground mb-4">No bookings yet.</p>
-                <Link to="/packages/domestic" className="btn-primary">
+              <div className="bg-white/80 border border-slate-100 rounded-2xl p-8 shadow-sm text-center">
+                <p className="text-slate-600 mb-4 font-semibold">No bookings yet.</p>
+                <Link to="/packages/domestic" className="inline-flex items-center bg-gradient-to-r from-[#FF7A00] to-[#FFC857] px-6 py-2.5 rounded-xl font-bold text-sm text-white hover:brightness-110 active:scale-95 transition-all shadow-[0_4px_15px_rgba(255,122,0,0.3)]">
                   Explore Packages
                 </Link>
               </div>
@@ -445,7 +445,7 @@ const MyBookings = () => {
               <div className="space-y-8">
                 {activeBookings.length > 0 && (
                   <div>
-                    <h2 className="text-xl font-bold text-foreground mb-4">Active Bookings</h2>
+                    <h2 className="text-xl font-bold text-slate-800 mb-4 tracking-tight">Active Bookings</h2>
                     <div className="space-y-4">
                       {activeBookings.map(renderBookingCard)}
                     </div>
@@ -454,7 +454,7 @@ const MyBookings = () => {
                 
                 {cancelledBookings.length > 0 && (
                   <div>
-                    <h2 className="text-xl font-bold text-foreground mb-4">Cancelled Bookings</h2>
+                    <h2 className="text-xl font-bold text-slate-800 mb-4 tracking-tight">Cancelled Bookings</h2>
                     <div className="space-y-4">
                       {cancelledBookings.map(renderBookingCard)}
                     </div>
@@ -478,10 +478,10 @@ const InfoItem = ({
   label: string;
   value: string;
 }) => (
-  <div className="border border-border rounded-lg p-3">
-    <p className="text-muted-foreground text-xs uppercase tracking-wide mb-1">{label}</p>
-    <p className="text-foreground font-medium flex items-center gap-2">
-      {icon}
+  <div className="border border-slate-200 bg-white/60 backdrop-blur-md rounded-xl p-3 shadow-sm">
+    <p className="text-slate-500 text-[10px] uppercase font-bold tracking-wider mb-1">{label}</p>
+    <p className="text-slate-800 font-bold flex items-center gap-2 text-sm">
+      <span className="text-[#FF7A00]">{icon}</span>
       {value}
     </p>
   </div>
@@ -526,9 +526,9 @@ const DownloadButton = ({ bookingReference, userId }: { bookingReference: string
       onClick={handleDownload}
       disabled={downloading}
       aria-label={`Download ticket for reference ${bookingReference}`}
-      className="btn-outline text-xs px-3 py-1.5 flex items-center gap-2"
+      className="border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-sky-400 px-4 py-2 rounded-xl transition flex items-center gap-2 font-bold text-xs shadow-md"
     >
-      {downloading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Receipt className="h-3 w-3" />}
+      {downloading ? <Loader2 className="h-3.5 w-3.5 animate-spin text-sky-400" /> : <Receipt className="h-3.5 w-3.5 text-sky-400" />}
       {downloading ? 'Downloading...' : 'Download Ticket'}
     </button>
   );

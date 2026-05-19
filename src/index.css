@@ -1,101 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 215 25% 15%;
+    --background: 0 0% 10%; /* #1A1A1A */
+    --foreground: 0 0% 100%; /* #FFFFFF */
 
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card: 0 0% 13%; /* #222222 */
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover: 0 0% 13%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 217 91% 40%;
+    --primary: 29 100% 50%; /* #FF7A00 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 214 32% 91%;
-    --secondary-foreground: 215 25% 15%;
+    --secondary: 40 100% 67%; /* #FFC857 */
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 214 32% 91%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 69%; /* #B0B0B0 */
 
-    --accent: 200 70% 50%;
+    --accent: 29 100% 50%; /* #FF7A00 */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 85%;
-    --input: 214 32% 85%;
-    --ring: 217 91% 40%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 29 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 1.25rem;
 
-    --hero-bg: 217 91% 25%;
+    --hero-bg: 0 0% 10%;
     --hero-text: 0 0% 100%;
-    --nav-bg: 220 25% 12%;
-    --nav-shadow: 0 4px 30px -4px hsl(0 0% 0% / 0.3);
-    --cyan-accent: 187 100% 50%;
-    --card-shadow: 0 10px 40px -10px hsl(215 25% 15% / 0.12);
-    --button-shadow: 0 4px 14px 0 hsl(217 91% 40% / 0.3);
+    --nav-bg: 0 0% 13%;
+    --nav-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    --cyan-accent: 29 100% 50%; /* Replaced with Sunset Orange */
+    --card-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    --button-shadow: 0 4px 20px 0 rgba(255, 122, 0, 0.45);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 29 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 13%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 29 100% 50%;
   }
 
   .dark {
-    --background: 215 25% 10%;
-    --foreground: 210 20% 98%;
+    --background: 0 0% 10%;
+    --foreground: 0 0% 100%;
 
-    --card: 215 25% 13%;
-    --card-foreground: 210 20% 98%;
+    --card: 0 0% 13%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 215 25% 13%;
-    --popover-foreground: 210 20% 98%;
+    --popover: 0 0% 13%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 217 91% 55%;
+    --primary: 29 100% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 25% 20%;
-    --secondary-foreground: 210 20% 98%;
+    --secondary: 40 100% 67%;
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 215 25% 20%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 69%;
 
-    --accent: 200 70% 50%;
+    --accent: 29 100% 50%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 29 100% 50%;
 
-    --border: 215 25% 20%;
-    --input: 215 25% 20%;
-    --ring: 217 91% 55%;
-
-    --hero-bg: 217 91% 15%;
+    --hero-bg: 0 0% 10%;
     --hero-text: 0 0% 100%;
-    --nav-bg: 215 25% 13%;
-    --nav-shadow: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
-    --card-shadow: 0 10px 40px -10px hsl(0 0% 0% / 0.3);
-    --button-shadow: 0 4px 14px 0 hsl(217 91% 55% / 0.4);
+    --nav-bg: 0 0% 13%;
+    --nav-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    --card-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    --button-shadow: 0 4px 20px 0 rgba(255, 122, 0, 0.45);
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 29 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 0 0% 13%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 29 100% 50%;
   }
 }
 
@@ -106,26 +105,27 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Poppins', 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:opacity-90;
+    @apply text-white px-6 py-3 rounded-2xl font-bold transition-all duration-200 hover:brightness-110 active:scale-95 shadow-lg;
+    background: linear-gradient(135deg, #FF7A00, #FFC857);
     box-shadow: var(--button-shadow);
   }
 
   .btn-secondary {
-    @apply bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:bg-secondary/80;
+    @apply bg-secondary text-secondary-foreground px-6 py-3 rounded-2xl font-bold transition-all duration-200 hover:bg-secondary/90;
   }
 
   .btn-outline {
-    @apply border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:bg-primary hover:text-primary-foreground;
+    @apply border border-white/10 text-white px-6 py-3 rounded-2xl font-bold transition-all duration-200 hover:bg-white/5;
   }
 
   .card-travel {
-    @apply bg-card rounded-xl overflow-hidden transition-all duration-300 hover:translate-y-[-4px];
+    @apply bg-card rounded-2xl overflow-hidden transition-all duration-300 hover:translate-y-[-4px] border border-white/5;
     box-shadow: var(--card-shadow);
   }
 
@@ -177,18 +177,18 @@
 
 /* Auth Redesign Styles */
 :root {
-  --auth-bg: #131326;
-  --auth-card: #1f1f2e;
-  --auth-accent: #38bdf8;
-  --auth-text-dim: #94a3b8;
+  --auth-bg: #1A1A1A;
+  --auth-card: #222222;
+  --auth-accent: #FF7A00;
+  --auth-text-dim: #B0B0B0;
 }
 
 .auth-split-layout {
-  @apply min-h-screen flex items-center justify-center bg-[#2d2d3a] p-4;
+  @apply min-h-screen flex items-center justify-center bg-[#1A1A1A] p-4;
 }
 
 .auth-container {
-  @apply w-full max-w-5xl bg-[#1f1f2e] rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px];
+  @apply w-full max-w-5xl bg-[#222222] border border-white/5 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px];
 }
 
 .auth-sidebar {
@@ -200,18 +200,18 @@
 }
 
 .auth-content {
-  @apply md:w-7/12 p-8 md:p-16 flex flex-col justify-center bg-[#1f1f2e];
+  @apply md:w-7/12 p-8 md:p-16 flex flex-col justify-center bg-[#222222];
 }
 
 .auth-input-new {
-  @apply w-full bg-[#2d2d3a] border border-[#3d3d4a] rounded-xl px-4 py-3.5 text-white placeholder:text-[#64748b] focus:outline-none focus:ring-2 focus:ring-[#38bdf8]/50 transition-all;
+  @apply w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FF7A00] transition-all;
 }
 
 .auth-btn-primary {
-  @apply w-full bg-[#38bdf8] text-black font-bold py-3.5 rounded-xl hover:bg-[#7dd3fc] transition-all shadow-lg active:scale-[0.98];
+  @apply w-full bg-gradient-to-r from-[#FF7A00] to-[#FFC857] text-white font-bold py-3.5 rounded-xl hover:brightness-110 transition-all shadow-lg active:scale-[0.98] shadow-[rgba(255,122,0,0.25)];
 }
 
 .auth-btn-social {
-  @apply flex-1 flex items-center justify-center gap-3 border border-[#3d3d4a] rounded-xl py-3 hover:bg-[#2d2d3a] transition-all text-sm font-medium text-white;
+  @apply flex-1 flex items-center justify-center gap-3 border border-white/10 rounded-xl py-3 hover:bg-[#1A1A1A] transition-all text-sm font-medium text-white;
 }
 

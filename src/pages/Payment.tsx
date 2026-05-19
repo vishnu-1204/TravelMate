@@ -328,7 +328,7 @@ const Payment = () => {
     travelInsurance: false,
   });
   const [loading, setLoading] = useState(false);
-  const [paymentMode, setPaymentMode] = useState<'razorpay' | 'simulated'>('simulated');
+  const [paymentMode, setPaymentMode] = useState<'razorpay' | 'simulated'>('razorpay');
   const [bookingRef, setBookingRef] = useState('');
   const [bookingEmail, setBookingEmail] = useState('');
   const [formError, setFormError] = useState('');
@@ -549,7 +549,7 @@ const Payment = () => {
 
   if (packageLoading) {
     return (
-      <Layout>
+      <Layout hideFooter>
         <PageTransition>
           <div className="min-h-[60vh] flex items-center justify-center">
             <p className="text-muted-foreground">Loading package details...</p>
@@ -561,7 +561,7 @@ const Payment = () => {
 
   if (!packageData) {
     return (
-      <Layout>
+      <Layout hideFooter>
         <PageTransition>
           <div className="min-h-[60vh] flex items-center justify-center">
             <div className="text-center">
@@ -871,7 +871,6 @@ const Payment = () => {
           if (verifyResponse.ok) {
             setBookingRef(result.bookingReference);
             setBookingEmail(travelers[0].email || user.email || "");
-            setShowSuccessModal(true);
             toast.success("Order Booked! Your confirmation has been sent.");
             // Removed: localStorage.removeItem(storageKey) to allow re-booking with same details
             
@@ -962,7 +961,6 @@ const Payment = () => {
             if (verifyResponse.ok) {
               setBookingRef(result.bookingReference);
               setBookingEmail(travelers[0].email || user.email || "");
-              setShowSuccessModal(true);
               toast.success("Order Booked! Your confirmation has been sent.");
               // Removed: localStorage.removeItem(storageKey) to allow re-booking
               if (autoSaveProfile) void updateUserProfile();
@@ -1068,7 +1066,7 @@ const Payment = () => {
   };
 
   return (
-    <Layout>
+    <Layout hideFooter>
       <PageTransition>
         <div className="py-8 bg-background min-h-screen">
           <div className="page-container">
@@ -1315,52 +1313,7 @@ const Payment = () => {
                   </div>
                 </div>
 
-                <div className="bg-card rounded-xl p-6 shadow-card" id="payment-section">
-                  <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-primary" />
-                    Select Payment Method
-                  </h2>
-                  <p className="text-sm text-muted-foreground mb-6">
-                    Choose between a live secure payment or a simulated payment process for testing.
-                  </p>
-                  
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMode('simulated')}
-                      className={`flex flex-col items-center justify-center p-4 rounded-xl border text-center transition-all ${
-                        paymentMode === 'simulated'
-                          ? 'border-primary bg-primary/5 text-primary ring-2 ring-primary/20'
-                          : 'border-border bg-card text-muted-foreground hover:text-foreground hover:border-foreground/30'
-                      }`}
-                    >
-                      <span className="font-bold text-sm">Simulated Checkout</span>
-                      <span className="text-[10px] mt-1 opacity-80">Ideal for testing (No real cash)</span>
-                    </button>
-                    
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMode('razorpay')}
-                      className={`flex flex-col items-center justify-center p-4 rounded-xl border text-center transition-all ${
-                        paymentMode === 'razorpay'
-                          ? 'border-primary bg-primary/5 text-primary ring-2 ring-primary/20'
-                          : 'border-border bg-card text-muted-foreground hover:text-foreground hover:border-foreground/30'
-                      }`}
-                    >
-                      <span className="font-bold text-sm">Razorpay Secure Checkout</span>
-                      <span className="text-[10px] mt-1 opacity-80">Live Cards, UPI, Netbanking</span>
-                    </button>
-                  </div>
 
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Lock className="h-3 w-3" />
-                    <span>
-                      {paymentMode === 'razorpay' 
-                        ? `Razorpay Secure Connection. Final amount: ₹${grandTotal.toLocaleString('en-IN')}`
-                        : `Simulated Environment. No actual money will be charged.`}
-                    </span>
-                  </div>
-                </div>
 
               </div>
 
@@ -1425,55 +1378,19 @@ const Payment = () => {
 
                   <button
                     type="button"
-                    onClick={paymentMode === 'razorpay' ? handleRazorpayPayment : handleSimulatedPaymentRedirect}
+                    onClick={handleRazorpayPayment}
                     disabled={loading}
                     className="btn-primary w-full mt-6 flex items-center justify-center gap-2 shadow-lg transform transition-all active:scale-[0.98]"
                   >
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                    {loading
-                      ? processingMessage
-                      : paymentMode === 'razorpay'
-                        ? `Book & Pay ₹${grandTotal.toLocaleString('en-IN')}`
-                        : `Start Payment Simulation`}
+                    {loading ? processingMessage : `Book & Pay ₹${grandTotal.toLocaleString('en-IN')}`}
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
-          <DialogContent className="max-w-xl border-slate-700/70 bg-slate-950 text-slate-100">
-            <DialogHeader className="space-y-3">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/20 ring-1 ring-emerald-400/40">
-                <Check className="h-7 w-7 text-emerald-300" />
-              </div>
-              <DialogTitle className="text-center text-2xl font-semibold text-white">Order Booked</DialogTitle>
-              <DialogDescription className="text-center text-slate-300">
-                Check your email ({user?.email || bookingEmail}) for your ticket.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="rounded-xl border border-slate-700/80 bg-slate-900/70 p-4">
-              <p className="text-xs uppercase tracking-wide text-slate-400">Reference ID</p>
-              <p className="mt-1 font-mono text-lg text-cyan-300">{bookingRef}</p>
-              {emailNotice ? <p className="mt-3 text-sm text-slate-300">{emailNotice}</p> : null}
-            </div>
-            <DialogFooter className="gap-3 sm:justify-center">
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={() => {
-                  setShowSuccessModal(false);
-                  navigate('/my-bookings');
-                }}
-              >
-                View My Bookings
-              </button>
-              <button type="button" className="btn-outline" onClick={() => setShowSuccessModal(false)}>
-                Continue Browsing
-              </button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+
       </PageTransition>
     </Layout>
   );

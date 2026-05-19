@@ -312,21 +312,21 @@ const Profile = () => {
   return (
     <Layout hideFooter>
       <PageTransition>
-        <section className="min-h-screen bg-gradient-to-b from-[#6b6678] to-[#4d4a59] py-10 px-4">
+        <section className="min-h-screen bg-[#1A1A1A] py-10 px-4">
           <div className="max-w-6xl mx-auto space-y-6">
-            <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-6 text-white">
+            <div className="bg-[#222222] border border-white/5 rounded-3xl p-6 text-white shadow-xl">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-full bg-sky-500/20 border border-sky-400/40 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/30 flex items-center justify-center">
                     {profileInitial ? (
-                      <span className="text-2xl font-semibold text-sky-200">{profileInitial}</span>
+                      <span className="text-2xl font-bold text-[#FFC857]">{profileInitial}</span>
                     ) : (
-                      <UserRound className="h-7 w-7 text-sky-200" />
+                      <UserRound className="h-7 w-7 text-[#FFC857]" />
                     )}
                   </div>
                   <div>
-                    <h1 className="text-3xl font-semibold">My Profile</h1>
-                    <p className="text-gray-300 text-sm mt-1">
+                    <h1 className="text-3xl font-bold tracking-tight">My Profile</h1>
+                    <p className="text-[#B0B0B0] text-sm mt-1">
                       Manage your personal information securely.
                     </p>
                   </div>
@@ -334,7 +334,7 @@ const Profile = () => {
                 {!editing ? (
                   <button
                     onClick={onEdit}
-                    className="inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-600 px-5 py-2 rounded-lg transition"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[#FF7A00] to-[#FFC857] hover:brightness-110 px-5 py-2.5 rounded-xl font-bold text-white transition active:scale-95 shadow-md shadow-[rgba(255,122,0,0.3)]"
                   >
                     <PencilLine className="h-4 w-4" />
                     Edit Profile
@@ -344,14 +344,14 @@ const Profile = () => {
                     <button
                       onClick={onCancel}
                       disabled={saving}
-                      className="px-5 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition disabled:opacity-60"
+                      className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition disabled:opacity-60 text-white font-bold"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={onSave}
                       disabled={saving}
-                      className="px-5 py-2 rounded-lg bg-sky-500 hover:bg-sky-600 transition disabled:opacity-60 inline-flex items-center gap-2"
+                      className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFC857] hover:brightness-110 transition disabled:opacity-60 inline-flex items-center gap-2 font-bold text-white active:scale-95 shadow-md shadow-[rgba(255,122,0,0.3)]"
                     >
                       {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                       Save Changes
@@ -362,7 +362,7 @@ const Profile = () => {
             </div>
 
             {loading ? (
-              <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-10 flex items-center justify-center text-white">
+              <div className="bg-[#222222] border border-white/5 rounded-3xl p-10 flex items-center justify-center text-white shadow-xl">
                 <Loader2 className="h-6 w-6 animate-spin mr-3" />
                 Loading profile...
               </div>
@@ -380,8 +380,8 @@ const Profile = () => {
                 )}
 
                 <div className="grid grid-cols-1 gap-6">
-                  <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-6 text-white">
-                    <h2 className="text-lg font-semibold mb-5">Personal Details</h2>
+                  <div className="bg-[#222222] border border-white/5 rounded-3xl p-6 text-white shadow-xl">
+                    <h2 className="text-lg font-bold mb-5 tracking-tight">Personal Details</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <Field label="Full Name" value={formData.full_name} onChange={(v) => onInputChange('full_name', v)} editing={editing} required />
                       <Field label="Email" value={user?.email || ''} editing={false} readOnly />
@@ -404,12 +404,12 @@ const Profile = () => {
                       <Field label="Aadhaar Number" value={formData.aadhaar_input} onChange={(v) => onInputChange('aadhaar_input', v)} editing={editing} placeholder={maskedAadhaar || '12 digit number'} />
                       <div className="flex items-end pb-2">
                         {editing && (
-                          <label className="inline-flex items-center gap-2 text-sm text-gray-300">
+                          <label className="inline-flex items-center gap-2 text-sm text-[#B0B0B0]">
                             <input
                               type="checkbox"
                               checked={clearAadhaar}
                               onChange={(e) => setClearAadhaar(e.target.checked)}
-                              className="rounded border-white/20 bg-white/10"
+                              className="rounded border-white/20 bg-white/10 text-[#FF7A00] focus:ring-[#FF7A00]"
                             />
                             Clear stored Aadhaar (kept hashed only)
                           </label>
@@ -428,32 +428,32 @@ const Profile = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-6 text-white">
-                    <h2 className="text-lg font-semibold mb-4">Verification Status</h2>
+                  <div className="bg-[#222222] border border-white/5 rounded-3xl p-6 text-white shadow-xl">
+                    <h2 className="text-lg font-bold mb-4 tracking-tight">Verification Status</h2>
                     <div className="space-y-3 text-sm">
                       <StatusRow label="Email verification" ok={emailVerified} />
                       <StatusRow label="Phone verification" ok={phoneVerified} />
                     </div>
                   </div>
 
-                  <div className="bg-[#2b2836] border border-white/10 rounded-2xl p-6 text-white">
-                    <h2 className="text-lg font-semibold mb-4">Security Settings</h2>
+                  <div className="bg-[#222222] border border-white/5 rounded-3xl p-6 text-white shadow-xl">
+                    <h2 className="text-lg font-bold mb-4 tracking-tight">Security Settings</h2>
                     <div className="space-y-4">
                       <button
                         type="button"
                         onClick={sendPasswordReset}
-                        className="w-full text-left px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm"
+                        className="w-full text-left px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition text-sm font-semibold"
                       >
                         Send password reset email
                       </button>
-                      <div className="px-4 py-3 rounded-lg bg-white/5 text-sm text-gray-300">
+                      <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/5 text-sm text-[#B0B0B0] font-medium">
                         Two-factor authentication: optional, not enabled yet.
                       </div>
                       <button
                         type="button"
                         onClick={deleteAccountData}
                         disabled={deleting}
-                        className="w-full text-left px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 hover:bg-red-500/20 transition text-sm disabled:opacity-60"
+                        className="w-full text-left px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 hover:bg-red-500/20 transition text-sm font-semibold disabled:opacity-60"
                       >
                         {deleting ? 'Deleting account data...' : 'Delete account data'}
                       </button>
@@ -506,7 +506,7 @@ const Field = ({
       className={`w-full rounded-lg px-3 py-2 text-sm transition ${
         !editing || readOnly
           ? 'bg-white/5 border border-white/10 text-gray-200'
-          : 'bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-sky-500'
+          : 'bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-[#FF7A00]'
       }`}
     />
   </div>
@@ -530,7 +530,7 @@ const SelectField = ({ label, value, onChange, editing, options }: SelectFieldPr
       className={`w-full rounded-lg px-3 py-2 text-sm transition ${
         !editing
           ? 'bg-white/5 border border-white/10 text-gray-200'
-          : 'bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-sky-500'
+          : 'bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-[#FF7A00]'
       }`}
     >
       {options.map((option) => (
@@ -561,7 +561,7 @@ const TextAreaField = ({ label, value, onChange, editing, className = '' }: Text
       className={`w-full rounded-lg px-3 py-2 text-sm transition ${
         !editing
           ? 'bg-white/5 border border-white/10 text-gray-200'
-          : 'bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-sky-500'
+          : 'bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-[#FF7A00]'
       }`}
     />
   </div>

@@ -72,9 +72,12 @@ const HeroSection = () => {
           <img 
             src={s.image} 
             alt="Travel destination"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover brightness-[0.85]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
+          <div 
+            className="absolute inset-0" 
+            style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.25))' }} 
+          />
         </div>
       ))}
 
@@ -92,8 +95,8 @@ const HeroSection = () => {
             <motion.p 
               variants={accentVariants}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="text-[hsl(var(--cyan-accent))] text-xl md:text-2xl mb-4"
-              style={{ fontFamily: "'Pacifico', cursive" }}
+              className="text-[#FF7A00] text-xs md:text-sm font-extrabold uppercase tracking-[0.25em] mb-4"
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               {toCapitalized(slide.accent)}
             </motion.p>
@@ -102,20 +105,19 @@ const HeroSection = () => {
             <motion.h1 
               variants={textVariants}
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="text-4xl md:text-6xl lg:text-7xl text-white mb-6 tracking-wide"
-              style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400 }}
+              className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight max-w-4xl"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               {toCapitalized((titleFirst || '').trim())}
-              <span className="text-[hsl(var(--cyan-accent))]">, </span>
-              {toCapitalized((titleSecond || '').trim())}
+              <span className="text-[#FF7A00]"> {toCapitalized((titleSecond || '').trim())}</span>
             </motion.h1>
             
             {/* Quote */}
             <motion.p 
               variants={textVariants}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-              className="text-white/80 text-sm md:text-base max-w-xl leading-relaxed"
-              style={{ fontFamily: "'Raleway', sans-serif", fontWeight: 300 }}
+              className="text-[#B0B0B0] text-sm md:text-base max-w-xl leading-relaxed font-medium"
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {slide.quote}
             </motion.p>
@@ -147,7 +149,7 @@ const HeroSection = () => {
             onClick={() => setCurrentSlide(index)}
             className={`w-2 h-2 rounded-full transition-all ${
               index === currentSlide 
-                ? 'bg-[hsl(var(--cyan-accent))] w-6' 
+                ? 'bg-[#FF7A00] w-6' 
                 : 'bg-white/50 hover:bg-white/70'
             }`}
             aria-label={`Go to slide ${index + 1}`}

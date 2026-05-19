@@ -622,7 +622,7 @@ const Packages = () => {
   };
 
   return (
-    <Layout>
+    <Layout hideFooter>
       <PageTransition>
         <section className="hero-section py-16">
           <div className="page-container">
@@ -633,10 +633,10 @@ const Packages = () => {
               </p>
             </div>
 
-            <div className="sticky top-20 z-20">
-              <div className="bg-white/95 backdrop-blur rounded-2xl p-4 md:p-5 shadow-xl border border-white/80">
+            <div className="sticky top-20 md:top-24 z-20 max-w-3xl mx-auto">
+              <div className="w-full">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
                     value={searchInput}
@@ -647,22 +647,22 @@ const Packages = () => {
                       if (event.key === 'Enter') applySearch(searchInput);
                     }}
                     placeholder="Search city, state, country, or tourist place"
-                    className="w-full pl-10 pr-24 py-3 rounded-xl border border-border bg-background text-slate-900 placeholder:text-slate-500"
+                    className="w-full pl-12 pr-16 py-3.5 rounded-2xl border border-white/10 bg-[#222222] text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF7A00] transition-all shadow-lg text-sm font-medium"
                   />
                   <button
                     type="button"
                     onClick={handleVoiceSearch}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-3 py-1.5 text-xs font-medium border border-slate-300 bg-white text-slate-800 hover:bg-slate-50 disabled:opacity-50"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl p-2 text-xs font-bold bg-[#FF7A00] hover:brightness-110 active:scale-95 text-white transition-all shadow-md shadow-[rgba(255,122,0,0.3)] disabled:opacity-50"
                     disabled={voiceBusy}
                     title="Voice search"
                   >
-                    <Mic className="h-3.5 w-3.5" />
+                    <Mic className="h-4 w-4" />
                   </button>
                 </div>
 
                 {showSuggestions && liveSuggestions.length > 0 ? (
-                  <div className="mt-3 rounded-xl border border-slate-200 bg-white p-3">
-                    <div className="text-xs text-slate-500 mb-2">
+                  <div className="absolute left-0 right-0 mt-3 rounded-2xl border border-white/5 bg-[#222222] p-4 shadow-2xl z-30">
+                    <div className="text-xs text-gray-400 mb-2.5 font-bold uppercase tracking-wider">
                       Suggestions{selectedCategory !== 'all' ? ` for ${selectedCategory[0].toUpperCase()}${selectedCategory.slice(1)}` : ''}
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -671,7 +671,7 @@ const Packages = () => {
                           key={item}
                           type="button"
                           onMouseDown={() => applySearch(item)}
-                          className="rounded-full border border-slate-200 px-3 py-1 text-sm text-slate-800 hover:bg-slate-50"
+                          className="rounded-full border border-white/10 px-4 py-1.5 text-xs font-bold text-gray-300 hover:text-white hover:border-[#FF7A00] hover:bg-white/5 transition-all"
                         >
                           {item}
                         </button>

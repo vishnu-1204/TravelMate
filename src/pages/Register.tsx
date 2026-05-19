@@ -63,7 +63,7 @@ const Register = () => {
             },
           });
         } else {
-          navigate('/');
+          navigate('/', { replace: true });
         }
       }
     } catch (err) {
@@ -84,12 +84,12 @@ const Register = () => {
               alt="Beach View" 
               className="auth-sidebar-img"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#131326]/80 via-transparent to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/90 via-transparent to-transparent z-10" />
             
             <div className="relative z-20 p-12 h-full flex flex-col">
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-white tracking-tight">
-                  Travel<span className="text-sky-400">Mate</span>
+                  Travel<span className="text-[#FF7A00]">Mate</span>
                 </span>
                 <Link to="/" className="text-sm font-medium text-white/80 hover:text-white flex items-center gap-2 transition-colors">
                   Back to website <span className="text-lg">→</span>
@@ -114,7 +114,7 @@ const Register = () => {
             <div className="max-w-md w-full mx-auto">
               <h1 className="text-3xl font-bold text-white mb-2">Create an account</h1>
               <p className="text-[#94a3b8] text-sm mb-8">
-                Already have an account? <Link to="/login" className="text-sky-400 hover:text-sky-400 font-medium ml-1 transition-colors">Log in</Link>
+                Already have an account? <Link to="/login" className="text-[#FF7A00] hover:brightness-110 font-medium ml-1 transition-colors">Log in</Link>
               </p>
 
               {/* Error Message */}
@@ -165,7 +165,7 @@ const Register = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#64748b] hover:text-sky-400 transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#64748b] hover:text-[#FF7A00] transition-colors"
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -184,13 +184,13 @@ const Register = () => {
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <input 
                       type="checkbox" 
-                      className="w-4 h-4 rounded-md border-[#3d3d4a] bg-[#2d2d3a] text-sky-400 focus:ring-sky-400/50 transition-colors cursor-pointer" 
+                      className="w-4 h-4 rounded-md border-white/10 bg-[#1A1A1A] text-[#FF7A00] focus:ring-[#FF7A00]/50 transition-colors cursor-pointer" 
                       checked={agreePolicy}
                       onChange={(e) => setAgreePolicy(e.target.checked)}
                       required
                     />
                     <span className="text-sm text-[#94a3b8] group-hover:text-white transition-colors tracking-tight">
-                      I agree to the <span className="text-sky-400 cursor-pointer hover:text-sky-400 hover:underline transition-colors">Terms & Conditions</span>
+                      I agree to the <span className="text-[#FF7A00] cursor-pointer hover:brightness-110 hover:underline transition-colors">Terms & Conditions</span>
                     </span>
                   </label>
                 </div>
@@ -209,7 +209,7 @@ const Register = () => {
                   <div className="w-full border-t border-[#3d3d4a]"></div>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-[#1f1f2e] px-4 text-[#64748b]">Or register with</span>
+                  <span className="bg-[#222222] px-4 text-gray-500">Or register with</span>
                 </div>
               </div>
 

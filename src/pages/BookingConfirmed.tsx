@@ -33,7 +33,7 @@ interface BookingData {
   departureTime: string;
 }
 
-const confettiColors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
+const confettiColors = ['#FF7A00', '#FFC857', '#EF4444', '#EC4899', '#F59E0B', '#10B981'];
 
 function ConfettiPiece({ index }: { index: number }) {
   const color = confettiColors[index % confettiColors.length];
@@ -89,14 +89,14 @@ export default function BookingConfirmed() {
   };
 
   return (
-    <Layout>
+    <Layout hideFooter>
       <PageTransition>
         {/* Confetti burst */}
         {Array.from({ length: 40 }).map((_, i) => (
           <ConfettiPiece key={i} index={i} />
         ))}
 
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 via-background to-background py-8 md:py-14">
+        <div className="min-h-screen bg-[#1A1A1A] py-8 md:py-14">
           <div className="max-w-2xl mx-auto px-4">
             {/* Success hero */}
             <motion.div
@@ -105,15 +105,15 @@ export default function BookingConfirmed() {
               transition={{ type: 'spring', stiffness: 200, damping: 18 }}
               className="text-center mb-8"
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 ring-4 ring-emerald-200/50 mb-5">
-                <CheckCircle2 className="w-10 h-10 text-emerald-500" />
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-500/10 ring-4 ring-emerald-500/20 mb-5">
+                <CheckCircle2 className="w-10 h-10 text-emerald-400" />
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
                 Booking Confirmed!
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Your trip is booked. A confirmation has been sent to{' '}
-                <span className="font-medium text-foreground">{booking.email}</span>
+                <span className="font-medium text-white">{booking.email}</span>
               </p>
             </motion.div>
 
@@ -126,14 +126,14 @@ export default function BookingConfirmed() {
             >
               <button
                 onClick={handleCopy}
-                className="flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                className="flex items-center gap-3 bg-[#222222] border border-white/10 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl hover:border-[#FF7A00]/40 transition-all"
               >
-                <span className="text-xs uppercase tracking-wider opacity-80">Reference</span>
-                <span className="font-mono text-lg font-bold tracking-wide">
+                <span className="text-xs uppercase tracking-wider opacity-60">Reference</span>
+                <span className="font-mono text-lg font-bold tracking-wide text-[#FFC857]">
                   {booking.bookingRef}
                 </span>
                 {copied ? (
-                  <CheckCheck className="w-4 h-4 text-emerald-300" />
+                  <CheckCheck className="w-4 h-4 text-emerald-400" />
                 ) : (
                   <Copy className="w-4 h-4 opacity-70" />
                 )}
@@ -148,14 +148,14 @@ export default function BookingConfirmed() {
               className="bg-card rounded-2xl shadow-card border border-border overflow-hidden"
             >
               {/* Package header */}
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 text-white">
+              <div className="bg-gradient-to-r from-[#FF7A00] to-[#FFC857] px-6 py-5 text-white">
                 <h2 className="text-xl font-bold">{booking.packageTitle}</h2>
-                <div className="flex flex-wrap items-center gap-4 mt-2 text-blue-100 text-sm">
+                <div className="flex flex-wrap items-center gap-4 mt-2 text-white/90 text-sm">
                   <span className="inline-flex items-center gap-1.5">
-                    <MapPin className="w-4 h-4" /> {booking.destination}
+                    <MapPin className="w-4 h-4 text-white" /> {booking.destination}
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <Clock className="w-4 h-4" /> {booking.duration}
+                    <Clock className="w-4 h-4 text-white" /> {booking.duration}
                   </span>
                 </div>
               </div>
@@ -163,48 +163,48 @@ export default function BookingConfirmed() {
               {/* Details grid */}
               <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <DetailItem
-                  icon={<CalendarDays className="w-5 h-5 text-blue-500" />}
+                  icon={<CalendarDays className="w-5 h-5 text-[#FF7A00]" />}
                   label="Travel Date"
                   value={formatDate(booking.travelDate)}
                 />
                 <DetailItem
-                  icon={<Users className="w-5 h-5 text-violet-500" />}
+                  icon={<Users className="w-5 h-5 text-[#FFC857]" />}
                   label="Travelers"
                   value={`${booking.travelers} ${booking.travelers > 1 ? 'passengers' : 'passenger'}`}
                 />
                 <DetailItem
-                  icon={<Plane className="w-5 h-5 text-emerald-500" />}
+                  icon={<Plane className="w-5 h-5 text-[#FF7A00]" />}
                   label="Flight"
                   value={`${booking.airline} · ${booking.departureTime}`}
                 />
                 <DetailItem
-                  icon={<CreditCard className="w-5 h-5 text-amber-500" />}
+                  icon={<CreditCard className="w-5 h-5 text-[#FFC857]" />}
                   label="Room Type"
                   value={booking.roomType}
                 />
                 <DetailItem
-                  icon={<Users className="w-5 h-5 text-pink-500" />}
+                  icon={<Users className="w-5 h-5 text-[#FF7A00]" />}
                   label="Lead Traveler"
                   value={booking.travelerName}
                 />
                 <DetailItem
-                  icon={<Mail className="w-5 h-5 text-cyan-500" />}
+                  icon={<Mail className="w-5 h-5 text-[#FFC857]" />}
                   label="Contact Email"
                   value={booking.email}
                 />
               </div>
 
               {/* Total */}
-              <div className="mx-6 mb-6 rounded-xl bg-emerald-50 border border-emerald-200 p-4 flex items-center justify-between">
+              <div className="mx-6 mb-6 rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 flex items-center justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-emerald-600 font-semibold">
+                  <p className="text-xs uppercase tracking-wider text-emerald-400 font-semibold">
                     Total Paid
                   </p>
-                  <p className="text-2xl font-bold text-emerald-700">
+                  <p className="text-2xl font-bold text-emerald-300">
                     ₹{booking.totalAmount.toLocaleString('en-IN')}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 bg-emerald-100 text-emerald-700 text-sm font-medium px-3 py-1.5 rounded-full">
+                <div className="flex items-center gap-2 bg-emerald-500/20 text-emerald-300 text-sm font-medium px-3 py-1.5 rounded-full">
                   <CheckCircle2 className="w-4 h-4" />
                   Payment Successful
                 </div>
@@ -220,16 +220,23 @@ export default function BookingConfirmed() {
             >
               <Link
                 to="/my-bookings"
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold shadow-md hover:opacity-90 transition"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF7A00] to-[#FFC857] text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-[rgba(255,122,0,0.25)] hover:brightness-110 active:scale-[0.98] transition-all"
               >
                 View My Bookings
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/packages"
-                className="flex-1 inline-flex items-center justify-center gap-2 border border-border bg-card text-foreground px-6 py-3 rounded-xl font-semibold shadow-sm hover:bg-muted transition"
+                className="flex-1 inline-flex items-center justify-center gap-2 border border-white/10 bg-[#222222] text-white hover:bg-white/5 px-6 py-3 rounded-xl font-bold transition-all text-center"
               >
-                Explore More Packages
+                Explore Packages
+              </Link>
+              <Link
+                to="/"
+                replace
+                className="flex-1 inline-flex items-center justify-center gap-2 border border-white/10 bg-[#222222] text-white hover:bg-white/5 px-6 py-3 rounded-xl font-bold transition-all text-center"
+              >
+                Back to Home
               </Link>
             </motion.div>
 
@@ -240,12 +247,12 @@ export default function BookingConfirmed() {
               transition={{ delay: 0.7 }}
               className="text-center text-xs text-muted-foreground mt-8"
             >
-              Questions? Contact us at{' '}
-              <a href="mailto:mail@travelmate.in" className="text-primary hover:underline">
+              Contact us at{' '}
+              <a href="mailto:mail@travelmate.in" className="text-[#FF7A00] hover:underline font-medium">
                 mail@travelmate.in
               </a>{' '}
               or call{' '}
-              <a href="tel:+919342180670" className="text-primary hover:underline">
+              <a href="tel:+919342180670" className="text-[#FF7A00] hover:underline font-medium">
                 +91 9342180670
               </a>
             </motion.p>
