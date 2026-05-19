@@ -1,4 +1,3 @@
-import { Resend } from "resend";
 import nodemailer from "nodemailer";
 import { config } from "../config/env";
 import { getBookingConfirmationTemplate, type BookingEmailDetails as TemplateDetails } from "../templates/bookingConfirmation";
@@ -42,9 +41,8 @@ export type Attachment = {
 };
 
 const appTitle = "TravelMate";
-const resend = new Resend(config.resendApiKey);
 
-// SMTP Transporter (Fallback)
+// SMTP Transporter
 const transporter = nodemailer.createTransport({
   host: config.smtpHost || "smtp.gmail.com",
   port: config.smtpPort || 587,
@@ -55,7 +53,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const hasResendConfig = () => Boolean(config.resendApiKey && config.resendFrom);
 const hasSmtpConfig = () => Boolean(config.smtpUser && config.smtpPass);
 
 /**
@@ -102,69 +99,33 @@ async function sendWithRetry(
   const maxRetries = 2;
   let lastError: any = null;
 
+  if (!hasSmtpConfig()) {
+    throw new Error("SMTP/Nodemailer is not configured in .env");
+  }
+
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       logger(`[${tag}] Attempt ${attempt}/${maxRetries} to ${to}`);
 
-      // Try SMTP first
-      if (hasSmtpConfig()) {
-        try {
-          // Increased SMTP Timeout to 15s
-          const result = await Promise.race([
-            transporter.sendMail({
-              from: config.smtpFrom || config.smtpUser,
-              to,
-              subject,
-              html,
-              attachments: options?.attachments,
-            }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error("SMTP Timeout")), 15000))
-          ]);
-          logger(`[${tag}] SUCCESS via SMTP on attempt ${attempt}`);
-          return result;
-        } catch (smtpErr: any) {
-          logger(`[${tag}] SMTP failed (Attempt ${attempt}): ${smtpErr.message}`);
-          lastError = smtpErr;
-          if (smtpErr.message.includes('535') || smtpErr.message.includes('Username and Password not accepted')) {
-             logger(`[${tag}] Permanent Auth Error detected. Skipping SMTP retries.`);
-          }
-        }
-      }
-
-      // Try Resend
-      if (hasResendConfig()) {
-        try {
-          const sendParams: any = {
-            from: config.resendFrom,
+      try {
+        const result = await Promise.race([
+          transporter.sendMail({
+            from: config.smtpFrom || config.smtpUser,
             to,
             subject,
             html,
             attachments: options?.attachments,
-          };
-
-          const { data, error } = await resend.emails.send(sendParams);
-          
-          if (!error) {
-            logger(`[${tag}] SUCCESS via Resend on attempt ${attempt}`);
-            return data;
-          }
-
-          // IF Resend fails with "Unable to fetch data" and we have attachments, try one last time WITHOUT attachments
-          if (error.message.includes('Unable to fetch data') && options?.attachments?.length) {
-            logger(`[${tag}] Resend failed with attachment error. Retrying WITHOUT attachments...`);
-            const fallbackResult = await resend.emails.send({ ...sendParams, attachments: undefined });
-            if (!fallbackResult.error) {
-              logger(`[${tag}] SUCCESS via Resend (Fallback: No Attachments) on attempt ${attempt}`);
-              return fallbackResult.data;
-            }
-            logger(`[${tag}] Resend fallback also failed: ${fallbackResult.error.message}`);
-          }
-
-          logger(`[${tag}] Resend failed (Attempt ${attempt}): ${error.message}`);
-          lastError = error;
-        } catch (resendErr: any) {
-          logger(`[${tag}] Resend error (Attempt ${attempt}): ${resendErr.message}`);
-          lastError = resendErr;
+          }),
+          new Promise((_, reject) => setTimeout(() => reject(new Error("SMTP Timeout")), 15000))
+        ]);
+        logger(`[${tag}] SUCCESS via SMTP on attempt ${attempt}`);
+        return result;
+      } catch (smtpErr: any) {
+        logger(`[${tag}] SMTP failed (Attempt ${attempt}): ${smtpErr.message}`);
+        lastError = smtpErr;
+        if (smtpErr.message.includes('535') || smtpErr.message.includes('Username and Password not accepted')) {
+           logger(`[${tag}] Permanent Auth Error detected. Skipping SMTP retries.`);
+           throw smtpErr;
         }
       }
 

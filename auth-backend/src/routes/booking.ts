@@ -345,7 +345,7 @@ const sendFlightWithRetry = async (payload: EmailPayload, pdf: Buffer) => {
   return { ok: false, attempts: EMAIL_RETRY_LIMIT, error: lastError?.message || "send failed" };
 };
 const processStoredBooking = async (booking: BookingRecord, force = false) => {
-  if (!config.resendApiKey || !config.resendFrom) return { ok: false, code: 500, message: "Resend not configured" };
+  if (!config.smtpUser || !config.smtpPass) return { ok: false, code: 500, message: "Nodemailer SMTP not configured" };
   if (!validEmail(booking.email)) return { ok: false, code: 400, message: "Invalid booking email" };
   if (!(booking.payment_status === "paid" || booking.payment_status === "confirmed") || !booking.payment_verified) {
     return { ok: false, code: 409, message: "Payment not verified" };

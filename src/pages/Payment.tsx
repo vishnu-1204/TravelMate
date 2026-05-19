@@ -328,6 +328,7 @@ const Payment = () => {
     travelInsurance: false,
   });
   const [loading, setLoading] = useState(false);
+  const [paymentMode, setPaymentMode] = useState<'razorpay' | 'simulated'>('simulated');
   const [bookingRef, setBookingRef] = useState('');
   const [bookingEmail, setBookingEmail] = useState('');
   const [formError, setFormError] = useState('');
@@ -1317,14 +1318,47 @@ const Payment = () => {
                 <div className="bg-card rounded-xl p-6 shadow-card" id="payment-section">
                   <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
                     <CreditCard className="h-5 w-5 text-primary" />
-                    Secure Payment
+                    Select Payment Method
                   </h2>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Complete your booking securely via Razorpay (UPI, Card, Net Banking).
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Choose between a live secure payment or a simulated payment process for testing.
                   </p>
-                  <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMode('simulated')}
+                      className={`flex flex-col items-center justify-center p-4 rounded-xl border text-center transition-all ${
+                        paymentMode === 'simulated'
+                          ? 'border-primary bg-primary/5 text-primary ring-2 ring-primary/20'
+                          : 'border-border bg-card text-muted-foreground hover:text-foreground hover:border-foreground/30'
+                      }`}
+                    >
+                      <span className="font-bold text-sm">Simulated Checkout</span>
+                      <span className="text-[10px] mt-1 opacity-80">Ideal for testing (No real cash)</span>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMode('razorpay')}
+                      className={`flex flex-col items-center justify-center p-4 rounded-xl border text-center transition-all ${
+                        paymentMode === 'razorpay'
+                          ? 'border-primary bg-primary/5 text-primary ring-2 ring-primary/20'
+                          : 'border-border bg-card text-muted-foreground hover:text-foreground hover:border-foreground/30'
+                      }`}
+                    >
+                      <span className="font-bold text-sm">Razorpay Secure Checkout</span>
+                      <span className="text-[10px] mt-1 opacity-80">Live Cards, UPI, Netbanking</span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Lock className="h-3 w-3" />
-                    <span>Razorpay Secure Connection. Final amount: ₹{grandTotal.toLocaleString('en-IN')}</span>
+                    <span>
+                      {paymentMode === 'razorpay' 
+                        ? `Razorpay Secure Connection. Final amount: ₹${grandTotal.toLocaleString('en-IN')}`
+                        : `Simulated Environment. No actual money will be charged.`}
+                    </span>
                   </div>
                 </div>
 
@@ -1391,14 +1425,16 @@ const Payment = () => {
 
                   <button
                     type="button"
-                    onClick={handleRazorpayPayment}
+                    onClick={paymentMode === 'razorpay' ? handleRazorpayPayment : handleSimulatedPaymentRedirect}
                     disabled={loading}
                     className="btn-primary w-full mt-6 flex items-center justify-center gap-2 shadow-lg transform transition-all active:scale-[0.98]"
                   >
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                     {loading
                       ? processingMessage
-                      : `Book Now - Pay ₹${grandTotal.toLocaleString('en-IN')}`}
+                      : paymentMode === 'razorpay'
+                        ? `Book & Pay ₹${grandTotal.toLocaleString('en-IN')}`
+                        : `Start Payment Simulation`}
                   </button>
                 </div>
               </div>
