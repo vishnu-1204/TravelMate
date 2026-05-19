@@ -32,6 +32,8 @@ export type BookingEmailDetails = {
   checkOut?: string;
   transportType?: 'flight' | 'bus' | 'train' | 'other';
   payment_id?: string;
+  guideName?: string;
+  guidePhone?: string;
 };
 
 export type Attachment = {
@@ -224,6 +226,8 @@ export const sendBookingConfirmation = async (
     supportEmail: config.supportEmail,
     supportPhone: config.supportPhone,
     payment_id: booking.payment_id,
+    guideName: booking.guideName,
+    guidePhone: booking.guidePhone,
   };
 
   try {
@@ -468,4 +472,24 @@ export const sendContactAutoReply = async (details: { name: string; email: strin
      <p style="margin:0;color:#334155;">Best regards,<br/>The TravelMate Team</p>`
   );
   return sendWithRetry("email/contact-autoreply", details.email, "We've received your message", html);
+};
+
+export const sendLoginAlertEmail = async (
+  user: EmailUser,
+  details: { ip?: string; device?: string; time?: string }
+) => {
+  const name = user.name?.trim() || "Traveler";
+  const html = layout(
+    "New Account Sign-In Alert",
+    `<p style="margin:0 0 12px;color:#334155;">Hi ${escapeHtml(name)},</p>
+     <p style="margin:0 0 12px;color:#334155;">We detected a new login to your TravelMate account. Here are the sign-in details:</p>
+     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:16px;font-size:14px;line-height:1.5;color:#334155;">
+       <p style="margin:0 0 6px;"><strong>Date/Time:</strong> ${escapeHtml(details.time || new Date().toLocaleString())}</p>
+       <p style="margin:0 0 6px;"><strong>Device/Browser:</strong> ${escapeHtml(details.device || "Browser Session")}</p>
+       <p style="margin:0;"><strong>IP Address:</strong> ${escapeHtml(details.ip || "Unknown IP")}</p>
+     </div>
+     <p style="margin:0 0 12px;color:#334155;">If this was you, no action is needed. If you do not recognize this sign-in, please reset your password immediately to secure your account.</p>
+     <p style="margin:0;color:#334155;">Best regards,<br/>The TravelMate Security Team</p>`
+  );
+  return sendWithRetry("email/login-alert", user.email, "Security Alert: New sign-in detected on TravelMate", html);
 };

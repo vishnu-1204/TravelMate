@@ -83,9 +83,17 @@ function Navbar() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="w-9 h-9 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FFC857] flex items-center justify-center text-sm font-extrabold text-white hover:brightness-110 transition active:scale-95 shadow-md shadow-[rgba(255,122,0,0.3)]"
+                className="w-9 h-9 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FFC857] flex items-center justify-center text-sm font-extrabold text-white hover:brightness-110 transition active:scale-95 shadow-md shadow-[rgba(255,122,0,0.3)] overflow-hidden shrink-0"
               >
-                {userInitial}
+                {((user?.user_metadata?.profile_details as { avatar_path?: string })?.avatar_path || (user?.user_metadata as { avatar_path?: string })?.avatar_path) ? (
+                  <img
+                    src={(user?.user_metadata?.profile_details as { avatar_path?: string })?.avatar_path || (user?.user_metadata as { avatar_path?: string })?.avatar_path}
+                    alt="Profile Avatar"
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
+                  userInitial
+                )}
               </button>
 
               {profileOpen && (

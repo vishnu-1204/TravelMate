@@ -31,8 +31,16 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-            {review.profiles?.full_name?.charAt(0) || 'U'}
+          <div className="w-10 h-10 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/20 flex items-center justify-center text-[#FFC857] font-bold overflow-hidden shrink-0">
+            {review.profiles?.avatar_path ? (
+              <img
+                src={review.profiles.avatar_path}
+                alt={review.profiles.full_name || 'User'}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              review.profiles?.full_name?.charAt(0) || 'U'
+            )}
           </div>
           <div>
             <h4 className="font-semibold text-foreground">

@@ -24,6 +24,8 @@ export type BookingEmailDetails = {
   supportEmail?: string;
   supportPhone?: string;
   payment_id?: string;
+  guideName?: string;
+  guidePhone?: string;
 };
 
 export const getBookingConfirmationTemplate = (details: BookingEmailDetails) => {
@@ -32,6 +34,8 @@ export const getBookingConfirmationTemplate = (details: BookingEmailDetails) => 
   const destination = details.destination || details.packageTitle;
   const supportEmail = details.supportEmail || 'travelmate713@gmail.com';
   const supportPhone = details.supportPhone || '+91 9342180670';
+  const guideName = details.guideName || 'Rahul Sharma';
+  const guidePhone = details.guidePhone || '+91 98765 43210';
 
   return `
 <!DOCTYPE html>
@@ -82,6 +86,18 @@ export const getBookingConfirmationTemplate = (details: BookingEmailDetails) => 
         <div class="row"><span class="label">Travel Date</span><span class="value">${travelDate}</span></div>
         <div class="row"><span class="label">Travelers</span><span class="value">${travelers}</span></div>
         <div class="row"><span class="label">Amount Paid</span><span class="value" style="color: #16a34a;">${details.price}</span></div>
+      </div>
+
+      <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 20px; margin-bottom: 30px; color: #1e3a8a;">
+        <h3 style="margin: 0 0 12px; font-size: 16px; color: #1e3a8a; display: flex; align-items: center; gap: 8px;">
+          <span>🧑‍✈️</span> Your Dedicated Tour Guide
+        </h3>
+        <p style="margin: 0 0 8px; font-size: 14px; color: #1e293b;">
+          <strong>Guide Name:</strong> ${guideName}
+        </p>
+        <p style="margin: 0; font-size: 14px; color: #1e293b;">
+          <strong>Phone / WhatsApp:</strong> <a href="https://wa.me/${guidePhone.replace(/[^0-9]/g, '')}" style="color: #2563eb; font-weight: 600; text-decoration: none;">${guidePhone}</a>
+        </p>
       </div>
       
       <div class="next-steps">

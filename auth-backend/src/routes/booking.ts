@@ -123,6 +123,8 @@ type EmailPayload = {
   arrivalTime: string;
   included: string[];
   excluded: string[];
+  guideName?: string;
+  guidePhone?: string;
 };
 
 const hasSmtp = () => Boolean(config.smtpHost && config.smtpUser && config.smtpPass && config.smtpFrom);
@@ -182,6 +184,8 @@ const fromBooking = (booking: BookingRecord): EmailPayload => {
     arrivalTime: String(terms.arrivalTime || "-"),
     included: toList(terms.included, []),
     excluded: toList(terms.excluded, []),
+    guideName: String(terms.guideName || ""),
+    guidePhone: String(terms.guidePhone || ""),
   };
 };
 
@@ -255,6 +259,8 @@ const sendWithRetry = async (payload: EmailPayload, pdf: Buffer) => {
           arrivalTime: payload.arrivalTime,
           included: payload.included,
           excluded: payload.excluded,
+          guideName: payload.guideName,
+          guidePhone: payload.guidePhone,
         },
         {
           attachment: {
@@ -346,18 +352,55 @@ const sendFlightWithRetry = async (payload: EmailPayload, pdf: Buffer) => {
 };
 const processStoredBooking = async (booking: BookingRecord, force = false) => {
   if (!config.smtpUser || !config.smtpPass) return { ok: false, code: 500, message: "Nodemailer SMTP not configured" };
+
+  // Resolve registered user's email if logged in
+  if (booking.user_id) {
+    try {
+      const userResult = await db.execute({
+        sql: "SELECT email FROM users WHERE id = ? LIMIT 1",
+        args: [booking.user_id],
+      });
+      if (userResult.rows.length > 0 && userResult.rows[0].email) {
+        const regEmail = userResult.rows[0].email as string;
+        if (validEmail(regEmail)) {
+          booking.email = regEmail;
+        }
+      }
+    } catch (dbErr) {
+      console.error("[processStoredBooking] Failed to fetch registered user email:", dbErr);
+    }
+  }
+
   if (!validEmail(booking.email)) return { ok: false, code: 400, message: "Invalid booking email" };
   if (!(booking.payment_status === "paid" || booking.payment_status === "confirmed") || !booking.payment_verified) {
     return { ok: false, code: 409, message: "Payment not verified" };
   }
   if (booking.email_sent && !force) return { ok: true, code: 200, message: "already_sent" };
 
+  // Fetch and enrich package guide details dynamically
+  try {
+    const terms = (booking.booking_terms || {}) as Record<string, any>;
+    if (booking.package_id && (!terms.guideName || !terms.guidePhone)) {
+      const pkg = await getPackageById(booking.package_id);
+      if (pkg) {
+        terms.guideName = pkg.guideName;
+        terms.guidePhone = pkg.guidePhone;
+        booking.booking_terms = terms;
+      }
+    }
+  } catch (pkgErr) {
+    console.error("[processStoredBooking] Failed to dynamically enrich guide details:", pkgErr);
+  }
+
   const payload = fromBooking(booking);
   const sendingAt = new Date().toISOString();
   await safeUpdate(booking.id, {
-    booking_terms: { ...(booking.booking_terms || {}), email: { sent: false, status: "sending", lastAttemptAt: sendingAt } },
+    booking_terms: JSON.stringify({
+      ...(booking.booking_terms || {}),
+      email: { sent: false, status: "sending", lastAttemptAt: sendingAt },
+      email_last_attempt_at: sendingAt,
+    }),
     booking_status: booking.booking_status === "confirmed" ? "confirmed" : "processing",
-    email_last_attempt_at: sendingAt,
   });
 
   const pdf = await generateTicketPdf(payload);
@@ -365,32 +408,35 @@ const processStoredBooking = async (booking: BookingRecord, force = false) => {
   const sent = await sendWithRetry(payload, pdf);
   if (!sent.ok) {
     await safeUpdate(booking.id, {
-      booking_terms: {
+      booking_terms: JSON.stringify({
         ...(booking.booking_terms || {}),
         email: { sent: false, status: "failed", attempts: sent.attempts, lastAttemptAt: new Date().toISOString() },
         manualFollowUpRequired: true,
         manualFollowUpReason: "Manual Follow-up Required: Email dispatch failed",
         manualFollowUpLoggedAt: new Date().toISOString(),
-      },
-      email_sent: false,
-      email_attempts: sent.attempts,
-      email_last_error: sent.error,
-      email_last_attempt_at: new Date().toISOString(),
-      ...(ticketPdfUrl ? { ticket_pdf_url: ticketPdfUrl } : {}),
+        email_attempts: sent.attempts,
+        email_last_error: sent.error,
+        email_last_attempt_at: new Date().toISOString(),
+        ticket_pdf_url: ticketPdfUrl || null,
+      }),
+      email_sent: 0,
     });
     return { ok: false, code: 500, message: "failed_to_send" };
   }
 
   const sentAt = new Date().toISOString();
   await safeUpdate(booking.id, {
-    booking_terms: { ...(booking.booking_terms || {}), email: { sent: true, status: "sent", sentAt, attempts: sent.attempts } },
-    email_sent: true,
-    email_attempts: sent.attempts,
-    email_last_error: null,
-    email_last_attempt_at: sentAt,
-    email_sent_at: sentAt,
+    booking_terms: JSON.stringify({
+      ...(booking.booking_terms || {}),
+      email: { sent: true, status: "sent", sentAt, attempts: sent.attempts },
+      email_attempts: sent.attempts,
+      email_last_error: null,
+      email_last_attempt_at: sentAt,
+      email_sent_at: sentAt,
+      ticket_pdf_url: ticketPdfUrl || null,
+    }),
+    email_sent: 1,
     booking_status: "confirmed",
-    ...(ticketPdfUrl ? { ticket_pdf_url: ticketPdfUrl } : {}),
   });
 
   // Secondary Step: Fire Off The Flight E-Ticket Automatically (Non-Blocking)
@@ -1663,7 +1709,9 @@ router.post("/book", authenticateToken, async (req: AuthRequest, res: Response) 
             supportPhone: config.supportPhone,
             itinerarySummary: detailedItinerary,
             included: body.included,
-            excluded: body.excluded
+            excluded: body.excluded,
+            guideName: resolvedPkg?.guideName || "Rahul Sharma",
+            guidePhone: resolvedPkg?.guidePhone || "+91 98765 43210",
           };
 
           // 3. Send Comprehensive Confirmation Email
@@ -1820,6 +1868,8 @@ router.post("/simulate-payment", async (req: Request, res: Response) => {
               itinerarySummary: [],
               included: [],
               excluded: [],
+              guideName: "Rahul Sharma",
+              guidePhone: "+91 98765 43210",
             },
             {
               attachment: {

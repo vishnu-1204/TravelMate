@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Loader2, PencilLine, ShieldCheck, ShieldAlert, UserRound } from 'lucide-react';
+import { Loader2, PencilLine, ShieldCheck, ShieldAlert, UserRound, Camera, Trash2, Upload } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import { useAuth } from '@/hooks/useAuth';
@@ -80,13 +80,56 @@ const isUuid = (value: string) =>
 
 const localProfileKey = (userId: string) => `travelmate-local-profile-${userId}`;
 
+const compressImage = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 200;
+        const MAX_HEIGHT = 200;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+          resolve(dataUrl);
+        } else {
+          resolve(event.target?.result as string);
+        }
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
+  });
+};
+
 const Profile = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, refreshUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [editing, setEditing] = useState(false);
   const [profile, setProfile] = useState<ProfileRow | null>(null);
+  const [originalAvatar, setOriginalAvatar] = useState<string | null>(null);
   const [clearAadhaar, setClearAadhaar] = useState(false);
   const [formData, setFormData] = useState<FormData>(emptyForm);
   const [error, setError] = useState('');
@@ -151,7 +194,23 @@ const Profile = () => {
     'User';
   const profileInitial = profileName.trim().charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U';
 
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const compressed = await compressImage(file);
+      setProfile((prev) => (prev ? { ...prev, avatar_path: compressed } : null));
+    } catch (err) {
+      setError('Failed to process image.');
+    }
+  };
+
+  const handleRemoveAvatar = () => {
+    setProfile((prev) => (prev ? { ...prev, avatar_path: null } : null));
+  };
+
   const onEdit = () => {
+    setOriginalAvatar(profile?.avatar_path || null);
     setEditing(true);
     setError('');
     setSuccess('');
@@ -159,6 +218,7 @@ const Profile = () => {
 
   const onCancel = () => {
     if (!profile) return;
+    setProfile((prev) => (prev ? { ...prev, avatar_path: originalAvatar } : null));
     setFormData(toForm(profile, metadataDetails));
     setClearAadhaar(false);
     setEditing(false);
@@ -242,6 +302,9 @@ const Profile = () => {
       setClearAadhaar(false);
       setEditing(false);
       setSuccess('Profile updated successfully.');
+      
+      // Synchronize with global useAuth context and Navbar
+      await refreshUser();
     } catch (e) {
       const message = getErrorMessage(e, 'Failed to update profile.');
       setError(message);
@@ -316,19 +379,65 @@ const Profile = () => {
           <div className="max-w-6xl mx-auto space-y-6">
             <div className="bg-[#222222] border border-white/5 rounded-3xl p-6 text-white shadow-xl">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/30 flex items-center justify-center">
-                    {profileInitial ? (
-                      <span className="text-2xl font-bold text-[#FFC857]">{profileInitial}</span>
+                <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left w-full sm:w-auto">
+                  <div className="relative group w-20 h-20 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/30 flex items-center justify-center overflow-hidden shadow-inner shrink-0">
+                    {profile?.avatar_path ? (
+                      <img 
+                        src={profile.avatar_path} 
+                        alt="Profile Avatar" 
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : profileInitial ? (
+                      <span className="text-3xl font-extrabold text-[#FFC857]">{profileInitial}</span>
                     ) : (
-                      <UserRound className="h-7 w-7 text-[#FFC857]" />
+                      <UserRound className="h-9 w-9 text-[#FFC857]" />
+                    )}
+                    {editing && (
+                      <label className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center cursor-pointer rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <Camera className="w-5 h-5 text-white" />
+                        <span className="text-[10px] text-white/90 font-bold mt-1">Change</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleAvatarUpload}
+                          className="hidden"
+                        />
+                      </label>
                     )}
                   </div>
-                  <div>
-                    <h1 className="text-3xl font-bold tracking-tight">My Profile</h1>
+                  <div className="flex-1 min-w-0 w-full">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-center sm:justify-start">
+                      <h1 className="text-3xl font-bold tracking-tight">My Profile</h1>
+                      {editing && (
+                        <label className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 hover:bg-white/10 text-xs px-3 py-1.5 rounded-lg cursor-pointer transition select-none self-center sm:self-auto text-white font-semibold shadow-sm">
+                          <Upload className="w-3.5 h-3.5 text-[#FF7A00]" />
+                          Upload Photo
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarUpload}
+                            className="hidden"
+                          />
+                        </label>
+                      )}
+                    </div>
                     <p className="text-[#B0B0B0] text-sm mt-1">
                       Manage your personal information securely.
                     </p>
+                    
+                    {editing && profile?.avatar_path && (
+                      <div className="mt-3 flex flex-wrap gap-2 items-center justify-center sm:justify-start">
+                        <button
+                          type="button"
+                          onClick={handleRemoveAvatar}
+                          className="inline-flex items-center gap-1.5 border border-red-500/30 hover:border-red-500 hover:bg-red-500/10 px-3 py-1.5 rounded-lg text-red-400 text-xs font-semibold transition hover:scale-105 active:scale-95 bg-white/5"
+                          title="Remove photo"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          Remove Photo
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {!editing ? (

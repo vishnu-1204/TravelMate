@@ -7,7 +7,7 @@ import { config } from "../config/env";
 import { logger } from "../utils/logger";
 import { validateRegister, validateLogin } from "../middleware/validate";
 import { authenticateToken, AuthRequest } from "../middleware/auth";
-import { sendWelcomeEmail, sendPasswordResetEmail } from "../services/email.service";
+import { sendWelcomeEmail, sendPasswordResetEmail, sendLoginAlertEmail } from "../services/email.service";
 
 const router = Router();
 
@@ -122,6 +122,25 @@ router.post("/login", validateLogin, async (req: Request, res: Response) => {
     // 4. Issue signed token
     const token = jwt.sign({ id: dbUser.id, email: dbUser.email }, jwtSecret, jwtSignOptions);
     console.log(`[auth/login] Success: ${email}`);
+
+    // 5. Send login alert email asynchronously (fire-and-forget, non-blocking)
+    void (async () => {
+      try {
+        const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "127.0.0.1";
+        const device = req.headers["user-agent"] || "Web Browser";
+        
+        await sendLoginAlertEmail(
+          { email: dbUser.email, name: fullName || "Traveler" },
+          {
+            ip,
+            device,
+            time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) + " (IST)",
+          }
+        );
+      } catch (mailError: any) {
+        console.error("Login alert email dispatch failed:", mailError?.message || mailError);
+      }
+    })();
 
     res.json({
       message: "Login successful",

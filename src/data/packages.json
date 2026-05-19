@@ -93,7 +93,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aarav Sharma",
+    "guidePhone": "+91 91234 56001"
   },
   {
     "id": "south-alleppey-luxury-1",
@@ -203,7 +205,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vivaan Patel",
+    "guidePhone": "+91 91234 56002"
   },
   {
     "id": "south-wayanad-adventure-2",
@@ -327,7 +331,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aditya Verma",
+    "guidePhone": "+91 91234 56003"
   },
   {
     "id": "south-thekkady-cultural-3",
@@ -465,7 +471,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Arjun Nair",
+    "guidePhone": "+91 91234 56004"
   },
   {
     "id": "south-kochi-wellness-4",
@@ -617,7 +625,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sai Kiran",
+    "guidePhone": "+91 91234 56005"
   },
   {
     "id": "south-kovalam-leisure-5",
@@ -713,7 +723,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rohan Mehta",
+    "guidePhone": "+91 91234 56006"
   },
   {
     "id": "south-varkala-heritage-6",
@@ -823,7 +835,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Karthik Raj",
+    "guidePhone": "+91 91234 56007"
   },
   {
     "id": "south-kumarakom-short-stay-7",
@@ -947,7 +961,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rahul Iyer",
+    "guidePhone": "+91 91234 56008"
   },
   {
     "id": "south-ooty-standard-8",
@@ -1085,7 +1101,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vikram Singh",
+    "guidePhone": "+91 91234 56009"
   },
   {
     "id": "south-kodaikanal-luxury-9",
@@ -1237,7 +1255,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Naveen Kumar",
+    "guidePhone": "+91 91234 56010"
   },
   {
     "id": "south-coorg-adventure-10",
@@ -1333,7 +1353,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Harish Reddy",
+    "guidePhone": "+91 91234 56011"
   },
   {
     "id": "south-mysore-cultural-11",
@@ -1443,7 +1465,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Pranav Joshi",
+    "guidePhone": "+91 91234 56012"
   },
   {
     "id": "south-hampi-wellness-12",
@@ -1567,7 +1591,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Akash Malhotra",
+    "guidePhone": "+91 91234 56013"
   },
   {
     "id": "south-gokarna-leisure-13",
@@ -1705,7 +1731,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Surya Narayan",
+    "guidePhone": "+91 91234 56014"
   },
   {
     "id": "south-udupi-heritage-14",
@@ -1857,7 +1885,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Deepak Chauhan",
+    "guidePhone": "+91 91234 56015"
   },
   {
     "id": "south-chikmagalur-short-stay-15",
@@ -1953,7 +1983,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Mohit Arora",
+    "guidePhone": "+91 91234 56016"
   },
   {
     "id": "south-rameshwaram-standard-16",
@@ -2063,7 +2095,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Yash Desai",
+    "guidePhone": "+91 91234 56017"
   },
   {
     "id": "south-kanyakumari-luxury-17",
@@ -2187,7 +2221,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nikhil Rao",
+    "guidePhone": "+91 91234 56018"
   },
   {
     "id": "south-mahabalipuram-adventure-18",
@@ -2325,7 +2361,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Manish Sinha",
+    "guidePhone": "+91 91234 56019"
   },
   {
     "id": "south-pondicherry-cultural-19",
@@ -2477,7 +2515,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rajat Kapoor",
+    "guidePhone": "+91 91234 56020"
   },
   {
     "id": "south-visakhapatnam-wellness-20",
@@ -2573,7 +2613,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sandeep Mishra",
+    "guidePhone": "+91 91234 56021"
   },
   {
     "id": "south-araku-valley-leisure-21",
@@ -2683,7 +2725,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Amit Tiwari",
+    "guidePhone": "+91 91234 56022"
   },
   {
     "id": "south-tirupati-heritage-22",
@@ -2807,7 +2851,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Varun Khanna",
+    "guidePhone": "+91 91234 56023"
   },
   {
     "id": "south-madurai-short-stay-23",
@@ -2945,7 +2991,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tarun Bhat",
+    "guidePhone": "+91 91234 56024"
   },
   {
     "id": "south-yercaud-standard-24",
@@ -3097,7 +3145,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ashwin Pillai",
+    "guidePhone": "+91 91234 56025"
   },
   {
     "id": "south-dandeli-luxury-25",
@@ -3193,7 +3243,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ganesh Kumar",
+    "guidePhone": "+91 91234 56026"
   },
   {
     "id": "south-kabini-adventure-26",
@@ -3303,7 +3355,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Shyam Sundar",
+    "guidePhone": "+91 91234 56027"
   },
   {
     "id": "south-varkala-cultural-27",
@@ -3427,7 +3481,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vignesh Ravi",
+    "guidePhone": "+91 91234 56028"
   },
   {
     "id": "south-munnar-wellness-28",
@@ -3565,7 +3621,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Dinesh Yadav",
+    "guidePhone": "+91 91234 56029"
   },
   {
     "id": "south-alleppey-leisure-29",
@@ -3717,7 +3775,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ankit Jain",
+    "guidePhone": "+91 91234 56030"
   },
   {
     "id": "south-wayanad-heritage-30",
@@ -3813,7 +3873,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Bharat Saxena",
+    "guidePhone": "+91 91234 56031"
   },
   {
     "id": "south-thekkady-short-stay-31",
@@ -3923,7 +3985,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Lokesh Gupta",
+    "guidePhone": "+91 91234 56032"
   },
   {
     "id": "south-kochi-standard-32",
@@ -4047,7 +4111,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Imran Khan",
+    "guidePhone": "+91 91234 56033"
   },
   {
     "id": "south-kovalam-luxury-33",
@@ -4185,7 +4251,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Faizan Ali",
+    "guidePhone": "+91 91234 56034"
   },
   {
     "id": "south-varkala-adventure-34",
@@ -4337,7 +4405,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sameer Shaikh",
+    "guidePhone": "+91 91234 56035"
   },
   {
     "id": "south-kumarakom-cultural-35",
@@ -4433,7 +4503,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Yusuf Ansari",
+    "guidePhone": "+91 91234 56036"
   },
   {
     "id": "south-ooty-wellness-36",
@@ -4543,7 +4615,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Kabir Anand",
+    "guidePhone": "+91 91234 56037"
   },
   {
     "id": "south-kodaikanal-leisure-37",
@@ -4667,7 +4741,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Dev Mallick",
+    "guidePhone": "+91 91234 56038"
   },
   {
     "id": "south-coorg-heritage-38",
@@ -4805,7 +4881,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Krish Bansal",
+    "guidePhone": "+91 91234 56039"
   },
   {
     "id": "south-mysore-short-stay-39",
@@ -4957,7 +5035,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Abhishek Roy",
+    "guidePhone": "+91 91234 56040"
   },
   {
     "id": "south-hampi-standard-40",
@@ -5053,7 +5133,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sanjay Das",
+    "guidePhone": "+91 91234 56041"
   },
   {
     "id": "south-gokarna-luxury-41",
@@ -5163,7 +5245,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ajay Menon",
+    "guidePhone": "+91 91234 56042"
   },
   {
     "id": "south-udupi-adventure-42",
@@ -5287,7 +5371,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Omkar Patil",
+    "guidePhone": "+91 91234 56043"
   },
   {
     "id": "south-chikmagalur-cultural-43",
@@ -5425,7 +5511,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ravi Teja",
+    "guidePhone": "+91 91234 56044"
   },
   {
     "id": "south-rameshwaram-wellness-44",
@@ -5577,7 +5665,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Uday Shetty",
+    "guidePhone": "+91 91234 56045"
   },
   {
     "id": "south-kanyakumari-leisure-45",
@@ -5673,7 +5763,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Suresh Naidu",
+    "guidePhone": "+91 91234 56046"
   },
   {
     "id": "south-mahabalipuram-heritage-46",
@@ -5783,7 +5875,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Kiran Dev",
+    "guidePhone": "+91 91234 56047"
   },
   {
     "id": "south-pondicherry-short-stay-47",
@@ -5907,7 +6001,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tejas Kulkarni",
+    "guidePhone": "+91 91234 56048"
   },
   {
     "id": "south-visakhapatnam-standard-48",
@@ -6045,7 +6141,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Hemant Rawat",
+    "guidePhone": "+91 91234 56049"
   },
   {
     "id": "south-araku-valley-luxury-49",
@@ -6197,7 +6295,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Pavan Choudhary",
+    "guidePhone": "+91 91234 56050"
   },
   {
     "id": "south-tirupati-adventure-50",
@@ -6293,7 +6393,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nitin Solanki",
+    "guidePhone": "+91 91234 56051"
   },
   {
     "id": "south-madurai-cultural-51",
@@ -6403,7 +6505,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Dhruv Agarwal",
+    "guidePhone": "+91 91234 56052"
   },
   {
     "id": "south-yercaud-wellness-52",
@@ -6527,7 +6631,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Arnav Trivedi",
+    "guidePhone": "+91 91234 56053"
   },
   {
     "id": "south-dandeli-leisure-53",
@@ -6665,7 +6771,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vinayak Salvi",
+    "guidePhone": "+91 91234 56054"
   },
   {
     "id": "south-kabini-heritage-54",
@@ -6817,7 +6925,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Chetan Pawar",
+    "guidePhone": "+91 91234 56055"
   },
   {
     "id": "south-varkala-short-stay-55",
@@ -6913,7 +7023,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rajesh Mondal",
+    "guidePhone": "+91 91234 56056"
   },
   {
     "id": "south-munnar-standard-56",
@@ -7023,7 +7135,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Mahesh Dubey",
+    "guidePhone": "+91 91234 56057"
   },
   {
     "id": "south-alleppey-luxury-57",
@@ -7147,7 +7261,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Prakash Gowda",
+    "guidePhone": "+91 91234 56058"
   },
   {
     "id": "south-wayanad-adventure-58",
@@ -7285,7 +7401,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Lalit Sehgal",
+    "guidePhone": "+91 91234 56059"
   },
   {
     "id": "south-thekkady-cultural-59",
@@ -7437,7 +7555,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Anand Bhargav",
+    "guidePhone": "+91 91234 56060"
   },
   {
     "id": "south-kochi-wellness-60",
@@ -7533,7 +7653,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Chirag Modi",
+    "guidePhone": "+91 91234 56061"
   },
   {
     "id": "south-kovalam-leisure-61",
@@ -7643,7 +7765,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Harsh Vardhan",
+    "guidePhone": "+91 91234 56062"
   },
   {
     "id": "south-varkala-heritage-62",
@@ -7767,7 +7891,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Gokul Krishna",
+    "guidePhone": "+91 91234 56063"
   },
   {
     "id": "south-kumarakom-short-stay-63",
@@ -7905,7 +8031,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ritesh Pal",
+    "guidePhone": "+91 91234 56064"
   },
   {
     "id": "south-ooty-standard-64",
@@ -8057,7 +8185,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Siddharth Bose",
+    "guidePhone": "+91 91234 56065"
   },
   {
     "id": "south-kodaikanal-luxury-65",
@@ -8153,7 +8283,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tushar Negi",
+    "guidePhone": "+91 91234 56066"
   },
   {
     "id": "south-coorg-adventure-66",
@@ -8263,7 +8395,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Neeraj Jha",
+    "guidePhone": "+91 91234 56067"
   },
   {
     "id": "south-mysore-cultural-67",
@@ -8387,7 +8521,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ishaan Seth",
+    "guidePhone": "+91 91234 56068"
   },
   {
     "id": "south-hampi-wellness-68",
@@ -8525,7 +8661,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Kunal Prasad",
+    "guidePhone": "+91 91234 56069"
   },
   {
     "id": "south-gokarna-leisure-69",
@@ -8677,7 +8815,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Alok Sen",
+    "guidePhone": "+91 91234 56070"
   },
   {
     "id": "south-udupi-heritage-70",
@@ -8773,7 +8913,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Prem Chauhan",
+    "guidePhone": "+91 91234 56071"
   },
   {
     "id": "south-chikmagalur-short-stay-71",
@@ -8883,7 +9025,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Raghav Bedi",
+    "guidePhone": "+91 91234 56072"
   },
   {
     "id": "south-rameshwaram-standard-72",
@@ -9007,7 +9151,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Mayank Lal",
+    "guidePhone": "+91 91234 56073"
   },
   {
     "id": "south-kanyakumari-luxury-73",
@@ -9145,7 +9291,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Shashank Rao",
+    "guidePhone": "+91 91234 56074"
   },
   {
     "id": "south-mahabalipuram-adventure-74",
@@ -9297,7 +9445,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vishal Thakur",
+    "guidePhone": "+91 91234 56075"
   },
   {
     "id": "south-pondicherry-cultural-75",
@@ -9393,7 +9543,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Jayant Kulshreshtha",
+    "guidePhone": "+91 91234 56076"
   },
   {
     "id": "south-visakhapatnam-wellness-76",
@@ -9503,7 +9655,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rohit Banerjee",
+    "guidePhone": "+91 91234 56077"
   },
   {
     "id": "south-araku-valley-leisure-77",
@@ -9627,7 +9781,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Akhil Menon",
+    "guidePhone": "+91 91234 56078"
   },
   {
     "id": "south-tirupati-heritage-78",
@@ -9765,7 +9921,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Saurabh Dixit",
+    "guidePhone": "+91 91234 56079"
   },
   {
     "id": "south-madurai-short-stay-79",
@@ -9917,7 +10075,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Keshav Bhatia",
+    "guidePhone": "+91 91234 56080"
   },
   {
     "id": "south-yercaud-standard-80",
@@ -10013,7 +10173,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Manoj Sagar",
+    "guidePhone": "+91 91234 56081"
   },
   {
     "id": "south-dandeli-luxury-81",
@@ -10123,7 +10285,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Naveed Qureshi",
+    "guidePhone": "+91 91234 56082"
   },
   {
     "id": "south-kabini-adventure-82",
@@ -10247,7 +10411,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Eshan Kapoor",
+    "guidePhone": "+91 91234 56083"
   },
   {
     "id": "south-varkala-cultural-83",
@@ -10385,7 +10551,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Virat Chawla",
+    "guidePhone": "+91 91234 56084"
   },
   {
     "id": "south-munnar-wellness-84",
@@ -10537,7 +10705,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Arun George",
+    "guidePhone": "+91 91234 56085"
   },
   {
     "id": "south-alleppey-leisure-85",
@@ -10633,7 +10803,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Bala Subramani",
+    "guidePhone": "+91 91234 56086"
   },
   {
     "id": "south-wayanad-heritage-86",
@@ -10743,7 +10915,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Selva Kumar",
+    "guidePhone": "+91 91234 56087"
   },
   {
     "id": "south-thekkady-short-stay-87",
@@ -10867,7 +11041,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Jagadeesh R",
+    "guidePhone": "+91 91234 56088"
   },
   {
     "id": "south-kochi-standard-88",
@@ -11005,7 +11181,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Prithvi Raj",
+    "guidePhone": "+91 91234 56089"
   },
   {
     "id": "south-kovalam-luxury-89",
@@ -11157,7 +11335,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Lenin Das",
+    "guidePhone": "+91 91234 56090"
   },
   {
     "id": "south-varkala-adventure-90",
@@ -11253,7 +11433,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Murali Krishna",
+    "guidePhone": "+91 91234 56091"
   },
   {
     "id": "south-kumarakom-cultural-91",
@@ -11363,7 +11545,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tharun Sai",
+    "guidePhone": "+91 91234 56092"
   },
   {
     "id": "south-ooty-wellness-92",
@@ -11487,7 +11671,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aravind Mani",
+    "guidePhone": "+91 91234 56093"
   },
   {
     "id": "south-kodaikanal-leisure-93",
@@ -11625,7 +11811,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Jeevan Antony",
+    "guidePhone": "+91 91234 56094"
   },
   {
     "id": "south-coorg-heritage-94",
@@ -11777,7 +11965,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Bharath Kumar",
+    "guidePhone": "+91 91234 56095"
   },
   {
     "id": "south-mysore-short-stay-95",
@@ -11873,7 +12063,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Darshan Hegde",
+    "guidePhone": "+91 91234 56096"
   },
   {
     "id": "south-hampi-standard-96",
@@ -11983,7 +12175,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Naren Vyas",
+    "guidePhone": "+91 91234 56097"
   },
   {
     "id": "south-gokarna-luxury-97",
@@ -12107,7 +12301,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Pritam Dutta",
+    "guidePhone": "+91 91234 56098"
   },
   {
     "id": "south-udupi-adventure-98",
@@ -12245,7 +12441,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Abhay Kuldeep",
+    "guidePhone": "+91 91234 56099"
   },
   {
     "id": "south-chikmagalur-cultural-99",
@@ -12397,7 +12595,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rohin Chakraborty",
+    "guidePhone": "+91 91234 56100"
   },
   {
     "id": "north-manali-standard-0",
@@ -12493,7 +12693,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Madhav Srinivas",
+    "guidePhone": "+91 91234 56101"
   },
   {
     "id": "north-shimla-luxury-1",
@@ -12603,7 +12805,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Veer Pratap",
+    "guidePhone": "+91 91234 56102"
   },
   {
     "id": "north-kasol-adventure-2",
@@ -12727,7 +12931,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sidhant Kohli",
+    "guidePhone": "+91 91234 56103"
   },
   {
     "id": "north-spiti-valley-cultural-3",
@@ -12865,7 +13071,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Harshil Parmar",
+    "guidePhone": "+91 91234 56104"
   },
   {
     "id": "north-dharamshala-wellness-4",
@@ -13017,7 +13225,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Lakshya Ahuja",
+    "guidePhone": "+91 91234 56105"
   },
   {
     "id": "north-dalhousie-leisure-5",
@@ -13113,7 +13323,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nihal Fernandes",
+    "guidePhone": "+91 91234 56106"
   },
   {
     "id": "north-bir-billing-heritage-6",
@@ -13223,7 +13435,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rehan Siddiqui",
+    "guidePhone": "+91 91234 56107"
   },
   {
     "id": "north-mussoorie-short-stay-7",
@@ -13347,7 +13561,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tanmay Kulal",
+    "guidePhone": "+91 91234 56108"
   },
   {
     "id": "north-rishikesh-standard-8",
@@ -13485,7 +13701,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Adarsh Babu",
+    "guidePhone": "+91 91234 56109"
   },
   {
     "id": "north-nainital-luxury-9",
@@ -13637,7 +13855,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vivek Tyagi",
+    "guidePhone": "+91 91234 56110"
   },
   {
     "id": "north-auli-adventure-10",
@@ -13733,7 +13953,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Piyush Rana",
+    "guidePhone": "+91 91234 56111"
   },
   {
     "id": "north-corbett-cultural-11",
@@ -13843,7 +14065,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Yuvraj Sandhu",
+    "guidePhone": "+91 91234 56112"
   },
   {
     "id": "north-jaipur-wellness-12",
@@ -13967,7 +14191,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Abhinav Pathak",
+    "guidePhone": "+91 91234 56113"
   },
   {
     "id": "north-udaipur-leisure-13",
@@ -14105,7 +14331,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Samarjit Paul",
+    "guidePhone": "+91 91234 56114"
   },
   {
     "id": "north-jodhpur-heritage-14",
@@ -14257,7 +14485,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nandakishore",
+    "guidePhone": "+91 91234 56115"
   },
   {
     "id": "north-jaisalmer-short-stay-15",
@@ -14353,7 +14583,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Kavin Rajan",
+    "guidePhone": "+91 91234 56116"
   },
   {
     "id": "north-pushkar-standard-16",
@@ -14463,7 +14695,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Girish Kamat",
+    "guidePhone": "+91 91234 56117"
   },
   {
     "id": "north-bikaner-luxury-17",
@@ -14587,7 +14821,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Zaid Mirza",
+    "guidePhone": "+91 91234 56118"
   },
   {
     "id": "north-mount-abu-adventure-18",
@@ -14725,7 +14961,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Paramjeet Singh",
+    "guidePhone": "+91 91234 56119"
   },
   {
     "id": "north-srinagar-cultural-19",
@@ -14877,7 +15115,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Devesh Purohit",
+    "guidePhone": "+91 91234 56120"
   },
   {
     "id": "north-gulmarg-wellness-20",
@@ -14973,7 +15213,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ananya Sharma",
+    "guidePhone": "+91 92345 67001"
   },
   {
     "id": "north-pahalgam-leisure-21",
@@ -15083,7 +15325,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Priya Nair",
+    "guidePhone": "+91 92345 67002"
   },
   {
     "id": "north-leh-heritage-22",
@@ -15207,7 +15451,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Kavya Iyer",
+    "guidePhone": "+91 92345 67003"
   },
   {
     "id": "north-nubra-valley-short-stay-23",
@@ -15345,7 +15591,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sneha Reddy",
+    "guidePhone": "+91 92345 67004"
   },
   {
     "id": "north-pangong-lake-standard-24",
@@ -15497,7 +15745,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Meera Joshi",
+    "guidePhone": "+91 92345 67005"
   },
   {
     "id": "north-agra-luxury-25",
@@ -15593,7 +15843,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aishwarya Rao",
+    "guidePhone": "+91 92345 67006"
   },
   {
     "id": "north-varanasi-adventure-26",
@@ -15703,7 +15955,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Divya Menon",
+    "guidePhone": "+91 92345 67007"
   },
   {
     "id": "north-manali-cultural-27",
@@ -15827,7 +16081,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Pooja Verma",
+    "guidePhone": "+91 92345 67008"
   },
   {
     "id": "north-shimla-wellness-28",
@@ -15965,7 +16221,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nisha Patel",
+    "guidePhone": "+91 92345 67009"
   },
   {
     "id": "north-kasol-leisure-29",
@@ -16117,7 +16375,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Riya Kapoor",
+    "guidePhone": "+91 92345 67010"
   },
   {
     "id": "north-spiti-valley-heritage-30",
@@ -16213,7 +16473,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ishita Jain",
+    "guidePhone": "+91 92345 67011"
   },
   {
     "id": "north-dharamshala-short-stay-31",
@@ -16323,7 +16585,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Simran Kaur",
+    "guidePhone": "+91 92345 67012"
   },
   {
     "id": "north-dalhousie-standard-32",
@@ -16447,7 +16711,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tanya Arora",
+    "guidePhone": "+91 92345 67013"
   },
   {
     "id": "north-bir-billing-luxury-33",
@@ -16585,7 +16851,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Kriti Malhotra",
+    "guidePhone": "+91 92345 67014"
   },
   {
     "id": "north-mussoorie-adventure-34",
@@ -16737,7 +17005,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Neha Bansal",
+    "guidePhone": "+91 92345 67015"
   },
   {
     "id": "north-rishikesh-cultural-35",
@@ -16833,7 +17103,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Shruti Das",
+    "guidePhone": "+91 92345 67016"
   },
   {
     "id": "north-nainital-wellness-36",
@@ -16943,7 +17215,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Lakshmi Priya",
+    "guidePhone": "+91 92345 67017"
   },
   {
     "id": "north-auli-leisure-37",
@@ -17067,7 +17341,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Keerthana Ravi",
+    "guidePhone": "+91 92345 67018"
   },
   {
     "id": "north-corbett-heritage-38",
@@ -17205,7 +17481,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Bhavya Singh",
+    "guidePhone": "+91 92345 67019"
   },
   {
     "id": "north-jaipur-short-stay-39",
@@ -17357,7 +17635,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Diya Chawla",
+    "guidePhone": "+91 92345 67020"
   },
   {
     "id": "north-udaipur-standard-40",
@@ -17453,7 +17733,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Harini Subash",
+    "guidePhone": "+91 92345 67021"
   },
   {
     "id": "north-jodhpur-luxury-41",
@@ -17563,7 +17845,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Janani Kumar",
+    "guidePhone": "+91 92345 67022"
   },
   {
     "id": "north-jaisalmer-adventure-42",
@@ -17687,7 +17971,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vaishnavi Bala",
+    "guidePhone": "+91 92345 67023"
   },
   {
     "id": "north-pushkar-cultural-43",
@@ -17825,7 +18111,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sanjana Pillai",
+    "guidePhone": "+91 92345 67024"
   },
   {
     "id": "north-bikaner-wellness-44",
@@ -17977,7 +18265,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nandini Roy",
+    "guidePhone": "+91 92345 67025"
   },
   {
     "id": "north-mount-abu-leisure-45",
@@ -18073,7 +18363,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Trisha Dey",
+    "guidePhone": "+91 92345 67026"
   },
   {
     "id": "north-srinagar-heritage-46",
@@ -18183,7 +18475,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Muskan Ali",
+    "guidePhone": "+91 92345 67027"
   },
   {
     "id": "north-gulmarg-short-stay-47",
@@ -18307,7 +18601,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Alisha Khan",
+    "guidePhone": "+91 92345 67028"
   },
   {
     "id": "north-pahalgam-standard-48",
@@ -18445,7 +18741,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Farah Siddiqui",
+    "guidePhone": "+91 92345 67029"
   },
   {
     "id": "north-leh-luxury-49",
@@ -18597,7 +18895,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Zoya Mir",
+    "guidePhone": "+91 92345 67030"
   },
   {
     "id": "north-nubra-valley-adventure-50",
@@ -18693,7 +18993,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Radhika Sen",
+    "guidePhone": "+91 92345 67031"
   },
   {
     "id": "north-pangong-lake-cultural-51",
@@ -18803,7 +19105,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sakshi Tiwari",
+    "guidePhone": "+91 92345 67032"
   },
   {
     "id": "north-agra-wellness-52",
@@ -18927,7 +19231,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Manya Soni",
+    "guidePhone": "+91 92345 67033"
   },
   {
     "id": "north-varanasi-leisure-53",
@@ -19065,7 +19371,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aditi Deshmukh",
+    "guidePhone": "+91 92345 67034"
   },
   {
     "id": "north-manali-heritage-54",
@@ -19217,7 +19525,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Pallavi Shetty",
+    "guidePhone": "+91 92345 67035"
   },
   {
     "id": "north-shimla-short-stay-55",
@@ -19313,7 +19623,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Reema George",
+    "guidePhone": "+91 92345 67036"
   },
   {
     "id": "north-kasol-standard-56",
@@ -19423,7 +19735,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Chitra Narayan",
+    "guidePhone": "+91 92345 67037"
   },
   {
     "id": "north-spiti-valley-luxury-57",
@@ -19547,7 +19861,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Gayathri V",
+    "guidePhone": "+91 92345 67038"
   },
   {
     "id": "north-dharamshala-adventure-58",
@@ -19685,7 +20001,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Komal Yadav",
+    "guidePhone": "+91 92345 67039"
   },
   {
     "id": "north-dalhousie-cultural-59",
@@ -19837,7 +20155,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tamanna Hussain",
+    "guidePhone": "+91 92345 67040"
   },
   {
     "id": "north-bir-billing-wellness-60",
@@ -19933,7 +20253,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aarush Mehta",
+    "guidePhone": "+91 91234 56121"
   },
   {
     "id": "north-mussoorie-leisure-61",
@@ -20043,7 +20365,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Devansh Sharma",
+    "guidePhone": "+91 91234 56122"
   },
   {
     "id": "north-rishikesh-heritage-62",
@@ -20167,7 +20491,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Krunal Joshi",
+    "guidePhone": "+91 91234 56123"
   },
   {
     "id": "north-nainital-short-stay-63",
@@ -20305,7 +20631,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Hitesh Patel",
+    "guidePhone": "+91 91234 56124"
   },
   {
     "id": "north-auli-standard-64",
@@ -20457,7 +20785,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Manav Khurana",
+    "guidePhone": "+91 91234 56125"
   },
   {
     "id": "north-corbett-luxury-65",
@@ -20553,7 +20883,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rakesh Nambiar",
+    "guidePhone": "+91 91234 56126"
   },
   {
     "id": "north-jaipur-adventure-66",
@@ -20663,7 +20995,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Srikanth Rao",
+    "guidePhone": "+91 91234 56127"
   },
   {
     "id": "north-udaipur-cultural-67",
@@ -20787,7 +21121,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ashok Varma",
+    "guidePhone": "+91 91234 56128"
   },
   {
     "id": "north-jodhpur-wellness-68",
@@ -20925,7 +21261,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vijay Kumar",
+    "guidePhone": "+91 91234 56129"
   },
   {
     "id": "north-jaisalmer-leisure-69",
@@ -21077,7 +21415,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Jatin Oberoi",
+    "guidePhone": "+91 91234 56130"
   },
   {
     "id": "north-pushkar-heritage-70",
@@ -21173,7 +21513,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rahul Dev",
+    "guidePhone": "+91 91234 56131"
   },
   {
     "id": "north-bikaner-short-stay-71",
@@ -21283,7 +21625,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nikhilesh Babu",
+    "guidePhone": "+91 91234 56132"
   },
   {
     "id": "north-mount-abu-standard-72",
@@ -21407,7 +21751,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ajith Rajan",
+    "guidePhone": "+91 91234 56133"
   },
   {
     "id": "north-srinagar-luxury-73",
@@ -21545,7 +21891,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Dhanush K",
+    "guidePhone": "+91 91234 56134"
   },
   {
     "id": "north-gulmarg-adventure-74",
@@ -21697,7 +22045,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Koushik Sen",
+    "guidePhone": "+91 91234 56135"
   },
   {
     "id": "north-pahalgam-cultural-75",
@@ -21793,7 +22143,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Naveen Rajput",
+    "guidePhone": "+91 91234 56136"
   },
   {
     "id": "north-leh-wellness-76",
@@ -21903,7 +22255,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sarvesh Patnaik",
+    "guidePhone": "+91 91234 56137"
   },
   {
     "id": "north-nubra-valley-leisure-77",
@@ -22027,7 +22381,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Umesh Kulkarni",
+    "guidePhone": "+91 91234 56138"
   },
   {
     "id": "north-pangong-lake-heritage-78",
@@ -22165,7 +22521,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vivekanand Mishra",
+    "guidePhone": "+91 91234 56139"
   },
   {
     "id": "north-agra-short-stay-79",
@@ -22317,7 +22675,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rohail Ahmed",
+    "guidePhone": "+91 91234 56140"
   },
   {
     "id": "north-varanasi-standard-80",
@@ -22413,7 +22773,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Yatin Chandra",
+    "guidePhone": "+91 91234 56141"
   },
   {
     "id": "north-manali-luxury-81",
@@ -22523,7 +22885,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Armaan Gill",
+    "guidePhone": "+91 91234 56142"
   },
   {
     "id": "north-shimla-adventure-82",
@@ -22647,7 +23011,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sushmita Roy",
+    "guidePhone": "+91 92345 67041"
   },
   {
     "id": "north-kasol-cultural-83",
@@ -22785,7 +23151,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Deepika Nair",
+    "guidePhone": "+91 92345 67042"
   },
   {
     "id": "north-spiti-valley-wellness-84",
@@ -22937,7 +23305,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Monika Bedi",
+    "guidePhone": "+91 92345 67043"
   },
   {
     "id": "north-dharamshala-leisure-85",
@@ -23033,7 +23403,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Preethi Ram",
+    "guidePhone": "+91 92345 67044"
   },
   {
     "id": "north-dalhousie-heritage-86",
@@ -23143,7 +23515,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Akshaya Devi",
+    "guidePhone": "+91 92345 67045"
   },
   {
     "id": "north-bir-billing-short-stay-87",
@@ -23267,7 +23641,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nivetha S",
+    "guidePhone": "+91 92345 67046"
   },
   {
     "id": "north-mussoorie-standard-88",
@@ -23405,7 +23781,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Hema Latha",
+    "guidePhone": "+91 92345 67047"
   },
   {
     "id": "north-rishikesh-luxury-89",
@@ -23557,7 +23935,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aarna Chopra",
+    "guidePhone": "+91 92345 67048"
   },
   {
     "id": "north-nainital-adventure-90",
@@ -23653,7 +24033,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rupal Shah",
+    "guidePhone": "+91 92345 67049"
   },
   {
     "id": "north-auli-cultural-91",
@@ -23763,7 +24145,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Saloni Gupta",
+    "guidePhone": "+91 92345 67050"
   },
   {
     "id": "north-corbett-wellness-92",
@@ -23887,7 +24271,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Esha Fernandes",
+    "guidePhone": "+91 92345 67051"
   },
   {
     "id": "north-jaipur-leisure-93",
@@ -24025,7 +24411,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aarav Sharma",
+    "guidePhone": "+91 91234 56001"
   },
   {
     "id": "north-udaipur-heritage-94",
@@ -24177,7 +24565,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vivaan Patel",
+    "guidePhone": "+91 91234 56002"
   },
   {
     "id": "north-jodhpur-short-stay-95",
@@ -24273,7 +24663,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aditya Verma",
+    "guidePhone": "+91 91234 56003"
   },
   {
     "id": "north-jaisalmer-standard-96",
@@ -24383,7 +24775,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Arjun Nair",
+    "guidePhone": "+91 91234 56004"
   },
   {
     "id": "north-pushkar-luxury-97",
@@ -24507,7 +24901,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sai Kiran",
+    "guidePhone": "+91 91234 56005"
   },
   {
     "id": "north-bikaner-adventure-98",
@@ -24645,7 +25041,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rohan Mehta",
+    "guidePhone": "+91 91234 56006"
   },
   {
     "id": "north-mount-abu-cultural-99",
@@ -24797,7 +25195,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Karthik Raj",
+    "guidePhone": "+91 91234 56007"
   },
   {
     "id": "solo-kasol-standard-0",
@@ -24893,7 +25293,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rahul Iyer",
+    "guidePhone": "+91 91234 56008"
   },
   {
     "id": "solo-rishikesh-luxury-1",
@@ -25003,7 +25405,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vikram Singh",
+    "guidePhone": "+91 91234 56009"
   },
   {
     "id": "solo-hampi-adventure-2",
@@ -25127,7 +25531,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Naveen Kumar",
+    "guidePhone": "+91 91234 56010"
   },
   {
     "id": "solo-gokarna-cultural-3",
@@ -25265,7 +25671,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Harish Reddy",
+    "guidePhone": "+91 91234 56011"
   },
   {
     "id": "solo-varkala-wellness-4",
@@ -25417,7 +25825,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Pranav Joshi",
+    "guidePhone": "+91 91234 56012"
   },
   {
     "id": "solo-pushkar-leisure-5",
@@ -25513,7 +25923,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Akash Malhotra",
+    "guidePhone": "+91 91234 56013"
   },
   {
     "id": "solo-leh-heritage-6",
@@ -25623,7 +26035,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Surya Narayan",
+    "guidePhone": "+91 91234 56014"
   },
   {
     "id": "solo-spiti-valley-short-stay-7",
@@ -25747,7 +26161,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Deepak Chauhan",
+    "guidePhone": "+91 91234 56015"
   },
   {
     "id": "solo-ziro-valley-standard-8",
@@ -25885,7 +26301,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Mohit Arora",
+    "guidePhone": "+91 91234 56016"
   },
   {
     "id": "solo-tawang-luxury-9",
@@ -26037,7 +26455,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Yash Desai",
+    "guidePhone": "+91 91234 56017"
   },
   {
     "id": "solo-mcleodganj-adventure-10",
@@ -26133,7 +26553,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nikhil Rao",
+    "guidePhone": "+91 91234 56018"
   },
   {
     "id": "solo-tosh-cultural-11",
@@ -26243,7 +26665,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Manish Sinha",
+    "guidePhone": "+91 91234 56019"
   },
   {
     "id": "solo-old-manali-wellness-12",
@@ -26367,7 +26791,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rajat Kapoor",
+    "guidePhone": "+91 91234 56020"
   },
   {
     "id": "solo-anjuna-leisure-13",
@@ -26505,7 +26931,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sandeep Mishra",
+    "guidePhone": "+91 91234 56021"
   },
   {
     "id": "solo-palolem-heritage-14",
@@ -26657,7 +27085,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Amit Tiwari",
+    "guidePhone": "+91 91234 56022"
   },
   {
     "id": "solo-auroville-short-stay-15",
@@ -26753,7 +27183,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Varun Khanna",
+    "guidePhone": "+91 91234 56023"
   },
   {
     "id": "solo-shillong-standard-16",
@@ -26863,7 +27295,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tarun Bhat",
+    "guidePhone": "+91 91234 56024"
   },
   {
     "id": "solo-cherrapunji-luxury-17",
@@ -26987,7 +27421,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ashwin Pillai",
+    "guidePhone": "+91 91234 56025"
   },
   {
     "id": "solo-dawki-adventure-18",
@@ -27125,7 +27561,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ganesh Kumar",
+    "guidePhone": "+91 91234 56026"
   },
   {
     "id": "solo-gangtok-cultural-19",
@@ -27277,7 +27715,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Shyam Sundar",
+    "guidePhone": "+91 91234 56027"
   },
   {
     "id": "solo-pelling-wellness-20",
@@ -27373,7 +27813,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vignesh Ravi",
+    "guidePhone": "+91 91234 56028"
   },
   {
     "id": "solo-lachung-leisure-21",
@@ -27483,7 +27925,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Dinesh Yadav",
+    "guidePhone": "+91 91234 56029"
   },
   {
     "id": "solo-majuli-heritage-22",
@@ -27607,7 +28051,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ankit Jain",
+    "guidePhone": "+91 91234 56030"
   },
   {
     "id": "solo-kasol-short-stay-23",
@@ -27745,7 +28191,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Bharat Saxena",
+    "guidePhone": "+91 91234 56031"
   },
   {
     "id": "solo-rishikesh-standard-24",
@@ -27897,7 +28345,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Lokesh Gupta",
+    "guidePhone": "+91 91234 56032"
   },
   {
     "id": "solo-hampi-luxury-25",
@@ -27993,7 +28443,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Imran Khan",
+    "guidePhone": "+91 91234 56033"
   },
   {
     "id": "solo-gokarna-adventure-26",
@@ -28103,7 +28555,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Faizan Ali",
+    "guidePhone": "+91 91234 56034"
   },
   {
     "id": "solo-varkala-cultural-27",
@@ -28227,7 +28681,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sameer Shaikh",
+    "guidePhone": "+91 91234 56035"
   },
   {
     "id": "solo-pushkar-wellness-28",
@@ -28365,7 +28821,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Yusuf Ansari",
+    "guidePhone": "+91 91234 56036"
   },
   {
     "id": "solo-leh-leisure-29",
@@ -28517,7 +28975,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Kabir Anand",
+    "guidePhone": "+91 91234 56037"
   },
   {
     "id": "honeymoon-havelock-island-standard-0",
@@ -28613,7 +29073,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Dev Mallick",
+    "guidePhone": "+91 91234 56038"
   },
   {
     "id": "honeymoon-neil-island-luxury-1",
@@ -28723,7 +29185,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Krish Bansal",
+    "guidePhone": "+91 91234 56039"
   },
   {
     "id": "honeymoon-lakshadweep-islands-adventure-2",
@@ -28847,7 +29311,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Abhishek Roy",
+    "guidePhone": "+91 91234 56040"
   },
   {
     "id": "honeymoon-udaipur-cultural-3",
@@ -28985,7 +29451,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Sanjay Das",
+    "guidePhone": "+91 91234 56041"
   },
   {
     "id": "honeymoon-munnar-wellness-4",
@@ -29137,7 +29605,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ajay Menon",
+    "guidePhone": "+91 91234 56042"
   },
   {
     "id": "honeymoon-gulmarg-leisure-5",
@@ -29233,7 +29703,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Omkar Patil",
+    "guidePhone": "+91 91234 56043"
   },
   {
     "id": "honeymoon-alleppey-(houseboat)-heritage-6",
@@ -29343,7 +29815,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ravi Teja",
+    "guidePhone": "+91 91234 56044"
   },
   {
     "id": "honeymoon-kumarakom-short-stay-7",
@@ -29467,7 +29941,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Uday Shetty",
+    "guidePhone": "+91 91234 56045"
   },
   {
     "id": "honeymoon-south-goa-standard-8",
@@ -29605,7 +30081,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Suresh Naidu",
+    "guidePhone": "+91 91234 56046"
   },
   {
     "id": "honeymoon-pahalgam-luxury-9",
@@ -29757,7 +30235,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Kiran Dev",
+    "guidePhone": "+91 91234 56047"
   },
   {
     "id": "honeymoon-shimla-adventure-10",
@@ -29853,7 +30333,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tejas Kulkarni",
+    "guidePhone": "+91 91234 56048"
   },
   {
     "id": "honeymoon-ooty-cultural-11",
@@ -29963,7 +30445,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Hemant Rawat",
+    "guidePhone": "+91 91234 56049"
   },
   {
     "id": "honeymoon-kodaikanal-wellness-12",
@@ -30087,7 +30571,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Pavan Choudhary",
+    "guidePhone": "+91 91234 56050"
   },
   {
     "id": "honeymoon-darjeeling-leisure-13",
@@ -30225,7 +30711,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Nitin Solanki",
+    "guidePhone": "+91 91234 56051"
   },
   {
     "id": "honeymoon-gangtok-heritage-14",
@@ -30377,7 +30865,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Dhruv Agarwal",
+    "guidePhone": "+91 91234 56052"
   },
   {
     "id": "honeymoon-pelling-short-stay-15",
@@ -30473,7 +30963,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Arnav Trivedi",
+    "guidePhone": "+91 91234 56053"
   },
   {
     "id": "honeymoon-lachung-standard-16",
@@ -30583,7 +31075,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vinayak Salvi",
+    "guidePhone": "+91 91234 56054"
   },
   {
     "id": "honeymoon-mussoorie-luxury-17",
@@ -30707,7 +31201,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Chetan Pawar",
+    "guidePhone": "+91 91234 56055"
   },
   {
     "id": "honeymoon-havelock-island-adventure-18",
@@ -30845,7 +31341,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rajesh Mondal",
+    "guidePhone": "+91 91234 56056"
   },
   {
     "id": "honeymoon-neil-island-cultural-19",
@@ -30997,7 +31495,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Mahesh Dubey",
+    "guidePhone": "+91 91234 56057"
   },
   {
     "id": "honeymoon-lakshadweep-islands-wellness-20",
@@ -31093,7 +31593,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Prakash Gowda",
+    "guidePhone": "+91 91234 56058"
   },
   {
     "id": "honeymoon-udaipur-leisure-21",
@@ -31203,7 +31705,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Lalit Sehgal",
+    "guidePhone": "+91 91234 56059"
   },
   {
     "id": "honeymoon-munnar-heritage-22",
@@ -31327,7 +31831,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Anand Bhargav",
+    "guidePhone": "+91 91234 56060"
   },
   {
     "id": "honeymoon-gulmarg-short-stay-23",
@@ -31465,7 +31971,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Chirag Modi",
+    "guidePhone": "+91 91234 56061"
   },
   {
     "id": "honeymoon-alleppey-(houseboat)-standard-24",
@@ -31617,7 +32125,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Harsh Vardhan",
+    "guidePhone": "+91 91234 56062"
   },
   {
     "id": "honeymoon-kumarakom-luxury-25",
@@ -31713,7 +32223,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Gokul Krishna",
+    "guidePhone": "+91 91234 56063"
   },
   {
     "id": "honeymoon-south-goa-adventure-26",
@@ -31823,7 +32335,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ritesh Pal",
+    "guidePhone": "+91 91234 56064"
   },
   {
     "id": "honeymoon-pahalgam-cultural-27",
@@ -31947,7 +32461,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Siddharth Bose",
+    "guidePhone": "+91 91234 56065"
   },
   {
     "id": "honeymoon-shimla-wellness-28",
@@ -32085,7 +32601,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tushar Negi",
+    "guidePhone": "+91 91234 56066"
   },
   {
     "id": "honeymoon-ooty-leisure-29",
@@ -32237,7 +32755,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Neeraj Jha",
+    "guidePhone": "+91 91234 56067"
   },
   {
     "id": "educational-national-museum-standard-0",
@@ -32333,7 +32853,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Ishaan Seth",
+    "guidePhone": "+91 91234 56068"
   },
   {
     "id": "educational-isro-vhsc-luxury-1",
@@ -32443,7 +32965,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Kunal Prasad",
+    "guidePhone": "+91 91234 56069"
   },
   {
     "id": "educational-science-city-adventure-2",
@@ -32567,7 +33091,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Alok Sen",
+    "guidePhone": "+91 91234 56070"
   },
   {
     "id": "educational-amer-fort-heritage-cultural-3",
@@ -32705,7 +33231,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Prem Chauhan",
+    "guidePhone": "+91 91234 56071"
   },
   {
     "id": "educational-nalanda-university-ruins-wellness-4",
@@ -32857,7 +33385,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Raghav Bedi",
+    "guidePhone": "+91 91234 56072"
   },
   {
     "id": "educational-sarnath-buddhist-circuit-leisure-5",
@@ -32953,7 +33483,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Mayank Lal",
+    "guidePhone": "+91 91234 56073"
   },
   {
     "id": "educational-ajanta-caves-heritage-6",
@@ -33063,7 +33595,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Shashank Rao",
+    "guidePhone": "+91 91234 56074"
   },
   {
     "id": "educational-ellora-caves-short-stay-7",
@@ -33187,7 +33721,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Vishal Thakur",
+    "guidePhone": "+91 91234 56075"
   },
   {
     "id": "educational-konark-sun-temple-standard-8",
@@ -33325,7 +33861,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Jayant Kulshreshtha",
+    "guidePhone": "+91 91234 56076"
   },
   {
     "id": "educational-hampi-architecture-luxury-9",
@@ -33477,7 +34015,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Rohit Banerjee",
+    "guidePhone": "+91 91234 56077"
   },
   {
     "id": "educational-mysore-palace-adventure-10",
@@ -33573,7 +34113,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Akhil Menon",
+    "guidePhone": "+91 91234 56078"
   },
   {
     "id": "educational-tanjore-temples-cultural-11",
@@ -33683,7 +34225,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Saurabh Dixit",
+    "guidePhone": "+91 91234 56079"
   },
   {
     "id": "educational-mahabalipuram-wellness-12",
@@ -33807,7 +34351,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Keshav Bhatia",
+    "guidePhone": "+91 91234 56080"
   },
   {
     "id": "educational-jantar-mantar-leisure-13",
@@ -33945,7 +34491,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Manoj Sagar",
+    "guidePhone": "+91 91234 56081"
   },
   {
     "id": "educational-sabarmati-ashram-heritage-14",
@@ -34097,7 +34645,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Naveed Qureshi",
+    "guidePhone": "+91 91234 56082"
   },
   {
     "id": "educational-khajuraho-temples-short-stay-15",
@@ -34193,7 +34743,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Eshan Kapoor",
+    "guidePhone": "+91 91234 56083"
   },
   {
     "id": "educational-golconda-fort-standard-16",
@@ -34303,7 +34855,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Virat Chawla",
+    "guidePhone": "+91 91234 56084"
   },
   {
     "id": "educational-national-museum-luxury-17",
@@ -34427,7 +34981,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Arun George",
+    "guidePhone": "+91 91234 56085"
   },
   {
     "id": "educational-isro-vhsc-adventure-18",
@@ -34565,7 +35121,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Bala Subramani",
+    "guidePhone": "+91 91234 56086"
   },
   {
     "id": "educational-science-city-cultural-19",
@@ -34717,7 +35275,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Selva Kumar",
+    "guidePhone": "+91 91234 56087"
   },
   {
     "id": "educational-amer-fort-heritage-wellness-20",
@@ -34813,7 +35373,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Jagadeesh R",
+    "guidePhone": "+91 91234 56088"
   },
   {
     "id": "educational-nalanda-university-ruins-leisure-21",
@@ -34923,7 +35485,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Prithvi Raj",
+    "guidePhone": "+91 91234 56089"
   },
   {
     "id": "educational-sarnath-buddhist-circuit-heritage-22",
@@ -35047,7 +35611,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Lenin Das",
+    "guidePhone": "+91 91234 56090"
   },
   {
     "id": "educational-ajanta-caves-short-stay-23",
@@ -35185,7 +35751,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Murali Krishna",
+    "guidePhone": "+91 91234 56091"
   },
   {
     "id": "educational-ellora-caves-standard-24",
@@ -35337,7 +35905,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Tharun Sai",
+    "guidePhone": "+91 91234 56092"
   },
   {
     "id": "educational-konark-sun-temple-luxury-25",
@@ -35433,7 +36003,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Aravind Mani",
+    "guidePhone": "+91 91234 56093"
   },
   {
     "id": "educational-hampi-architecture-adventure-26",
@@ -35543,7 +36115,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Jeevan Antony",
+    "guidePhone": "+91 91234 56094"
   },
   {
     "id": "educational-mysore-palace-cultural-27",
@@ -35667,7 +36241,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Bharath Kumar",
+    "guidePhone": "+91 91234 56095"
   },
   {
     "id": "educational-tanjore-temples-wellness-28",
@@ -35805,7 +36381,9 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Darshan Hegde",
+    "guidePhone": "+91 91234 56096"
   },
   {
     "id": "educational-mahabalipuram-leisure-29",
@@ -35957,6 +36535,8 @@
       "Trending",
       "Best Seller"
     ],
-    "isGroupTour": false
+    "isGroupTour": false,
+    "guideName": "Naren Vyas",
+    "guidePhone": "+91 91234 56097"
   }
 ]
