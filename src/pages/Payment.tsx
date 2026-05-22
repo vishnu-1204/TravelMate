@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { User, Calendar, Lock, ArrowLeft, Check, Loader2, Plus, Trash2, CreditCard, UserRound } from 'lucide-react';
+import { User, Calendar, Lock, Check, Loader2, Plus, Trash2, CreditCard, UserRound } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
@@ -189,12 +189,6 @@ const createTraveler = (index: number, defaultEmail = ''): Traveler => ({
   passport: '',
 });
 
-const DetailRow = ({ label, value }: { label: string; value: string }) => (
-  <div>
-    <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
-    <p className="text-foreground font-medium">{value}</p>
-  </div>
-);
 
 const FormInput = ({
   label,
@@ -1068,34 +1062,10 @@ const Payment = () => {
       <PageTransition>
         <div className="py-8 bg-background min-h-screen">
           <div className="page-container">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              Back to Package
-            </button>
-
             <h1 className="text-3xl font-bold text-foreground mb-8">Travel Package Booking</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-6">
-                <div className="bg-card rounded-xl p-6 shadow-card">
-                  <h2 className="text-lg font-bold text-foreground mb-4">Package Details</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <DetailRow label="Package ID" value={packageData.id} />
-                    <DetailRow label="Package Name" value={packageData.title} />
-                    <DetailRow label="Categories" value={packageData.categories.join(', ')} />
-                    <DetailRow label="Destination" value={packageData.location} />
-                    <DetailRow label="Duration" value={packageData.duration} />
-                    <DetailRow label="Rating" value={`${Number(packageData.rating).toFixed(1)}/5`} />
-                    <DetailRow label="Reviews" value={`${packageData.reviews}`} />
-                    <DetailRow label="Highlights" value={`${packageData.highlights.length}`} />
-                    <DetailRow label="Included Items" value={`${packageData.included.length}`} />
-                    <DetailRow label="Excluded Items" value={`${packageData.excluded.length}`} />
-                    <DetailRow label="Price per person" value={`₹${pricePerPerson.toLocaleString('en-IN')}`} />
-                  </div>
-                </div>
 
                 <div className="bg-card rounded-xl p-6 shadow-card">
                   <div className="mt-4 text-sm text-muted-foreground">

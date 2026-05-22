@@ -1,5 +1,5 @@
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { Star, MapPin, Clock, Check, X, Download, ArrowLeft, Hotel, Utensils, ChevronDown, ChevronUp, Loader2, User, Phone } from 'lucide-react';
+import { Star, MapPin, Clock, Check, X, Download, Hotel, Utensils, ChevronDown, ChevronUp, Loader2, User, Phone } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import {
@@ -367,13 +367,6 @@ export default function PackageDetails() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
             <div className="page-container">
-              <button
-                onClick={() => navigate(-1)}
-                className="flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-colors"
-              >
-                <ArrowLeft className="h-5 w-5" />
-                Back to Packages
-              </button>
               <div className="flex items-center gap-1 text-amber-400 mb-3">
                 <Star className="h-5 w-5 fill-current" />
                 <span className="font-medium">{Number(packageData.rating).toFixed(1)}</span>

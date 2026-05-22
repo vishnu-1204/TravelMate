@@ -79,11 +79,6 @@ export const PackageCard = ({
       <div className="relative h-56 overflow-hidden">
         {/* Luxury Glassmorphic Overlay Badges */}
         <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5 pointer-events-none">
-          {category && (
-            <span className="px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-md border border-white/10 text-[9px] font-extrabold tracking-widest uppercase text-white shadow-md">
-              {category}
-            </span>
-          )}
           {isGroupTour && (
             <span className="px-2.5 py-1 rounded-lg bg-[#FF7A00] text-white text-[9px] font-extrabold tracking-widest uppercase shadow-md">
               Group Tour
@@ -146,7 +141,7 @@ export const PackageCard = ({
           </div>
 
           <div className="flex items-center text-xs font-bold text-[hsl(var(--cyan-accent))] bg-[hsl(var(--cyan-accent))]/10 group-hover:bg-[hsl(var(--cyan-accent))]/20 px-3 py-1.5 rounded-xl transition-all">
-            Book
+            Book Now
             <ArrowRight className="h-3.5 w-3.5 ml-1 transition-transform group-hover:translate-x-0.5" />
           </div>
         </div>
