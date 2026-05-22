@@ -221,3 +221,25 @@
   @apply flex-1 flex items-center justify-center gap-3 border border-white/10 rounded-xl py-3 hover:bg-[#1A1A1A] transition-all text-sm font-medium text-white;
 }
 
+/* Premium Infinite Scroll Marquee Animation */
+@keyframes marquee-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 45s linear infinite;
+  will-change: transform;
+}
+
+.pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+
