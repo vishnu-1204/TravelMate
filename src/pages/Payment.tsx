@@ -6,6 +6,7 @@ import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useAuth } from '@/hooks/useAuth';
+import { BACKEND_URL } from '@/lib/apiConfig';
 import { toast } from 'sonner';
 import { jsPDF } from 'jspdf';
 import { getPackageById, type TravelPackage } from '@/lib/packagesApi';
@@ -313,10 +314,7 @@ const Payment = () => {
   const [packageData, setPackageData] = useState<TravelPackage | null>(null);
   const [packageLoading, setPackageLoading] = useState(true);
   const [packageError, setPackageError] = useState('');
-  const backendBaseUrl =
-    import.meta.env.VITE_AUTH_BACKEND_URL ||
-    import.meta.env.VITE_BACKEND_URL ||
-    'http://localhost:3000';
+  const backendBaseUrl = BACKEND_URL;
   const storageKey = useMemo(() => `travelmate-booking-draft-${id || 'unknown'}`, [id]);
 
   const [travelers, setTravelers] = useState<Traveler[]>([createTraveler(1, '')]);

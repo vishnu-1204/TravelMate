@@ -7,6 +7,7 @@ import { Mic, Search, Sparkles, TrendingUp } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { BACKEND_URL } from '@/lib/apiConfig';
 
 type SpeechRecognitionCtor = new () => {
   lang: string;
@@ -370,10 +371,7 @@ const Packages = () => {
       setLocationStatus('ready');
       setLocationNote('Showing solo trip picks from your saved profile location.');
       try {
-        const backendBaseUrl =
-          import.meta.env.VITE_AUTH_BACKEND_URL ||
-          import.meta.env.VITE_BACKEND_URL ||
-          'http://localhost:3000';
+        const backendBaseUrl = BACKEND_URL;
 
         await fetch(`${backendBaseUrl}/api/auth/profile`, {
           method: 'PUT',

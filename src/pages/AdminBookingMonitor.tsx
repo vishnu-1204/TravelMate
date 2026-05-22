@@ -3,6 +3,8 @@ import { AlertTriangle, Loader2, MailCheck, MailX, Receipt } from 'lucide-react'
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 
+import { BACKEND_URL } from '@/lib/apiConfig';
+
 type AdminBooking = {
   booking_reference: string | null;
   email: string;
@@ -16,10 +18,7 @@ const AdminBookingMonitor = () => {
   const [error, setError] = useState('');
   const [bookings, setBookings] = useState<AdminBooking[]>([]);
 
-  const backendBaseUrl =
-    import.meta.env.VITE_AUTH_BACKEND_URL ||
-    import.meta.env.VITE_BACKEND_URL ||
-    'http://localhost:3000';
+  const backendBaseUrl = BACKEND_URL;
   const adminToken = import.meta.env.VITE_PACKAGE_ADMIN_TOKEN as string | undefined;
   const canAccess = useMemo(() => Boolean(adminToken), [adminToken]);
 

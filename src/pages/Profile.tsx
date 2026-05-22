@@ -4,20 +4,7 @@ import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import { useAuth } from '@/hooks/useAuth';
 
-const resolveBackendUrl = () => {
-  const configured = (import.meta.env.VITE_AUTH_BACKEND_URL || import.meta.env.VITE_BACKEND_URL || '').trim();
-  if (configured) return configured.replace(/\/+$/, '');
-
-  const { hostname, origin } = window.location;
-  const isLocal =
-    hostname === 'localhost' ||
-    hostname === '127.0.0.1' ||
-    hostname === '::1';
-
-  return isLocal ? 'http://localhost:5000' : origin;
-};
-
-const BACKEND_URL = resolveBackendUrl();
+import { BACKEND_URL } from '@/lib/apiConfig';
 
 type ProfileRow = {
   id: string;

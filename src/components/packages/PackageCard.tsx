@@ -42,7 +42,7 @@ const highlightText = (value: string, query?: string): ReactNode => {
 
   return pieces.map((piece, index) =>
     piece.toLowerCase() === trimmed.toLowerCase() ? (
-      <mark key={`${piece}-${index}`} className="rounded bg-amber-100 px-0.5 text-foreground">
+      <mark key={`${piece}-${index}`} className="rounded bg-[#FF7A00] text-white px-1 font-semibold">
         {piece}
       </mark>
     ) : (

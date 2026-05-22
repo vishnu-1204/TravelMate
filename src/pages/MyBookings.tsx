@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { LOCKED_NOTICE, isLockedBooking, normalizeBookingSnapshot } from '@/lib/bookingSnapshot';
 import { getPackageById, getPackages } from '@/lib/packagesApi';
 import PackageImage from '@/components/common/PackageImage';
+import { BACKEND_URL } from '@/lib/apiConfig';
 
 type BookingSnapshot = {
   snapshot: {
@@ -149,11 +150,7 @@ const MyBookings = () => {
           ]);
         };
 
-        // Fetch from Backend with 5s timeout
-        const backendBaseUrl =
-          import.meta.env.VITE_AUTH_BACKEND_URL ||
-          import.meta.env.VITE_BACKEND_URL ||
-          'http://localhost:3000';
+        const backendBaseUrl = BACKEND_URL;
         
         let localBookings: BookingRow[] = [];
         try {
@@ -233,10 +230,7 @@ const MyBookings = () => {
     setError('');
 
     try {
-      const backendBaseUrl =
-        import.meta.env.VITE_AUTH_BACKEND_URL ||
-        import.meta.env.VITE_BACKEND_URL ||
-        'http://localhost:3000';
+      const backendBaseUrl = BACKEND_URL;
 
       const response = await fetch(`${backendBaseUrl}/api/booking/user-bookings?userId=${user.id}`, {
         method: 'DELETE',
@@ -493,10 +487,7 @@ const DownloadButton = ({ bookingReference, userId }: { bookingReference: string
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      const backendBaseUrl =
-        import.meta.env.VITE_AUTH_BACKEND_URL ||
-        import.meta.env.VITE_BACKEND_URL ||
-        'http://localhost:3000';
+      const backendBaseUrl = BACKEND_URL;
       const url = `${backendBaseUrl}/api/booking/download-ticket/${bookingReference}${userId ? `?userId=${userId}` : ''}`;
       const opened = window.open(url, '_blank', 'noopener,noreferrer');
       if (!opened) {

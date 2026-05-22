@@ -107,6 +107,12 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Poppins', 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
   }
+
+  mark {
+    background-color: #FF7A00 !important;
+    color: #ffffff !important;
+    @apply rounded px-1 font-semibold;
+  }
 }
 
 @layer components {

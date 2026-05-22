@@ -1,5 +1,6 @@
 import packagesData from '@/data/packages.json';
 import { applyCategorization } from '@/lib/packageCategorizer';
+import { BACKEND_URL } from '@/lib/apiConfig';
 import {
   computeDynamicPricing,
   computePopularityScore,
@@ -196,8 +197,7 @@ export type PackageVersionHistory = {
   duration_days: number | null;
 };
 
-const BACKEND_BASE_URL =
-  (import.meta.env.VITE_AUTH_BACKEND_URL || import.meta.env.VITE_BACKEND_URL || '').replace(/\/+$/, '');
+const BACKEND_BASE_URL = BACKEND_URL;
 const DEFAULT_REFRESHED_AT = new Date().toISOString();
 const PAGE_CACHE_TTL_MS = 45_000;
 const MIN_PACKAGE_DURATION_DAYS = 3;

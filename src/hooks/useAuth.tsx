@@ -1,19 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { BACKEND_URL } from '@/lib/apiConfig';
 
-const resolveBackendUrl = () => {
-  const configured = (import.meta.env.VITE_AUTH_BACKEND_URL || import.meta.env.VITE_BACKEND_URL || '').trim();
-  if (configured) return configured.replace(/\/+$/, '');
-
-  const { hostname, origin } = window.location;
-  const isLocal =
-    hostname === 'localhost' ||
-    hostname === '127.0.0.1' ||
-    hostname === '::1';
-
-  return isLocal ? 'http://localhost:3000' : origin;
-};
-
-const BACKEND_URL = resolveBackendUrl();
 
 interface User {
   id: string;

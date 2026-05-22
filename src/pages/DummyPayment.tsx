@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import Layout from '@/components/layout/Layout';
 import PageTransition from '@/components/layout/PageTransition';
 import { useAuth } from '@/hooks/useAuth';
+import { BACKEND_URL } from '@/lib/apiConfig';
 
 const DummyPayment = () => {
   const location = useLocation();
@@ -24,7 +25,7 @@ const DummyPayment = () => {
   const amount = bookingData.totalAmount || 0;
   const packageTitle = bookingData.packageTitle || 'Travel Package';
 
-  const backendUrl = import.meta.env.VITE_AUTH_BACKEND_URL || 'http://localhost:3003';
+  const backendUrl = BACKEND_URL;
 
   useEffect(() => {
     if (!location.state && !import.meta.env.DEV) {

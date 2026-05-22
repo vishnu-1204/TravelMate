@@ -15,6 +15,7 @@ import { jsPDF } from 'jspdf';
 import { useEffect, useState } from 'react';
 import PackageImage from '@/components/common/PackageImage';
 import { useAuth } from '@/hooks/useAuth';
+import { BACKEND_URL } from '@/lib/apiConfig';
 
 const getFallbackDepartures = (packageId: string) => {
   const seed = (packageId || 'default').split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -49,10 +50,7 @@ export default function PackageDetails() {
   const { user } = useAuth();
 
 
-  const backendUrl =
-    import.meta.env.VITE_AUTH_BACKEND_URL ||
-    import.meta.env.VITE_BACKEND_URL ||
-    'http://localhost:3000';
+  const backendUrl = BACKEND_URL;
   const adminToken = import.meta.env.VITE_PACKAGE_ADMIN_TOKEN as string | undefined;
 
   useEffect(() => {
